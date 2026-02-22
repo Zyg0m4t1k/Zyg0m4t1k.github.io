@@ -18,10 +18,14 @@ const config: Config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  i18n: {
-    defaultLocale: 'fr',
-    locales: ['fr', 'en'],
-  },
+	i18n: {
+	  defaultLocale: 'fr',
+	  locales: ['fr', 'en'],
+	  localeConfigs: {
+		fr: { label: 'Français' },
+		en: { label: 'English' },
+	  },
+	},
 
   presets: [
     [
@@ -29,8 +33,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/docs',
-          editUrl: 'https://github.com/Zyg0m4t1k/Zyg0m4t1k.github.io/tree/main/',
+          routeBasePath: 'docs',
+          editUrl: 'https://github.com/Zyg0m4t1k/Zyg0m4t1k.github.io/tree/master/',
         },
         blog: false,
         theme: { customCss: './src/css/custom.css' },

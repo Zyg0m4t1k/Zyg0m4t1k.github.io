@@ -65,7 +65,22 @@ const plugins: PluginItem[] = [
       "github": "https://github.com/Zyg0m4t1k/switchbot",
       "market": null
     }
-  }
+  },
+   {
+    "id": "groupe",
+    "name": "Groupe",
+    "description": "Plugin permettant la création d'un widget avec l'état d'un groupe",
+    "icon": "groupe_icon.png",
+    "status": "stable",
+    "routes": {
+      "page": "/plugins/groupe"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  } 
+  
 ];
 
 export default plugins;

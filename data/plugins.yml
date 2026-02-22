@@ -21,7 +21,7 @@ plugins:
       Calendriers ICS avancés : déclencheurs, regex, filtrage d’événements
       et automatisations basées sur le temps.
     icon: ics_icon.png
-    status: stable
+    status: beta
     routes:
       page: /plugins/ics
     links:
