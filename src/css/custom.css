@@ -28,3 +28,119 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+
+@media (min-width: 996px) {
+  .plugins-layout {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 0 40px;
+  }
+}
+
+html, body { overflow-x: hidden; }
+
+/* -----------------------------
+   Plugin Hero (Premium)
+   ----------------------------- */
+.pluginHero {
+  margin: 1rem 0 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    var(--ifm-background-surface-color) 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+}
+
+[data-theme='dark'] .pluginHero {
+  background: linear-gradient(
+    180deg,
+    var(--ifm-background-surface-color) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+}
+
+.pluginHero__inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.pluginHero__top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .pluginHero__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pluginHero__iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  display: grid;
+  place-items: center;
+  background: var(--ifm-background-surface-color);
+}
+
+.pluginHero__icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.pluginHero__title {
+  font-size: 2.1rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.pluginHero__desc {
+  margin: 0.35rem 0 0;
+  max-width: 58ch;
+  opacity: 0.9;
+}
+
+.pluginHero__badges {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pluginHero__badge {
+  font-size: 0.85rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+}
+
+.pluginHero__ctaRow {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pluginHero__btn {
+  border-radius: 12px;
+}
+
+.pluginHero__btnPaypal {
+  white-space: nowrap;
+}
+
+.pluginHero__note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}

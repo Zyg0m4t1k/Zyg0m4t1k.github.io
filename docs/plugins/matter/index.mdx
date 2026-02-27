@@ -1,0 +1,200 @@
+---
+title: Plugin Matter
+description: Intégrer et piloter vos appareils Matter simplement avec Jeedom
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="Plugin Matter"
+  description="Intégrer et piloter vos appareils Matter simplement avec Jeedom."
+  icon="/img/plugins/matter_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+Le plugin **Matter** permet d’ajouter et de piloter des appareils compatibles Matter directement depuis Jeedom.
+
+---
+
+## 🔧 Prérequis
+
+Avant d’installer le plugin et d’ajouter un appareil Matter, assurez-vous d’avoir :
+
+## 🌐 1️⃣ Un réseau local stable
+
+- Jeedom doit être connecté au même réseau que vos appareils
+- Wi‑Fi fonctionnel et stable
+- Pas d’isolation réseau entre les équipements
+
+---
+
+## 📡 2️⃣ Un contrôleur Matter
+
+Matter nécessite un contrôleur pour gérer les appareils.
+
+Le plugin Matter peut jouer ce rôle et devenir votre **contrôleur principal**.
+
+⚠️ Il est recommandé de ne pas utiliser plusieurs contrôleurs principaux en parallèle si vous débutez.
+
+---
+
+## 🧵 3️⃣ Un Border Router (si appareil Thread)
+
+Certains appareils Matter utilisent la technologie **Thread**.
+
+Dans ce cas, vous devez disposer d’un **Thread Border Router**.
+
+Exemples compatibles :
+
+- Apple HomePod (2e génération)
+- Apple TV 4K récente
+- Amazon Echo compatible Thread
+- Google Nest Hub (2e génération)
+- Dongle OTBR (OpenThread Border Router)
+
+⚠️ Les appareils Matter en Wi‑Fi ou Ethernet n’ont pas besoin de Border Router.
+
+---
+
+## 🍎🤖 4️⃣ Appareils déjà configurés dans Apple, Amazon ou Google
+
+Si votre appareil est déjà ajouté dans :
+
+- Apple Home
+- Amazon Alexa
+- Google Home
+
+Deux possibilités :
+
+- Soit Jeedom devient le contrôleur principal
+- Soit vous partagez l’appareil vers Jeedom (si supporté)
+
+Il est conseillé d’éviter les configurations multiples si vous débutez.
+
+---
+
+## 🔑 5️⃣ Code Matter obligatoire
+
+Pour l’inclusion, vous aurez besoin :
+
+- Du code à 11 chiffres  
+
+---
+
+## 🚀 Installation du plugin
+
+## 1️⃣ Installation depuis le Market
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Matter**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+![Installation plugin](/img/plugins/matter/install.png)
+
+---
+
+## 2️⃣ Installation des dépendances
+
+Après installation :
+
+1. Ouvrez la page du plugin
+2. Cliquez sur **Configuration**
+3. Cliquez sur **Installer les dépendances**
+
+![Dépendances](/img/plugins/matter/dependencies.png)
+
+Attendez que le statut passe à **OK** avant de continuer.
+
+---
+
+## 3️⃣ Démarrer le démon
+
+Toujours dans la configuration :
+
+- Cliquez sur **Démarrer**
+
+![Démon](/img/plugins/matter/daemon_start.png)
+
+Quand tout est vert ✅, le plugin est prêt.
+
+---
+
+## ➕ Ajouter un appareil Matter
+
+## Étape 1 : Mettre l'équipement ,dans l'application Maison par exemple, en mode jumelage et recuperer le code
+
+
+## Étape 2 : Ajouter dans Jeedom
+
+1. Allez dans **Plugins → Matter → configuration**
+2. Dans la partie jumelage mettre le code récupérér à l'étape précédente et cliquer sur jumeler
+
+![Ajouter équipement](/img/plugins/matter/add_device.png)
+
+---
+
+## 💡 Page Équipement
+
+Une fois ajouté, votre appareil apparaît dans Jeedom.
+
+![Fiche équipement](/img/plugins/matter/device_page.png)
+
+
+
+---
+
+## 📊 Commandes disponibles
+
+Selon l’appareil, vous verrez :
+
+- On / Off
+- Variation
+- Température
+- État
+- Mesures
+
+![Commandes](/img/plugins/matter/device_commands.png)
+
+Ces commandes peuvent être utilisées dans :
+
+- Scénarios
+- Dashboard
+- Widgets personnalisés
+
+---
+
+## ❤️ Page Santé
+
+La page Santé permet de vérifier :
+
+- Dépendances
+- Démon
+- Connexion
+
+![Page santé](/img/plugins/matter/health_page.png)
+
+Si un élément est rouge :
+
+- Réinstallez les dépendances
+- Redémarrez le démon
+- Vérifiez que l’appareil est alimenté
+
+---
+
+## 🧠 Conseils pour débuter
+
+- Commencez avec une ampoule simple
+- Vérifiez que votre réseau est stable
+- Regardez la page Santé en cas de doute
+
+---
+
+## 🎉 Conclusion
+
+Le plugin Matter permet d’intégrer facilement vos appareils nouvelle génération dans Jeedom.
+
+Installation → Inclusion → Utilisation dans scénarios.
+
+Simple et accessible à tous.

@@ -1,0 +1,8 @@
+{
+  "label": "Todo List",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "plugins/todo/index"
+  }
+}

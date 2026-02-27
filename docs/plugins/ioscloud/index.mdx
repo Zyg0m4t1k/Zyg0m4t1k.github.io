@@ -1,0 +1,168 @@
+---
+title: iOSCloud
+description: Récupérez la localisation iCloud, l’état des devices, et déclenchez des actions (son, message).
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="iOSCloud"
+  description="Récupérez la localisation iCloud, l’état des devices, et déclenchez des actions (son, message)."
+  icon="/img/plugins/ioscloud_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+Ce document décrit le plugin **iOSCloud** : configuration, comptes, équipements et commandes.
+
+**Accès rapide :**
+- [Configuration](#configuration)
+- [Les comptes](#les-comptes)
+- [Les devices](#les-devices)
+- [Commandes](#les-commandes-des-devices)
+- [Widgets](#les-widgets)
+- [FAQ](#faq)
+
+---
+
+## Description
+
+Ce plugin permet de récupérer les devices d’un compte iCloud et :
+
+- récupérer la **localisation**
+- émettre un **son** (Play sound)
+- envoyer un **message** d’alerte
+- suivre des **distances** entre un device et une référence
+
+:::caution IMPORTANT
+Attention : le plugin ne semble pas compatible avec le plugin **Geoloc iOS**.
+:::
+
+---
+
+## Configuration
+
+Dans la configuration du plugin :
+
+1. Activer le plugin
+2. Aller dans **Plugins → Communication → iOS iCloud**
+3. Configurer vos comptes
+
+---
+
+## Les comptes
+
+Pour commencer, cliquer sur **Ajouter un compte**.
+
+![Compte](/img/plugins/ioscloud/cloud1.png)
+
+Remplissez les champs, activez le cron, puis sauvegardez : vos devices devraient apparaître.
+
+### Les commandes des comptes
+
+![Commandes compte](/img/plugins/ioscloud/cloud3.png)
+
+- **Active** : active le rafraîchissement des infos
+- **Inactive** : inactive le rafraîchissement des infos
+- **State** : renvoie l’état du compte
+- **Refresh** : lance un rafraîchissement immédiat
+- **cron1/cron5/cron15/cron30/cron60** : fréquence de rafraîchissement
+- **cronMiDay** : toutes les 12 heures (minuit, midi)
+- **cronDay** : tous les jours (5h)
+- **getcron** : renvoie le cron actuel
+
+---
+
+## Les devices
+
+![Devices](/img/plugins/ioscloud/cloud2.png)
+
+Différentes infos sont récupérées.
+
+:::caution IMPORTANT
+Tu peux paramétrer la précision de la localisation.
+Sur la capture, **70** correspond à une bonne précision (tu peux descendre jusqu’à **30** pour plus précis).
+
+La récupération des informations se fait selon le cron choisi :
+si la précision récupérée est supérieure à la valeur souhaitée, la localisation ne sera pas mise à jour avant le prochain cron.
+Très efficace pour une gestion de présence “à domicile”, moins pour une localisation très fine en temps réel.
+:::
+
+:::note NOTE
+Si tu veux mettre à jour une commande d’un autre plugin (Geolocalisation, Geotrav), sélectionne une commande.
+Sinon, ne remplis pas ce champ.
+:::
+
+### Les commandes des devices
+
+![Commandes device](/img/plugins/ioscloud/cloud7.png)
+
+- **localisation** : localisation du device
+- **Message** : envoyer un message
+- **Play sound** : lancer une alerte sonore sur le device
+- **Battery** : niveau de batterie
+- **State** : renvoie l’état du device (0 si pas d’info, sinon 1)
+- **Timestamp** : timestamp de la dernière synchronisation
+
+---
+
+## Les équipements à position fixe
+
+![Position fixe](/img/plugins/ioscloud/cloud4.png)
+
+Dans le champ **Coordonnées**, mettre la latitude et la longitude séparées d’une virgule.
+
+---
+
+## Gestion des distances
+
+Cliquer sur le **+** de Distance :
+
+![Distances](/img/plugins/ioscloud/cloud5.png)
+
+- **Référence de la distance** : équipement de référence
+- **Distance** : en mètres
+- **Équipement à rechercher** : équipement surveillé (1 seul)
+
+:::caution IMPORTANT
+La distance se met à jour selon la fréquence de rafraîchissement du compte du device recherché.
+Une fois sauvegardé, cela crée des commandes utilisables dans les scénarios.
+:::
+
+![Commandes distances](/img/plugins/ioscloud/cloud6.png)
+
+---
+
+## Les Widgets
+
+### Devices
+
+![Widgets devices](/img/plugins/ioscloud/cloud8.png)
+
+:::caution IMPORTANT
+Tu peux changer l’ordre des commandes dans la configuration de l’équipement et assigner un widget à chaque commande
+(sauf **localisation**).
+
+Pour la commande **localisation**, c’est le plugin qui crée le widget.
+:::
+
+- Aller dans la configuration avancée de chaque commande (hors localisation) pour associer un widget
+- Exemple : widget **CircleBattery** sur la commande batterie et widget **Presence_homme_2** sur la commande état
+
+:::note NOTE
+Si tu n’as pas les widgets : les télécharger sur le Market via le plugin **Widget**.
+:::
+
+### Distances
+
+![Widgets distances](/img/plugins/ioscloud/cloud9.png)
+
+### Panel desktop
+
+Une fois activé, tous les devices apparaîtront dans le panel (utile avec le plugin **Clink** par exemple).
+
+---
+
+## FAQ
+
+- _À compléter_

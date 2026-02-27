@@ -29,9 +29,9 @@ const plugins: PluginItem[] = [
     "name": "iOSCloud",
     "description": "Intégration iCloud / Find My : synchronisation des appareils, localisation, état batterie et automatisations Jeedom.",
     "icon": "ioscloud_icon.png",
-    "status": "beta",
+    "status": "dev",
     "routes": {
-      "page": "/plugins/ioscloud"
+      "page": "/docs/plugins/ioscloud/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/ioscloud",
@@ -43,9 +43,9 @@ const plugins: PluginItem[] = [
     "name": "ICS",
     "description": "Calendriers ICS avancés : déclencheurs, regex, filtrage d’événements et automatisations basées sur le temps.",
     "icon": "ics_icon.png",
-    "status": "stable",
+    "status": "dev",
     "routes": {
-      "page": "/plugins/ics"
+      "page": "/docs/plugins/ics/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/ics",
@@ -57,9 +57,9 @@ const plugins: PluginItem[] = [
     "name": "SwitchBot",
     "description": "Intégration SwitchBot via API : états, commandes, synchronisation automatique des équipements.",
     "icon": "switchbot_icon.png",
-    "status": "beta",
+    "status": "dev",
     "routes": {
-      "page": "/plugins/switchbot"
+      "page": "/docs/plugins/switchbot/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/switchbot",
@@ -72,13 +72,44 @@ const plugins: PluginItem[] = [
     "description": "Plugin permettant la création d'un widget avec l'état d'un groupe",
     "icon": "groupe_icon.png",
     "status": "stable",
+	"badges": ["php7.2", "jeedom4.5"],
     "routes": {
-      "page": "/plugins/groupe"
+      "page": "/docs/plugins/groupe/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
     }
+   },
+   {
+    "id": "todo",
+    "name": "Todo List",
+    "description": "Plugin pour créer des todolists ",
+    "icon": "todo_icon.png",
+    "status": "stable",
+	"badges": ["php7.2", "jeedom4.5"],
+    "routes": {
+      "page": "/docs/plugins/todo/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }	
+  },
+   {
+    "id": "matter",
+    "name": "Pont Matter",
+    "description": "plugin qui permet d’intégrer et de piloter des appareils compatibles avec le standard domotique universel Matter",
+    "icon": "matter_icon.png",
+    "status": "dev",
+	"badges": ["php8.2", "jeedom4.5"],
+    "routes": {
+      "page": "/docs/plugins/matter/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }	
   } 
   
 ];

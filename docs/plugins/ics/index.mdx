@@ -1,0 +1,92 @@
+---
+title: ICS
+description: Lire des calendriers (ICS/CalDAV) et déclencher des actions automatiquement selon les événements.
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="Calendrier ICS"
+  description="Lire des calendriers (ICS/CalDAV) et déclencher des actions automatiquement selon les événements."
+  icon="/img/plugins/ics_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+# Manuel d’utilisation — Plugin Calendrier ICS
+
+Ce document explique comment utiliser le plugin **Calendrier ICS** :
+ajout de calendriers, reconnaissance des événements et déclenchement d’actions.
+
+---
+
+## À quoi sert ce plugin ?
+
+Le plugin permet de :
+
+- lire des calendriers distants (Google, iCloud, Nextcloud, CalDAV…)
+- afficher les événements dans Jeedom
+- savoir s’il y a un événement aujourd’hui ou demain
+- déclencher des actions automatiquement selon les événements
+- utiliser les événements dans des scénarios
+- afficher les informations dans des widgets
+
+⚠️ Le plugin fonctionne en **lecture seule** :
+il ne modifie jamais un calendrier distant.
+
+---
+
+## Étape 1 — Activer le plugin
+
+1. Installer le plugin depuis le Market Jeedom
+2. Activer le plugin
+3. Aller dans :
+   Plugins → Organisation → Calendrier ICS
+
+Mode Debug :
+- à utiliser uniquement en cas de problème
+- à désactiver ensuite (surtout si Jeedom utilise une carte SD)
+
+---
+
+## Étape 2 — Ajouter un calendrier (URL ICS)
+
+Créer un nouvel équipement et renseigner l’URL du calendrier.
+
+![ICS](/img/plugins/ics/ics1.png)
+
+---
+
+## Reconnaissance des événements
+
+Le plugin peut matcher des événements via :
+
+- le **titre**
+- la **description**
+- des **regex** (si activé)
+
+![Regex](/img/plugins/ics/ics10.png)
+
+---
+
+## Widgets & Commandes
+
+Le plugin expose des commandes permettant :
+
+- de savoir s’il y a un événement en cours
+- de récupérer le prochain événement
+- de déclencher des actions selon le contenu des événements
+
+![Commandes](/img/plugins/ics/ics11.png)
+
+---
+
+## Dépannage
+
+Si tu as des problèmes :
+
+- vérifier l’URL (accès réseau)
+- activer temporairement le debug
+- vérifier la page Santé
+
+![Santé](/img/plugins/ics/ics12.png)

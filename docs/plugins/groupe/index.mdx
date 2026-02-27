@@ -1,0 +1,83 @@
+---
+title: Groupe
+description: Regrouper des équipements et piloter un état global avec un widget personnalisable.
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="Groupe"
+  description="Regrouper des équipements et piloter un état global avec un widget personnalisable."
+  icon="/img/plugins/groupe_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+## 📌 Description
+
+Le plugin **Groupe** permet de connaître l'état global d’un ensemble de commandes (ex : plusieurs lumières, volets, alertes)
+et d’afficher un **widget** dans vos vues Jeedom avec des **icônes / images** personnalisables.
+
+---
+
+## 📦 Installation
+
+Comme n’importe quel plugin Jeedom :
+
+1. Installer depuis le Market (ou via ZIP)
+2. Activer le plugin
+3. Aller dans **Plugins → Monitoring → Groupe**
+
+---
+
+## ⚙️ Configuration
+
+### 1) Créer un équipement
+
+Créer un nouvel équipement en cliquant sur **+**.
+
+![Création équipement](/img/plugins/groupe/groupe5.png)
+
+### 2) Paramètres de l’équipement
+
+- **Ajouter un équipement** : sélectionne un équipement et ses commandes d’état, et (optionnellement) des commandes actions si
+  **Activer les actions** est coché.
+- **Inverser** : si coché, l’état (et donc l’icône/image) passe sur **actif** seulement si **tous** les équipements sont actifs.
+- **Icône ON** : icône du widget quand au moins 1 commande est active.
+- **Icône OFF** : icône du widget quand toutes les commandes sont inactives.
+- **Image ON** : image du widget quand au moins 1 commande est active.
+- **Image OFF** : image du widget quand toutes les commandes sont inactives.
+
+> Astuce : tu peux choisir **icône** (FontAwesome) ou **image** selon ton rendu préféré.
+
+---
+
+## 🧾 Les commandes
+
+![Commandes](/img/plugins/groupe/groupe6.png)
+
+Le plugin expose notamment un comportement simple côté widget :
+
+- Si **aucun** équipement n’est actif → clic = **All ON** (tout activer)
+- Si **au moins un** équipement est actif → clic = **All OFF** (tout désactiver)
+
+---
+
+## 🧩 Le widget
+
+Exemples de rendu :
+
+![Widget - light](/img/plugins/groupe/light.png)
+
+![Widget - volets](/img/plugins/groupe/volets.png)
+
+![Widget - alerte](/img/plugins/groupe/alerte.png)
+
+> NOTE
+>
+> Le widget se met à jour dès qu'il y a un changement d'état.
+>
+> - Un clic sur les infos permet de changer l'état (All ON / All OFF)
+> - Un clic sur l'icône ouvre une fenêtre (modale)
+
+![Modale](/img/plugins/groupe/groupe8.png)

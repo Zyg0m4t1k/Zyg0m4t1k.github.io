@@ -1,0 +1,89 @@
+---
+title: SwitchBot
+description: Pilotez vos équipements SwitchBot en local via Bluetooth (sans Hub obligatoire).
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="SwitchBot"
+  description="Pilotez vos équipements SwitchBot en local via Bluetooth (sans Hub obligatoire)."
+  icon="/img/plugins/switchbot_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+:::caution PRÉREQUIS / INFORMATIONS
+- La portée des sondes est limitée : le plugin peut ne pas récupérer les informations (antenne potentiellement nécessaire).
+- Cohabitation avec le plugin **BLEA** : le scan peut poser souci. Il faut arrêter le démon BLEA le temps du scan.
+- Le retour d’état est spécifique à Jeedom via les commandes on/off (ne fonctionne pas si utilisation via l’app officielle).
+:::
+
+## Description
+
+- Plugin permettant de piloter les équipements **SwitchBot** (actionneurs, sondes…)
+- Utilisation d'une **clé Bluetooth** obligatoire
+- Ne nécessite pas le Hub pour fonctionner
+
+---
+
+## Installation
+
+1. Installer le plugin SwitchBot depuis le Market
+2. Activer le plugin
+3. Renseigner les champs de configuration
+
+---
+
+## Configuration générale
+
+![Configuration](/img/plugins/switchbot/configuration.png)
+
+- Lancer l’installation des dépendances
+- Si vous n’utilisez pas le plugin localement (antennes), cocher la case **Aucun**
+- Aller ensuite dans **Plugins → Objets connectés → SwitchBot**
+
+![Desktop](/img/plugins/switchbot/desktop1.png)
+
+Vous pouvez :
+
+- ajouter des équipements
+- ajouter des antennes
+- lancer la synchronisation
+
+---
+
+## Les antennes
+
+- Ajouter une antenne et l’activer
+- Aller dans l’onglet **Commandes**
+
+![Remote](/img/plugins/switchbot/remote.png)
+
+- Configurer les informations selon vos paramètres de connexion
+
+:::caution IMPORTANT
+Le device doit absolument avoir la syntaxe **hci...** sinon le plugin ne renverra pas les informations.
+:::
+
+---
+
+## Ajouter des équipements
+
+![Ajouter](/img/plugins/switchbot/desktop2.png)
+
+Après synchronisation, les équipements détectés peuvent être ajoutés.
+
+---
+
+## Commandes / Actions
+
+![Commandes](/img/plugins/switchbot/commande_act.png)
+
+Selon l’équipement, vous aurez :
+
+- commandes d’état
+- commandes d’action (on/off, toggle, etc.)
+- capteurs (température, humidité, batterie…)
+
+![Sens](/img/plugins/switchbot/commande_sens.png)

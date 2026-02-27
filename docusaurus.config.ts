@@ -37,7 +37,11 @@ const config: Config = {
           editUrl: 'https://github.com/Zyg0m4t1k/Zyg0m4t1k.github.io/tree/master/',
         },
         blog: false,
-        theme: { customCss: './src/css/custom.css' },
+		  theme: {
+			customCss: require.resolve('./src/css/custom.css'),
+		  },		
+		
+      
       } satisfies Preset.Options,
     ],
   ],

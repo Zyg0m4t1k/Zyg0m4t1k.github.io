@@ -1,0 +1,126 @@
+---
+title: Todo List
+description: Créez et gérez des listes de tâches (todo) dans Jeedom, avec widgets Dashboard & Mobile.
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  title="Todo List"
+  description="Créez et gérez des listes de tâches (todo) dans Jeedom, avec widgets Dashboard & Mobile."
+  icon="/img/plugins/todo_icon.png"
+  badges={["Jeedom 4.5+", "Stable"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+Le plugin **Todo List** permet de créer et gérer des listes de tâches (todo), d’actions ou de courses dans Jeedom.  
+Il est volontairement simple : vous créez des **équipements** (une liste) et vous y ajoutez des **éléments** (les tâches), puis vous les pilotez depuis le dashboard, le mobile ou des scénarios.
+
+![Aperçu plugin](/img/plugins/todo/viewplug.png)
+
+---
+
+# ✅ Points clés
+
+- ✅ Créer plusieurs listes (courses, ménage, routine, etc.)
+- ✅ Ajouter/retirer des tâches très rapidement
+- ✅ Widgets **Dashboard** et **Mobile**
+- ✅ Commandes pratiques pour scénarios (rafraîchir la liste, etc.)
+
+---
+
+# 🔧 Prérequis
+
+- Jeedom **4.5+** (plugin déclaré compatible à partir de Jeedom 4.5)  
+- Aucun prérequis matériel spécifique
+- Pas de dépendances à installer
+
+---
+
+# 📦 Installation
+
+1. Installer le plugin depuis le **Market** (ou via ZIP)
+2. Activer le plugin
+3. Aucune configuration globale n’est requise
+
+---
+
+# ⚙️ Première utilisation
+
+## 1️⃣ Créer une liste (équipement)
+
+1. Aller dans **Plugins → Organisation → Todo List**
+2. Cliquer sur **+** pour créer un équipement
+3. Donner un nom (ex. *Courses*)
+4. Sauvegarder
+
+![Créer une liste](/img/plugins/todo/todo1.png)
+
+## 2️⃣ Ajouter des tâches
+
+Dans l’équipement, onglet **Tâches** :
+
+- saisir une tâche puis valider
+- ou réutiliser une tâche existante (autocomplete)
+
+![Ajouter des tâches](/img/plugins/todo/todo3.png)
+
+> Astuce : une tâche peut être “réutilisée” dans la liste sans la recréer.
+
+---
+
+# 🧩 Widgets
+
+## 🖥️ Dashboard (Jeedom v4/v5)
+
+![Widget Dashboard](/img/plugins/todo/viewdash4.png)
+
+Fonctionnement général :
+
+1. Ajouter une tâche via l’input puis cliquer sur **Add**
+2. **Refresh** reconstruit la liste (sans supprimer les éléments)
+3. Cocher une tâche la retire de la liste
+4. **Remove** supprime l’élément de l’équipement (définitif)
+5. Le **crayon** ouvre une modale de configuration de l’élément
+6. L’icône **info** indique l’état / délai selon la configuration
+
+![Modale élément](/img/plugins/todo/modal.png)
+
+## 📱 Vue mobile
+
+![Widget Mobile](/img/plugins/todo/viewmobile.png)
+
+> IMPORTANT : la taille/affichage côté mobile dépend de la taille configurée sur le dashboard.
+
+---
+
+# ⏱️ Dates & statuts
+
+Le plugin permet d’associer des dates / statuts (délais) aux tâches, afin d’avoir un indicateur visuel (à temps, en retard, etc.).
+
+![Configuration délais](/img/plugins/todo/config.png)
+
+*(Si vous voulez, vous pourrez remplacer cette capture par la vôtre, plus actuelle.)*
+
+---
+
+# 🤖 Commandes & scénarios
+
+Chaque équipement expose des commandes utiles :
+
+- **list** : liste (info)
+- **new** : créer/ajouter (action)
+- **refresh** : rafraîchir/reconstruire la liste (action)
+- **removeall** : tout retirer de la liste (action)
+- **cost / globalcost** : infos liées aux coûts (si vous utilisez la fonctionnalité “courses”)
+
+Vous pouvez donc, par exemple, déclencher un **refresh** depuis un scénario, ou vider la liste après validation.
+
+![Exemple dashboard](/img/plugins/todo/todo2.png)
+
+---
+
+# 🔗 Liens utiles
+
+- Documentation : `/docs/plugins/todo/`
+- Changelog : `/docs/plugins/todo/changelog`
+- GitHub : voir le lien du plugin sur la card du site

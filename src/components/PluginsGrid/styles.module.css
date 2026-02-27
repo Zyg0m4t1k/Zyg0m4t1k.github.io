@@ -12,6 +12,10 @@
   text-decoration: none;
   background: var(--ifm-background-surface-color);
   transition: transform 120ms ease, border-color 120ms ease;
+
+  /* ✅ important pour avoir header / desc / badges-bas */
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -27,26 +31,23 @@
   margin-bottom: 0.5rem;
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  flex: 0 0 auto;
+}
+
 .title {
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--ifm-font-color-base);
-}
-
-.badges {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.badge {
-  font-size: 0.75rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 999px;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  color: var(--ifm-font-color-base);
-  opacity: 0.9;
 }
 
 .desc {
@@ -60,21 +61,48 @@
   color: var(--ifm-color-primary);
 }
 
+/* =========================
+   Status badge (haut droite)
+========================= */
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* =========================
+   Badges techniques (bas droite)
+========================= */
+.bottomBadges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  /* ✅ pousse les badges vers le bas si la carte grandit */
+  margin-top: auto;
+
+  /* petit spacing avec le texte */
+  padding-top: 0.25rem;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ifm-font-color-base);
+}
+
+/* Responsive */
 @media (max-width: 996px) {
   .card {
     grid-column: span 12;
   }
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  flex: 0 0 auto;
 }

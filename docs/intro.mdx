@@ -1,0 +1,90 @@
+---
+sidebar_position: 1
+title: Introduction
+description: Le hub clair et rapide pour installer, configurer et dépanner mes plugins Jeedom.
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+/* 
+  🧭 Cette page sert de point d’entrée.
+  Objectif : expliquer en 30 secondes ce qu’on trouve sur le site + comment démarrer.
+*/
+
+<PluginHero
+  title="Documentation — Plugins Jeedom"
+  description="Un hub simple et efficace : installation, configuration, bonnes pratiques et dépannage pour mes plugins Jeedom."
+  badges={["Jeedom 4.4+", "Debian (Trixie)", "Docs uniformisées"]}
+  githubUrl="https://github.com/Zyg0m4t1k/"
+/>
+
+---
+
+## 👋 Bienvenue
+
+Ici tu trouveras la documentation de **mes plugins Jeedom** : des pages courtes, structurées, et orientées “résultat”.
+Le but : aller vite, éviter les pièges classiques, et avoir un endroit unique où tout est à jour.
+
+---
+
+## ✅ Ce que tu trouveras sur ce site
+
+- **Guides d’installation** : prérequis, dépendances, permissions, venv (quand nécessaire)
+- **Configuration pas à pas** : écrans Jeedom + exemples concrets
+- **Commandes & scénarios** : comment exploiter le plugin dans la vraie vie
+- **Dépannage** : erreurs fréquentes, quoi vérifier en priorité, où regarder
+- **Compatibilité** : Jeedom / OS / PHP min, migrations, notes importantes
+
+{/* 
+  💡 Astuce : la doc est pensée “plugin par plugin”.
+  Chaque plugin a sa page principale + son changelog, et (quand utile) des captures d’écran.
+*/}
+
+---
+
+## 🚀 Démarrer en 2 minutes
+
+### 1) Choisir ton plugin
+Dans le menu **Plugins** (à gauche), ouvre la page du plugin qui t’intéresse.
+
+👉 Tu verras en haut un **Hero** avec les boutons utiles :
+- accès direct aux liens (GitHub, etc.)
+- accès au **Changelog** du plugin
+
+### 2) Installer puis configurer
+Suis l’ordre des sections :
+1. Installation
+2. Configuration
+3. Fonctionnement / cas d’usage
+
+### 3) En cas de problème : logs d’abord
+Avant de chercher plus loin, récupère dans Jeedom :
+- **Log du plugin**
+- **http.error** (si souci UI / AJAX)
+- **daemon** (si le plugin utilise un service Python)
+
+---
+
+## 🧩 Bonnes pratiques (rapides)
+
+- Toujours vérifier la **version Jeedom** et la **version du plugin**
+- Après un update, faire un **redémarrage du démon** (si applicable)
+- Si un équipement “ne bouge pas”, vérifier que les **commandes** remontent bien et que les **dépendances** sont OK
+
+---
+
+## 🐞 Remonter un bug / demander une amélioration
+
+Pour gagner du temps (et éviter les aller-retours), merci d’indiquer :
+
+- Version **Jeedom** + **OS**
+- Version du **plugin** (et branche : stable/beta/dev)
+- Extrait de log (sans infos sensibles)
+- Étapes pour reproduire + ce que tu attends
+
+---
+
+## ❤️ Soutenir
+
+Si ce site et ces plugins t’aident au quotidien, tu peux soutenir le développement via le bouton de soutien présent dans les pages (Hero).
+Merci 🙏

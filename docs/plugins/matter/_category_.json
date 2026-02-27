@@ -1,0 +1,8 @@
+{
+  "label": "Matter",
+  "position": 1,
+  "link": {
+    "type": "doc",
+    "id": "plugins/matter/index"
+  }
+}
