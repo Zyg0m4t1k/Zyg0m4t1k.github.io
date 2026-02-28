@@ -29,7 +29,7 @@ const plugins: PluginItem[] = [
     "name": "iOSCloud",
     "description": "Intégration iCloud / Find My : synchronisation des appareils, localisation, état batterie et automatisations Jeedom.",
     "icon": "ioscloud_icon.png",
-    "status": "dev",
+    "status": "beta",
     "routes": {
       "page": "/docs/plugins/ioscloud/"
     },
@@ -43,7 +43,7 @@ const plugins: PluginItem[] = [
     "name": "ICS",
     "description": "Calendriers ICS avancés : déclencheurs, regex, filtrage d’événements et automatisations basées sur le temps.",
     "icon": "ics_icon.png",
-    "status": "dev",
+    "status": "beta",
     "routes": {
       "page": "/docs/plugins/ics/"
     },

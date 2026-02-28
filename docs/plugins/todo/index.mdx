@@ -1,126 +1,190 @@
 ---
-title: Todo List
-description: Créez et gérez des listes de tâches (todo) dans Jeedom, avec widgets Dashboard & Mobile.
+title: Plugin Todo
+description: Créez des listes de tâches simples (notes, dates, coûts) et utilisez-les dans Jeedom.
 ---
 
 import PluginHero from '@site/src/components/PluginHero';
 
 <PluginHero
-  title="Todo List"
-  description="Créez et gérez des listes de tâches (todo) dans Jeedom, avec widgets Dashboard & Mobile."
-  icon="/img/plugins/todo_icon.png"
-  badges={["Jeedom 4.5+", "Stable"]}
-  githubUrl="https://github.com/Zyg0m4t1k/"
+  title="Plugin Todo"
+  description="Créez des listes de tâches simples avec notes, dates et suivi de budget. Compatible scénarios Jeedom."
+  image="/img/plugins/todo/todo_icon.png"
+  badges={["Jeedom 4.4+", "Debian 11+", "PHP 7+"]}
 />
-Le plugin **Todo List** permet de créer et gérer des listes de tâches (todo), d’actions ou de courses dans Jeedom.  
-Il est volontairement simple : vous créez des **équipements** (une liste) et vous y ajoutez des **éléments** (les tâches), puis vous les pilotez depuis le dashboard, le mobile ou des scénarios.
-
-![Aperçu plugin](/img/plugins/todo/viewplug.png)
 
 ---
 
-# ✅ Points clés
+# Plugin Todo
 
-- ✅ Créer plusieurs listes (courses, ménage, routine, etc.)
-- ✅ Ajouter/retirer des tâches très rapidement
-- ✅ Widgets **Dashboard** et **Mobile**
-- ✅ Commandes pratiques pour scénarios (rafraîchir la liste, etc.)
+Le plugin **Todo** permet de créer des **listes de tâches** dans Jeedom.
 
----
-
-# 🔧 Prérequis
-
-- Jeedom **4.5+** (plugin déclaré compatible à partir de Jeedom 4.5)  
-- Aucun prérequis matériel spécifique
-- Pas de dépendances à installer
+Chaque **liste** apparaît comme un widget sur le Dashboard, avec :
+- ajout rapide d’une tâche
+- case à cocher pour “terminé”
+- une fenêtre “Infos” (note, date, coûts)
 
 ---
 
-# 📦 Installation
+# ✅ À quoi ça sert ?
 
-1. Installer le plugin depuis le **Market** (ou via ZIP)
-2. Activer le plugin
-3. Aucune configuration globale n’est requise
-
----
-
-# ⚙️ Première utilisation
-
-## 1️⃣ Créer une liste (équipement)
-
-1. Aller dans **Plugins → Organisation → Todo List**
-2. Cliquer sur **+** pour créer un équipement
-3. Donner un nom (ex. *Courses*)
-4. Sauvegarder
-
-![Créer une liste](/img/plugins/todo/todo1.png)
-
-## 2️⃣ Ajouter des tâches
-
-Dans l’équipement, onglet **Tâches** :
-
-- saisir une tâche puis valider
-- ou réutiliser une tâche existante (autocomplete)
-
-![Ajouter des tâches](/img/plugins/todo/todo3.png)
-
-> Astuce : une tâche peut être “réutilisée” dans la liste sans la recréer.
+Exemples très concrets :
+- “Courses” : lait, pain, piles…
+- “Maison” : changer filtre, sortir poubelles…
+- “Travaux” : acheter peinture + suivre le budget
+- “Rappels” : renouveler un document, appeler quelqu’un…
 
 ---
 
-# 🧩 Widgets
+# 🔧 Prérequis (simple)
 
-## 🖥️ Dashboard (Jeedom v4/v5)
+- Jeedom **4.5 minimum**
+- Debian **11 minimum**
+- PHP : Jeedom 4.5 fonctionne avec **PHP 8**
 
-![Widget Dashboard](/img/plugins/todo/viewdash4.png)
-
-Fonctionnement général :
-
-1. Ajouter une tâche via l’input puis cliquer sur **Add**
-2. **Refresh** reconstruit la liste (sans supprimer les éléments)
-3. Cocher une tâche la retire de la liste
-4. **Remove** supprime l’élément de l’équipement (définitif)
-5. Le **crayon** ouvre une modale de configuration de l’élément
-6. L’icône **info** indique l’état / délai selon la configuration
-
-![Modale élément](/img/plugins/todo/modal.png)
-
-## 📱 Vue mobile
-
-![Widget Mobile](/img/plugins/todo/viewmobile.png)
-
-> IMPORTANT : la taille/affichage côté mobile dépend de la taille configurée sur le dashboard.
+> Le plugin ne demande pas de dépendances à installer : vous pouvez l’utiliser tout de suite.
 
 ---
 
-# ⏱️ Dates & statuts
+# 🚀 Installation
 
-Le plugin permet d’associer des dates / statuts (délais) aux tâches, afin d’avoir un indicateur visuel (à temps, en retard, etc.).
-
-![Configuration délais](/img/plugins/todo/config.png)
-
-*(Si vous voulez, vous pourrez remplacer cette capture par la vôtre, plus actuelle.)*
-
----
-
-# 🤖 Commandes & scénarios
-
-Chaque équipement expose des commandes utiles :
-
-- **list** : liste (info)
-- **new** : créer/ajouter (action)
-- **refresh** : rafraîchir/reconstruire la liste (action)
-- **removeall** : tout retirer de la liste (action)
-- **cost / globalcost** : infos liées aux coûts (si vous utilisez la fonctionnalité “courses”)
-
-Vous pouvez donc, par exemple, déclencher un **refresh** depuis un scénario, ou vider la liste après validation.
-
-![Exemple dashboard](/img/plugins/todo/todo2.png)
+## 1) Installation depuis le Market
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Todo**
+3. Cliquez sur **Installer**
+4. Activez le plugin
 
 ---
 
-# 🔗 Liens utiles
+# ➕ Créer une liste de tâches
 
-- Documentation : `/docs/plugins/todo/`
-- Changelog : `/docs/plugins/todo/changelog`
-- GitHub : voir le lien du plugin sur la card du site
+1. Allez dans **Plugins → Organisation → Todo**
+2. Cliquez sur **Ajouter**
+3. Donnez un nom à votre liste (ex: “Courses”)
+4. Sauvegardez
+
+![Créer une liste](/img/plugins/todo/create_list.png)
+
+✅ Une “liste” = un équipement Jeedom.
+
+---
+
+# 🧾 Ajouter et gérer des tâches (le widget)
+
+Une fois la liste créée, vous pouvez l’afficher sur votre Dashboard.
+
+## Ajouter une tâche
+- Tapez le texte dans le champ
+- Cliquez sur le bouton valider à droite du champs
+
+![Widget Todo](/img/plugins/todo/widget_add.png)
+
+## Terminer une tâche
+- Cochez la case ✅  
+➡️ La tâche est considérée comme faite et disparaît de la liste active.
+
+## Supprimer une tâche
+- Cliquez sur l’icône supprimer
+
+---
+
+# 📝 Fenêtre “Infos” d’une tâche (note, date, coûts)
+
+Sur chaque tâche, vous avez une icône “note”.  
+Elle ouvre une fenêtre avec plusieurs informations.
+
+![Ouvrir les infos](/img/plugins/todo/modal_open.png)
+
+## 1) Note (texte libre)
+Vous pouvez écrire une note pour vous souvenir d’un détail :
+- référence produit
+- explication
+- lien
+- rappel important
+
+## 2) Date (échéance)
+
+Vous pouvez choisir une date (ex: “à faire avant samedi”).
+
+L’icône change de couleur :
+- Vert : date future
+- Orange : aujourd’hui
+- Rouge : date dépassée
+
+
+## 3) Gestion des coûts (budget)
+
+La fenêtre permet aussi de suivre un budget :
+- Devise (CHF / € / autre)
+- Prix unitaire
+- Quantité
+- Lignes d’achat détaillées
+- Calcul automatique du total
+
+Exemple :
+- Devise : CHF
+- Quantité : 2
+- Prix : 12.50  
+➡️ Total = 25.00 CHF
+
+---
+
+# ⚙️ Réglages de la liste
+
+Dans une liste, vous retrouvez :
+- Nom
+- Objet (pièce)
+- Activer
+- Visible
+
+---
+
+# 📌 Commandes disponibles (pour scénarios)
+
+Chaque liste possède des commandes utilisables dans les scénarios.
+
+## Les principales
+
+- **New todo** (Action) → Ajouter une tâche automatiquement
+- **Liste** (Info) → Contenu complet de la liste
+- **Refresh** (Action) → Rafraîchir
+- **Remove all** (Action) → Supprimer toutes les tâches
+- **Coût** (Info) → Total simple
+- **Coût global** (Info) → Total détaillé
+
+---
+
+# 💡 Tips & idées d’utilisation
+
+## ✔ Ajouter une tâche automatiquement
+
+Exemple : fin de machine à laver → créer “Étendre le linge”.
+
+Dans un scénario :
+Action → New todo  
+Message → Étendre le linge
+
+---
+
+## ✔ Envoyer la liste par notification
+
+Utiliser la commande **Liste**  
+Exemple :
+“Liste Courses : #commande Liste#”
+
+---
+
+## ✔ Surveiller un budget
+
+Utiliser **Coût global**  
+Créer un scénario :
+Si coût global > 500 CHF → envoyer une alerte.
+
+---
+
+# ✅ Conclusion
+
+Le plugin Todo reste simple :
+- Créer une liste
+- Ajouter des tâches
+- Ajouter des notes / dates / coûts
+- Automatiser avec des scénarios
