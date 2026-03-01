@@ -1,168 +1,294 @@
 ---
-title: iOSCloud
-description: Récupérez la localisation iCloud, l’état des devices, et déclenchez des actions (son, message).
+title: Plugin iOSCloud
+description: Localisation iCloud, gestion de présence et actions sur vos appareils Apple.
 ---
 
 import PluginHero from '@site/src/components/PluginHero';
 
+
 <PluginHero
-  title="iOSCloud"
-  description="Récupérez la localisation iCloud, l’état des devices, et déclenchez des actions (son, message)."
+  title="Plugin iOSCloud"
+  description="Localisation iCloud, gestion de présence et actions sur vos appareils Apple."
   icon="/img/plugins/ioscloud_icon.png"
-  badges={["Jeedom 4.5+", "Stable"]}
-  githubUrl="https://github.com/Zyg0m4t1k/"
+  badges={["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x","python"]}
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
 
-Ce document décrit le plugin **iOSCloud** : configuration, comptes, équipements et commandes.
+Ce document décrit le plugin **iOSCloud** : configuration, authentification, équipements, présence et scénarios.
 
 **Accès rapide :**
-- [Configuration](#configuration)
-- [Les comptes](#les-comptes)
-- [Les devices](#les-devices)
-- [Commandes](#les-commandes-des-devices)
-- [Widgets](#les-widgets)
-- [FAQ](#faq)
+
+- [Présentation](#présentation)
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Procédure d’authentification](#procédure-complète-dauthentification-important)
+- [Types d’équipements](#types-déquipements)
+- [Paramètres importants](#paramètres-importants)
+- [Utilisation en scénario](#utilisation-en-scénario)
+- [Conseils pratiques](#conseils-pratiques)
 
 ---
 
-## Description
+# Présentation
 
-Ce plugin permet de récupérer les devices d’un compte iCloud et :
+Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud** afin de :
 
-- récupérer la **localisation**
-- émettre un **son** (Play sound)
-- envoyer un **message** d’alerte
-- suivre des **distances** entre un device et une référence
+- récupérer la **localisation** de vos appareils Apple (iPhone, iPad…)
+- calculer automatiquement une **présence** (à la maison / absent)
+- déclencher des actions comme **faire sonner un appareil** ou **envoyer un message**
 
-:::caution IMPORTANT
-Attention : le plugin ne semble pas compatible avec le plugin **Geoloc iOS**.
-:::
+> Objectif : automatiser simplement votre présence et vos appareils Apple dans Jeedom.
 
----
-
-## Configuration
-
-Dans la configuration du plugin :
-
-1. Activer le plugin
-2. Aller dans **Plugins → Communication → iOS iCloud**
-3. Configurer vos comptes
+<!-- SCREEN À AJOUTER : vue d’ensemble du plugin -->
 
 ---
 
-## Les comptes
+# Prérequis
 
-Pour commencer, cliquer sur **Ajouter un compte**.
+## Configuration minimum
 
-![Compte](/img/plugins/ioscloud/cloud1.png)
-
-Remplissez les champs, activez le cron, puis sauvegardez : vos devices devraient apparaître.
-
-### Les commandes des comptes
-
-![Commandes compte](/img/plugins/ioscloud/cloud3.png)
-
-- **Active** : active le rafraîchissement des infos
-- **Inactive** : inactive le rafraîchissement des infos
-- **State** : renvoie l’état du compte
-- **Refresh** : lance un rafraîchissement immédiat
-- **cron1/cron5/cron15/cron30/cron60** : fréquence de rafraîchissement
-- **cronMiDay** : toutes les 12 heures (minuit, midi)
-- **cronDay** : tous les jours (5h)
-- **getcron** : renvoie le cron actuel
+- Jeedom **4.4 minimum**
+- Debian **10 minimum** (Debian 11 recommandé)
+- PHP **7.4 minimum**
+- Un compte **Apple iCloud**
+- Un appareil Apple de confiance (pour recevoir le code de sécurité)
 
 ---
 
-## Les devices
+# Installation
 
-![Devices](/img/plugins/ioscloud/cloud2.png)
+## 1️⃣ Installer le plugin
 
-Différentes infos sont récupérées.
+1. Jeedom → **Plugins**
+2. **Market**
+3. Rechercher **iOSCloud**
+4. Installer puis activer
 
-:::caution IMPORTANT
-Tu peux paramétrer la précision de la localisation.
-Sur la capture, **70** correspond à une bonne précision (tu peux descendre jusqu’à **30** pour plus précis).
-
-La récupération des informations se fait selon le cron choisi :
-si la précision récupérée est supérieure à la valeur souhaitée, la localisation ne sera pas mise à jour avant le prochain cron.
-Très efficace pour une gestion de présence “à domicile”, moins pour une localisation très fine en temps réel.
-:::
-
-:::note NOTE
-Si tu veux mettre à jour une commande d’un autre plugin (Geolocalisation, Geotrav), sélectionne une commande.
-Sinon, ne remplis pas ce champ.
-:::
-
-### Les commandes des devices
-
-![Commandes device](/img/plugins/ioscloud/cloud7.png)
-
-- **localisation** : localisation du device
-- **Message** : envoyer un message
-- **Play sound** : lancer une alerte sonore sur le device
-- **Battery** : niveau de batterie
-- **State** : renvoie l’état du device (0 si pas d’info, sinon 1)
-- **Timestamp** : timestamp de la dernière synchronisation
+<!-- SCREEN À AJOUTER : installation Market -->
 
 ---
 
-## Les équipements à position fixe
+## 2️⃣ Installer les dépendances
 
-![Position fixe](/img/plugins/ioscloud/cloud4.png)
+Dans la page du plugin :
 
-Dans le champ **Coordonnées**, mettre la latitude et la longitude séparées d’une virgule.
+Cliquez sur **(Ré)installer les dépendances**
 
----
+Le plugin utilise un module Python interne pour dialoguer avec iCloud.  
+Jeedom installe automatiquement ce qu’il faut.
 
-## Gestion des distances
+Attendez que l’état passe à **OK**.
 
-Cliquer sur le **+** de Distance :
-
-![Distances](/img/plugins/ioscloud/cloud5.png)
-
-- **Référence de la distance** : équipement de référence
-- **Distance** : en mètres
-- **Équipement à rechercher** : équipement surveillé (1 seul)
-
-:::caution IMPORTANT
-La distance se met à jour selon la fréquence de rafraîchissement du compte du device recherché.
-Une fois sauvegardé, cela crée des commandes utilisables dans les scénarios.
-:::
-
-![Commandes distances](/img/plugins/ioscloud/cloud6.png)
+<!-- SCREEN À AJOUTER : dépendances OK -->
 
 ---
 
-## Les Widgets
+# Procédure complète d’authentification (IMPORTANT)
 
-### Devices
+La connexion à iCloud nécessite une **double authentification (2FA)**.
 
-![Widgets devices](/img/plugins/ioscloud/cloud8.png)
-
-:::caution IMPORTANT
-Tu peux changer l’ordre des commandes dans la configuration de l’équipement et assigner un widget à chaque commande
-(sauf **localisation**).
-
-Pour la commande **localisation**, c’est le plugin qui crée le widget.
-:::
-
-- Aller dans la configuration avancée de chaque commande (hors localisation) pour associer un widget
-- Exemple : widget **CircleBattery** sur la commande batterie et widget **Presence_homme_2** sur la commande état
-
-:::note NOTE
-Si tu n’as pas les widgets : les télécharger sur le Market via le plugin **Widget**.
-:::
-
-### Distances
-
-![Widgets distances](/img/plugins/ioscloud/cloud9.png)
-
-### Panel desktop
-
-Une fois activé, tous les devices apparaîtront dans le panel (utile avec le plugin **Clink** par exemple).
+Apple envoie un **code de sécurité temporaire** sur vos appareils Apple.
 
 ---
 
-## FAQ
+## Étape 1 — Configurer le compte iCloud
 
-- _À compléter_
+Créer un équipement de type **Compte iCloud (cloud)**.
+
+Dans sa configuration :
+
+- Adresse iCloud (email Apple)
+- Mot de passe iCloud
+
+Sauvegarder.
+
+---
+
+## Étape 2 — Lancer l’authentification
+
+Dans l’équipement :
+
+Cliquer sur **Authentification**
+
+Le plugin tente la connexion.
+
+---
+
+## Étape 3 — Réception du code Apple
+
+Si Apple demande un code :
+
+- Vous recevez un code sur votre iPhone / iPad
+- Un champ "code" apparaît dans le plugin
+
+Entrer le code reçu.
+
+Cliquer sur **Envoyer code**
+
+---
+
+## Étape 4 — Validation
+
+Le plugin affiche la progression :
+
+- Connexion
+- Code demandé
+- Code envoyé
+- Code validé
+- Synchronisation des appareils
+
+Quand la validation est terminée :
+
+✅ Les appareils sont récupérés automatiquement  
+✅ Les équipements "devices" sont créés ou mis à jour
+
+---
+
+## Cas normaux (ne pas s’inquiéter)
+
+- Apple peut redemander un code après quelques jours
+- Si le code expire → recommencer
+- Si mot de passe incorrect → connexion refusée
+
+> Éviter de lancer l’authentification trop souvent.
+
+<!-- SCREEN À AJOUTER : écran authentification + champ code -->
+
+---
+
+# Types d’équipements
+
+Le plugin crée plusieurs types d’équipements :
+
+---
+
+## ☁️ Compte iCloud (cloud)
+
+Équipement principal.
+
+Contient :
+
+- Identifiants iCloud
+- Bouton Authentification
+- Gestion du rafraîchissement
+- Paramètres cron
+
+---
+
+## 📱 Appareil iCloud (devices)
+
+Un équipement par appareil Apple.
+
+Commandes disponibles :
+
+- Localisation
+- Batterie
+- Timestamp
+- State
+- Play sound
+- Message
+
+<!-- SCREEN À AJOUTER : page équipement device -->
+
+---
+
+## 📍 Position fixe (fixed)
+
+Permet de définir un point GPS manuel (ex : Maison).
+
+Format obligatoire :
+
+latitude,longitude
+
+Exemple :
+
+46.2044,6.1432
+
+---
+
+## 📏 Distance / Présence (geofence_dist)
+
+Calcule :
+
+- Distance entre un point fixe et un appareil
+- Présence (0 ou 1) selon un rayon défini
+
+Paramètres :
+
+- Position de référence
+- Rayon (ex : 300 mètres)
+- Appareils surveillés
+
+<!-- SCREEN À AJOUTER : configuration geofence -->
+
+---
+
+# Paramètres importants
+
+## Rafraîchissement
+
+Ne pas mettre une fréquence trop courte.  
+Recommandé : toutes les 5 minutes.
+
+---
+
+## Délai état
+
+Temps avant que l’état repasse à 0 si aucune mise à jour.  
+Défaut : 1 heure.
+
+---
+
+## Rayon de présence
+
+- 100 m → très strict
+- 300 m → bon compromis
+- 500 m → plus stable
+
+---
+
+# Utilisation en scénario
+
+## Exemple — Retour à la maison
+
+Condition :
+
+`#[iOSCloud][Maison - Présence][Presence]# == 1`
+
+Actions possibles :
+
+- Allumer lumières
+- Désactiver alarme
+- Envoyer notification
+
+---
+
+## Exemple — Départ
+
+`#[iOSCloud][Maison - Présence][Presence]# == 0`
+
+---
+
+## Faire sonner un iPhone
+
+`#[iOSCloud][iPhone][Play sound]#`
+
+---
+
+## Envoyer un message
+
+`#[iOSCloud][iPhone][Message]#`
+
+---
+
+# Conseils pratiques
+
+1. Ne pas rafraîchir trop souvent
+2. Ajuster le rayon si la présence varie trop
+3. Relancer l’authentification si Apple redemande un code
+4. Pour éviter les faux départs, créer un scénario :
+   - Presence = 0
+   - Depuis plus de X minutes
+   → Activer mode absent
+
+---

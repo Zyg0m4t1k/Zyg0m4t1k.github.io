@@ -6,10 +6,47 @@ type PluginLink = { label: string; href?: string | null };
 type Props = {
   title: string;
   description?: string;
-  icon?: string; // ex: "/img/plugins/matter/matter_icon.png"
+
+  // icon: "/img/plugins/<id>/<id>_icon.png" ou "/img/plugins/<id>_icon.png" selon ta convention
+  icon?: string;
+
   badges?: string[];
-  links?: PluginLink[]; // ex: [{label:"GitHub", href:"..."}, ...]
+
+  /**
+   * Ancien système (toujours supporté).
+   * Exemple: [{label:"GitHub", href:"..."}, {label:"Market", href:"..."}]
+   */
+  links?: PluginLink[];
+
+  /**
+   * Nouveau système "de base" (optionnel).
+   * Si tu fournis ces props, PluginHero construit automatiquement les boutons.
+   * Tu peux aussi cumuler avec `links` (les doublons sont évités).
+   */
+  githubUrl?: string | null;
+  marketUrl?: string | null;
+  docsUrl?: string | null;
+  changelogUrl?: string | null;
+
+  /**
+   * Bouton PayPal (optionnel).
+   * - donateUrl: ton lien paypal.me
+   * - donateLabel: texte du bouton
+   */
+  donateUrl?: string | null;
+  donateLabel?: string;
 };
+
+function uniqLinks(links: PluginLink[]) {
+  const seen = new Set<string>();
+  return links.filter((l) => {
+    if (!l.href) return false;
+    const key = `${l.label}|${l.href}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
 export default function PluginHero({
   title,
@@ -17,8 +54,22 @@ export default function PluginHero({
   icon,
   badges = [],
   links = [],
+  githubUrl = null,
+  marketUrl = null,
+  docsUrl = null,
+  changelogUrl = null,
+  donateUrl = null,
+  donateLabel = '☕ Soutenir le développement',
 }: Props) {
-  const filteredLinks = links.filter((l) => l.href);
+  // On construit une liste de liens "standard" + liens libres
+  const baseLinks: PluginLink[] = [
+    docsUrl ? { label: 'Documentation', href: docsUrl } : null,
+    changelogUrl ? { label: 'Changelog', href: changelogUrl } : null,
+    githubUrl ? { label: 'GitHub', href: githubUrl } : null,
+    marketUrl ? { label: 'Market', href: marketUrl } : null,
+  ].filter(Boolean) as PluginLink[];
+
+  const mergedLinks = uniqLinks([...baseLinks, ...links]).filter((l) => l.href);
 
   return (
     <div
@@ -45,12 +96,14 @@ export default function PluginHero({
         <div style={{ flex: 1 }}>
           <h1 style={{ margin: 0, fontSize: '2rem' }}>{title}</h1>
           {description ? (
-            <p style={{ margin: '.35rem 0 0 0', opacity: 0.9 }}>{description}</p>
+            <p style={{ margin: '.35rem 0 0 0', opacity: 0.9 }}>
+              {description}
+            </p>
           ) : null}
         </div>
       </div>
 
-      {(badges.length > 0 || filteredLinks.length > 0) && (
+      {(badges.length > 0 || mergedLinks.length > 0 || !!donateUrl) && (
         <div
           style={{
             marginTop: '1rem',
@@ -75,9 +128,9 @@ export default function PluginHero({
             </span>
           ))}
 
-          {filteredLinks.length > 0 && (
+          {(mergedLinks.length > 0 || donateUrl) && (
             <span style={{ marginLeft: 'auto', display: 'flex', gap: '.5rem' }}>
-              {filteredLinks.map((l) => (
+              {mergedLinks.map((l) => (
                 <Link
                   key={l.label}
                   className="button button--sm button--primary"
@@ -86,6 +139,17 @@ export default function PluginHero({
                   {l.label}
                 </Link>
               ))}
+
+              {donateUrl ? (
+                <a
+                  className="button button--sm button--secondary"
+                  href={donateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {donateLabel}
+                </a>
+              ) : null}
             </span>
           )}
         </div>

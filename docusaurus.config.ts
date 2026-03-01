@@ -39,54 +39,77 @@ const config: Config = {
         blog: false,
 		  theme: {
 			customCss: require.resolve('./src/css/custom.css'),
-		  },		
+		  },
+      
+      gtag: {
+        trackingID: 'G-NH9FFB7GBH', // <-- mets ton vrai ID ici
+        anonymizeIP: true,
+      },	
+       sitemap: {
+        changefreq: 'weekly',
+        priority: 0.5,
+        filename: 'sitemap.xml',
+      },     
+      
 		
       
       } satisfies Preset.Options,
     ],
   ],
 
-  themeConfig: {
-    navbar: {
-      title: 'Zyg0m4t1k',
-      logo: { alt: 'Logo', src: 'img/logo.svg' },
-      items: [
-        { to: '/', label: 'Accueil', position: 'left' },
-        { to: '/plugins', label: 'Plugins', position: 'left' },
-        { to: '/docs/intro', label: 'Docs', position: 'left' },
-        { type: 'localeDropdown', position: 'right' },
-        {
-          href: 'https://github.com/Zyg0m4t1k',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
+
+
+themeConfig: {
+  metadata: [
+    {
+      name: 'keywords',
+      content:
+        'plugin jeedom, jeedom matter, jeedom switchbot, jeedom icloud, jeedom ics, jeedom todo, domotique',
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Plugins',
-          items: [
-            { label: 'Catalogue', to: '/plugins' },
-            { label: 'Docs', to: '/docs/intro' },
-          ],
-        },
-        {
-          title: 'Communauté',
-          items: [
-            { label: 'Jeedom', href: 'https://www.jeedom.com' },
-            { label: 'Forum Jeedom', href: 'https://community.jeedom.com' },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Zyg0m4t1k`,
-    },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-  } satisfies Preset.ThemeConfig,
+  ],
+
+  navbar: {
+    title: 'Zyg0m4t1k',
+    logo: { alt: 'Logo', src: 'img/logo.svg' },
+    items: [
+      { to: '/', label: 'Accueil', position: 'left' },
+      { to: '/plugins', label: 'Plugins', position: 'left' },
+      { to: '/docs/intro', label: 'Docs', position: 'left' },
+      { type: 'localeDropdown', position: 'right' },
+      {
+        href: 'https://github.com/Zyg0m4t1k',
+        label: 'GitHub',
+        position: 'right',
+      },
+    ],
+  },
+
+  footer: {
+    style: 'dark',
+    links: [
+      {
+        title: 'Plugins',
+        items: [
+          { label: 'Catalogue', to: '/plugins' },
+          { label: 'Docs', to: '/docs/intro' },
+        ],
+      },
+      {
+        title: 'Communauté',
+        items: [
+          { label: 'Jeedom', href: 'https://www.jeedom.com' },
+          { label: 'Forum Jeedom', href: 'https://community.jeedom.com' },
+        ],
+      },
+    ],
+    copyright: `Copyright © ${new Date().getFullYear()} Zyg0m4t1k`,
+  },
+
+  prism: {
+    theme: prismThemes.github,
+    darkTheme: prismThemes.dracula,
+  },
+} satisfies Preset.ThemeConfig,
 };
 
 export default config;

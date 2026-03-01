@@ -29,7 +29,7 @@ const plugins: PluginItem[] = [
     "name": "iOSCloud",
     "description": "Intégration iCloud / Find My : synchronisation des appareils, localisation, état batterie et automatisations Jeedom.",
     "icon": "ioscloud_icon.png",
-    "status": "beta",
+	  "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x","python"],
     "routes": {
       "page": "/docs/plugins/ioscloud/"
     },
@@ -43,7 +43,7 @@ const plugins: PluginItem[] = [
     "name": "ICS",
     "description": "Calendriers ICS avancés : déclencheurs, regex, filtrage d’événements et automatisations basées sur le temps.",
     "icon": "ics_icon.png",
-    "status": "beta",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/ics/"
     },
@@ -57,7 +57,7 @@ const plugins: PluginItem[] = [
     "name": "SwitchBot",
     "description": "Intégration SwitchBot via API : états, commandes, synchronisation automatique des équipements.",
     "icon": "switchbot_icon.png",
-    "status": "dev",
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"],
     "routes": {
       "page": "/docs/plugins/switchbot/"
     },
@@ -71,8 +71,8 @@ const plugins: PluginItem[] = [
     "name": "Groupe",
     "description": "Plugin permettant la création d'un widget avec l'état d'un groupe",
     "icon": "groupe_icon.png",
-    "status": "stable",
-	"badges": ["php7.2", "jeedom4.5"],
+    
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/groupe/"
     },
@@ -86,8 +86,7 @@ const plugins: PluginItem[] = [
     "name": "Todo List",
     "description": "Plugin pour créer des todolists ",
     "icon": "todo_icon.png",
-    "status": "stable",
-	"badges": ["php7.2", "jeedom4.5"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/todo/"
     },
@@ -101,8 +100,7 @@ const plugins: PluginItem[] = [
     "name": "Pont Matter",
     "description": "plugin qui permet d’intégrer et de piloter des appareils compatibles avec le standard domotique universel Matter",
     "icon": "matter_icon.png",
-    "status": "dev",
-	"badges": ["php8.2", "jeedom4.5"],
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"],
     "routes": {
       "page": "/docs/plugins/matter/"
     },
