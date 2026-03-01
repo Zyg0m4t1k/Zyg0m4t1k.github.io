@@ -39,7 +39,7 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 
 > Objectif : automatiser simplement votre présence et vos appareils Apple dans Jeedom.
 
-<!-- SCREEN À AJOUTER : vue d’ensemble du plugin -->
+
 
 ---
 
@@ -48,7 +48,8 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 ## Configuration minimum
 
 - Jeedom **4.4 minimum**
-- Debian **10 minimum** (Debian 11 recommandé)
+- Debian **11 minimum** (Debian 11
+ recommandé)
 - PHP **7.4 minimum**
 - Un compte **Apple iCloud**
 - Un appareil Apple de confiance (pour recevoir le code de sécurité)
@@ -64,8 +65,6 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 3. Rechercher **iOSCloud**
 4. Installer puis activer
 
-<!-- SCREEN À AJOUTER : installation Market -->
-
 ---
 
 ## 2️⃣ Installer les dépendances
@@ -79,7 +78,7 @@ Jeedom installe automatiquement ce qu’il faut.
 
 Attendez que l’état passe à **OK**.
 
-<!-- SCREEN À AJOUTER : dépendances OK -->
+
 
 ---
 
@@ -144,15 +143,14 @@ Quand la validation est terminée :
 
 ---
 
-## Cas normaux (ne pas s’inquiéter)
+## Nouvelle identification 
 
-- Apple peut redemander un code après quelques jours
-- Si le code expire → recommencer
+- lors d'un reboot chez moi
 - Si mot de passe incorrect → connexion refusée
 
 > Éviter de lancer l’authentification trop souvent.
 
-<!-- SCREEN À AJOUTER : écran authentification + champ code -->
+
 
 ---
 
@@ -188,7 +186,7 @@ Commandes disponibles :
 - Play sound
 - Message
 
-<!-- SCREEN À AJOUTER : page équipement device -->
+
 
 ---
 
@@ -199,10 +197,6 @@ Permet de définir un point GPS manuel (ex : Maison).
 Format obligatoire :
 
 latitude,longitude
-
-Exemple :
-
-46.2044,6.1432
 
 ---
 
@@ -218,8 +212,6 @@ Paramètres :
 - Position de référence
 - Rayon (ex : 300 mètres)
 - Appareils surveillés
-
-<!-- SCREEN À AJOUTER : configuration geofence -->
 
 ---
 
