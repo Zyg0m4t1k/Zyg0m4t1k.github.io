@@ -108,7 +108,21 @@ const plugins: PluginItem[] = [
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
     }	
-  } 
+  },
+   {
+    "id": "TaskLauncher",
+    "name": "Task Launcher",
+    "description": "Plugin permettant de créer des équipements type réveil, des horloges , des évènements et de lancer des actions,scénarios personnalisables",
+    "icon": "tasklauncher_icon.png",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/TaskLauncher/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }	
+  }  
   
 ];
 
