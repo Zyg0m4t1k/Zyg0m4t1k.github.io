@@ -41,7 +41,7 @@ const plugins: PluginItem[] = [
   {
     "id": "ics",
     "name": "ICS",
-    "description": "Calendriers ICS avancés : déclencheurs, regex, filtrage d’événements et automatisations basées sur le temps.",
+    "description": "Transformez votre agenda Google, iCloud ou CalDAV en moteur domotique pour Jeedom : déclenchez automatiquement des actions et des scénarios à partir de vos événements de calendrier.",
     "icon": "ics_icon.png",
     "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
     "routes": {
