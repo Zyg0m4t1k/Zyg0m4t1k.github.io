@@ -43,7 +43,7 @@ const plugins: PluginItem[] = [
     "name": "ICS",
     "description": "Transformez votre agenda Google, iCloud ou CalDAV en moteur domotique pour Jeedom : déclenchez automatiquement des actions et des scénarios à partir de vos événements de calendrier.",
     "icon": "ics_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/ics/"
     },
@@ -114,7 +114,7 @@ const plugins: PluginItem[] = [
     "name": "Task Launcher",
     "description": "Plugin permettant de créer des équipements type réveil, des horloges , des évènements et de lancer des actions,scénarios personnalisables",
     "icon": "tasklauncher_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/TaskLauncher/"
     },

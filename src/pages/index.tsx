@@ -18,7 +18,6 @@ export default function Home(): JSX.Element {
             </h1>
             <p style={{ fontSize: '1.1rem', opacity: 0.85, maxWidth: 820 }}>
               Vitrine, documentation et ressources autour de mes plugins Jeedom.
-              (Les textes détaillés seront ajoutés ensuite.)
             </p>
 
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>

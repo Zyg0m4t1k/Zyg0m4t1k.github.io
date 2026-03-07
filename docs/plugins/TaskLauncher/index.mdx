@@ -1,116 +1,254 @@
 ---
 title: TaskLauncher
-description: Ce plugin permet de créer des équipements qui lancent une ou plusieurs actions, des scénarios. Il est ainsi possible de créer un réveil, une horloge, un décompte à partir d'une date.
+description: Créez des réveils, horloges et événements capables de lancer automatiquement des actions ou scénarios dans Jeedom.
+sidebar_position: 1
 ---
 
 import PluginHero from '@site/src/components/PluginHero';
 
 <PluginHero
   title="TaskLauncher"
-  description="Créer des équipements qui lancent une ou plusieurs actions/scénarios (réveil, horloge, événements, décompte…)."
+  description="Créer des réveils, horloges et événements pour lancer automatiquement des actions ou scénarios dans Jeedom."
   icon="/img/plugins/tasklauncher_icon.png"
-  badges={["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"]}
+  badges={["Jeedom 4.4+", "stable", "Debian 11+", "PHP 7.4 / 8.x"]}
 />
 
-# Manuel d’utilisation — Plugin TaskLauncher
+# Plugin TaskLauncher
 
-## Description
+Le plugin **TaskLauncher** permet de créer des équipements temporels dans Jeedom pour déclencher automatiquement des **actions**, des **commandes** ou des **scénarios**.
 
-Ce plugin permet de créer des équipements qui lancent une ou plusieurs actions , des scénarios. Il est ainsi possible de créer un réveil, une horloge , un décompte à partir d'une date.
+Il permet notamment de gérer :
 
-## Installation
+- ⏰ des **réveils**
+- 🕒 des **horloges**
+- 📅 des **événements programmés**
+- ⏳ des **décomptes à partir d’une date**
 
-Comme n'importe quel plugin.
+---
 
-Après l'avoir activer ,  il faut ensuite aller dans Plugins/Organisation/Task Launcher. Puis choisir le type d'équipement désiré.
+## ✨ Vue d’ensemble
 
-## Les widgets
+TaskLauncher peut être utilisé aussi bien pour de simples rappels que pour des automatisations plus avancées.
 
-- **Le Réveil**
+Exemples d’usage :
 
-**widget par défaut**
+- lancer un scénario du matin à heure fixe
+- afficher une horloge sur un design ou un dashboard
+- programmer une action à une date précise
+- déclencher une commande avec délai ou exécution ponctuelle
 
-![clock0](/img/plugins/TaskLauncher/clock0.png)
+---
 
-**widget simple**
+## ⚙️ Installation
 
-![clock05](/img/plugins/TaskLauncher/clock05.png)
+L’installation se fait comme pour n’importe quel plugin Jeedom.
 
-**widget alternatif**
+### 1️⃣ Installation depuis le Market
 
-![task_4](/img/plugins/TaskLauncher/task_4.png)
+1. Installez le plugin depuis le Market Jeedom.
+2. Activez le plugin.
+3. Ouvrez la page du plugin dans :
 
-- **L'horloge**
+```text
+Plugins → Organisation → TaskLauncher et activer le plugin
+```
 
-**Le widget par défaut**
+### 2️⃣ Accès au plugin
 
-![clock2](/img/plugins/TaskLauncher/clock2.png)
+Une fois le plugin activé, vous pouvez créer un nouvel équipement puis choisir son type.
 
-**Le widget de l'horloge digitale**
+![type](/img/plugins/TaskLauncher/type.png)
 
-![hordigit](/img/plugins/TaskLauncher/hordigit.png)
 
-- **Les événements**
+---
 
-![event1](/img/plugins/TaskLauncher/event1.png)
+## 🧩 Types d’équipements
 
-## Utilisation
+### ⏰ Réveils
 
-### Les réveils
+Les réveils permettent de lancer une ou plusieurs actions à une heure définie, avec gestion des jours et activation manuelle.
 
-**Configuration**
+#### Widget par défaut
 
-![rev1](/img/plugins/TaskLauncher/rev1.png)
+![Widget réveil par défaut](/img/plugins/TaskLauncher/reveil.png)
 
-Simple à configurer. Il faut définir l'heure (heure/minute) à laquelle vous voulez que les actions se lancent.Ensuite définir les actions souhaitées . Possible de définir des actions en différées.
 
-:::info INFOS
-Il y a deux boutons pour définir les actions. L'un permet de choir un mot clé. L'autre de choisir une commande existante.
+#### Widget alternatif
+
+![Widget réveil alternatif](/img/plugins/TaskLauncher/reveilalt.png)
+
+### 🕒 Horloges
+
+Les horloges permettent d’afficher l’heure sur le dashboard ou dans un design.
+
+#### Widget horloge classique
+
+![Widget horloge classique](/img/plugins/TaskLauncher/flipclock.png)
+
+#### Widget horloge digitale
+
+![Widget horloge digitale](/img/plugins/TaskLauncher/digiclock.png)
+
+### 📅 Événements
+
+Les événements permettent de lancer des actions ou des scénarios à une **date précise**.
+
+![Widget événement](/img/plugins/TaskLauncher/event.png)
+<!-- Screenshot à remplacer : widget événement -->
+
+---
+
+## 🚀 Création d’un équipement
+
+Lors de l’ajout d’un nouvel équipement, vous choisissez le type souhaité : réveil, horloge ou événement.
+
+### Types disponibles
+
+- ⏰ Réveil
+- 🕒 Horloge
+- 📅 Événement
+
+Une fois créé, l’équipement apparaît dans la liste et peut être configuré selon son usage.
+
+---
+
+## 🛠 Configuration des réveils
+
+### Configuration générale
+
+La configuration d’un réveil est simple :
+
+1. définir l’heure d’exécution
+2. choisir les jours de répétition
+3. sélectionner les actions ou scénarios à lancer
+4. enregistrer puis activer le réveil si nécessaire
+
+![Configuration réveil](/img/plugins/TaskLauncher/reveilconf.png)
+
+
+### Actions différées
+
+Il est également possible de définir des **actions différées**.
+
+![Configuration actions](/img/plugins/TaskLauncher/actiondiff.png)
+
+---
+
+## 🎛 Commandes disponibles sur le widget
+
+Depuis le widget, plusieurs actions sont directement accessibles.
+
+:::tip Actions possibles
+Vous pouvez notamment :
+
+- activer ou désactiver la tâche
+- modifier l’heure d’exécution
+- modifier les actions
+- lancer immédiatement les actions
+- définir un lancement différé (enmn)
 :::
 
-**Commandes sur le widget**
+Sur le **widget alternatif**, il est aussi possible de modifier :
 
-:::tip Après il est possible:
-- De désactiver la tâche en cliquant sur le check
-- De changer l'heure d’exécution en cliquant sur le marteau
-- De changer le(s) action(s) en cliquant sur les bars
-- De lancer le(s) action(s) en direct en cliquant sur le play
-- De définir un temps de lancement en cliquant sur le cercle. Attention, les actions se lanceront automatiquement quelque soit les jours définis et le désactivera la tâche automatiquement
-- Sur le widget alternatif, possibilité de parametrer l'heure, les minutes,les jours et d'activer ou nom le reveil
+- les heures
+- les minutes
+- les jours
+- l’état d’activation du réveil
+
+:::danger Important
+Il ne faut pas activer un équipement entre l’heure différée et l’heure effective, sous peine de déclencher immédiatement les actions prévues.
 :::
 
-:::danger IMPORTANT
-Il ne faut jamais activer un équipement entre l'heure différée et l'heure effective (cela aura pour effet de lancer toutes les actions
-:::
+---
 
-**Utilisation des commandes dans les scénarios**
+## 🔗 Utilisation dans les scénarios
 
-![command](/img/plugins/TaskLauncher/command.png)
+TaskLauncher peut être utilisé dans d’autres scénarios Jeedom.
 
-:::note NOTE
-Il est possible d'activer/désactiver le réveil ou de changer l'heure d'éxécution depuis un autre scénario (Image ci-dessus)
+Il est possible par exemple de :
 
-Il faut mettre l'heure au format 0720 pour 7h20 ou 1830 pour 18h30.
-:::
+- activer un réveil
+- désactiver un réveil
+- modifier son heure d’exécution
 
-![tache6](/img/plugins/TaskLauncher/tache6.png)
+### Format de l’heure
 
-:::tip TIP
-Dans le cas suivant ,il est possible d'utiliser les fonctions incluses à jeedom. La tâche sera effectuée à #time# + rand(0,100) . Soit l'heure d’exécution du scénario + nombre aleatoire entre 0 et 100
-:::
+Le format attendu est le suivant :
 
-![tache7](/img/plugins/TaskLauncher/tache7.png)
+```text
+0720  →  07h20
+1830  →  18h30
+```
 
-### Horloge
+### Fonctions Jeedom
 
-Cela permet de créer un horloge pour afficher sur le mode design par exemple
+Vous pouvez aussi utiliser des fonctions Jeedom dans vos scénarios.
 
-![clock20](/img/plugins/TaskLauncher/clock20.png)
+```text
+#time# + rand(0,100)
+```
 
-Possibilité de choisir la taille et d'afficher ou non les secondes
+Dans cet exemple, la tâche sera exécutée à l’heure courante du scénario, plus un délai aléatoire entre 0 et 100.
 
-### Les événements
+---
 
-Avec ce type d'équipement , on peux définir une date d'éxécution pour des actions/scénarios
+## 🖥 Affichage horloge
 
-![event3](/img/plugins/TaskLauncher/event3.png)
+Le type **Horloge** permet d’ajouter une horloge visuelle sur le dashboard ou sur un design.
+
+Options disponibles :
+
+- choix de la taille
+- affichage ou non des secondes
+- style classique ou digital selon le widget utilisé
+
+---
+
+## 📆 Gestion des événements
+
+Les événements permettent de programmer une exécution à une date précise.
+
+---
+
+## 📱 Interface et widgets
+
+Selon votre configuration, les équipements peuvent être affichés sur le **dashboard**, dans un **design** ou dans une vue dédiée du plugin (mobile ou desktop).
+
+Pour les vues dédiées , vous pouvez les activer/désactiver dans la configuration générale
+
+![Configuration générale](/img/plugins/TaskLauncher/confgen.png)
+
+Pour la vue desktop
+
+![panel desktop](/img/plugins/TaskLauncher/desktoppanel.png)
+
+Pour la vue mobile
+
+![panel desktop](/img/plugins/TaskLauncher/mobilepanel.png)
+
+---
+
+## 💡 Conseils d’utilisation
+
+- vérifiez toujours l’heure configurée avant activation
+- testez vos actions avec un lancement manuel au besoin
+- utilisez les scénarios pour enrichir les automatisations
+- privilégiez des noms d’équipements explicites
+
+---
+
+## ✅ Compatibilité
+
+Le plugin est compatible avec :
+
+- **Jeedom 4.4+**
+- **Debian 11 à 13**
+- **PHP 7.4 / 8.x**
+
+---
+
+## 🎯 Conclusion
+
+TaskLauncher est un plugin pratique pour centraliser les déclenchements temporels dans Jeedom, qu’il s’agisse de réveils, d’horloges ou d’événements programmés.
+
+Avec une configuration simple et plusieurs widgets disponibles, il s’intègre facilement dans vos automatisations quotidiennes.

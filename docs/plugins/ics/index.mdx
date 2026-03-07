@@ -12,14 +12,14 @@ import PluginHero from '@site/src/components/PluginHero';
   badges={["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"]}
 />
 
-# Description
+## ✨ Description
 
 Ce plugin permet de récupérer des calendriers distants (Apple, Google, Nextcloud, CalDAV…) ou locaux.  
 Il est possible d’interagir avec ces calendriers et de lancer des actions selon les événements.
 
 ---
 
-# Configuration du plugin
+## ⚙️ Configuration du plugin
 
 Après le téléchargement du plugin, il vous suffit de l’activer et de le configurer.
 
@@ -55,8 +55,8 @@ Il faut configurer les champs pour le retour des informations avec les commandes
 ---
 
 Une fois activé, aller dans :
-Plugins → Organisation → Calendrier ICS
 
+Plugins → Organisation → Calendrier ICS
 
 ![ics1](/img/plugins/ics/ics1.png)
 
@@ -72,14 +72,13 @@ Vous pourrez alors ajouter :
 
 ---
 
-# Les calendriers
+## 📅 Les calendriers
 
-## Ajouter un calendrier (URL ICS)
+### Ajouter un calendrier (URL ICS)
 
 Créer un nouvel équipement et renseigner l’URL du calendrier.
 
 ![ICS](/img/plugins/ics/ics1.png)
-
 
 ![ics3](/img/plugins/ics/ics3.png)
 
@@ -108,7 +107,7 @@ Dans l’onglet **Commandes**, les commandes de votre calendrier apparaissent (l
 
 ---
 
-# Les évènements
+## 🧩 Les évènements
 
 :::note
 Tout l'intérêt de ce plugin réside dans la gestion des événements.
@@ -121,92 +120,33 @@ Aucune modification ne peut être effectuée.
 
 ---
 
-## Important — Événements All-day (journée entière)
+### Important — Événements All-day (journée entière)
 
 Les événements **All-day** (journée entière) ont un comportement spécifique :
 
 - **Une seule action “Début”** est exécutée, **à l’heure configurée** dans *Heure actions (All-day)* (ou **07:00** par défaut).
-- Il n’y a **pas d’action de fin** pour les All-day (même si l’événement se termine à 00:00 le lendemain).
-- Un All-day **sur plusieurs jours** ne déclenche **pas tous les jours** : l’action “Début” est exécutée **une seule fois**, au début de la période.
+- Il n’y a **pas d’action de fin** pour les All-day.
+- Un All-day **sur plusieurs jours** ne déclenche **pas tous les jours**.
 
 Pour filtrer précisément les événements (titre/description), voir : **Reconnaissance des événements**.
 
 ---
 
-:::tip
-L'avantage dans ce cas est de nommer le calendrier avec un mot clé (anniversaire, rdv, etc.) et de pouvoir être averti si cet événement a lieu aujourd'hui ou demain (voir les commandes par la suite).
-:::
-
-![ics9](/img/plugins/ics/ics9.png)
-
-Paramètres :
-
-- **Calendrier** : permet de choisir le calendrier pour lequel l’événement est actif
-- **Variable** : crée une variable si remplie, utilisable ensuite dans les scénarios / actions
-- **Exceptés Fériés** : si coché, il faut choisir un calendrier défini comme férié (voir infos sur les calendriers). Les événements ne se déclencheront pas dans ce cas.
-
----
-
-## Reconnaissance des événements
+### Reconnaissance des événements
 
 Le plugin peut matcher des événements via :
 
 - le **titre**
 - la **description**
-- des **regex** (si activé)
+- des **regex**
 
-Les **regex** sont supportées : tu peux mixer mots-clés simples et expressions régulières (format `/.../i`).
-
-### Exemples de configuration (zone de droite)
+### Exemples de configuration
 
 ![Configuration](/img/plugins/ics/config_regex.png)
 
-La zone de configuration (voir capture) permet notamment :
-
-- **Calendrier** : sélectionner la source (Google / iCloud / CalDAV…)
-- **Variable** : optionnel, pour exposer un état/valeur dans Jeedom (selon tes usages)
-- **Exceptés Fériés** : ignorer les jours fériés (si configuré)
-- **Règles RegExp** : filtrage avancé (une règle par ligne, ou regex au format `/pattern/i`)
-- **Insensible à la casse** : active automatiquement le flag `i` si tu ne fournis pas `/.../i`
-- **Inclure Description** : inclure la description dans la recherche/matching
-- **Heure actions (All-day)** : heure de déclenchement pour les événements “journée entière”
-- **Test RegExp** : tester rapidement sur titre / description
-
-
-
-### Fonctionnement des règles RegExp
-
-Les règles RegExp permettent de filtrer les événements du calendrier pour déclencher une action dans Jeedom.
-
-Le plugin analyse :
-
-• **le titre uniquement** si *Inclure Description* est désactivé  
-• **le titre + la description** si *Inclure Description* est activé  
-
-Chaque règle peut être :
-
-• **un mot simple**
-
-exemple :
-
-anniversaire
-
-• **une expression régulière**
-
-exemple :
-
-/anniv(er)?saire/i  
-/rdv.*dentiste/i
-
-Le `i` signifie que la recherche **ignore les majuscules/minuscules**.
-
-Si **plusieurs règles sont définies**, une seule correspondance suffit pour déclencher l'événement.
-
-Le bouton **Test RegExp** permet de vérifier rapidement si une règle correspond au titre ou à la description d’un événement.
-
 ---
 
-# Les widgets
+## 🧱 Les widgets
 
 :::info
 Les widgets sont des équipements virtuels qui permettent de rassembler les informations de différents calendriers.
@@ -222,7 +162,7 @@ Pour optimiser l'affichage, les widgets affichent seulement les événements sau
 
 ---
 
-# Affichage
+## 🖥 Affichage
 
 :::note
 Rendu sur le dashboard. Vue mobile OK.
@@ -232,43 +172,43 @@ Rendu sur le dashboard. Vue mobile OK.
 
 ---
 
-# Les commandes
+## 🎛 Les commandes
 
-## Calendriers
+### Calendriers
 
 ![ics11](/img/plugins/ics/ics11.png)
 
-- **Last Event** : permet de récupérer le dernier événement d’un calendrier qui a déclenché les actions
-- **Is holiday today** (pour un calendrier défini comme férié) : retourne 1 si jour férié, sinon 0
-- **Is holiday tomorrow** (pour un calendrier défini comme férié) : retourne 1 si le lendemain est férié, sinon 0
-- **Today** : récupère tous les événements de la journée (TTS, mail…)
-- **Tomorrow** : récupère tous les événements du lendemain (TTS, mail…)
-- **Next** : le prochain événement à venir
-- **Event Today** : retourne 1 si événement le jour même, sinon 0
-- **Event Tomorrow** : retourne 1 si présence d'événement le lendemain, sinon 0
-- **heure** : retourne l'heure du prochain événement
-- **titre** : retourne le titre du prochain événement
-- **date** : retourne la date du prochain événement
-- **togo** : retourne 1 si événement encore le jour même à venir, sinon 0
+- **Last Event**
+- **Is holiday today**
+- **Is holiday tomorrow**
+- **Today**
+- **Tomorrow**
+- **Next**
+- **Event Today**
+- **Event Tomorrow**
+- **heure**
+- **titre**
+- **date**
+- **togo**
 
-## Evènements
+### Evènements
 
 ![ics12](/img/plugins/ics/ics12.png)
 
-- **Today** : retourne 1 si l’événement a lieu le jour même, sinon 0
-- **Tomorrow** : retourne 1 si l’événement a lieu le lendemain, sinon 0
-- **Description** : retourne la description de l'évènement en cours si elle existe
-- **Description (Next)** : retourne la description du prochain évènement si elle existe
-- **heure** : retourne l'heure de la prochaine occurrence si elle existe
-- **titre** : retourne le titre de la prochaine occurrence si elle existe
-- **date** : retourne la date de la prochaine occurrence si elle existe
-- **Localisation** : retourne la localisation de l'évènement si elle existe
-- **Now** : retourne 1 si l'évènement est en cours, sinon 0
-- **Next** : retourne le timestamp de l'évènement s'il est à venir ou 0 (défini selon le nombre de jours sauvegardés)
+- **Today**
+- **Tomorrow**
+- **Description**
+- **Description (Next)**
+- **heure**
+- **titre**
+- **date**
+- **Localisation**
+- **Now**
+- **Next**
 
 ---
 
-# Les actions
+## ⚡ Les actions
 
 Pour les évènements, la navigation diffère avec l'onglet **Configuration** où vous pourrez définir les actions que vous souhaitez lancer :
 
@@ -278,153 +218,64 @@ Pour les évènements, la navigation diffère avec l'onglet **Configuration** o�
 
 ![ics10](/img/plugins/ics/ics10.png)
 
-:::note
-Dans l'exemple ci-dessus, les actions seront lancées 6 jours, 4 heures et 10 minutes avant le début de l'évènement.
-:::
-
-:::warning ATTENTION
-Le nombre de jours sauvegardés du calendrier associé à l'évènement doit être supérieur à ce temps.
-:::
-
 ---
 
-# Tips
+## 💡 Tips
 
-## Calendrier iOS
+### Calendrier iOS
 
 :::warning IMPORTANT
 Pour les calendriers iOS (Apple), il faut passer le calendrier en public pour pouvoir y avoir accès.
 :::
 
-Pour configurer un calendrier iOS, aller sur icloud.com et procéder ainsi :
-
 ![ics13](/img/plugins/ics/ics13.png)
-
-- Copier ensuite le lien et remplacer `webcal` par `https`
 
 ---
 
-## Calendrier Google
-
-:::warning IMPORTANT
-Pour les calendriers Google, possibilité d'utiliser le calendrier sans le rendre public.
-:::
-
-- Aller sur Google Calendar
-- À droite, lors du survol du nom du calendrier : cliquer sur les **3 points**
+### Calendrier Google
 
 ![ics18](/img/plugins/ics/ics18.png)
 
-- Puis **Paramètres et partage**
-- Puis plus bas copier le lien dans le champ **Adresse privée au format iCal**
-- Ajouter ensuite le lien dans la configuration du plugin
-
 ---
 
-## Calendrier scolaire
-
-Pour un calendrier de vacances scolaires françaises, vous pouvez utiliser le lien suivant en modifiant la lettre de votre académie (mis à jour en temps réel) :
+### Calendrier scolaire
 
 http://cache.media.education.gouv.fr/ics/Calendrier_Scolaire_Zone_B.ics
 
-Vous pourrez ensuite utiliser ce calendrier comme jours fériés.
-
 ---
 
-## Exemple calendrier Ligue 1
-
-Une adresse pour créer un agenda des matchs des différents championnats de Ligue 1 :
+### Exemple calendrier Ligue 1
 
 https://fixtur.es/fr/ligue-1
 
-Possible de télécharger les rencontres d'une équipe ou du championnat entièrement.
-
-Lien ICS :
-
-https://ics.fixtur.es/v2/league/ligue-1.ics
-
-Exemple :
-
-Je ne veux pas rater les matchs de Dijon, donc je crée un événement nommé **dijon**  
-(le plugin ne tient pas compte de la casse) que j’associe au calendrier **Ligue 1**.
-
-Pour récupérer l'intitulé complet, dans la configuration des actions de l'événement je vais utiliser la commande **Last Event** du calendrier **Ligue 1** :
-
-![ics14](/img/plugins/ics/ics14.png)
-
-Dans le message à l’heure du match cela renverra par exemple :
-
-`Dijon FCO - FC Metz`
-
-Pour savoir si un match de Dijon a lieu le lendemain ou le jour même, je vais créer un scénario qui se lance à 10h par exemple :
-
-![ics15](/img/plugins/ics/ics15.png)
-
-On peut aussi mettre en déclencheur les différentes commandes pour les utiliser dans les scénarios.
-
 ---
 
-## Utilisation des variables
-
-Je crée un événement nommé **Anniversaire** pour le calendrier **Caldav**.  
-Un événement **Anniversaire de Paul** existe dans ce calendrier.
-
-Je vais créer une variable **anniversaire** pour l'événement **Anniversaire** et enregistrer.
+### Utilisation des variables
 
 ![ics16](/img/plugins/ics/ics16.png)
 
-Ensuite dans les actions de début d'événement je donne comme valeur à la variable le nom de l'événement en utilisant la commande **Last event** du calendrier **Caldav**.  
-Il est aussi possible de donner la valeur de la description de l'événement.
-
 ![ics17](/img/plugins/ics/ics17.png)
-
-Ensuite, dans un scénario, vous pouvez récupérer cette valeur de plusieurs façons :
-
-- mettre la variable comme déclencheur
-- programmer un scénario qui retourne la variable via une interaction
 
 ---
 
-## Scénario utilisant les informations des calendriers
-
-On utilise donc les commandes des calendriers et on définit des actions selon :
-
-- l'heure du prochain événement
-- le titre
-- etc.
+### Scénario utilisant les informations des calendriers
 
 ![scenario1](/img/plugins/ics/scenario1.png)
 
-**Déclencheur** : on peut utiliser la commande **Next event** du calendrier qui se lancera lors de la mise à jour du prochain événement.
-
-**Premier bloc if** : `#[Plugins][Famille][A venir]# == 1` vérifie que l'événement a lieu le jour même.
-
-**Bloc A** : `#[Plugins][Famille][Heure]#` retourne l'heure de l'événement à venir.  
-On peut utiliser `time_op(#[Plugins][Famille][Heure]#,+20)` par exemple.
-
-**Deuxième bloc if** : `#[Plugins][Famille][Titre]# == "Boulot Zyg0"` vérifie que le titre est correct et si OK lance les actions.
-
-:::note
-C'est un exemple et c'est paramétrable à souhait.  
-Faire de même avec un scénario utilisant les informations des événements en mettant la variable de l'événement en déclencheur par exemple.
-:::
-
 ---
 
-# Support
+## 🆘 Support
 
 :::warning IMPORTANT
 En cas de problèmes, 2 solutions :
 
 - ouverture d'un ticket via Jeedom
-- ce post via community
-
-Je ne répondrai sur aucun autre post sur community car le système de tag ne fonctionne pas.
+- un post via community
 :::
 
-## Dépannage
+### Dépannage
 
 En cas de problèmes :
 
-- vérifier l’URL (accès réseau)
+- vérifier l’URL
 - activer temporairement le debug
