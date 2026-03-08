@@ -1,0 +1,8 @@
+{
+  "label": "Telecommandes",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "plugins/telco/index"
+  }
+}

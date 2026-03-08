@@ -122,8 +122,21 @@ const plugins: PluginItem[] = [
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
     }	
-  }  
-  
+  },
+   {
+    "id": "telco",
+    "name": "Telecommandes",
+    "description": "Ce plugin permet de créer des télécommandes virtuelles et d'assigner des actions (unique,message,scénario...) aux boutons.",
+    "icon": "telco_icon.png",
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/telco/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }	
+  }   
 ];
 
 export default plugins;
