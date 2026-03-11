@@ -10,80 +10,364 @@ import PluginHero from '@site/src/components/PluginHero';
   title="SwitchBot"
   description="Pilotez vos équipements SwitchBot en local via Bluetooth (sans Hub obligatoire)."
   icon="/img/plugins/switchbot_icon.png"
-  badges={["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"]}
+  badges={["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x","python"]}
 />
 
-:::caution PRÉREQUIS / INFORMATIONS
-- La portée des sondes est limitée : le plugin peut ne pas récupérer les informations (antenne potentiellement nécessaire).
-- Cohabitation avec le plugin **BLEA** : le scan peut poser souci. Il faut arrêter le démon BLEA le temps du scan.
-- Le retour d’état est spécifique à Jeedom via les commandes on/off (ne fonctionne pas si utilisation via l’app officielle).
-:::
+:::caution ⚠️ Informations importantes
 
-## Description
+📡 **Portée Bluetooth**
 
-- Plugin permettant de piloter les équipements **SwitchBot** (actionneurs, sondes…)
-- Utilisation d'une **clé Bluetooth** obligatoire
-- Ne nécessite pas le Hub pour fonctionner
+La portée BLE dépend fortement :
 
----
+- de la distance
+- des murs
+- des interférences radio
 
-## Installation
+➡️ Une **antenne Bluetooth externe** peut améliorer la réception.
 
-1. Installer le plugin SwitchBot depuis le Market
-2. Activer le plugin
-3. Renseigner les champs de configuration
+🔵 **Conflit Bluetooth**
 
----
+Si d'autres plugins utilisent le Bluetooth (BLE), des conflits peuvent apparaître lors du scan.
 
-## Configuration générale
+➡️ Il est recommandé de **stopper les démons BLE des autres plugins pendant un scan**.
 
-![Configuration](/img/plugins/switchbot/configuration.png)
+🔁 **Synchronisation d'état**
 
-- Lancer l’installation des dépendances
-- Si vous n’utilisez pas le plugin localement (antennes), cocher la case **Aucun**
-- Aller ensuite dans **Plugins → Objets connectés → SwitchBot**
+Si l’équipement est utilisé directement via l’application **SwitchBot**, l’état peut ne pas être immédiatement synchronisé avec Jeedom en mode APi unique.
 
-![Desktop](/img/plugins/switchbot/desktop1.png)
-
-Vous pouvez :
-
-- ajouter des équipements
-- ajouter des antennes
-- lancer la synchronisation
-
----
-
-## Les antennes
-
-- Ajouter une antenne et l’activer
-- Aller dans l’onglet **Commandes**
-
-![Remote](/img/plugins/switchbot/remote.png)
-
-- Configurer les informations selon vos paramètres de connexion
-
-:::caution IMPORTANT
-Le device doit absolument avoir la syntaxe **hci...** sinon le plugin ne renverra pas les informations.
 :::
 
 ---
 
-## Ajouter des équipements
+# 📦 Présentation
 
-![Ajouter](/img/plugins/switchbot/desktop2.png)
+Le plugin **SwitchBot** permet d'intégrer les équipements **SwitchBot** dans **Jeedom**.
 
-Après synchronisation, les équipements détectés peuvent être ajoutés.
+Il supporte deux méthodes de communication :
+
+- ☁️ **API Cloud SwitchBot**
+- 📡 **Bluetooth Low Energy (BLE)**
+
+Le plugin permet notamment :
+
+- création automatique des équipements
+- pilotage des appareils
+- récupération des états
+- utilisation dans les **scénarios Jeedom**
+- supervision via la **page santé**
 
 ---
 
-## Commandes / Actions
+# 🧰 Équipements supportés
 
-![Commandes](/img/plugins/switchbot/commande_act.png)
+## ☁️ Équipements via API
 
-Selon l’équipement, vous aurez :
+Ces équipements nécessitent un **Hub SwitchBot**.
 
-- commandes d’état
-- commandes d’action (on/off, toggle, etc.)
-- capteurs (température, humidité, batterie…)
+Compatibles :
 
-![Sens](/img/plugins/switchbot/commande_sens.png)
+- SwitchBot Bot
+- SwitchBot Curtain
+- SwitchBot Curtain 3
+- SwitchBot Lock
+- SwitchBot Meter
+- SwitchBot Meter Plus
+- SwitchBot Outdoor Meter
+- SwitchBot Motion Sensor
+- SwitchBot Contact Sensor
+- SwitchBot Color Bulb
+
+Fonctions :
+
+- récupération des états
+- pilotage des équipements
+- synchronisation avec le cloud SwitchBot
+
+---
+
+## 📡 Équipements via BLE
+
+Le plugin peut communiquer **directement en Bluetooth**.
+
+Compatibles :
+
+- SwitchBot Bot
+- SwitchBot Meter
+- SwitchBot Meter Plus
+- SwitchBot Motion Sensor
+- SwitchBot Contact Sensor
+- SwitchBot Curtain
+- SwitchBot Curtain 3
+
+Avantages :
+
+⚡ retour d'état quasi instantané  
+🏠 fonctionnement local  
+🚀 latence réduite  
+
+---
+
+# ⚙️ Modes de fonctionnement
+
+Le plugin propose **trois modes de communication**.
+
+| Mode | Description |
+|-----|-----|
+| ☁️ API | Toutes les communications passent par le cloud SwitchBot |
+| 📡 BLE | Communication locale via Bluetooth |
+| 🔄 Auto | Combine BLE pour les états et API pour les actions |
+
+---
+
+## ☁️ Mode API
+
+Toutes les communications passent par **l'API SwitchBot**.
+
+### Avantages
+
+✔ configuration simple  
+✔ pas besoin de Bluetooth  
+
+### Inconvénients
+
+❗ latence plus élevée  
+❗ dépendance au cloud
+
+---
+
+## 📡 Mode BLE
+
+Communication directe via Bluetooth.
+
+Un **daemon Python** gère :
+
+- le scan BLE
+- la réception des données
+- la mise à jour des états
+
+### Avantages
+
+✔ communication locale  
+✔ retour d'état rapide  
+✔ indépendance du cloud
+
+---
+
+## 🔄 Mode Auto
+
+Mode hybride :
+
+- états via **BLE**
+- actions via **API**
+
+Ce mode offre généralement :
+
+✔ meilleure fiabilité  
+✔ compatibilité maximale
+
+---
+
+# ⚙️ Installation et configuration
+
+## Configuration du plugin
+
+<!-- Screenshot :
+configuration générale du plugin
+![Configuration](/img/plugins/switchbot/configuration.png) -->
+
+Dans cette page vous pouvez :
+
+- sélectionner le **mode de communication**
+- choisir l'**adaptateur Bluetooth**
+- configurer l'**API SwitchBot**
+
+---
+
+# 🔑 Configuration API
+
+<!-- Screenshot :
+configuration API
+![API config](/img/plugins/switchbot/api_config.png) -->
+
+Pour utiliser l’**API Cloud SwitchBot**, vous devez récupérer :
+
+- **Token**
+- **Secret**
+
+---
+
+## 📱 Procédure
+
+### 1️⃣ Ouvrir l'application
+
+Dans l'application **SwitchBot** :
+
+- ouvrir l'app
+- aller dans **Profile / Profil**
+
+---
+
+### 2️⃣ Activer les options développeur
+
+Aller dans :
+
+**Preferences / Préférences**
+
+Puis :
+
+- descendre tout en bas
+- cliquer sur **App Version**
+
+⚠️ **Appuyer 10 fois rapidement sur "App Version"**
+
+Une nouvelle section apparaît :
+
+➡️ **Developer Options**
+
+---
+
+### 3️⃣ Récupérer les clés
+
+Dans **Developer Options** :
+
+- copier le **Token**
+- copier le **Secret**
+
+Puis les renseigner dans la **configuration du plugin SwitchBot**.
+
+---
+
+:::tip
+Les clés API sont liées à votre compte SwitchBot.
+
+Si vous les modifiez dans l'application, pensez à **mettre à jour la configuration dans Jeedom**.
+:::
+
+---
+
+# 🔄 Synchronisation des équipements
+
+Le plugin peut **créer automatiquement les équipements**.
+
+---
+
+## Synchronisation API
+
+<!-- Screenshot :
+bouton sync API
+![Sync API](/img/plugins/switchbot/sync_api.png) -->
+
+Cette fonction permet de :
+
+- récupérer les équipements du compte SwitchBot
+- créer automatiquement les équipements dans Jeedom
+
+---
+
+## Scan BLE
+
+<!-- Screenshot :
+scan BLE
+![Scan BLE](/img/plugins/switchbot/scan_ble.png) -->
+
+Le scan BLE permet :
+
+- de détecter les équipements proches
+- de créer automatiquement les équipements
+
+---
+
+:::tip
+Pendant un scan BLE, il est conseillé de **désactiver temporairement les autres plugins utilisant le Bluetooth**.
+:::
+
+---
+
+# 🤖 Gestion du daemon BLE
+
+Le plugin utilise un **daemon Python**.
+
+<!-- Screenshot :
+page santé
+![Daemon](/img/plugins/switchbot/daemon.png) -->
+
+Le daemon gère :
+
+- scan BLE
+- réception des données
+- mise à jour des états
+- communication avec Jeedom
+
+---
+
+# 🩺 Page santé du plugin
+
+La page santé permet de vérifier :
+
+- l'état du daemon
+- les dépendances
+- la configuration Bluetooth
+- la connexion API
+
+<!-- Screenshot :
+health
+![Health](/img/plugins/switchbot/health.png) -->
+
+---
+
+# 🧠 Utilisation dans Jeedom
+
+Une fois les équipements créés :
+
+ils apparaissent dans :
+
+**Plugins → SwitchBot**
+
+Les commandes peuvent être utilisées dans :
+
+- scénarios
+- widgets
+- interactions
+
+Les commandes sont générées automatiquement via les **templates JSON du plugin**.
+
+---
+
+# 🔧 Dépannage
+
+## BLE ne détecte aucun équipement
+
+Vérifier :
+
+- l'adaptateur Bluetooth
+- que le daemon est actif
+- qu'aucun autre plugin BLE n'utilise l'adaptateur
+
+---
+
+## API ne fonctionne pas
+
+Vérifier :
+
+- Token
+- Secret
+- connexion Internet
+
+---
+
+# ✅ Conclusion
+
+Le plugin **SwitchBot** permet une intégration complète des équipements SwitchBot dans Jeedom.
+
+Grâce à la prise en charge :
+
+- de l’**API Cloud**
+- du **Bluetooth Low Energy**
+
+il offre :
+
+☁️ fonctionnement cloud  
+🏠 fonctionnement local  
+🔄 fonctionnement hybride  
+
+pour une domotique **plus rapide et indépendante du cloud**.
