@@ -1,0 +1,575 @@
+---
+title: Plugin Lumina
+description: Orchestrateur d'éclairage intelligent pour Jeedom — minuterie, ambiances, périodes et seuil de luminosité
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  id="lumina"
+  title="Plugin Lumina"
+  description="Orchestrateur d'éclairage intelligent pour Jeedom — minuterie, ambiances, périodes et seuil de luminosité."
+  icon="/img/plugins/lumina_icon.png"
+  badges={["Jeedom 4.4+", "stable", "php 7.4/8.x"]}
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
+/>
+
+Le plugin **Lumina** permet de centraliser et piloter vos éclairages dans Jeedom avec une logique simple : **déclarer les lampes**, **définir des périodes horaires**, puis **laisser Lumina exécuter les bonnes actions automatiquement**.
+
+Il est pensé pour gérer :
+
+- les **lampes** d'une pièce ou d'un usage
+- les **périodes horaires** (matin, soirée, nuit…)
+- la **minuterie** avec extinction automatique
+- les **ambiances** lumineuses
+- la **couleur**, la **température de couleur** et le **niveau**
+- un **seuil de luminosité** via une commande lux
+- le **mode OFF** pour couper toute automatisation
+
+Lumina ne pilote pas un protocole spécifique. Il s'appuie sur les **commandes Jeedom existantes** de vos équipements lumière.
+
+---
+
+## ✨ Principe de fonctionnement
+
+Lumina agit comme un **orchestrateur d'éclairage** au-dessus de vos équipements existants.
+
+Le flux recommandé est le suivant :
+
+1. Vous créez un équipement Lumina (une pièce, une zone)
+2. Vous déclarez les **lampes** disponibles dans cet équipement
+3. Vous configurez les **actionneurs binaires** (détecteurs de présence, boutons…)
+4. Vous créez des **périodes horaires** avec leur couleur, température, niveau et durée de minuterie
+5. Lumina écoute les actionneurs et déclenche les bonnes actions selon la période du moment
+
+**Quand un actionneur passe à 1 (présence détectée) :**
+
+- Lumina vérifie si la minuterie est armée
+- Il vérifie le seuil de luminosité (lux) si configuré
+- Il identifie la période active selon l'heure
+- Il allume les lampes avec les réglages de la période (couleur, température, niveau)
+- Il démarre un compte à rebours (durée de la période)
+
+**Quand tous les actionneurs passent à 0 (plus de présence) :**
+
+- Le compte à rebours démarre
+- À l'expiration, Lumina exécute les actions de fin (extinction, etc.)
+
+---
+
+## 🔧 Prérequis
+
+Avant d'utiliser Lumina, il faut disposer de :
+
+- Jeedom fonctionnel (version 4.4 minimum recommandée)
+- au moins un équipement lumière déjà créé dans Jeedom
+- des commandes lumière valides, par exemple :
+  - **On** (commande action)
+  - **Off** (commande action)
+  - **Régler couleur** (commande action)
+  - **Température couleur** (commande action slider)
+  - **Régler niveau** (commande action slider)
+
+Lumina fonctionne avec n'importe quel plugin lumière tant que les commandes Jeedom sont disponibles :
+
+- Matter
+- Hue
+- Zigbee
+- Z-Wave
+- Wi‑Fi
+- MQTT
+- autres plugins lumière compatibles Jeedom
+
+---
+
+## 🚀 Installation du plugin
+
+### 1️⃣ Installation depuis le Market
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Lumina**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+<!-- screenshot: page du market Jeedom avec le plugin Lumina trouvé et le bouton Installer -->
+<!-- path: /img/plugins/lumina/install.png -->
+<!-- ![Installation du plugin depuis le market Jeedom](/img/plugins/lumina/install.png) -->
+
+---
+
+### 2️⃣ Accès au plugin
+
+Une fois installé :
+
+1. Allez dans **Plugins → Confort → Lumina**
+2. La page d'accueil affiche vos équipements Lumina existants
+3. Cliquez sur **Ajouter** pour créer votre premier équipement
+
+<!-- screenshot: page d'accueil du plugin Lumina avec le bouton Ajouter visible -->
+<!-- path: /img/plugins/lumina/plugin_home.png -->
+<!-- ![Page d'accueil du plugin Lumina](/img/plugins/lumina/plugin_home.png) -->
+
+---
+
+## ➕ Créer un équipement Lumina
+
+Depuis la page du plugin, cliquez sur **Ajouter** pour créer un nouvel équipement.
+
+Chaque équipement Lumina correspond généralement à :
+
+- une pièce (Salon, Bureau, Chambre)
+- une zone (Couloir, Dressing, Entrée)
+- ou un usage spécifique (Ambiance soirée, Détection nuit)
+
+<!-- screenshot: formulaire de création d'un équipement Lumina avec le champ Nom -->
+<!-- path: /img/plugins/lumina/equipment_new.png -->
+<!-- ![Création d'un nouvel équipement Lumina](/img/plugins/lumina/equipment_new.png) -->
+
+---
+
+## 🗂 Les onglets de configuration
+
+L'équipement Lumina est organisé en **4 onglets** :
+
+| Onglet | Rôle |
+|---|---|
+| **Équipement** | Paramètres généraux et panneau d'état en temps réel |
+| **Configuration** | Actionneurs, lux, lampes et périodes horaires |
+| **Ambiances** | Création et gestion des ambiances lumineuses |
+| **Commandes** | Liste des commandes générées automatiquement |
+
+---
+
+## ⚙️ Onglet Équipement
+
+Cet onglet contient les **paramètres généraux** (nom, objet parent, catégorie, activer/visible) ainsi qu'un **panneau d'état** mis à jour en temps réel.
+
+<!-- screenshot: onglet Equipement avec panneau d'état montrant minuterie armée, période active, durée, seuil lux -->
+<!-- path: /img/plugins/lumina/tab_equipment.png -->
+<!-- ![Onglet Équipement avec le panneau d'état en temps réel](/img/plugins/lumina/tab_equipment.png) -->
+
+Le panneau d'état affiche :
+
+- **Minuterie armée** : oui/non
+- **Minuterie active** : en cours d'exécution ou non
+- **Ambiance** : ambiance actuellement active
+- **Période active** : nom de la période en cours
+- **Durée active** : durée de minuterie de la période courante
+- **Seuil lux actif** : seuil de la période courante
+- **Dernier déclencheur** : actionneur ayant déclenché la dernière action
+- **Dernière action** : dernière action exécutée
+
+---
+
+## 🔌 Onglet Configuration — Actionneurs
+
+Les **actionneurs binaires** sont les déclencheurs de la minuterie.
+
+Il s'agit de commandes **info binaire** de Jeedom qui passent à **1** quand la présence est détectée et à **0** quand elle cesse.
+
+Exemples d'actionneurs compatibles :
+
+- Détecteur de mouvement (PIR)
+- Capteur de présence mmWave
+- Bouton physique ou virtuel
+- Commande virtuelle d'un scénario
+
+<!-- screenshot: section Actionneurs avec un détecteur de présence ajouté -->
+<!-- path: /img/plugins/lumina/actuators.png -->
+<!-- ![Configuration des actionneurs binaires](/img/plugins/lumina/actuators.png) -->
+
+**Logique multi-actionneurs :**
+
+- Si **un** actionneur passe à 1 → allumage (si lumières éteintes)
+- Si un actionneur passe à 1 alors que les lumières sont déjà allumées → le compte à rebours est annulé (reset)
+- Le compte à rebours ne démarre que quand **tous** les actionneurs sont à 0
+
+Cela permet d'utiliser plusieurs détecteurs dans une même pièce sans extinction prématurée.
+
+---
+
+## ☀️ Onglet Configuration — Luminosité (Lux)
+
+Lumina peut utiliser une **commande info numérique de luminosité** pour conditionner le déclenchement.
+
+<!-- screenshot: champ commande lux avec le sélecteur de commande -->
+<!-- path: /img/plugins/lumina/lux_cmd.png -->
+<!-- ![Sélection de la commande lux](/img/plugins/lumina/lux_cmd.png) -->
+
+Si la luminosité ambiante est **supérieure ou égale** au seuil de la période active, Lumina n'allume pas les lumières.
+
+Exemple : seuil de 50 lux → si la pièce est déjà à 80 lux, Lumina ne fait rien.
+
+**Comportement si la commande lux est absente ou illisible :**
+
+| Option | Comportement |
+|---|---|
+| **Ignorer** (défaut) | Lumina déclenche quand même sans vérification lux |
+| **Bloquer** | Lumina ne déclenche pas si le lux est inaccessible |
+
+---
+
+## 💡 Onglet Configuration — Lampes
+
+La section **Lampes** permet de déclarer les lampes gérées par la minuterie de cet équipement Lumina.
+
+Lumina propose un système d'ajout automatique : en cliquant sur le **+**, vous choisissez un équipement Jeedom et Lumina scanne ses commandes pour détecter automatiquement :
+
+- la commande **On**
+- la commande **Off**
+- la commande **Régler couleur**
+- la commande **Température couleur**
+- la commande **Régler niveau**
+
+<!-- screenshot: section Lampes vide avec le bouton + pour ajouter -->
+<!-- path: /img/plugins/lumina/lamps_empty.png -->
+<!-- ![Section Lampes vide avant ajout](/img/plugins/lumina/lamps_empty.png) -->
+
+<!-- screenshot: modal d'ajout automatique d'une lampe depuis un équipement Jeedom existant -->
+<!-- path: /img/plugins/lumina/lamps_auto_add.png -->
+<!-- ![Ajout automatique d'une lampe depuis un équipement Jeedom](/img/plugins/lumina/lamps_auto_add.png) -->
+
+<!-- screenshot: lampe correctement configurée avec On Off couleur température et niveau détectés -->
+<!-- path: /img/plugins/lumina/lamps_detected.png -->
+<!-- ![Lampe avec toutes ses commandes détectées automatiquement](/img/plugins/lumina/lamps_detected.png) -->
+
+:::warning Important
+Lumina doit utiliser les **commandes action** de la lampe.
+Les commandes **info** comme `Couleur` ou `Température` (lecture seule) ne doivent **pas** être utilisées comme actions.
+
+- ✅ **Régler couleur** (action)
+- ❌ **Couleur** (info)
+:::
+
+---
+
+## 🎨 Couleur, température de couleur et niveau
+
+Pour les lampes compatibles, Lumina envoie en plus de la commande On :
+
+- une **couleur** (valeur hexadécimale, ex: `#e51515`)
+- une **température de couleur** (valeur slider en Kelvin selon le plugin cible)
+- un **niveau de luminosité** (valeur slider en pourcentage)
+
+Ces valeurs sont définies **par période** dans la configuration de chaque lampe.
+
+<!-- screenshot: configuration de la couleur sur une lampe avec le sélecteur de couleur -->
+<!-- path: /img/plugins/lumina/lamp_color.png -->
+<!-- ![Configuration de la couleur pour une lampe](/img/plugins/lumina/lamp_color.png) -->
+
+<!-- screenshot: configuration de la température de couleur avec le slider Kelvin -->
+<!-- path: /img/plugins/lumina/lamp_temperature.png -->
+<!-- ![Configuration de la température de couleur](/img/plugins/lumina/lamp_temperature.png) -->
+
+<!-- screenshot: configuration du niveau d'intensité avec le slider pourcentage -->
+<!-- path: /img/plugins/lumina/lamp_level.png -->
+<!-- ![Configuration du niveau d'intensité (%)](/img/plugins/lumina/lamp_level.png) -->
+
+---
+
+## 🕒 Onglet Configuration — Périodes horaires
+
+Les **périodes** sont au cœur de la logique Lumina.
+
+Chaque période définit un comportement différent selon le moment de la journée :
+
+| Champ | Description |
+|---|---|
+| **Nom** | Identifiant de la période (ex: matin, soirée) |
+| **Actif** | Active ou désactive la période sans la supprimer |
+| **Début** | Heure de début au format HH:MM |
+| **Fin** | Heure de fin au format HH:MM |
+| **Durée** | Durée de la minuterie en minutes (défaut : 5 min) |
+| **Seuil lux** | Seuil de luminosité spécifique à cette période |
+| **Actions ON** | Surcharge couleur/temp/niveau pour chaque lampe |
+
+<!-- screenshot: liste des périodes configurées avec leurs onglets matin soirée nuit -->
+<!-- path: /img/plugins/lumina/periods_list.png -->
+<!-- ![Liste des périodes de la journée](/img/plugins/lumina/periods_list.png) -->
+
+<!-- screenshot: édition d'une période avec les champs début fin durée seuil lux et actions -->
+<!-- path: /img/plugins/lumina/period_edit.png -->
+<!-- ![Édition d'une période horaire](/img/plugins/lumina/period_edit.png) -->
+
+**Règles de validation des périodes :**
+
+- Une période **sans heure** (début et fin vides) est active **toute la journée** — une seule autorisée
+- Les périodes horaires **ne peuvent pas se chevaucher**
+- Les périodes **chevauchant minuit** sont supportées (ex: 22:00 → 06:00)
+- Les périodes horaires ont **priorité** sur la période "toute la journée"
+
+**Si aucune période n'est configurée**, Lumina considère l'équipement comme actif en permanence (idéal pour un couloir ou une cave).
+
+### 🌅 Génération automatique Lever/Coucher de soleil
+
+Lumina peut générer automatiquement des périodes basées sur le **lever et coucher du soleil** en renseignant votre latitude et longitude.
+
+<!-- screenshot: champs latitude longitude avec le bouton Générer Lever Coucher -->
+<!-- path: /img/plugins/lumina/sun_periods.png -->
+<!-- ![Génération automatique des périodes solaires](/img/plugins/lumina/sun_periods.png) -->
+
+---
+
+## ⏱ La minuterie
+
+La minuterie est le moteur de déclenchement de Lumina.
+
+### Principe
+
+1. Un actionneur passe à **1** → Lumina allume les lampes selon la période
+2. L'actionneur passe à **0** → le compte à rebours démarre
+3. À l'expiration → les actions de fin sont exécutées (extinction)
+
+<!-- screenshot: champ durée dans la configuration d'une période -->
+<!-- path: /img/plugins/lumina/period_duration.png -->
+<!-- ![Champ durée dans une période (en minutes)](/img/plugins/lumina/period_duration.png) -->
+
+### Armement / Désarmement
+
+La minuterie peut être **armée ou désarmée** indépendamment.
+
+- **Armée** : Lumina réagit aux actionneurs normalement
+- **Désarmée** : Lumina ignore les actionneurs (les lumières ne s'allument pas automatiquement)
+
+L'armement est géré via les commandes `Activer minuterie` et `Désactiver minuterie`, utilisables dans des scénarios ou depuis le widget.
+
+### Reset automatique
+
+Si un actionneur repasse à **1** alors que les lumières sont déjà allumées (compte à rebours en cours), Lumina **annule le compte à rebours** — les lumières restent allumées tant que la présence est détectée.
+
+---
+
+## 🚫 Mode OFF
+
+Le **mode OFF** permet de bloquer toute automatisation Lumina sur une période.
+
+Quand le mode OFF est activé :
+
+- La minuterie est ignorée (même si elle est armée)
+- Les actionneurs ne déclenchent rien
+- Utile la nuit pour ne pas allumer lors d'un passage aux toilettes
+
+Il est géré via les commandes `Activer mode OFF` et `Désactiver mode OFF`.
+
+<!-- screenshot: widget dashboard montrant le mode OFF actif avec le point rouge -->
+<!-- path: /img/plugins/lumina/mode_off.png -->
+<!-- ![Mode OFF actif sur le widget](/img/plugins/lumina/mode_off.png) -->
+
+---
+
+## 🎭 Onglet Ambiances
+
+Les ambiances permettent de définir des **scènes lumineuses nommées**, indépendantes des périodes.
+
+Une ambiance contient :
+
+- un **nom** (ex: Soirée cinéma, Dîner romantique)
+- des **lampes** avec leurs réglages couleur/température/niveau propres
+- des **actions supplémentaires** à l'activation (onAmb)
+- des **actions supplémentaires** à la désactivation (offAmb)
+
+<!-- screenshot: onglet Ambiances avec plusieurs ambiances listées -->
+<!-- path: /img/plugins/lumina/ambiances_section.png -->
+<!-- ![Section Ambiances avec la liste des ambiances configurées](/img/plugins/lumina/ambiances_section.png) -->
+
+<!-- screenshot: édition d'une ambiance avec ses lampes et ses couleurs -->
+<!-- path: /img/plugins/lumina/ambiance_edit.png -->
+<!-- ![Édition d'une ambiance lumineuse](/img/plugins/lumina/ambiance_edit.png) -->
+
+**Comportement des ambiances :**
+
+- L'activation d'une ambiance **prend la priorité** sur la minuterie
+- Si une ambiance est active, les actionneurs binaires sont **ignorés**
+- La désactivation de l'ambiance restitue le contrôle à la minuterie
+
+Les ambiances sont activables/désactivables via les commandes `Activer ambiance` et `Désactiver ambiance`, utilisables depuis des scénarios, le widget ou une télécommande virtuelle.
+
+---
+
+## 📊 Onglet Commandes
+
+Lumina génère automatiquement un ensemble de commandes à la sauvegarde de l'équipement.
+
+### Commandes d'information
+
+| Commande | Type | Description |
+|---|---|---|
+| `État minuterie` | info binaire | 1 = minuterie armée, 0 = désarmée |
+| `Mode courant` | info string | `minuterie`, `ambiance` ou `aucun` |
+| `État OFF` | info binaire | 1 = mode OFF actif |
+| `État ambiance` | info binaire | 1 = une ambiance est active |
+| `Période active` | info string | Nom de la période horaire en cours |
+| `Durée active` | info numérique | Durée en minutes de la période en cours |
+| `Seuil lux actif` | info numérique | Seuil lux de la période en cours |
+
+### Commandes d'action
+
+| Commande | Description |
+|---|---|
+| `Activer minuterie` | Arme la minuterie |
+| `Désactiver minuterie` | Désarme la minuterie |
+| `Activer mode OFF` | Active le mode OFF (bloquer automatisations) |
+| `Désactiver mode OFF` | Désactive le mode OFF |
+| `Activer ambiance` | Active une ambiance (sélection par liste) |
+| `Désactiver ambiance` | Désactive l'ambiance en cours |
+
+<!-- screenshot: onglet Commandes avec la liste complète des commandes générées automatiquement -->
+<!-- path: /img/plugins/lumina/commands_list.png -->
+<!-- ![Liste des commandes générées automatiquement](/img/plugins/lumina/commands_list.png) -->
+
+Ces commandes sont directement utilisables dans :
+
+- des **scénarios** (conditions, actions)
+- des **virtuels**
+- des **interactions**
+- d'autres **plugins** compatibles Jeedom
+
+---
+
+## 📱 Widget Dashboard et Mobile
+
+Lumina dispose d'un **widget intégré** pour le dashboard et la vue mobile.
+
+<!-- screenshot: widget Lumina sur le dashboard avec le badge mode et les boutons Armer Désarmer -->
+<!-- path: /img/plugins/lumina/widget_dashboard.png -->
+<!-- ![Widget Lumina sur le dashboard Jeedom](/img/plugins/lumina/widget_dashboard.png) -->
+
+<!-- screenshot: widget Lumina sur la vue mobile -->
+<!-- path: /img/plugins/lumina/widget_mobile.png -->
+<!-- ![Widget Lumina sur la vue mobile](/img/plugins/lumina/widget_mobile.png) -->
+
+Le widget affiche :
+
+- Le **badge de mode** (Minuterie / Ambiance / Aucun) avec couleur selon l'état
+- L'état de la **minuterie** (armée / active) avec boutons Armer / Désarmer
+- L'état de l'**ambiance** avec sélecteur et boutons Activer / Désactiver
+- L'état du **mode OFF** avec boutons Activer / Désactiver
+- En pied : la **période active**, la **durée** et le **seuil lux**
+
+---
+
+## 🧪 Utilisation dans les scénarios
+
+Les commandes Lumina s'utilisent naturellement dans les scénarios Jeedom.
+
+### Exemples de conditions
+
+```
+// Vérifier si la minuterie est armée
+[Salon][Lumina][État minuterie] == 1
+
+// Vérifier la période active
+[Salon][Lumina][Période active] == "soirée"
+
+// Vérifier si le mode OFF est actif
+[Salon][Lumina][État OFF] == 1
+```
+
+### Exemples d'actions
+
+```
+// Armer la minuterie au coucher du soleil
+[Salon][Lumina][Activer minuterie]
+
+// Désarmer la minuterie la nuit
+[Salon][Lumina][Désactiver minuterie]
+
+// Activer une ambiance
+[Salon][Lumina][Activer ambiance] → valeur : "Soirée cinéma"
+
+// Activer le mode OFF
+[Salon][Lumina][Activer mode OFF]
+```
+
+---
+
+## 💡 Exemples d'usage concrets
+
+### Dressing
+
+- **Lampe** : ampoule blanche simple
+- **Période** : toute la journée, durée 1 minute
+- **Actionneur** : détecteur de mouvement
+- **Résultat** : allumage à l'entrée, extinction 1 minute après le départ
+
+### Salon soirée
+
+- **Lampes** : ampoules couleur
+- **Périodes** :
+  - Matin 07:00–12:00 : lumière blanche froide, niveau 100%
+  - Après-midi 12:00–18:00 : lumière neutre, niveau 80%
+  - Soirée 18:00–23:00 : lumière chaude, niveau 40%
+- **Ambiance** : "Cinéma" avec lumière rouge très tamisée
+
+### Couloir nocturne
+
+- **Lampe** : ampoule blanche
+- **Périodes** :
+  - Journée 07:00–22:00 : niveau 100%, durée 5 min
+  - Nuit 22:00–07:00 : niveau 10%, durée 2 min
+- **Actionneur** : détecteur de mouvement
+- **Mode OFF** : activé via scénario pendant les horaires de sommeil profond
+
+### Bureau avec luminosité
+
+- **Lampe** : ampoule connectée
+- **Période** : 08:00–20:00, seuil lux 200
+- **Actionneur** : capteur de présence mmWave
+- **Résultat** : allumage uniquement si la pièce est sombre (< 200 lux)
+
+---
+
+## 🧠 Bonnes pratiques
+
+Pour une configuration propre et fiable :
+
+- Vérifiez que les commandes auto-détectées sont bien des **commandes action** et non des commandes info
+- Pour les lampes couleur, pointez vers **Régler couleur** (pas **Couleur**)
+- Commencez avec **une seule lampe** et une **seule période** avant d'étendre la configuration
+- Utilisez des **noms de périodes explicites** (matin, soirée, nuit) pour faciliter la lecture dans les scénarios
+- Si votre lux est instable, préférez le comportement **Ignorer** plutôt que **Bloquer**
+- Utilisez le **mode OFF** dans un scénario planifié plutôt que manuellement
+- Le panneau d'état (onglet Équipement) est votre meilleur outil de diagnostic
+
+---
+
+## 🔍 Dépannage
+
+### La minuterie ne démarre pas
+
+- Vérifiez que la **minuterie est armée** (État minuterie = 1)
+- Vérifiez que le **mode OFF est inactif** (État OFF = 0)
+- Vérifiez qu'**aucune ambiance n'est active** (État ambiance = 0)
+- Vérifiez que la **période active** existe et est activée
+- Si un seuil lux est configuré, vérifiez que le lux actuel est inférieur au seuil
+
+### Les lampes ne s'allument pas avec la bonne couleur
+
+- Vérifiez que la commande couleur pointe vers **Régler couleur** (action) et non **Couleur** (info)
+- Vérifiez que la valeur couleur est renseignée dans la configuration de la lampe pour la période concernée
+
+### Le compte à rebours ne se lance pas
+
+- Vérifiez que **tous les actionneurs** sont bien à 0 avant le démarrage du compte à rebours
+- Consultez les logs du plugin (niveau debug) pour suivre la logique
+
+<!-- screenshot: page des logs Lumina en mode debug montrant le suivi des détections et actions -->
+<!-- path: /img/plugins/lumina/logs_debug.png -->
+<!-- ![Logs Lumina en mode debug](/img/plugins/lumina/logs_debug.png) -->
+
+---
+
+## ❤️ Conclusion
+
+Le plugin **Lumina** permet de construire une logique d'éclairage claire, souple et intelligente dans Jeedom, sans multiplier les scénarios complexes.
+
+En résumé :
+
+1. Déclarez vos lampes
+2. Configurez vos actionneurs (détecteurs)
+3. Définissez vos périodes avec couleur, durée et seuil lux
+4. Laissez Lumina faire le reste
+
+C'est une base solide pour centraliser tous les comportements d'éclairage d'une pièce dans un seul équipement maintenable.

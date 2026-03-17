@@ -3,6 +3,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import HomepageFeatures from '../components/HomepageFeatures';
+import FeaturedPlugins from '../components/FeaturedPlugins';
 
 export default function Home(): JSX.Element {
   return (
@@ -31,6 +32,7 @@ export default function Home(): JSX.Element {
           </div>
         </div>
 
+        <FeaturedPlugins />
         <HomepageFeatures />
       </main>
     </Layout>

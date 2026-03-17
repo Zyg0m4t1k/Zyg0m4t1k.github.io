@@ -35,6 +35,9 @@ type Props = {
    */
   donateUrl?: string | null;
   donateLabel?: string;
+
+  /** Affiche un bandeau "Nouveau" en haut à droite de la card */
+  isNew?: boolean;
 };
 
 function uniqLinks(links: PluginLink[]) {
@@ -60,6 +63,7 @@ export default function PluginHero({
   changelogUrl = null,
   donateUrl = null,
   donateLabel = '☕ Soutenir le développement',
+  isNew = false,
 }: Props) {
   // On construit une liste de liens "standard" + liens libres
   const baseLinks: PluginLink[] = [
@@ -74,14 +78,36 @@ export default function PluginHero({
   return (
     <div
       style={{
+        position: 'relative',
         border: '1px solid var(--ifm-color-emphasis-200)',
         borderRadius: 16,
         padding: '1.5rem',
         background: 'var(--ifm-background-surface-color)',
         boxShadow: '0 6px 20px rgba(0,0,0,.06)',
         marginBottom: '1.5rem',
+        overflow: 'hidden',
       }}
     >
+      {isNew && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 16,
+            right: -28,
+            background: 'linear-gradient(90deg, #f59e0b, #ef4444)',
+            color: '#fff',
+            fontSize: '.75rem',
+            fontWeight: 700,
+            letterSpacing: '.05em',
+            padding: '.25rem 3rem',
+            transform: 'rotate(45deg)',
+            boxShadow: '0 2px 6px rgba(0,0,0,.2)',
+            textTransform: 'uppercase',
+          }}
+        >
+          Nouveau
+        </div>
+      )}
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         {icon ? (
           <img

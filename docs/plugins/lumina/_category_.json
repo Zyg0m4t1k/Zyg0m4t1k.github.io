@@ -1,0 +1,8 @@
+{
+  "label": "Lumina",
+  "position": 1,
+  "link": {
+    "type": "doc",
+    "id": "plugins/lumina/index"
+  }
+}

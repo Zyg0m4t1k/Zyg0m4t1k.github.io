@@ -1,6 +1,6 @@
 ---
 title: Plugin Matter
-description: Intégrer et piloter vos appareils Matter simplement avec Jeedom
+description: Intégrer et piloter vos appareils Matter directement depuis Jeedom via python-matter-server
 hide_title: true
 ---
 
@@ -8,43 +8,64 @@ import PluginHero from '@site/src/components/PluginHero';
 
 <PluginHero
   title="Plugin Matter"
-  description="Intégrer et piloter vos appareils Matter simplement avec Jeedom."
+  description="Intégrer et piloter vos appareils Matter directement depuis Jeedom via python-matter-server."
   icon="/img/plugins/matter_icon.png"
-  badges={["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"]}
+  badges={["Jeedom 4.4+", "dev", "Debian 11+", "php 7.4/8.x", "python 3.10+"]}
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
 />
 
-Le plugin **Matter** permet d’ajouter et de piloter des appareils compatibles Matter directement depuis Jeedom.
+Le plugin **Matter** permet d'ajouter, de piloter et de superviser des appareils compatibles Matter directement depuis Jeedom.
+
+Il s'appuie sur **python-matter-server** (projet Home Assistant) pour communiquer avec les appareils Matter via le protocole CHIP/Matter, et expose une interface que Jeedom utilise pour contrôler les équipements.
+
+---
+
+## ✨ Principe de fonctionnement
+
+Le plugin repose sur trois composants :
+
+1. **python-matter-server** — serveur Matter gérant les connexions avec les appareils
+2. **Démon Python (matterd)** — pont entre Jeedom et python-matter-server
+3. **Jeedom** — interface utilisateur, gestion des équipements et des commandes
+
+Le flux de données est le suivant :
+
+- Le démon interroge python-matter-server en continu (polling + souscriptions WebSocket)
+- Chaque changement d'état est transmis à Jeedom via l'API REST du plugin
+- Les commandes Jeedom sont relayées au démon qui les exécute sur le serveur Matter
+
+Le plugin prend en charge deux modes de serveur :
+
+- **Embarqué** : le plugin démarre et gère python-matter-server automatiquement
+- **Externe** : le plugin se connecte à une instance python-matter-server existante (ex. Home Assistant)
 
 ---
 
 ## 🔧 Prérequis
 
-Avant d’installer le plugin et d’ajouter un appareil Matter, assurez-vous d’avoir :
+Avant d'installer le plugin et d'ajouter un appareil Matter, assurez-vous d'avoir :
 
-## 🌐 1️⃣ Un réseau local stable
+### 🌐 1️⃣ Un réseau local stable
 
 - Jeedom doit être connecté au même réseau que vos appareils
 - Wi‑Fi fonctionnel et stable
-- Pas d’isolation réseau entre les équipements
+- Pas d'isolation réseau entre les équipements
+- **IPv6 est requis** pour la découverte mDNS des appareils Matter (vérifiable sur la page Santé)
 
----
-
-## 📡 2️⃣ Un contrôleur Matter
+### 📡 2️⃣ Un contrôleur Matter
 
 Matter nécessite un contrôleur pour gérer les appareils.
 
 Le plugin Matter peut jouer ce rôle et devenir votre **contrôleur principal**.
 
-⚠️ Il est recommandé de ne pas utiliser plusieurs contrôleurs principaux en parallèle si vous débutez.
+> ⚠️ Il est recommandé de ne pas utiliser plusieurs contrôleurs principaux en parallèle si vous débutez.
 
----
-
-## 🧵 3️⃣ Un Border Router (si appareil Thread)
+### 🧵 3️⃣ Un Border Router (si appareil Thread)
 
 Certains appareils Matter utilisent la technologie **Thread**.
 
-Dans ce cas, vous devez disposer d’un **Thread Border Router**.
+Dans ce cas, vous devez disposer d'un **Thread Border Router**.
 
 Exemples compatibles :
 
@@ -54,11 +75,9 @@ Exemples compatibles :
 - Google Nest Hub (2e génération)
 - Dongle OTBR (OpenThread Border Router)
 
-⚠️ Les appareils Matter en Wi‑Fi ou Ethernet n’ont pas besoin de Border Router.
+> ⚠️ Les appareils Matter en Wi‑Fi ou Ethernet n'ont pas besoin de Border Router.
 
----
-
-## 🍎🤖 4️⃣ Appareils déjà configurés dans Apple, Amazon ou Google
+### 🍎🤖 4️⃣ Appareils déjà configurés dans Apple, Amazon ou Google
 
 Si votre appareil est déjà ajouté dans :
 
@@ -69,23 +88,64 @@ Si votre appareil est déjà ajouté dans :
 Deux possibilités :
 
 - Soit Jeedom devient le contrôleur principal
-- Soit vous partagez l’appareil vers Jeedom (si supporté)
+- Soit vous partagez l'appareil vers Jeedom (si supporté)
 
-Il est conseillé d’éviter les configurations multiples si vous débutez.
+Il est conseillé d'éviter les configurations multiples si vous débutez.
+
+### 🔵 5️⃣ Clé Bluetooth (pour le jumelage Wi‑Fi)
+
+Le Bluetooth est utilisé **uniquement lors du jumelage** des appareils Matter Wi‑Fi pour leur transmettre les informations réseau. Il n'est **pas nécessaire** pour le fonctionnement quotidien ni pour les appareils Thread ou Ethernet.
+
+Si votre Jeedom ne dispose pas de Bluetooth intégré, vous pouvez utiliser une **clé USB Bluetooth** (adaptateur BT 4.0 ou 5.0).
+
+:::important
+Sans Bluetooth disponible, cochez l'option **Réseau uniquement** lors du jumelage. Cela fonctionne si l'appareil est déjà accessible sur le réseau local (appareils Thread via Border Router, ou appareils Wi‑Fi déjà provisionnés).
+:::
+
+### 🔑 6️⃣ Code Matter obligatoire
+
+Pour l'inclusion, vous aurez besoin du **code à 11 chiffres** de votre appareil.
 
 ---
 
-## 🔑 5️⃣ Code Matter obligatoire
+#### Récupérer le code depuis **Apple Maison**
 
-Pour l’inclusion, vous aurez besoin :
-
-- Du code à 11 chiffres  
+1. Ouvrez l'application **Maison** sur votre iPhone ou iPad
+2. Maintenez le doigt appuyé sur l'accessoire Matter à partager
+3. Appuyez sur **Réglages de l'accessoire** (icône d'engrenage en bas à droite)
+4. Faites défiler vers le bas et appuyez sur **Activer le mode de jumelage**
+5. L'application génère un code numérique à 11 chiffres (et parfois un QR code)
+6. Appuyez sur **Copier le code**
 
 ---
 
-## 🚀 Installation du plugin
+#### Récupérer le code depuis **Google Home**
 
-## 1️⃣ Installation depuis le Market
+1. Ouvrez l'application **Google Home**
+2. Maintenez le doigt sur la tuile de votre appareil Matter
+3. Appuyez sur l'icône **Paramètres** (roue crantée) en haut à droite
+4. Appuyez sur **Applications et services Matter associés**
+5. Appuyez sur **Associer des applications et des services**
+6. Sélectionnez **Utiliser un code d'association** (ou "Partager avec un code QR")
+7. Un code numérique à 11 chiffres s'affiche
+
+---
+
+#### Récupérer le code depuis **Amazon Alexa**
+
+1. Ouvrez l'application **Amazon Alexa**
+2. Appuyez sur l'onglet **Appareils** en bas de l'écran
+3. Sélectionnez l'accessoire Matter à partager
+4. Appuyez sur l'icône **Paramètres** (roue crantée) en haut à droite
+5. Sélectionnez **Autres assistants et applications**
+6. Appuyez sur **Ajouter un autre**
+7. Un code numérique à 11 chiffres s'affiche
+
+---
+
+## 🚀 Installation
+
+### Étape 1 — Installer le plugin depuis le Market
 
 1. Allez dans **Plugins → Gestion des plugins → Market**
 2. Recherchez **Matter**
@@ -94,108 +154,364 @@ Pour l’inclusion, vous aurez besoin :
 
 ![Installation plugin](/img/plugins/matter/install.png)
 
----
+### Étape 2 — Installer les dépendances
 
-## 2️⃣ Installation des dépendances
+Les dépendances incluent python-matter-server, ses dépendances CHIP/Matter et les bibliothèques Python nécessaires. L'installation peut prendre **5 à 15 minutes** selon votre machine.
 
-Après installation :
-
-1. Ouvrez la page du plugin
-2. Cliquez sur **Configuration**
-3. Cliquez sur **Installer les dépendances**
+1. Allez dans **Plugins → Matter → Configuration**
+2. Cliquez sur **Installer les dépendances**
+3. Attendez que le statut passe à **OK** avant de continuer
 
 ![Dépendances](/img/plugins/matter/dependencies.png)
 
-Attendez que le statut passe à **OK** avant de continuer.
+> ⚠️ Ne redémarrez pas la page pendant l'installation. Vous pouvez suivre la progression dans les logs (`log/matter`).
 
----
+### Étape 3 — Démarrer le démon
 
-## 3️⃣ Démarrer le démon
-
-Toujours dans la configuration :
-
-- Cliquez sur **Démarrer**
+1. Toujours dans la configuration, cliquez sur **Démarrer** (section Démon)
+2. Attendez que le statut passe au vert ✅
 
 ![Démon](/img/plugins/matter/daemon_start.png)
 
-Quand tout est vert ✅, le plugin est prêt.
+Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opérationnel.
+
+---
+
+## ⚙️ Configuration
+
+### Mode serveur
+
+| Mode | Description |
+|------|-------------|
+| **Auto** (défaut) | Le plugin détecte si un serveur Matter est déjà actif. Sinon, il le démarre. |
+| **Embarqué** | Le plugin démarre et gère python-matter-server lui-même. |
+| **Externe** | Le plugin se connecte à une instance existante (ex. Home Assistant). |
+
+### Paramètres disponibles
+
+| Paramètre | Valeur par défaut | Description |
+|-----------|-------------------|-------------|
+| Mode serveur | `auto` | Voir tableau ci-dessus |
+| Port serveur | `5580` | Port TCP de python-matter-server (WebSocket) |
+| URL serveur Matter | `http://127.0.0.1:5580/ws` | URL WebSocket (mode externe uniquement) |
+| Token Matter | *(vide)* | Token d'authentification (si requis) |
+| Port démon | `55123` | Port RPC HTTP du démon Jeedom |
+| Adaptateur Bluetooth | `auto` | Sélection de l'adaptateur BT pour le jumelage |
+
+> En mode externe, renseignez l'URL WebSocket de votre serveur Matter (ex. `ws://192.168.1.50:5580/ws`).
 
 ---
 
 ## ➕ Ajouter un appareil Matter
 
-## Étape 1 : Mettre l'équipement ,dans l'application Maison par exemple, en mode jumelage et recuperer le code
+### Étape 1 — Récupérer le code de jumelage
 
+Le code se trouve généralement :
 
-## Étape 2 : Ajouter dans Jeedom
+- Imprimé sur une étiquette sous l'appareil
+- Dans l'application du fabricant (format QR code ou code numérique)
+- Sous la forme `MT:XXXXXXXXXX` (QR code scannable)
 
-1. Allez dans **Plugins → Matter → configuration**
-2. Dans la partie jumelage mettre le code récupérér à l'étape précédente et cliquer sur jumeler
+Si l'appareil est déjà appairé avec un autre écosystème, selon votre configuration :
+
+- Partagez-le depuis l'application d'origine (si la fonctionnalité est disponible)
+- Ou réinitialisez l'appareil en usine pour le réappaire depuis zéro
+
+### Étape 2 — Jumelage dans Jeedom
+
+1. Allez dans **Plugins → Matter → Configuration**
+2. Dans la section **Jumelage**, collez le code Matter (numérique ou `MT:…`)
+3. Cochez **Réseau uniquement** si vous ne voulez pas utiliser le Bluetooth
+4. Cliquez sur **Jumeler**
+5. L'opération peut prendre jusqu'à **3 minutes**
 
 ![Ajouter équipement](/img/plugins/matter/add_device.png)
 
+> Le Bluetooth n'est nécessaire que pour les appareils Wi-Fi lors de la phase de provisioning réseau. Les appareils Thread ou déjà sur le réseau peuvent être appairés en mode réseau uniquement.
+
+### Étape 3 — Synchronisation automatique
+
+Après un jumelage réussi, le plugin synchronise automatiquement le nœud Matter et crée l'équipement Jeedom correspondant.
+
+Vous pouvez aussi déclencher une synchronisation manuelle via le bouton **Synchroniser** sur la page de configuration.
+
 ---
 
-## 💡 Page Équipement
+## 🖥️ Page Équipement
 
-Une fois ajouté, votre appareil apparaît dans Jeedom.
+Chaque appareil Matter apparaît comme un équipement Jeedom avec deux onglets.
+
+### Onglet Équipement
+
+Contient les informations générales et les métadonnées Matter (en lecture seule) :
+
+- **Fabricant / Produit** : informations récupérées depuis l'appareil
+- **Types de device** : types Matter détectés (ex. `OnOff Light`, `Door Lock`)
+- **Clusters** : liste des clusters Matter présents sur l'appareil
 
 ![Fiche équipement](/img/plugins/matter/device_page.png)
 
+### Onglet Commandes
 
+Liste des commandes créées automatiquement selon les clusters détectés.
 
 ---
 
-## 📊 Commandes disponibles
+## 📊 Commandes par type d'appareil
 
-Selon l’appareil, vous verrez :
+Les commandes sont créées automatiquement en fonction des **clusters Matter** présents sur l'appareil.
 
-- On / Off
-- Variation
-- Température
-- État
-- Mesures
+### Ampoules et prises On/Off
 
-![Commandes](/img/plugins/matter/device_commands.png)
+| Commande | Type | Description |
+|----------|------|-------------|
+| `on` | Action | Allumer |
+| `off` | Action | Éteindre |
+| `state` | Info | État (0/1) |
 
-Ces commandes peuvent être utilisées dans :
+### Ampoules dimmables
 
-- Scénarios
-- Dashboard
-- Widgets personnalisés
+| Commande | Type | Description |
+|----------|------|-------------|
+| `on` / `off` | Action | Allumer / Éteindre |
+| `state` | Info | État (0/1) |
+| `setLevel` | Action (slider) | Niveau de luminosité (0–100 %) |
+| `level` | Info | Niveau actuel |
+
+### Ampoules couleur (Extended Color Light)
+
+Toutes les commandes dimmables, plus :
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `setColor` | Action | Définir la couleur RGB |
+| `color` | Info | Couleur actuelle (hex) |
+| `setColorTemperature` | Action (slider) | Température de couleur (en mireds) |
+| `colorTemperature` | Info | Température actuelle |
+| `ct_cool` | Action | Preset froid (~4000 K) |
+| `ct_neutral` | Action | Preset neutre (~3000 K) |
+| `ct_warm` | Action | Preset chaud (~2700 K) |
+
+### Serrures connectées
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `lock` | Action | Verrouiller |
+| `unlock` | Action | Déverrouiller |
+| `lock_state` | Info | État (Locked / Unlocked / Jammed) |
+| `set_lock_mode` | Action | Mode de la serrure |
+
+**Modes disponibles pour `set_lock_mode` :**
+
+- `Normal` — fonctionnement standard
+- `Vacation` — verrouillage renforcé
+- `Privacy` — ne pas déranger
+- `NoRemoteLockUnlock` — blocage des commandes distantes
+
+### Capteurs d'environnement
+
+| Capteur | Commande | Type |
+|---------|----------|------|
+| Température | `temperature` | Info (°C) |
+| Humidité | `humidity` | Info (%) |
+| Luminosité | `illuminance` | Info (lux) |
+| Présence/Occupation | `occupancy` | Info (0/1) |
+| Contact (porte/fenêtre) | `contact` | Info (0/1) |
+
+### Thermostats
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `local_temperature` | Info | Température mesurée |
+| `occupied_heating_setpoint` | Info/Action | Consigne chauffage |
+| `occupied_cooling_setpoint` | Info/Action | Consigne refroidissement |
+| `system_mode` | Info | Mode actuel |
+
+### Boutons et télécommandes
+
+Les boutons génèrent des commandes événementielles selon les pressions détectées :
+
+| Commande | Description |
+|----------|-------------|
+| `shortPress` | Appui court |
+| `longPress` | Appui long |
+| `doublePress` | Double appui |
+
+> Les boutons multi-touches créent des commandes par touche (ex. `button1_shortPress`, `button2_longPress`).
+
+### Volets et stores
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `open` | Action | Ouvrir |
+| `close` | Action | Fermer |
+| `stop` | Action | Arrêter |
+| `position` | Info | Position actuelle (%) |
+
+### Capteurs d'énergie
+
+| Commande | Description |
+|----------|-------------|
+| `activePower` | Puissance active (W) |
+| `voltage` | Tension (V) |
+| `current` | Courant (A) |
+| `energy` | Énergie consommée (kWh) |
+
+### Batterie
+
+| Commande | Description |
+|----------|-------------|
+| `battery` | Niveau de batterie (%) |
+| `batteryVoltage` | Tension batterie (V) |
 
 ---
 
 ## ❤️ Page Santé
 
-La page Santé permet de vérifier :
-
-- Dépendances
-- Démon
-- Connexion
+La page Santé (accessible via le bouton **Santé** sur la page du plugin) affiche un rapport de diagnostic complet.
 
 ![Page santé](/img/plugins/matter/health_page.png)
 
-Si un élément est rouge :
+### Vérifications effectuées
 
-- Réinstallez les dépendances
-- Redémarrez le démon
-- Vérifiez que l’appareil est alimenté
+| Vérification | Description |
+|--------------|-------------|
+| Version Python | Doit être ≥ 3.10 |
+| Environnement virtuel | Présence et intégrité du venv Python |
+| Démon | Statut du processus matterd |
+| RPC démon | Disponibilité de l'API RPC locale |
+| Mode serveur | Configuration du mode serveur |
+| Serveur Matter (systemd) | Statut du service python-matter-server |
+| Connexion Matter server | Connectivité WebSocket vers le serveur |
+| Répertoire de données | Présence et accessibilité du stockage |
+| Bluetooth | Disponibilité de l'adaptateur BT système |
+| IPv6 | Configuration réseau IPv6 (requis pour mDNS) |
+
+### Actions disponibles
+
+- **Diagnostiquer** : rafraîchit le rapport de santé
+- **Réparation auto** : tente de corriger automatiquement les problèmes détectés
+- **Mode jumelage** : active le mode commissioning Bluetooth
 
 ---
 
-## 🧠 Conseils pour débuter
+## 🔁 Synchronisation
 
-- Commencez avec une ampoule simple
-- Vérifiez que votre réseau est stable
-- Regardez la page Santé en cas de doute
+### Synchronisation complète
+
+Lance une resynchronisation de tous les nœuds Matter connus. Utile après une mise à jour du firmware d'un appareil ou en cas de dérive des commandes.
+
+**Via la configuration :**
+1. Allez dans **Plugins → Matter → Configuration**
+2. Cliquez sur **Synchroniser**
+
+### Synchronisation d'un nœud spécifique
+
+Disponible directement sur la fiche équipement si un nœud doit être resynchronisé individuellement.
+
+---
+
+## 🛠️ Utilisation dans les scénarios
+
+Les commandes Matter s'utilisent comme n'importe quelle commande Jeedom dans vos scénarios.
+
+**Exemples d'usage :**
+
+```
+# Allumer une lampe
+[Salon][Ampoule Matter][on]
+
+# Régler à 50 % de luminosité
+[Salon][Ampoule Matter][setLevel] = 50
+
+# Vérifier si la porte est verrouillée
+SI [Entrée][Serrure Matter][lock_state] = Locked ALORS ...
+
+# Déclencher sur présence
+SI [Couloir][Capteur Matter][occupancy] = 1 ALORS ...
+```
+
+---
+
+## 🧩 Mode Serveur Externe (Home Assistant)
+
+Si vous avez déjà Home Assistant avec python-matter-server actif, vous pouvez partager la même instance :
+
+1. Dans la configuration, sélectionnez **Mode : Externe**
+2. Renseignez l'URL WebSocket : `ws://<ip-home-assistant>:5580/ws`
+3. Ajoutez le token si nécessaire
+4. Sauvegardez et redémarrez le démon
+
+> ⚠️ En mode externe, le fabric Matter est partagé. Les appareils appairés dans HA seront également visibles dans Jeedom, mais **chaque écosystème maintient sa propre liste de commandes**.
+
+---
+
+## 🐛 Dépannage
+
+### Le démon ne démarre pas
+
+1. Vérifiez que les dépendances sont bien installées (statut OK)
+2. Consultez les logs `log/matterd` pour identifier l'erreur
+3. Vérifiez que le port `55123` (démon RPC) n'est pas occupé
+4. Utilisez **Réparation auto** sur la page Santé
+
+### Le jumelage échoue
+
+- Vérifiez que le code Matter est correct (11 chiffres ou format `MT:…`)
+- Assurez-vous que l'appareil est en mode commissioning (LED clignotante)
+- Essayez avec l'option **Réseau uniquement** décochée (pour activer le Bluetooth)
+- Augmentez le délai si l'appareil est lent à répondre (timeout 180 s par défaut)
+- Vérifiez que IPv6 est actif sur votre réseau (page Santé)
+
+### L'appareil est créé mais ne répond pas
+
+1. Vérifiez que l'appareil est alimenté et sur le même réseau
+2. Lancez une **Synchronisation** manuelle
+3. Consultez les logs `log/matter` pour les erreurs RPC
+4. Vérifiez la connectivité avec le serveur Matter depuis la page Santé
+
+### Les commandes ne se créent pas
+
+- Vérifiez les clusters détectés dans l'onglet Équipement
+- Relancez une synchronisation complète
+- Si le problème persiste, supprimez l'équipement et re-synchronisez le nœud
+
+### Après mise à jour des dépendances
+
+Après chaque mise à jour majeure des dépendances :
+
+1. Arrêtez le démon
+2. Relancez l'installation des dépendances
+3. Redémarrez le démon
+4. Vérifiez la page Santé
+
+---
+
+## 📋 Appareils compatibles
+
+Le plugin supporte tout appareil certifié **Matter 1.x**, notamment :
+
+- Ampoules et spots (on/off, variateur, couleur)
+- Prises connectées
+- Serrures connectées
+- Capteurs de température et d'humidité
+- Capteurs de luminosité
+- Détecteurs de présence / mouvement
+- Capteurs d'ouverture (porte, fenêtre)
+- Thermostats
+- Volets et stores
+- Boutons et télécommandes
+- Compteurs d'énergie
 
 ---
 
 ## 🎉 Conclusion
 
-Le plugin Matter permet d’intégrer facilement vos appareils nouvelle génération dans Jeedom.
+Le plugin Matter offre une intégration complète du protocole Matter dans Jeedom :
 
-Installation → Inclusion → Utilisation dans scénarios.
+- **Découverte automatique** des capacités de chaque appareil via les clusters
+- **Commandes générées automatiquement** selon les fonctionnalités détectées
+- **Supervision intégrée** avec la page Santé et les logs
+- **Compatible** avec les installations existantes (mode serveur externe)
 
-Simple et accessible à tous.
+Installation → Jumelage → Utilisation dans vos scénarios et votre dashboard Jeedom.

@@ -1,167 +1,252 @@
 ---
-title: Telco
-description: Créez des télécommandes virtuelles dans Jeedom pour déclencher des actions ou scénarios depuis des boutons personnalisables.
-sidebar_position: 1
+title: Plugin Telecommandes
+description: Créez des télécommandes virtuelles personnalisables dans Jeedom pour déclencher commandes, scénarios et automations depuis des boutons configurables.
 hide_title: true
 ---
 
 import PluginHero from '@site/src/components/PluginHero';
 
 <PluginHero
-  title="Télécommandes"
-  description="Créer des télécommandes virtuelles dans Jeedom pour déclencher facilement des actions ou scénarios."
+  title="Telecommandes"
+  description="Créez des télécommandes virtuelles personnalisables dans Jeedom pour déclencher commandes, scénarios et automations depuis des boutons configurables."
   icon="/img/plugins/telco_icon.png"
-  badges={["Jeedom 4.4+", "stable", "Debian 11+", "PHP 7.4 / 8.x"]}
+  badges={["Jeedom 4.4+", "stable", "php 7.4/8.x"]}
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
 
-
-Le plugin **Telecommandes** permet de créer des **télécommandes virtuelles personnalisables** dans Jeedom.
+Le plugin **Telecommandes** permet de créer des **télécommandes virtuelles entièrement personnalisables** dans Jeedom.
 
 Chaque bouton peut déclencher :
 
-- une **commande**
-- une **action Jeedom**
+- une **commande Jeedom** (action, info)
 - un **scénario**
-- une **automation**
+- une **interaction**
+- toute **action compatible Jeedom**
 
-Cela permet de regrouper plusieurs actions dans une **interface simple et rapide à utiliser**, idéale pour un **dashboard**, un **design**, ou un **écran tactile**.
-
----
-
-## ✨ Vue d’ensemble
-
-Telco permet de construire facilement des interfaces de contrôle.
-
-Exemples d’utilisation :
-
-- piloter une **TV ou box multimédia**
-- créer une **télécommande pour un système audio**
-- centraliser des **actions domotiques fréquentes**
-- créer un **panneau de contrôle personnalisé**
-
-Chaque bouton agit comme un **déclencheur d’action Jeedom**.
+Cela permet de regrouper plusieurs actions dans une **interface rapide et visuelle**, idéale pour un dashboard, un design ou un écran tactile mural.
 
 ---
 
-## ⚙️ Installation
+## ✨ Principe de fonctionnement
 
-L’installation se fait comme pour tout plugin Jeedom.
+Telco crée des équipements Jeedom dont chaque **bouton est associé à une action**.
 
-### Installation depuis le Market
+Appuyer sur un bouton → exécuter l'action configurée.
 
-1. Installez le plugin depuis le Market Jeedom  
-2. Activez le plugin
-3. Plugins → Organisation → Telco
+Exemples d'usage :
 
-
-
----
-
-## 🧩 Création d’une télécommande
-
-1. Cliquez sur **Ajouter**
-2. Donnez un **nom à votre télécommande**
-3. Choisissez un **objet parent**
-4. Sélectionnez un **type de télécommande**
-
-![Création équipement](/img/plugins/telco/create.png)
+- Télécommande **multimédia** pour un salon (TV, box, son)
+- Télécommande **maison** (volets, lumières, alarme)
+- Panneau de contrôle **scénarios favoris**
+- Interface simplifiée pour un **écran tactile**
+- Télécommande accessible pour un **utilisateur non technique**
 
 ---
 
-## 🧩 Types de télécommandes
+## 🔧 Prérequis
 
-Le plugin propose deux modes de fonctionnement.
-
----
-
-### Télécommande multimédia
-
-Ce mode peut génèrer automatiquement une télécommande classique.
-
-
-Chaque bouton peut être personnalisée dans la configuration de l'équipement 
-
-![Télécommande multimédia](/img/plugins/telco/multimedia.png)
+- Jeedom fonctionnel (version 4.4+ recommandée)
+- Des commandes ou scénarios déjà créés dans Jeedom à associer aux boutons
 
 ---
 
-### Télécommande personnalisée
+## 🚀 Installation du plugin
 
-Le mode **Custom** permet de créer vos propres boutons.
+### 1️⃣ Installation depuis le Market
 
-Chaque bouton peut avoir :
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Telecommandes**
+3. Cliquez sur **Installer**
+4. Activez le plugin
 
-- un **nom**
-- une **icône**
-- une **couleur**
-- une **action à exécuter**
-- une **visibilité configurable**
-
-Cela permet de créer des **interfaces totalement personnalisées**.
-
-![Télécommande personnalisée](/img/plugins/telco/telcoperso.png)
-
+<!-- screenshot: page Market Jeedom avec le plugin Telecommandes et le bouton Installer -->
+<!-- path: /img/plugins/telco/install.png -->
+<!-- ![Installation du plugin Telecommandes depuis le Market](/img/plugins/telco/install.png) -->
 
 ---
 
-## 🧠 Fonctionnement
+### 2️⃣ Accès au plugin
 
-Lorsqu’un bouton est pressé, le plugin exécute l’action configurée dans l'équipement.
+1. Allez dans **Plugins → Organisation → Telecommandes**
+2. La page d'accueil liste vos télécommandes existantes
+3. Cliquez sur **Ajouter** pour créer une nouvelle télécommande
 
-
-Cela permet de lancer :
-
-- commandes
-- scénarios
-
-
----
-
-## 🖥 Interface
-
-Le plugin fournit une interface simple :
-
-- gestion des télécommandes
-- configuration des boutons
-- association des actions
-
-Chaque télécommande peut être affichée dans :
-
-- le **dashboard**
-- un **design**
-- la **vue mobile **
+<!-- screenshot: page d'accueil du plugin Telecommandes avec le bouton Ajouter -->
+<!-- path: /img/plugins/telco/plugin_home.png -->
+<!-- ![Page d'accueil du plugin Telecommandes](/img/plugins/telco/plugin_home.png) -->
 
 ---
 
-## 🧩 Cas d’usage
+## ➕ Créer une télécommande
 
-Quelques exemples d’utilisation.
+Depuis la page du plugin, cliquez sur **Ajouter** puis renseignez :
 
-### Télécommande TV
+- **Nom** : nom de votre télécommande (ex: TV Salon, Maison, Scénarios)
+- **Objet parent** : pièce ou zone associée
+- **Type** : Multimédia ou Personnalisée
 
-![Widget multimedia](/img/plugins/telco/widget.png)
-
-
-Créer une télécommande pour :
-
-- TV
-- Android TV
-- Apple TV
-- Freebox
-- Nvidia Shield
+<!-- screenshot: formulaire de création avec les champs Nom, Objet parent et Type -->
+<!-- path: /img/plugins/telco/create.png -->
+<!-- ![Création d'une télécommande dans Telco](/img/plugins/telco/create.png) -->
 
 ---
+
+## 🧩 Les deux types de télécommandes
+
+### 1️⃣ Télécommande Multimédia
+
+Le mode **Multimédia** génère automatiquement une télécommande standard avec un layout pré-défini adapté à la commande d'équipements audiovisuels.
+
+Elle comprend les boutons classiques :
+
+- Power On / Off
+- Navigation (haut, bas, gauche, droite, OK)
+- Volume + / - / Mute
+- Chaînes + / -
+- Lecture / Pause / Stop / Suivant / Précédent
+- Boutons de couleur (Rouge, Vert, Jaune, Bleu)
+- Touches numériques 0–9
+- Menu, Retour, Accueil
+
+Chaque bouton peut être **personnalisé** : vous lui associez la commande Jeedom de votre choix.
+
+<!-- screenshot: télécommande multimédia générée avec tous ses boutons -->
+<!-- path: /img/plugins/telco/multimedia.png -->
+<!-- ![Télécommande multimédia avec layout standard](/img/plugins/telco/multimedia.png) -->
+
+---
+
+### 2️⃣ Télécommande Personnalisée (Custom)
+
+Le mode **Custom** vous permet de créer vos propres boutons de zéro.
+
+Pour chaque bouton, vous définissez :
+
+| Paramètre | Description |
+|---|---|
+| **Nom** | Libellé affiché sur le bouton |
+| **Icône** | Icône FontAwesome associée |
+| **Couleur** | Couleur du bouton |
+| **Action** | Commande ou scénario Jeedom à exécuter |
+| **Visible** | Afficher ou masquer le bouton |
+
+Cela permet de créer des interfaces **totalement sur-mesure** sans contrainte de layout.
+
+<!-- screenshot: télécommande personnalisée avec des boutons custom colorés -->
+<!-- path: /img/plugins/telco/telcoperso.png -->
+<!-- ![Télécommande personnalisée avec boutons configurables](/img/plugins/telco/telcoperso.png) -->
+
+---
+
+## ⚙️ Configuration d'un bouton
+
+Dans la page de configuration de l'équipement, chaque bouton dispose de ses propres réglages.
+
+### Associer une action à un bouton
+
+1. Cliquez sur le bouton à configurer
+2. Choisissez la **commande Jeedom** cible (via le sélecteur)
+3. Ou choisissez un **scénario** à déclencher
+4. Sauvegardez
+
+<!-- screenshot: configuration d'un bouton avec le sélecteur de commande -->
+<!-- path: /img/plugins/telco/button_config.png -->
+<!-- ![Configuration d'un bouton avec association de commande](/img/plugins/telco/button_config.png) -->
+
+### Désactiver un bouton
+
+Un bouton peut être **désactivé** (masqué sur le widget) sans être supprimé — utile pour nettoyer l'interface sans perdre la configuration.
+
+---
+
+## 📱 Widget Dashboard et Mobile
+
+Chaque télécommande Telco génère un **widget visuel** utilisable dans :
+
+- le **dashboard** Jeedom
+- un **design** personnalisé
+- la **vue mobile**
+
+<!-- screenshot: widget Telco affiché sur le dashboard Jeedom -->
+<!-- path: /img/plugins/telco/widget.png -->
+<!-- ![Widget télécommande multimédia sur le dashboard](/img/plugins/telco/widget.png) -->
+
+Le widget est **interactif** : cliquer sur un bouton exécute immédiatement l'action associée.
+
+---
+
+## 💡 Exemples d'usage concrets
+
+### Télécommande TV / Box
+
+Contrôle d'un téléviseur Android TV ou d'une box FAI :
+
+- Power → `[TV][Allumer]`
+- Volume + → `[TV][Volume+]`
+- Netflix → `[TV][Lancer Netflix]`
+- Chaîne préférée → `[Box][Chaîne TF1]`
+
+<!-- screenshot: widget télécommande TV avec logo des applications streaming -->
+<!-- path: /img/plugins/telco/widget_tv.png -->
+<!-- ![Widget Telco pour contrôle TV et streaming](/img/plugins/telco/widget_tv.png) -->
 
 ### Télécommande maison
 
-Créer des boutons pour :
+Panneau de contrôle rapide pour les actions fréquentes :
 
-- ouvrir portail
-- éteindre toute la maison
-- lancer un scénario cinéma
-- activer une ambiance lumineuse
+- Tout éteindre → `[Scénario][Extinction générale]`
+- Volets ouvrir → `[Salon][Volets montée]`
+- Alarme ON → `[Alarme][Activer]`
+- Ambiance cinéma → `[Lumina][Activer ambiance Cinéma]`
 
+### Télécommande scénarios
 
+Regrouper les scénarios favoris dans une interface simple :
 
+- Matin → `[Scénario][Réveil]`
+- Sortie → `[Scénario][Quitter maison]`
+- Nuit → `[Scénario][Mode nuit]`
+- Invités → `[Scénario][Mode invités]`
 
+---
+
+## 🧠 Bonnes pratiques
+
+- Utilisez des **icônes FontAwesome explicites** pour que les boutons soient compréhensibles sans lecture du label
+- Regroupez les boutons par **thématique** dans des télécommandes séparées (audio, lumières, scénarios)
+- Sur un **écran tactile**, privilégiez des boutons larges avec peu de texte
+- Utilisez la **télécommande personnalisée** pour des interfaces accessibles à des utilisateurs non techniques
+- Testez chaque bouton depuis la page de configuration avant de l'exposer sur le dashboard
+
+---
+
+## 🔍 Dépannage
+
+### Un bouton ne déclenche rien
+
+- Vérifiez que la commande associée est bien **de type action** et non info
+- Vérifiez que l'équipement cible est **activé** dans Jeedom
+- Testez la commande directement depuis sa page dans Jeedom
+
+### Le widget n'apparaît pas sur le dashboard
+
+- Vérifiez que l'équipement est **visible** et **activé**
+- Vérifiez qu'il est bien associé à un **objet parent** affiché sur le dashboard
+
+<!-- screenshot: logs Telco pour diagnostiquer un bouton qui ne répond pas -->
+<!-- path: /img/plugins/telco/logs.png -->
+<!-- ![Logs Telco pour diagnostic](/img/plugins/telco/logs.png) -->
+
+---
+
+## ❤️ Conclusion
+
+Le plugin **Telecommandes** permet de construire en quelques minutes des interfaces de contrôle claires et ergonomiques dans Jeedom.
+
+En résumé :
+
+1. Choisissez le type (Multimédia ou Personnalisée)
+2. Associez chaque bouton à une action Jeedom
+3. Le widget est prêt à utiliser sur votre dashboard
+
+Simple, visuel, et accessible à tous.

@@ -19,17 +19,70 @@ export interface PluginItem {
   description: string; // résumé 1-2 lignes
   icon: string;      // fichier dans static/img/plugins/
   status?: PluginStatus;
+  featured?: boolean; // mis en avant sur la home
+  badges?: string[];
+  ribbon?: string;   // bandeau coin haut-droit (ex: "Nouveau", "Màj", "Beta")
   routes: PluginRoutes;
   links?: PluginLinks;
 }
 
 const plugins: PluginItem[] = [
+  // --- À la une (ordre = gauche → droite) ---
+  {
+    "id": "lumina",
+    "name": "Lumina",
+    "description": "Lumina centralise et pilote toutes les lumières de votre installation Jeedom, quel que soit le protocole utilisé (Hue, Zigbee, Z-Wave, Matter, Wi-Fi…).",
+    "icon": "lumina_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/lumina/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
+  {
+    "id": "matter",
+    "name": "Pont Matter",
+    "description": "plugin qui permet d’intégrer et de piloter des appareils compatibles avec le standard domotique universel Matter",
+    "icon": "matter_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x", "python"],
+    "routes": {
+      "page": "/docs/plugins/matter/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
+  {
+    "id": "telejee",
+    "name": "Telejee",
+    "description": "Pilotez vos téléviseurs et appareils multimédia directement depuis Jeedom via réseau local — commandes, applications, volume et scénarios.",
+    "icon": "telejee_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/telejee/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
+  // --- Reste du catalogue ---
   {
     "id": "ioscloud",
     "name": "iOSCloud",
     "description": "Intégration iCloud / Find My : synchronisation des appareils, localisation, état batterie et automatisations Jeedom.",
     "icon": "ioscloud_icon.png",
-	  "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x","python"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/ioscloud/"
     },
@@ -57,7 +110,7 @@ const plugins: PluginItem[] = [
     "name": "SwitchBot",
     "description": "Intégration SwitchBot via API : états, commandes, synchronisation automatique des équipements.",
     "icon": "switchbot_icon.png",
-    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/switchbot/"
     },
@@ -66,12 +119,11 @@ const plugins: PluginItem[] = [
       "market": null
     }
   },
-   {
+  {
     "id": "groupe",
     "name": "Groupe",
-    "description": "Plugin permettant la création d'un widget avec l'état d'un groupe",
+    "description": "Plugin permettant la création d’un widget avec l’état d’un groupe",
     "icon": "groupe_icon.png",
-    
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/groupe/"
@@ -80,8 +132,8 @@ const plugins: PluginItem[] = [
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
     }
-   },
-   {
+  },
+  {
     "id": "todo",
     "name": "Todo List",
     "description": "Plugin pour créer des todolists ",
@@ -93,23 +145,9 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
-    }	
+    }
   },
-   {
-    "id": "matter",
-    "name": "Pont Matter",
-    "description": "plugin qui permet d’intégrer et de piloter des appareils compatibles avec le standard domotique universel Matter",
-    "icon": "matter_icon.png",
-    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x","python"],
-    "routes": {
-      "page": "/docs/plugins/matter/"
-    },
-    "links": {
-      "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
-    }	
-  },
-   {
+  {
     "id": "TaskLauncher",
     "name": "Task Launcher",
     "description": "Plugin permettant de créer des équipements type réveil, des horloges , des évènements et de lancer des actions,scénarios personnalisables",
@@ -121,12 +159,12 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
-    }	
+    }
   },
-   {
+  {
     "id": "telco",
     "name": "Telecommandes",
-    "description": "Ce plugin permet de créer des télécommandes virtuelles et d'assigner des actions (unique,message,scénario...) aux boutons.",
+    "description": "Ce plugin permet de créer des télécommandes virtuelles et d’assigner des actions (unique,message,scénario...) aux boutons.",
     "icon": "telco_icon.png",
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
@@ -135,8 +173,8 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": null
-    }	
-  }   
+    }
+  }
 ];
 
 export default plugins;

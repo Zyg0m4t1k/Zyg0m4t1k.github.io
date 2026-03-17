@@ -11,7 +11,8 @@ type CataloguePlugin = {
   description: string;
   icon?: string;
   status?: string;
-  badges?: string[]; // ✅ Ajout support multi-badges
+  badges?: string[];
+  ribbon?: string; // texte du bandeau coin (ex: "Nouveau", "Màj", "Beta")
   routes?: { page?: string };
 };
 
@@ -47,6 +48,22 @@ function badgeLabel(badge: string): string {
   return badge;
 }
 
+function badgeColorClass(badge: string): string {
+  const b = badge.toLowerCase();
+  if (b === 'stable')         return styles.stable;
+  if (b === 'beta')           return styles.beta;
+  if (b === 'dev')            return styles.dev;
+  if (b === 'alpha')          return styles.alpha;
+  if (b.startsWith('jeedom')) return styles.badgeJeedom;
+  if (b.startsWith('php'))    return styles.badgePhp;
+  if (b.startsWith('os'))     return styles.badgeOs;
+  if (b === 'python')         return styles.badgePython;
+  if (b === 'daemon')         return styles.badgeDaemon;
+  if (b === 'mqtt')           return styles.badgeMqtt;
+  if (b === 'api')            return styles.badgeApi;
+  return '';
+}
+
 export default function PluginsGrid(): JSX.Element {
   return (
     <div className={styles.grid}>
@@ -62,8 +79,19 @@ export default function PluginsGrid(): JSX.Element {
           ...extraBadges.map(badgeLabel),
         ];
 
+        const ribbonClass = p.ribbon
+          ? p.ribbon.toLowerCase().includes('new') || p.ribbon.toLowerCase().includes('nouv')
+            ? styles.ribbonNew
+            : p.ribbon.toLowerCase().includes('maj') || p.ribbon.toLowerCase().includes('upd') || p.ribbon.toLowerCase().includes('màj')
+            ? styles.ribbonUpdate
+            : styles.ribbonBeta
+          : null;
+
         return (
 			<Link key={p.id} className={styles.card} to={to}>
+			  {p.ribbon && (
+			    <span className={`${styles.ribbon} ${ribbonClass}`}>{p.ribbon}</span>
+			  )}
 			  <div className={styles.header}>
 				<div className={styles.titleRow}>
 				  {icon && (
@@ -78,7 +106,7 @@ export default function PluginsGrid(): JSX.Element {
 				</div>
 
 				{status && (
-				  <div className={styles.statusBadge}>
+				  <div className={`${styles.statusBadge} ${styles[status.toLowerCase()] || ''}`}>
 					{status}
 				  </div>
 				)}
@@ -89,7 +117,7 @@ export default function PluginsGrid(): JSX.Element {
 			  {extraBadges.length > 0 && (
 				<div className={styles.bottomBadges}>
 				  {extraBadges.map((b) => (
-					<div key={b} className={styles.badge}>
+					<div key={b} className={`${styles.badge} ${badgeColorClass(b)}`}>
 					  {badgeLabel(b)}
 					</div>
 				  ))}
