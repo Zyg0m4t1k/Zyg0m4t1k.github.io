@@ -17,15 +17,12 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+  clientModules: ['./src/clientModules/imageZoom.ts'],
 
-	i18n: {
-	  defaultLocale: 'fr',
-	  locales: ['fr', 'en'],
-	  localeConfigs: {
-		fr: { label: 'Français' },
-		en: { label: 'English' },
-	  },
-	},
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr'],
+  },
 
   presets: [
     [
@@ -40,11 +37,12 @@ const config: Config = {
 		  theme: {
 			customCss: require.resolve('./src/css/custom.css'),
 		  },
-      
-      gtag: {
-        trackingID: 'G-NH9FFB7GBH', // <-- mets ton vrai ID ici
-        anonymizeIP: true,
-      },	
+
+        gtag: {
+          trackingID: 'G-NH9FFB7GBH',
+          anonymizeIP: true,
+        },
+
        sitemap: {
         changefreq: 'weekly',
         priority: 0.5,
@@ -75,7 +73,6 @@ themeConfig: {
       { to: '/', label: 'Accueil', position: 'left' },
       { to: '/plugins', label: 'Plugins', position: 'left' },
       { to: '/docs/intro', label: 'Docs', position: 'left' },
-      { type: 'localeDropdown', position: 'right' },
       {
         href: 'https://github.com/Zyg0m4t1k',
         label: 'GitHub',

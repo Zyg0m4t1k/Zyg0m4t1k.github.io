@@ -1,0 +1,8 @@
+{
+  "label": "Smart Home",
+  "position": 99,
+  "link": {
+    "type": "doc",
+    "id": "plugins/mystr0m/index"
+  }
+}

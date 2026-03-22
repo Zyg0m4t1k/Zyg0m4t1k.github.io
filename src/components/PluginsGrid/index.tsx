@@ -14,6 +14,7 @@ type CataloguePlugin = {
   badges?: string[];
   ribbon?: string; // texte du bandeau coin (ex: "Nouveau", "Màj", "Beta")
   routes?: { page?: string };
+  links?: { market?: string | null };
 };
 
 const catalogue = plugins as CataloguePlugin[];
@@ -50,10 +51,10 @@ function badgeLabel(badge: string): string {
 
 function badgeColorClass(badge: string): string {
   const b = badge.toLowerCase();
-  if (b === 'stable')         return styles.stable;
-  if (b === 'beta')           return styles.beta;
-  if (b === 'dev')            return styles.dev;
-  if (b === 'alpha')          return styles.alpha;
+  if (b === 'stable')         return styles.badgeStable;
+  if (b === 'beta')           return styles.badgeBeta;
+  if (b === 'dev')            return styles.badgeDev;
+  if (b === 'alpha')          return styles.badgeAlpha;
   if (b.startsWith('jeedom')) return styles.badgeJeedom;
   if (b.startsWith('php'))    return styles.badgePhp;
   if (b.startsWith('os'))     return styles.badgeOs;
@@ -79,51 +80,49 @@ export default function PluginsGrid(): JSX.Element {
           ...extraBadges.map(badgeLabel),
         ];
 
-        const ribbonClass = p.ribbon
-          ? p.ribbon.toLowerCase().includes('new') || p.ribbon.toLowerCase().includes('nouv')
-            ? styles.ribbonNew
-            : p.ribbon.toLowerCase().includes('maj') || p.ribbon.toLowerCase().includes('upd') || p.ribbon.toLowerCase().includes('màj')
-            ? styles.ribbonUpdate
-            : styles.ribbonBeta
-          : null;
-
         return (
-			<Link key={p.id} className={styles.card} to={to}>
-			  {p.ribbon && (
-			    <span className={`${styles.ribbon} ${ribbonClass}`}>{p.ribbon}</span>
-			  )}
-			  <div className={styles.header}>
-				<div className={styles.titleRow}>
-				  {icon && (
-					<img
-					  className={styles.icon}
-					  src={icon}
-					  alt={p.name}
-					  loading="lazy"
-					/>
-				  )}
-				  <div className={styles.title}>{p.name}</div>
-				</div>
+          <div key={p.id} className={styles.card}>
+            {p.ribbon && (
+              <span className={styles.ribbon}>{p.ribbon}</span>
+            )}
+            <div className={styles.header}>
+              <div className={styles.titleRow}>
+                {icon && (
+                  <img
+                    className={styles.icon}
+                    src={icon}
+                    alt={p.name}
+                    loading="lazy"
+                  />
+                )}
+                <div className={styles.title}>{p.name}</div>
+                {p.links?.market && (
+                  <a
+                    className={styles.marketBadge}
+                    href={p.links.market}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Market →
+                  </a>
+                )}
+              </div>
+            </div>
 
-				{status && (
-				  <div className={`${styles.statusBadge} ${styles[status.toLowerCase()] || ''}`}>
-					{status}
-				  </div>
-				)}
-			  </div>
+            <div className={styles.desc}>{p.description}</div>
 
-			  <div className={styles.desc}>{p.description}</div>
-
-			  {extraBadges.length > 0 && (
-				<div className={styles.bottomBadges}>
-				  {extraBadges.map((b) => (
-					<div key={b} className={`${styles.badge} ${badgeColorClass(b)}`}>
-					  {badgeLabel(b)}
-					</div>
-				  ))}
-				</div>
-			  )}
-			</Link>
+            <div className={styles.footer}>
+              <Link className={`${styles.cta} ${styles.stretchedLink}`} to={to}>Voir →</Link>
+              {allBadges.length > 0 && (
+                <div className={styles.badgeRow}>
+                  {allBadges.map((b) => (
+                    <span key={b} className={`${styles.badge} ${badgeColorClass(b)}`}>{b}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
     </div>

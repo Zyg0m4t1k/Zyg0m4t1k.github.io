@@ -40,6 +40,17 @@
 
 html, body { overflow-x: hidden; }
 
+/* Images docs — taille proportionnelle + zoom au clic */
+.markdown img:not(.no-zoom) {
+  max-width: 100%;
+  max-height: 500px;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 8px;
+  cursor: zoom-in;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+
 /* -----------------------------
    Plugin Hero (Premium)
    ----------------------------- */

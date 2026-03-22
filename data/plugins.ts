@@ -51,13 +51,13 @@ const plugins: PluginItem[] = [
     "icon": "matter_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x", "python"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/matter/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4634"
     }
   },
   {
@@ -67,7 +67,7 @@ const plugins: PluginItem[] = [
     "icon": "telejee_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/telejee/"
     },
@@ -77,6 +77,21 @@ const plugins: PluginItem[] = [
     }
   },
   // --- Reste du catalogue ---
+  {
+    "id": "mystr0m",
+    "name": "Smart Home",
+    "description": "Intégration complète des équipements myStrom et Dingz dans Jeedom — pilotage local, sans cloud obligatoire.",
+    "icon": "mystr0m_icon.png",
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/mystr0m/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3954"
+    }
+  },
   {
     "id": "ioscloud",
     "name": "iOSCloud",
@@ -88,7 +103,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/ioscloud",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3131"
     }
   },
   {
@@ -102,7 +117,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/ics",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3108"
     }
   },
   {
@@ -116,7 +131,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/switchbot",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3892"
     }
   },
   {
@@ -130,7 +145,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=2854"
     }
   },
   {
@@ -144,7 +159,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=1976"
     }
   },
   {
@@ -158,7 +173,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=1314"
     }
   },
   {

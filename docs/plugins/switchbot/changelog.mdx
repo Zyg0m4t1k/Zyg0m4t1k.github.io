@@ -3,57 +3,85 @@ title: Changelog
 hide_title: true
 sidebar_position: 99
 ---
+
+## 2026-03-21
+
+### Corrections
+- **Adaptateur Bluetooth** : la sélection de l'adaptateur dans la configuration est maintenant correctement sauvegardée et prise en compte par le démon (la clé était incorrecte)
+- **Vérification API** : la page Santé effectue désormais un vrai test de connexion à l'API SwitchBot au lieu de vérifier seulement la présence des identifiants — un token invalide est maintenant détecté
+- **Mode Auto** : en mode combiné Bluetooth + Internet, le rafraîchissement via l'API Cloud est maintenant effectif quand les identifiants sont configurés (auparavant ignoré)
+- **Commandes avec curseur** : une commande nécessitant une valeur (ex. position du volet) génère maintenant une erreur claire si la valeur est absente, au lieu d'envoyer une valeur incorrecte à l'appareil
+- **Noms des équipements API** : les équipements créés lors de la synchronisation API ont maintenant un nom propre
+
+### Améliorations
+- **Démon Bluetooth** : les notifications envoyées à Jeedom sont maintenant retentées une fois en cas d'échec réseau, pour ne pas perdre de données
+- **Démon Bluetooth** : même si la valeur d'un capteur n'a pas changé, une mise à jour est quand même envoyée toutes les 60 secondes pour confirmer que l'appareil est bien actif
+- **Messages d'erreur** : les opérations de lecture appelées à tort en exécution donnent maintenant un message explicite pour faciliter le diagnostic
+
+---
+
 ## 2026-03-11
 
 ### Nouveau
-- Ajout des modes **API**, **BLE** et **Auto**
-- Ajout d’un **daemon BLE Python**
-- Ajout du **scan BLE** avec création automatique des équipements
-- Ajout de la **synchronisation API Cloud SwitchBot**
-- Ajout de nombreux nouveaux équipements supportés
-- Ajout d’une **page santé** plus complete
+- Ajout des modes **API Cloud**, **Bluetooth BLE local** et **Auto (combiné)**
+- Ajout d'un **démon Bluetooth** géré automatiquement par le plugin — surveille en permanence vos appareils à portée et envoie les mises à jour en temps réel
+- **Scan Bluetooth** avec création automatique des équipements détectés
+- **Synchronisation API Cloud** avec création automatique des équipements depuis le Hub SwitchBot
+- Ajout de nombreux nouveaux appareils supportés (voir liste complète dans la documentation)
+- **Page Santé** complète : test API, état Python, état du démon
 
 ### Amélioration
-- Refonte majeure de l’architecture interne du plugin
-- Refonte de la configuration générale et de l’interface desktop
+- Refonte complète de l'architecture interne du plugin pour supporter les trois modes de communication
+- Nouvelle interface de configuration avec sections dédiées selon le mode sélectionné
 
 ### Correction
-- Correction de la gestion du **daemon** selon le mode sélectionné
+- Correction de la gestion du démon selon le mode sélectionné
 - Correction de la logique de synchronisation et de création des équipements
-- Correction de plusieurs appels AJAX et de la gestion du mode API pur
+- Correction de plusieurs appels et de la gestion du mode API pur
 
 ### Nettoyage
-- Suppression de l’ancienne logique historique
-- Suppression des anciens composants devenus obsolètes
+- Suppression de l'ancienne logique devenue obsolète
+- Suppression des anciens composants remplacés par la nouvelle architecture
 
+---
 
 ## 2021-01-18
 
-- Fix la création des commandes…
+- Correction de la création des commandes
+
+---
 
 ## 2020-12-17
 
-- État des Curtains (via Jeedom seulement)
+- État des volets Curtain (via Jeedom uniquement)
+
+---
 
 ## 2020-12-06
 
-- Ajout de la prise en charge des Curtains
+- Ajout de la prise en charge des volets Curtain
+
+---
 
 ## 2020-11-21
 
 - Gestion des mots de passe pour les actionneurs
 
+---
+
 ## 2020-10-10
 
-- Fix récupération des données des sondes
-- Récupération du firmware et de la batterie
+- Correction de la récupération des données des sondes
+- Récupération du firmware et du niveau de batterie
+
+---
 
 ## 2020-03-27
 
-- En cas d'antennes, il faut mettre à jour les fichiers
+- Gestion des antennes multiples
 - Icônes
 - Documentation
-- Health
+- Page Santé
 - Prérequis
 - Changelog
-- Fix scan
+- Correction du scan

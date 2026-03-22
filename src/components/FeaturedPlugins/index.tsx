@@ -10,6 +10,10 @@ const STATUS_BADGES = ['stable', 'beta', 'dev', 'alpha'];
 
 function badgeColorClass(badge: string): string {
   const b = badge.toLowerCase();
+  if (b === 'stable')         return styles.badgeStable;
+  if (b === 'beta')           return styles.badgeBeta;
+  if (b === 'dev')            return styles.badgeDev;
+  if (b === 'alpha')          return styles.badgeAlpha;
   if (b.startsWith('jeedom')) return styles.badgeJeedom;
   if (b.startsWith('php'))    return styles.badgePhp;
   if (b.startsWith('os'))     return styles.badgeOs;
@@ -21,11 +25,10 @@ function badgeColorClass(badge: string): string {
 }
 
 function Badges({ badges }: { badges?: string[] }) {
-  const filtered = (badges ?? []).filter((b) => !STATUS_BADGES.includes(b.toLowerCase()));
-  if (!filtered.length) return null;
+  if (!badges?.length) return null;
   return (
     <div className={styles.badgeRow}>
-      {filtered.map((b) => (
+      {badges.map((b) => (
         <span key={b} className={`${styles.badge} ${badgeColorClass(b)}`}>{b}</span>
       ))}
     </div>
@@ -47,7 +50,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
 
         <div className={styles.layout}>
           {/* Hero card */}
-          <Link className={styles.hero} to={hero.routes.page}>
+          <div className={styles.hero}>
             <Ribbon text={hero.ribbon} />
             <div className={styles.heroInner}>
               <div className={styles.heroTop}>
@@ -60,20 +63,31 @@ export default function FeaturedPlugins(): JSX.Element | null {
                   />
                 )}
                 <div className={styles.heroName}>{hero.name}</div>
+                {hero.links?.market && (
+                  <a
+                    className={styles.marketBadge}
+                    href={hero.links.market}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Market →
+                  </a>
+                )}
               </div>
               <p className={styles.heroDesc}>{hero.description}</p>
               <div className={styles.heroFooter}>
-                <span className={styles.cta}>Voir la doc →</span>
+                <Link className={`${styles.cta} ${styles.stretchedLink}`} to={hero.routes.page}>Voir la doc →</Link>
                 <Badges badges={hero.badges} />
               </div>
             </div>
-          </Link>
+          </div>
 
           {/* Secondary cards */}
           {secondary.length > 0 && (
             <div className={styles.secondaryGrid}>
               {secondary.slice(0, 2).map((p) => (
-                <Link key={p.id} className={styles.secondaryCard} to={p.routes.page}>
+                <div key={p.id} className={styles.secondaryCard}>
                   <Ribbon text={p.ribbon} />
                   <div className={styles.secondaryTop}>
                     {p.icon && (
@@ -85,13 +99,24 @@ export default function FeaturedPlugins(): JSX.Element | null {
                       />
                     )}
                     <div className={styles.secondaryName}>{p.name}</div>
+                    {p.links?.market && (
+                      <a
+                        className={styles.marketBadge}
+                        href={p.links.market}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Market →
+                      </a>
+                    )}
                   </div>
                   <p className={styles.secondaryDesc}>{p.description}</p>
                   <div className={styles.secondaryFooter}>
-                    <span className={styles.cta}>Voir →</span>
+                    <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>Voir →</Link>
                     <Badges badges={p.badges} />
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}
