@@ -45,7 +45,9 @@ Le plugin **Smart Home** intègre dans Jeedom deux gammes d'équipements connect
 
 La communication se fait entièrement en **réseau local**, sans dépendance au cloud. Le plugin gère automatiquement la découverte, la création des commandes et la mise à jour des états.
 
-{/* Image à ajouter : /img/plugins/mystr0m/dashboard_overview.png — tableau de bord Jeedom avec plusieurs équipements myStrom et Dingz */}
+![dashboard](/img/plugins/mystr0m/dashboard_overview.png)
+
+
 
 ---
 
@@ -101,7 +103,7 @@ Le plugin peut détecter automatiquement tous les appareils myStrom présents su
 
 Le résultat indique le nombre d'équipements créés, mis à jour, ignorés, ainsi que la liste détaillée avec IP, type et adresse MAC.
 
-{/* Image à ajouter : /img/plugins/mystr0m/decouverte_scan.png — page de configuration avec le bouton de scan et le résultat affiché (liste des appareils trouvés) */}
+![scan](/img/plugins/mystr0m/scan.png)
 
 :::tip
 Si aucun appareil n'est trouvé, créez-les manuellement depuis la liste des équipements (bouton **Ajouter**) en renseignant le type et l'adresse IP de l'appareil.
@@ -173,8 +175,6 @@ Une fois configuré, plus besoin de cliquer sur **Mise à jour** à chaque utili
 
 ## 🔌 Prise Switch
 
-{/* Image à ajouter : /img/plugins/mystr0m/switch_icon.png — icône de la prise myStrom Switch */}
-
 La prise **myStrom Switch** est une prise connectée qui permet d'allumer ou d'éteindre un appareil à distance, et de mesurer sa consommation électrique en temps réel.
 
 Deux variantes sont supportées :
@@ -194,8 +194,6 @@ Deux variantes sont supportées :
 
 ### Configuration
 
-{/* Image à ajouter : /img/plugins/mystr0m/switch_config.png — modale de configuration de la prise Switch avec les champs IP, MAC et fréquence de polling */}
-
 | Champ | Description |
 |---|---|
 | Adresse IP | Adresse IP locale de la prise (ex. 192.168.1.50) |
@@ -206,7 +204,6 @@ Deux variantes sont supportées :
 
 ## 🔌 Prise Switch Zero
 
-{/* Image à ajouter : /img/plugins/mystr0m/switchzero_icon.png — icône de la prise Switch Zero */}
 
 La **Switch Zero** est une version simplifiée de la prise Switch, sans mesure de consommation.
 
@@ -226,8 +223,6 @@ Identique à la Switch : adresse IP, adresse MAC et fréquence de polling.
 ---
 
 ## 🔘 Bouton WiFi (Button)
-
-{/* Image à ajouter : /img/plugins/mystr0m/button_icon.png — icône du bouton myStrom Button */}
 
 Le **myStrom Button** est un bouton WiFi portable fonctionnant sur batterie. Il détecte trois types d'appuis et déclenche des actions configurables dans Jeedom.
 
@@ -254,7 +249,7 @@ Le **myStrom Button** est un bouton WiFi portable fonctionnant sur batterie. Il 
 
 ### Configuration
 
-{/* Image à ajouter : /img/plugins/mystr0m/button_config.png — modale de configuration du bouton avec les trois blocs d'actions (simple, double, long) et le champ IP */}
+![Config bouton](/img/plugins/mystr0m/button_config.png)
 
 1. Renseignez l'**adresse IP** du bouton
 2. Pour chaque type d'appui, ajoutez les **actions Jeedom** à exécuter (scénarios, commandes d'autres équipements…)
@@ -268,7 +263,6 @@ Lorsque vous appuyez sur un bouton myStrom, il envoie une requête HTTP directem
 
 ## 🔘 Bouton WiFi+ (Button+)
 
-{/* Image à ajouter : /img/plugins/mystr0m/buttonplus_icon.png — icône du Button+ */}
 
 Le **Button+** ajoute aux fonctions du Button standard une **détection tactile** : en effleurant le dessus du bouton sans appuyer, une action supplémentaire peut être déclenchée.
 
@@ -284,7 +278,6 @@ La configuration est identique au Button, avec un bloc **Touch** en plus.
 
 ## 🔘 Bouton WiFi+ 2e génération (Button+ Gen2)
 
-{/* Image à ajouter : /img/plugins/mystr0m/buttonplus2_icon.png — icône du Button+ 2e génération */}
 
 La **2e génération du Button+** est une télécommande WiFi avec **4 boutons physiques**, un capteur de **température**, un capteur d'**humidité** et un port de charge.
 
@@ -316,7 +309,7 @@ La **2e génération du Button+** est une télécommande WiFi avec **4 boutons p
 
 ### Configuration
 
-{/* Image à ajouter : /img/plugins/mystr0m/buttonplus2_config.png — modale de configuration avec les 4 panels de boutons, chacun avec ses 3 types d'appuis */}
+![Config bouton+](/img/plugins/mystr0m/buttonplus2_config.png)
 
 La configuration expose **4 panels**, un par bouton. Chaque panel permet de définir les actions à exécuter pour les appuis simple, double et long.
 
@@ -325,8 +318,6 @@ Comme pour le Button standard, cliquez sur **Mise à jour** après configuration
 ---
 
 ## 💡 Ampoule connectée (Bulb)
-
-{/* Image à ajouter : /img/plugins/mystr0m/bulb_icon.png — icône de l'ampoule myStrom Bulb */}
 
 La **myStrom Bulb** est une ampoule WiFi à lumière blanche chaude/froide et couleur RGB. Elle se pilote en on/off, en intensité et en couleur depuis Jeedom.
 
@@ -355,8 +346,6 @@ La **myStrom Bulb** est une ampoule WiFi à lumière blanche chaude/froide et co
 
 ## 🌈 Bandeau LED (Strip)
 
-{/* Image à ajouter : /img/plugins/mystr0m/strip_icon.png — icône du bandeau LED myStrom Strip */}
-
 Le **myStrom Strip** est un bandeau LED WiFi couleur. Ses commandes et sa configuration sont **identiques à celles de l'ampoule Bulb**.
 
 | Commande | Type | Description |
@@ -370,8 +359,6 @@ Le **myStrom Strip** est un bandeau LED WiFi couleur. Ses commandes et sa config
 ---
 
 ## 🚶 Détecteur de présence (PIR)
-
-{/* Image à ajouter : /img/plugins/mystr0m/pir_icon.png — icône du détecteur PIR myStrom */}
 
 Le **myStrom PIR** est un détecteur de présence WiFi qui mesure également la **température** et la **luminosité ambiante**. Il notifie Jeedom en temps réel via callback à chaque détection ou fin de détection.
 
@@ -387,7 +374,7 @@ Le **myStrom PIR** est un détecteur de présence WiFi qui mesure également la 
 
 ### Configuration principale
 
-{/* Image à ajouter : /img/plugins/mystr0m/pir_config.png — modale de configuration du PIR avec les champs IP/MAC et les blocs d'actions présence/absence */}
+![Config PIR](/img/plugins/mystr0m/pir_config.png)
 
 | Champ | Description |
 |---|---|
@@ -402,7 +389,7 @@ Cliquez sur **Mise à jour** pour enregistrer les callbacks sur l'appareil.
 
 Le bouton **Configuration PIR** ouvre un panneau de réglages avancés envoyés directement à l'appareil :
 
-{/* Image à ajouter : /img/plugins/mystr0m/pir_config_avancee.png — panneau de configuration avancée avec les paramètres de détection, seuils de luminosité et options */}
+![Config PIR +](/img/plugins/mystr0m/pir_config_avancee.png)
 
 | Paramètre | Description |
 |---|---|
@@ -425,7 +412,6 @@ Le bouton **Configuration PIR** ouvre un panneau de réglages avancés envoyés 
 
 ## 📖 Présentation du Dingz
 
-{/* Image à ajouter : /img/plugins/mystr0m/dingz_photo.png — photo d'un interrupteur Dingz installé dans un mur */}
 
 Le **Dingz** est un interrupteur WiFi mural suisse qui remplace les interrupteurs traditionnels. Il intègre :
 - **4 boutons capacitifs** configurables indépendamment
@@ -439,8 +425,6 @@ Le Dingz communique entièrement en local via son API HTTP. Jeedom enregistre de
 ---
 
 ## Dingz
-
-{/* Image à ajouter : /img/plugins/mystr0m/dingz_icon.png — icône Dingz dans Jeedom */}
 
 ### Commandes disponibles
 
@@ -474,8 +458,6 @@ Pour chacun des 4 boutons physiques du Dingz :
 
 ### Configuration
 
-{/* Image à ajouter : /img/plugins/mystr0m/dingz_config.png — modale de configuration du Dingz avec les 4 panels de boutons et leurs blocs d'actions */}
-
 | Champ | Description |
 |---|---|
 | Adresse IP | Adresse IP locale du Dingz |
@@ -495,7 +477,6 @@ Lorsqu'un bouton est actionné, le Dingz envoie une requête HTTP directement à
 
 ## Dingz+
 
-{/* Image à ajouter : /img/plugins/mystr0m/dingzplus_icon.png — icône Dingz+ dans Jeedom */}
 
 Le **Dingz+** est identique au Dingz, avec en plus un **détecteur de mouvement PIR intégré** dans le boîtier.
 
@@ -509,13 +490,9 @@ Le **Dingz+** est identique au Dingz, avec en plus un **détecteur de mouvement 
 
 La configuration est identique au Dingz, avec un bloc supplémentaire **PIR / Général** en tête de la modale, permettant de définir les actions à exécuter lors d'une détection de mouvement.
 
-{/* Image à ajouter : /img/plugins/mystr0m/dingzplus_config.png — modale de configuration du Dingz+ avec le bloc PIR en haut puis les 4 panels de boutons */}
-
 ---
 
 ## 🪟 Volets motorisés (Dingz)
-
-{/* Image à ajouter : /img/plugins/mystr0m/volet_widget.png — widget Jeedom d'un volet avec les boutons Monter, Stop, Descendre et le curseur de position */}
 
 Lorsqu'un Dingz est configuré pour piloter des volets motorisés, le plugin crée des équipements **volets** associés. Le Dingz peut gérer jusqu'à **2 volets indépendants**.
 
@@ -535,10 +512,6 @@ Chaque volet est un équipement séparé dans Jeedom, lié au Dingz parent.
 :::tip
 La commande **Position** utilise un curseur de 0 à 100. La valeur **0 correspond au volet ouvert**, la valeur **100 correspond au volet fermé**.
 :::
-
-{/* Image à ajouter : /img/plugins/mystr0m/volet_config.png — équipement volet dans Jeedom avec ses commandes et l'indication du Dingz parent */}
-
----
 
 ---
 
@@ -576,8 +549,6 @@ La page Santé vérifie l'état global du plugin et de vos équipements : connec
 
 Accès : depuis la liste des équipements, cliquez sur l'icône **Santé** en haut de page.
 
-{/* Image à ajouter : /img/plugins/mystr0m/page_sante.png — page santé du plugin avec l'état de chaque équipement */}
-
 ---
 
 ## 🛠️ Résolution des problèmes
@@ -612,13 +583,3 @@ Accès : depuis la liste des équipements, cliquez sur l'icône **Santé** en ha
 
 ---
 
-## ℹ️ Informations
-
-| | |
-|---|---|
-| **Auteur** | zyg0m4t1k |
-| **Licence** | AGPL |
-| **Jeedom minimum** | 3.3 |
-| **Compatible** | miniplus, Smart, Raspberry Pi, Docker, DIY, v4 |
-| **Forum** | [community.jeedom.com](https://community.jeedom.com/t/plugin-smarthome-mystrom-dingz/17774) |
-| **Changelog** | [Voir le changelog](changelog.mdx) |

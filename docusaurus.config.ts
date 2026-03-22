@@ -58,6 +58,11 @@ const config: Config = {
 
 
 themeConfig: {
+  colorMode: {
+    defaultMode: 'dark',
+    disableSwitch: false,
+    respectPrefersColorScheme: false,
+  },
   metadata: [
     {
       name: 'keywords',
