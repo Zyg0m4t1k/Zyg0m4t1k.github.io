@@ -4,6 +4,53 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-03-26
+
+- Ajout du support **Thread local via OTBR (OpenThread Border Router)**
+- Intégration complète de **Docker OTBR** dans le plugin
+- Gestion du **réseau Thread directement depuis Jeedom**
+- Ajout de la gestion du **dataset Thread** :
+  - récupération du dataset actuel
+  - copie
+  - injection d’un dataset existant
+- Ajout d’une interface unifiée **Gestion Matter & Thread**
+- Support du **commissionnement Matter via code manuel**
+- Ajout du **multi-admin (partage d’équipements)** :
+  - génération de code depuis Jeedom
+  - ajout dans Apple Home / Home Assistant / Alexa / Google
+- Clarification des rôles :
+  - Commissionnement → ajout initial
+  - Multi-admin → partage d’équipement existant
+- Intégration du script `dependance.lib` pour la gestion des dépendances Python
+- Vérification automatique de la version de Python requise
+- Support de **Python ≥ 3.11** (requis par python-matter-server)
+- Meilleure compatibilité avec :
+  - Debian 12 (recommandé)
+  - Debian 13 (supporté)
+  - Debian 11 (fonctionnel si Python 3.11 installé)
+- Installation automatisée des dépendances OTBR
+- Vérification des prérequis :
+  - Docker
+  - droits `www-data`
+- Ajout du bouton :
+  - **Redémarrer Apache** (correctif droits Docker)
+- Gestion complète du cycle OTBR :
+  - installation
+  - lancement
+  - état du service
+- Création d’un **nouveau réseau Thread**
+- Support de l’**import de dataset existant** :
+  - Home Assistant
+  - sauvegarde utilisateur
+- Compatibilité avec environnement existant (pas de reset obligatoire)
+- Synchronisation automatique des équipements après commissioning
+- Amélioration de la détection des équipements Matter
+- Correction des faux messages d’erreur lors du commissioning
+- Amélioration de la gestion des retours `node_id`
+- Stabilisation du daemon Matter
+
+---
+
 ## 2026-03-17
 
 - Refonte complète de la documentation

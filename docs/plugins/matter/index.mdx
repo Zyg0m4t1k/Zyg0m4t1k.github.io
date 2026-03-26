@@ -73,7 +73,7 @@ Exemples compatibles :
 - Apple TV 4K récente
 - Amazon Echo compatible Thread
 - Google Nest Hub (2e génération)
-- Dongle OTBR (OpenThread Border Router)
+- [Dongle OTBR (OpenThread Border Router)](#otbr-thread-mode-avance)
 
 > ⚠️ Les appareils Matter en Wi‑Fi ou Ethernet n'ont pas besoin de Border Router.
 
@@ -206,12 +206,6 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 
 ### Étape 1 — Récupérer le code de jumelage
 
-Le code se trouve généralement :
-
-- Imprimé sur une étiquette sous l'appareil
-- Dans l'application du fabricant (format QR code ou code numérique)
-- Sous la forme `MT:XXXXXXXXXX` (QR code scannable)
-
 Si l'appareil est déjà appairé avec un autre écosystème, selon votre configuration :
 
 - Partagez-le depuis l'application d'origine (si la fonctionnalité est disponible)
@@ -220,9 +214,9 @@ Si l'appareil est déjà appairé avec un autre écosystème, selon votre config
 ### Étape 2 — Jumelage dans Jeedom
 
 1. Allez dans **Plugins → Matter → Configuration**
-2. Dans la section **Jumelage**, collez le code Matter (numérique ou `MT:…`)
+2. Dans la section **Commissioning**, collez le code Matter (numérique ou `MT:…`)
 3. Cochez **Réseau uniquement** si vous ne voulez pas utiliser le Bluetooth
-4. Cliquez sur **Jumeler**
+4. Cliquez sur **Commissionner**
 5. L'opération peut prendre jusqu'à **3 minutes**
 
 ![Ajouter équipement](/img/plugins/matter/add_device.png)
@@ -445,6 +439,178 @@ Si vous avez déjà Home Assistant avec python-matter-server actif, vous pouvez 
 > ⚠️ En mode externe, le fabric Matter est partagé. Les appareils appairés dans HA seront également visibles dans Jeedom, mais **chaque écosystème maintient sa propre liste de commandes**.
 
 ---
+
+
+---
+
+## 🔧 OTBR / Thread (mode avancé) {#otbr-thread-mode-avance}
+
+Cette section est destinée aux utilisateurs souhaitant utiliser **Thread localement** avec Jeedom via un dongle OTBR.
+
+### 📡 Principe
+
+Le plugin Matter peut fonctionner avec :
+
+- 🌐 Un serveur Matter externe (Home Assistant, etc.)
+- 🔌 Un **réseau Thread local** via OTBR (Docker + dongle)
+
+👉 Dans ce mode, Jeedom devient autonome pour :
+- le commissioning Thread
+- la gestion du réseau Thread
+- la communication avec les devices
+
+---
+
+### 🧱 Prérequis OTBR
+
+- Docker installé et fonctionnel  
+- Utilisateur `www-data` dans le groupe `docker`  
+- Dongle compatible Thread (Sonoff, SkyConnect, etc.)
+
+---
+
+### ⚙️ Installation
+
+Depuis la page **Configuration → OTBR** :
+
+1. Cliquer sur **Installer le support Thread**  
+2. Attendre la fin de l’installation (quelques minutes)  
+3. Vérifier l’état :
+   - Docker : **OK**
+   - www-data dans docker : **OK**
+
+4. Si Docker n’est pas accessible ou droits `www-data` incorrects :  
+   👉 Cliquer sur **Redémarrer Apache**  
+   ⚠️ À faire **une seule fois après installation**
+
+5. Cliquer sur **Lancer OTBR**
+
+![Statut OTBR Thread](/img/plugins/matter/status_otbr.png)
+
+---
+
+### 🌐 Configuration du réseau Thread
+
+Deux cas de figure :
+
+#### 🆕 Nouveau réseau Thread
+- Cliquer sur **Créer / Réinitialiser le réseau Thread**  
+👉 Le plugin initialise automatiquement un nouveau dataset
+
+---
+
+#### 🔁 Réseau existant (recommandé)
+- Récupérer un **dataset Thread existant** :
+  - Home Assistant  
+  - Sauvegarde d’une ancienne clé  
+
+- Ouvrir la fenêtre **Gestion Matter & Thread**  
+- Coller le dataset dans le champ prévu  
+- Cliquer sur **Injecter le dataset**
+
+![Ajouter dataset](/img/plugins/matter/add_dataset.png)
+
+👉 Permet de :
+- conserver les appareils existants  
+- éviter de devoir tout réappairer  
+
+---
+
+### 🔗 Commissionnement, multi-admin et dataset
+
+La fenêtre **Gestion Matter & Thread** regroupe trois fonctions principales :
+
+![Admin Thread](/img/plugins/matter/admin_thread.png)
+
+---
+
+#### ➕ Commissionnement Matter
+
+Permet d’ajouter un nouvel équipement Matter à Jeedom.
+
+- Saisir le **code Matter** (recommandé en manuel)  
+👉 Utiliser de préférence le **code manuel** (plus fiable que le QR code)
+
+- Option possible : **forcer la configuration réseau** (avancé)  
+- Cliquer sur **Commissionner**
+
+👉 Utilisé pour :
+- ajouter un nouvel appareil  
+- connecter un device neuf ou réinitialisé  
+
+---
+
+#### 🔄 Partage multi-admin
+
+Permet d’ajouter dans un autre contrôleur Matter un équipement déjà présent dans Jeedom  
+(ex : Apple Home, Home Assistant)
+
+Étapes :
+1. Sélectionner l’équipement dans Jeedom  
+2. Cliquer sur **Générer un code**  
+3. Utiliser ce code dans l’autre écosystème  
+
+👉 Permet :
+- d’éviter un reset  
+- de partager un appareil entre plusieurs systèmes  
+
+👉 Nécessite que les contrôleurs soient sur le **même réseau Thread**
+
+---
+
+#### 🧠 Différence importante
+
+- **Commissionnement** → ajout initial d’un appareil  
+- **Multi-admin** → partage d’un appareil existant  
+
+👉 Les deux méthodes sont complémentaires et peuvent être utilisées ensemble  
+
+---
+
+#### 📋 Dataset Thread
+
+Le dataset contient :
+- les clés réseau  
+- le nom du réseau  
+- la configuration Thread  
+
+👉 Le dataset est l’élément central du réseau Thread : tous les contrôleurs doivent partager le même  
+
+Fonctions disponibles :
+- 📥 **Récupérer le dataset actuel**  
+- 📋 **Copier**  
+- 📤 **Injecter un dataset**  
+
+---
+
+### 💡 Conseil
+
+👉 Privilégier l’utilisation d’un **dataset existant** si vous avez déjà un réseau Thread  
+👉 Cela garantit une continuité et évite toute perte d’équipements  
+
+---
+
+### 🧠 Bonnes pratiques
+
+- Toujours utiliser **un seul réseau Thread**  
+- Faire une **sauvegarde du dataset**  
+- Réutiliser le dataset lors d’un changement de clé  
+
+---
+
+### ⚠️ Important
+
+- Le Bluetooth est utilisé uniquement pour le commissioning  
+- Une fois ajouté, le device communique en Thread (réseau IP)  
+- Si le dongle est remplacé → réinjecter le dataset  
+- Si le dataset est perdu → les appareils devront être réappairés  
+
+---
+
+### 🔄 Synchronisation des équipements
+
+- Les devices sont automatiquement détectés après commissioning  
+- Une synchronisation peut être lancée manuellement si nécessaire  
 
 ## 🐛 Dépannage
 
