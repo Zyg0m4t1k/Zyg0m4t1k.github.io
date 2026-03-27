@@ -51,7 +51,7 @@ const plugins: PluginItem[] = [
     "icon": "matter_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
+    "badges": ["Jeedom 4.4+", "beta", "os 12+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/matter/"
     },
