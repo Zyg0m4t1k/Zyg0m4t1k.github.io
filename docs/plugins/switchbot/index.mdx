@@ -43,8 +43,6 @@ Il fonctionne de **trois façons différentes** selon votre installation :
 - 📡 **Bluetooth local** — directement depuis votre box Jeedom, sans Hub
 - 🔄 **Mode Auto** — les deux combinés pour tirer le meilleur de chaque appareil
 
-{/* Image à ajouter : /img/plugins/switchbot/dashboard.png — vue du tableau de bord Jeedom avec plusieurs équipements SwitchBot */}
-
 ---
 
 ## Équipements supportés
@@ -90,8 +88,6 @@ Il fonctionne de **trois façons différentes** selon votre installation :
 3. Allez dans **Plugins → Gestion des plugins → SwitchBot → Configuration**
 4. Cliquez sur **Installer les dépendances** et attendez la fin (quelques minutes)
 5. Choisissez votre mode de fonctionnement puis suivez la configuration correspondante ci-dessous
-
-{/* Image à ajouter : /img/plugins/switchbot/installation_dependances.png — page du plugin avec le bouton d'installation des dépendances et la barre de progression */}
 
 ---
 
@@ -147,8 +143,6 @@ En mode **Auto**, le plugin exploite intelligemment les deux canaux :
 
 :::
 
-{/* Image à ajouter : /img/plugins/switchbot/mode_auto_schema.png — schéma simplifié montrant les deux flux : Bluetooth pour les capteurs, API pour les commandes */}
-
 ---
 
 ## Configuration de l'API Cloud
@@ -164,8 +158,6 @@ Pour utiliser l'API SwitchBot, vous avez besoin d'un **Token** et d'un **Secret*
 5. Une nouvelle section **Options développeur** apparaît
 6. Copiez le **Token** et le **Secret**
 
-{/* Image à ajouter : /img/plugins/switchbot/app_developer_options.png — captures de l'application SwitchBot montrant le chemin Profil → Préférences → Options développeur */}
-
 ### Renseigner les clés dans Jeedom
 
 1. Dans la configuration du plugin, collez votre **Token** dans le champ dédié
@@ -176,8 +168,6 @@ Pour utiliser l'API SwitchBot, vous avez besoin d'un **Token** et d'un **Secret*
 Les clés API sont liées à votre compte SwitchBot. Si vous changez votre mot de passe ou révoquez les clés depuis l'application, pensez à mettre à jour la configuration dans Jeedom.
 :::
 
-{/* Image à ajouter : /img/plugins/switchbot/config_api_token.png — champs Token et Secret renseignés dans la page de configuration du plugin */}
-
 ---
 
 ## Configuration du Bluetooth
@@ -185,8 +175,6 @@ Les clés API sont liées à votre compte SwitchBot. Si vous changez votre mot d
 1. Sélectionnez le mode **Bluetooth BLE local** (ou **Auto**) dans la configuration
 2. Choisissez votre **adaptateur Bluetooth** dans la liste (en général `hci0`)
 3. Ajustez la **durée du scan** si nécessaire (10 secondes par défaut)
-
-{/* Image à ajouter : /img/plugins/switchbot/config_ble.png — section Bluetooth de la configuration avec le sélecteur d'adaptateur et le bouton de scan */}
 
 ---
 
@@ -229,6 +217,15 @@ Les commandes sont créées automatiquement selon le type d'appareil. Voici les 
 | Température | Info | Température en °C |
 | Humidité | Info | Humidité en % |
 | Batterie | Info | Niveau de batterie en % |
+| Luminosité | Info | Niveau de luminosité actuel (%) |
+| Régler luminosité | Action | Définit la luminosité (1–100) |
+| Couleur | Info | Couleur actuelle (format HEX `#RRGGBB`) |
+| Régler couleur | Action | Définit la couleur (RGB / HEX) |
+| Température de couleur | Info | Température actuelle (Kelvin) |
+| Régler température | Action | Définit la température de couleur |
+| Mode couleur | Info | Mode actif (couleur ou blanc) |
+| Effet | Info | Effet lumineux actif |
+| Régler effet | Action | Active un effet prédéfini |
 | Position | Info | Position du volet (0 = ouvert, 100 = fermé) |
 | Aller à la position | Action | Déplace le volet à la position souhaitée (0–100) |
 | Mouvement détecté | Info | Mouvement en cours (1) ou non (0) |
@@ -263,8 +260,6 @@ Si le démon ne parvient pas à démarrer, vérifiez :
 
 :::
 
-{/* Image à ajouter : /img/plugins/switchbot/demon_status.png — bandeau de gestion du plugin avec les boutons Démarrer, Redémarrer, Arrêter et l'indicateur d'état */}
-
 ---
 
 ## Page Santé
@@ -276,8 +271,6 @@ La page Santé vérifie en un coup d'œil l'état de toute votre installation :
 - **Démon** — actif ou arrêté
 
 Accès : depuis la liste des équipements SwitchBot, cliquez sur l'icône **Santé** en haut de page.
-
-{/* Image à ajouter : /img/plugins/switchbot/page_sante.png — page santé avec les indicateurs OK / FAIL pour chaque composant */}
 
 ---
 
@@ -330,14 +323,3 @@ Les commandes sont générées automatiquement à partir des profils d'appareils
 - En mode Bluetooth, le démon met à jour l'état dès que l'appareil envoie un signal. Si rien ne se passe, redémarrez le démon
 
 ---
-
-## Informations
-
-| | |
-|---|---|
-| **Auteur** | zyg0m4t1k |
-| **Licence** | AGPL |
-| **Jeedom minimum** | 4.4 |
-| **Système** | Debian 11 à 13 |
-| **Compatible** | Smart, Atlas, Luna, Raspberry Pi, Docker, DIY, v4 |
-| **Changelog** | [Voir le changelog](changelog.mdx) |

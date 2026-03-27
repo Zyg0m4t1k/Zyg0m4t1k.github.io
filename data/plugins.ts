@@ -125,7 +125,7 @@ const plugins: PluginItem[] = [
     "name": "SwitchBot",
     "description": "Intégration SwitchBot via API : états, commandes, synchronisation automatique des équipements.",
     "icon": "switchbot_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/switchbot/"
     },
