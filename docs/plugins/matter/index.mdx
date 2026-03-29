@@ -1,6 +1,6 @@
 ---
 title: Plugin Matter
-description: Intégrer et piloter vos appareils Matter directement depuis Jeedom via python-matter-server
+description: Intégrer et piloter vos appareils Matter directement depuis Jeedom via **Matter Server (JS)**
 hide_title: true
 ---
 
@@ -9,7 +9,7 @@ import PluginHero from '@site/src/components/PluginHero';
 <PluginHero
   pluginId="matter"
   title="Plugin Matter"
-  description="Intégrer et piloter vos appareils Matter directement depuis Jeedom via python-matter-server."
+  description="Intégrer et piloter vos appareils Matter directement depuis Jeedom via **Matter Server (JS)**."
   icon="/img/plugins/matter_icon.png"
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
   isNew
@@ -17,18 +17,23 @@ import PluginHero from '@site/src/components/PluginHero';
 
 Le plugin **Matter** permet d'ajouter, de piloter et de superviser des appareils compatibles Matter directement depuis Jeedom.
 
-Il s'appuie sur **python-matter-server** (projet Home Assistant) pour communiquer avec les appareils Matter via le protocole CHIP/Matter, et expose une interface que Jeedom utilise pour contrôler les équipements.
+Il s'appuie sur **Matter Server (JS)** (projet Home Assistant) pour communiquer avec les appareils Matter via le protocole Matter, et expose une interface que Jeedom utilise pour contrôler les équipements.
 
 ---
 
-:::warning Compatibilité système
+:::warning Migration importante (v0.5.0)
 
-Le serveur Matter embarqué utilise les bibliothèques natives du SDK Matter .
+La version **0.5.0** introduit une refonte complète du plugin avec un passage à **Matter JS (Node.js)**.
 
-❌ **Debian 11 non compatible**  
-Des versions sont trop anciennes.
+⚠️ Il est **fortement conseillé** de :
+- Désinstaller l’ancienne version du plugin (démon Python)
+- Installer ensuite la nouvelle version
 
-✅ **Debian 12 minimum requis**
+💾 Sauvegarde des données :
+- Sauvegarder `chip.json` et les fichiers `*.json` (ex : `xyzyvysvzsz.json`) présents dans `data/matter-server`
+- Après installation, les remettre dans `plugins/matter/data/`
+
+⚠️ À faire **avant de lancer le démon** (avant activation du plugin)
 
 :::
 
@@ -38,20 +43,20 @@ Des versions sont trop anciennes.
 
 Le plugin repose sur trois composants :
 
-1. **python-matter-server** — serveur Matter gérant les connexions avec les appareils
-2. **Démon Python (matterd)** — pont entre Jeedom et python-matter-server
+1. **Matter Server (JS)** — serveur Matter gérant les connexions avec les appareils
+2. **Démon nodejs (matterd)** — pont entre Jeedom et Matter Server (JS)
 3. **Jeedom** — interface utilisateur, gestion des équipements et des commandes
 
 Le flux de données est le suivant :
 
-- Le démon interroge python-matter-server en continu (polling + souscriptions WebSocket)
+- Le démon interroge Matter Server (JS) en continu (polling + souscriptions WebSocket)
 - Chaque changement d'état est transmis à Jeedom via l'API REST du plugin
 - Les commandes Jeedom sont relayées au démon qui les exécute sur le serveur Matter
 
 Le plugin prend en charge deux modes de serveur :
 
-- **Embarqué** : le plugin démarre et gère python-matter-server automatiquement
-- **Externe** : le plugin se connecte à une instance python-matter-server existante (ex. Home Assistant)
+- **Embarqué** : le plugin démarre et gère Matter Server (JS) automatiquement
+- **Externe** : le plugin se connecte à une instance Matter Server (JS) existante (ex. Home Assistant)
 
 ---
 
@@ -169,15 +174,20 @@ Pour l'inclusion, vous aurez besoin du **code à 11 chiffres** de votre appareil
 
 ### Étape 2 — Installer les dépendances
 
-Les dépendances incluent python-matter-server, ses dépendances CHIP/Matter et les bibliothèques Python nécessaires. L'installation peut prendre **5 à 15 minutes** selon votre machine.
+Les dépendances incluent **Matter Server (JS)** et les modules nécessaires au fonctionnement du démon.  
+L'installation peut prendre **2 à 5 minutes** selon votre machine.
 
 1. Allez dans **Plugins → Matter → Configuration**
 2. Cliquez sur **Installer les dépendances**
 3. Attendez que le statut passe à **OK** avant de continuer
 
+⚠️ Cette étape installe automatiquement :
+- Node.js (si nécessaire)
+- Les dépendances npm (`matter-server`, `ws`, etc.)
+
 ![Dépendances](/img/plugins/matter/dependencies.png)
 
-> ⚠️ Ne redémarrez pas la page pendant l'installation. Vous pouvez suivre la progression dans les logs (`log/matter`).
+> ⚠️ Ne redémarrez pas la page pendant l'installation. Vous pouvez suivre la progression dans les logs 
 
 ### Étape 3 — Démarrer le démon
 
@@ -197,7 +207,7 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 | Mode | Description |
 |------|-------------|
 | **Auto** (défaut) | Le plugin détecte si un serveur Matter est déjà actif. Sinon, il le démarre. |
-| **Embarqué** | Le plugin démarre et gère python-matter-server lui-même. |
+| **Embarqué** | Le plugin démarre et gère **Matter Server (JS)** lui-même. |
 | **Externe** | Le plugin se connecte à une instance existante (ex. Home Assistant). |
 
 ### Paramètres disponibles
@@ -205,10 +215,10 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 | Paramètre | Valeur par défaut | Description |
 |-----------|-------------------|-------------|
 | Mode serveur | `auto` | Voir tableau ci-dessus |
-| Port serveur | `5580` | Port TCP de python-matter-server (WebSocket) |
+| Port serveur | `5580` | Port TCP du Matter Server (WebSocket) |
 | URL serveur Matter | `http://127.0.0.1:5580/ws` | URL WebSocket (mode externe uniquement) |
 | Token Matter | *(vide)* | Token d'authentification (si requis) |
-| Port démon | `55123` | Port RPC HTTP du démon Jeedom |
+| Port démon | `55123` | Port RPC HTTP du démon Jeedom (Node.js) |
 | Adaptateur Bluetooth | `auto` | Sélection de l'adaptateur BT pour le jumelage |
 
 > En mode externe, renseignez l'URL WebSocket de votre serveur Matter (ex. `ws://192.168.1.50:5580/ws`).
@@ -383,16 +393,16 @@ La page Santé (accessible via le bouton **Santé** sur la page du plugin) affic
 
 | Vérification | Description |
 |--------------|-------------|
-| Version Python | Doit être ≥ 3.10 |
-| Environnement virtuel | Présence et intégrité du venv Python |
-| Démon | Statut du processus matterd |
+| Node.js | Version installée et compatible |
+| npm | Gestionnaire de paquets Node.js disponible |
+| Matter Server (JS) | Installation du module `matter-server` |
+| Démon | Statut du processus matterd (Node.js) |
 | RPC démon | Disponibilité de l'API RPC locale |
-| Mode serveur | Configuration du mode serveur |
-| Serveur Matter (systemd) | Statut du service python-matter-server |
 | Connexion Matter server | Connectivité WebSocket vers le serveur |
 | Répertoire de données | Présence et accessibilité du stockage |
 | Bluetooth | Disponibilité de l'adaptateur BT système |
 | IPv6 | Configuration réseau IPv6 (requis pour mDNS) |
+| Docker / OTBR | Statut du conteneur et du réseau Thread (si activé) |
 
 ### Actions disponibles
 
@@ -439,17 +449,18 @@ SI [Couloir][Capteur Matter][occupancy] = 1 ALORS ...
 ```
 
 ---
-
 ## 🧩 Mode Serveur Externe (Home Assistant)
 
-Si vous avez déjà Home Assistant avec python-matter-server actif, vous pouvez partager la même instance :
+Si vous utilisez déjà Home Assistant avec **Matter Server (JS)** actif, vous pouvez partager la même instance :
 
 1. Dans la configuration, sélectionnez **Mode : Externe**
 2. Renseignez l'URL WebSocket : `ws://<ip-home-assistant>:5580/ws`
 3. Ajoutez le token si nécessaire
-4. Sauvegardez et redémarrez le démon
+4. Sauvegardez puis redémarrez le démon
 
-> ⚠️ En mode externe, le fabric Matter est partagé. Les appareils appairés dans HA seront également visibles dans Jeedom, mais **chaque écosystème maintient sa propre liste de commandes**.
+> ⚠️ En mode externe, le **fabric Matter est partagé**.  
+> Les appareils déjà appairés dans Home Assistant seront visibles dans Jeedom,  
+> mais **chaque contrôleur conserve ses propres commandes et états**.
 
 ---
 
