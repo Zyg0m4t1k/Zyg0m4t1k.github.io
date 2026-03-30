@@ -59,6 +59,7 @@ function badgeColorClass(badge: string): string {
   if (b.startsWith('php'))    return styles.badgePhp;
   if (b.startsWith('os'))     return styles.badgeOs;
   if (b === 'python')         return styles.badgePython;
+  if (b === 'node.js')        return styles.badgeNodejs;
   if (b === 'daemon')         return styles.badgeDaemon;
   if (b === 'mqtt')           return styles.badgeMqtt;
   if (b === 'api')            return styles.badgeApi;

@@ -61,6 +61,7 @@ function badgeStyle(badge: string): React.CSSProperties {
   if (b.startsWith('php'))    return { ...base, borderColor: '#a78bfa', color: '#a78bfa', background: 'rgba(167,139,250,.08)' };
   if (b.startsWith('os'))     return { ...base, borderColor: '#f87171', color: '#f87171', background: 'rgba(248,113,113,.08)' };
   if (b === 'python')         return { ...base, borderColor: '#facc15', color: '#ca8a04', background: 'rgba(250,204,21,.08)' };
+  if (b === 'node.js')        return { ...base, borderColor: '#83cd29', color: '#417e38', background: 'rgba(131,205,41,.08)' };
   if (b === 'daemon')         return { ...base, borderColor: '#22d3ee', color: '#22d3ee', background: 'rgba(34,211,238,.08)' };
   if (b === 'mqtt')           return { ...base, borderColor: '#fb923c', color: '#fb923c', background: 'rgba(251,146,60,.08)' };
   if (b === 'api')            return { ...base, borderColor: '#34d399', color: '#34d399', background: 'rgba(52,211,153,.08)' };
