@@ -1,0 +1,252 @@
+---
+title: Plugin Jeeloc
+description: Visualisez et centralisez plusieurs localisations dans un widget Jeedom avec carte interactive et géocodage automatique
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="jeeloc"
+  title="Plugin Jeeloc"
+  description="Visualisez et centralisez plusieurs localisations dans un widget Jeedom avec carte interactive et géocodage automatique."
+  icon="/img/plugins/jeeloc_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+Le plugin **Jeeloc** permet d'agréger plusieurs sources de localisation (commandes GPS existantes ou coordonnées fixes) dans un seul widget Jeedom. Il affiche une **carte interactive** OpenStreetMap ou une **vue résumé** avec adresse, distance et horodatage pour chaque point suivi.
+
+---
+
+## ✨ Principe de fonctionnement
+
+Jeeloc ne collecte pas lui-même les coordonnées GPS : il **réutilise des commandes de localisation déjà présentes** dans Jeedom (iOSCloud, Android, etc.) ou des coordonnées fixes saisies manuellement.
+
+Pour chaque commande configurée, il :
+
+1. Récupère les coordonnées `lat,lon`
+2. Effectue un **géocodage inverse** via Nominatim (OpenStreetMap) pour obtenir l'adresse
+3. Calcule les **distances** entre les points si un point de référence est défini
+4. Affiche le tout dans un widget avec **vue carte** (Leaflet) ou **vue info**
+
+---
+
+## 🔧 Prérequis
+
+- Jeedom **4.4** ou supérieur
+- PHP **7.4 / 8.x**
+- Au moins une commande Jeedom de type `info` retournant des coordonnées au format `lat,lon`
+  *(ou des coordonnées fixes à saisir manuellement)*
+- Accès internet pour le géocodage Nominatim
+  *(ou réseau local avec accès à `nominatim.openstreetmap.org`)*
+
+---
+
+## 🚀 Installation
+
+### Étape 1 — Installer le plugin depuis le Market
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Jeeloc**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+### Étape 2 — Créer un équipement
+
+1. Allez dans **Plugins → Organisation → Jeeloc**
+2. Cliquez sur **Ajouter**
+3. Donnez un nom à l'équipement (ex : *Famille*)
+4. Activez-le et assignez-le à un objet
+5. Sauvegardez
+
+---
+
+## ⚙️ Configuration de l'équipement
+
+### Onglet Équipement
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Nom** | Nom affiché dans le widget |
+| **Objet parent** | Pièce ou groupe Jeedom |
+| **Vue par défaut** | `Carte` ou `Info` au chargement du widget |
+| **Cron de rafraîchissement** | Planification du rafraîchissement automatique (ex : `*/5 * * * *`) |
+
+### Onglet Commandes
+
+C'est ici que vous ajoutez les personnes ou lieux à suivre.
+
+Deux types de commandes sont disponibles :
+
+#### 🔵 Commande de type « Localisation »
+
+Utilise une commande Jeedom existante retournant `lat,lon`.
+
+| Champ | Description |
+|-------|-------------|
+| **Nom** | Affiché dans le widget |
+| **Commande source** | Commande Jeedom retournant `lat,lon` (ex : iOSCloud) |
+| **Marqueur** | Couleur du marqueur sur la carte |
+| **Icône** | Icône FontAwesome (male, female, home, car…) |
+| **Couleur** | Couleur de l'icône et du fond dans la vue info |
+| **Image** | Image personnalisée (remplace l'icône) |
+| **Point de référence** | Cochez si ce point sert de référence pour le calcul de distances |
+| **Seuil de géocodage** | Distance minimale (m) avant de relancer le géocodage |
+
+:::caution Distance minimale (offset)
+
+Le paramètre **Distance minimale (m)** permet de limiter les appels au reverse geocoding.
+
+👉 Le géocodage inverse ne sera relancé **que si la distance entre deux positions dépasse cette valeur**.
+
+Cela permet de :
+- réduire fortement le nombre de requêtes vers Nominatim (OpenStreetMap)
+- améliorer les performances du plugin
+- éviter tout blocage lié à un usage trop intensif
+
+⚠️ Il est fortement recommandé de définir une valeur (50 mètres par défaut).
+
+Sans ce paramètre, chaque mise à jour de position peut déclencher une requête inutile.
+
+:::
+
+#### 🟢 Commande de type « Coordonnées »
+
+Coordonnées fixes saisies manuellement (ex : domicile, bureau).
+
+| Champ | Description |
+|-------|-------------|
+| **Coordonnées** | Format `lat,lon` (ex : `48.8566,2.3522`) |
+
+---
+
+## 🗺️ Widget — Vue Carte
+
+La vue carte affiche tous les points sur une carte **OpenStreetMap** interactive (Leaflet).
+
+- Chaque point est représenté par un marqueur coloré avec son icône ou son image
+- Un **popup** s'affiche au clic : nom, adresse, horodatage
+- Des **boutons de navigation** permettent de centrer la carte sur chaque point individuellement
+- Le bouton **A** (tout afficher) recentre la carte sur l'ensemble des marqueurs
+
+---
+
+## 📋 Widget — Vue Info
+
+La vue info affiche une ligne par commande avec :
+
+| Colonne | Contenu |
+|---------|---------|
+| **Image / Icône** | Photo ou icône FontAwesome sur fond coloré |
+| **Adresse** | Nom, rue, code postal et ville |
+| **Horloge** | Temps écoulé depuis la dernière mise à jour |
+| **Distance** | Distance calculée par rapport au point de référence |
+
+---
+
+## 📍 Géocodage inverse
+
+Le géocodage est effectué automatiquement via **Nominatim** (OpenStreetMap) :
+
+- Déclenché lors d'un rafraîchissement si les champs adresse sont vides
+- Relancé si le déplacement dépasse le **seuil configuré** (champ Offset)
+- Limité à **1 appel toutes les 2 secondes** (respect de la politique d'usage Nominatim)
+- Les géocodages en attente (`need_geocoding`) sont traités par le **cron Jeedom**
+
+Les données récupérées sont :
+
+- Rue + numéro
+- Code postal
+- Ville
+
+---
+
+## 📏 Calcul de distance
+
+Pour activer le calcul de distance :
+
+1. Cochez **Point de référence** (📌) sur la commande qui sert d'origine (ex : domicile)
+2. Les autres commandes affichent automatiquement leur distance par rapport à ce point
+3. La distance est exprimée en **mètres** ou **kilomètres** selon la valeur
+
+---
+
+## 🔁 Rafraîchissement automatique
+
+Configurez une expression **cron** dans l'onglet Équipement pour un rafraîchissement périodique.
+
+**Exemples :**
+
+| Expression | Fréquence |
+|------------|-----------|
+| `*/5 * * * *` | Toutes les 5 minutes |
+| `*/10 * * * *` | Toutes les 10 minutes |
+| `0 * * * *` | Toutes les heures |
+
+Vous pouvez aussi utiliser le **générateur de cron** intégré (bouton 🕐 dans la configuration).
+
+---
+
+## 🛠️ Utilisation dans les scénarios
+
+Les commandes Jeeloc s'utilisent comme n'importe quelle commande Jeedom.
+
+**Exemples :**
+
+```
+# Vérifier si une personne est proche de la maison
+SI [Famille][Moi][distance] < 500 ALORS ...
+
+# Déclencher une action sur changement de localisation
+SI [Famille][Voiture][valeur] != "" ALORS ...
+```
+
+---
+
+## 🐛 Dépannage
+
+### L'adresse ne se met pas à jour
+
+- Vérifiez que Jeedom a accès à `nominatim.openstreetmap.org`
+- Consultez les logs `jeeloc` pour les erreurs de géocodage
+- Vérifiez que les coordonnées retournées par la commande source sont au format `lat,lon`
+
+### Le widget est vide
+
+- Vérifiez que l'équipement est activé
+- Vérifiez que les commandes sont visibles (colonne **Affichage** cochée)
+- Videz le cache Jeedom (**Administration → Cache → Vider le cache**)
+
+### La carte ne s'affiche pas
+
+- Vérifiez que Jeedom a accès aux tuiles OpenStreetMap (`tile.openstreetmap.org`)
+- Vérifiez la console navigateur pour d'éventuelles erreurs JavaScript
+
+### Les distances ne s'affichent pas
+
+- Vérifiez qu'une commande est bien marquée **Point de référence** (case 📌 cochée)
+- Sauvegardez l'équipement et rafraîchissez
+
+---
+
+## 📋 Compatibilité
+
+| Environnement | Statut |
+|---------------|--------|
+| miniplus | ✅ |
+| Smart | ✅ |
+| Raspberry Pi | ✅ |
+| Docker | ✅ |
+| DIY | ✅ |
+| Jeedom v4 | ✅ |
+
+---
+
+## 🎉 Conclusion
+
+Jeeloc centralise en un seul widget toutes vos sources de localisation Jeedom :
+
+- **Carte interactive** avec marqueurs personnalisés
+- **Adresses automatiques** via géocodage inverse Nominatim
+- **Calcul de distances** par rapport à un point de référence
+- **Aucune collecte GPS** — réutilise les commandes existantes

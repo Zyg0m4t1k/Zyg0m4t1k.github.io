@@ -78,6 +78,20 @@ const plugins: PluginItem[] = [
   },
   // --- Reste du catalogue ---
   {
+    "id": "jeeloc",
+    "name": "Jeeloc",
+    "description": "Centralisez plusieurs localisations dans un widget Jeedom avec carte interactive OpenStreetMap, géocodage automatique et calcul de distances.",
+    "icon": "jeeloc_icon.png",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/jeeloc/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3404"
+    }
+  },
+  {
     "id": "mystr0m",
     "name": "Smart Home",
     "description": "Intégration complète des équipements myStrom et Dingz dans Jeedom — pilotage local, sans cloud obligatoire.",
