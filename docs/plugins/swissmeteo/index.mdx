@@ -1,0 +1,385 @@
+---
+title: Plugin SwissMeteo
+description: Météo Suisse officielle dans Jeedom avec prévisions, alertes et widget enrichi
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="swissmeteo"
+  title="Plugin SwissMeteo"
+  description="Afficher la météo en Suisse dans Jeedom avec **prévisions**, **alertes officielles** et **widget enrichi**."
+  icon="/img/plugins/swissmeteo_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
+/>
+
+Le plugin **SwissMeteo** permet de récupérer les données météorologiques pour la Suisse directement dans Jeedom.
+
+Il combine :
+- les **prévisions météo** via **Open-Meteo** avec le modèle **MétéoSuisse ICON-CH**
+- les **alertes officielles** via l’API utilisée par l’application **MétéoSuisse**
+- un **fallback MeteoAlarm** si la source principale des alertes est indisponible
+
+Le plugin crée automatiquement les commandes météo, les prévisions sur plusieurs jours, les niveaux d’alerte et un widget visuel complet avec graphique horaire.
+
+---
+
+## ✨ Principe de fonctionnement
+
+Le plugin repose sur un fonctionnement simple :
+
+1. **Jeedom** stocke vos équipements SwissMeteo
+2. Une commande **Rafraîchir** lance un script Python léger
+3. Le script interroge :
+   - **Open-Meteo ICON-CH** pour la météo actuelle et les prévisions
+   - **MétéoSuisse** pour les alertes par NPA
+   - **MeteoAlarm** en secours si nécessaire
+4. Les données sont ensuite renvoyées à Jeedom et mises à jour automatiquement
+
+Le plugin ne possède **pas de démon dédié** et ne nécessite **pas de dépendances Jeedom à installer**.
+
+---
+
+## 🔧 Prérequis
+
+Avant de créer un équipement, il faut disposer de :
+
+### 🇨🇭 1️⃣ Une localisation en Suisse
+
+Le plugin est pensé pour un usage en **Suisse**.
+
+Pour chaque équipement, vous devez renseigner :
+- une **ville**
+- une **latitude**
+- une **longitude**
+
+### 📮 2️⃣ Un NPA suisse pour les alertes officielles
+
+Pour récupérer les alertes issues de **MétéoSuisse**, il est recommandé de renseigner le **NPA**.
+
+> Sans NPA, la météo fonctionne, mais les alertes officielles MétéoSuisse ne pourront pas être récupérées correctement.
+
+### 🐍 3️⃣ Python 3 disponible sur la machine Jeedom
+
+Le rafraîchissement météo s’appuie sur un script Python lancé à la demande.
+
+> Aucune bibliothèque Python externe n’est nécessaire : le script utilise uniquement la bibliothèque standard.
+
+---
+
+## 🚀 Installation
+
+### Étape 1 — Installer le plugin depuis le Market
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **SwissMeteo**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+
+
+### Étape 2 — Vérifier la configuration générale
+
+Le plugin ne nécessite pas :
+- d’installation de dépendances Jeedom
+- de démon à démarrer
+
+Une fois activé, vous pouvez directement créer vos équipements météo.
+
+---
+
+## ➕ Créer un équipement SwissMeteo
+
+1. Allez dans **Plugins → Météo Suisse**
+2. Cliquez sur **Ajouter**
+3. Donnez un nom à l’équipement
+4. Renseignez :
+   - **Ville**
+   - **NPA**
+   - **Latitude**
+   - **Longitude**
+5. Sauvegardez
+
+
+:::warning Champs obligatoires
+Les champs **latitude** et **longitude** sont obligatoires.
+
+- Ils doivent être numériques
+- Le **NPA** doit aussi être numérique s’il est renseigné
+:::
+
+---
+
+## ⚙️ Configuration de l’équipement
+
+Chaque équipement contient deux zones principales :
+- l’onglet **Équipement**
+- l’onglet **Commandes**
+
+### Informations de localisation
+
+| Champ | Obligatoire | Description |
+|------|-------------|-------------|
+| **Ville** | Non | Nom libre, utilisé pour le confort d’affichage |
+| **NPA** | Recommandé | Utilisé pour les alertes MétéoSuisse |
+| **Latitude** | Oui | Coordonnée GPS |
+| **Longitude** | Oui | Coordonnée GPS |
+
+### Notification d’alertes
+
+Le plugin permet de définir une **commande de notification** Jeedom de type **action / message**.
+
+Vous pouvez ensuite configurer un seuil par type d’alerte :
+- vent
+- orage
+- pluie
+- neige
+- chaleur
+- gel
+- verglas
+- crues
+
+Une notification est envoyée uniquement si :
+- le niveau atteint le seuil configuré
+- et que le niveau **augmente**
+
+Cela évite les répétitions inutiles.
+
+### Options du widget
+
+Le widget du plugin peut être activé ou désactivé.
+
+Quand il est activé, vous pouvez gérer l’affichage de plusieurs zones :
+- **bloc principal météo**
+- **barre des alertes**
+- **bouton du graphique horaire**
+
+Si le widget du plugin est désactivé, Jeedom utilise alors son affichage standard.
+
+---
+
+## 📊 Données récupérées
+
+Le plugin crée automatiquement un ensemble complet de commandes.
+
+### 🌡️ Météo actuelle
+
+Exemples de commandes créées :
+- Température
+- Température ressentie
+- Humidité
+- Précipitations
+- Vitesse du vent
+- Direction du vent
+- Rafales
+- Pression au niveau de la mer
+- Couverture nuageuse
+- Jour / Nuit
+- Description météo
+- Code météo WMO
+
+### ☀️ Prévisions du jour
+
+Le plugin récupère aussi pour aujourd’hui :
+- Température max
+- Température min
+- Cumul de précipitations
+- Probabilité de précipitations
+- Lever du soleil
+- Coucher du soleil
+- Durée d’ensoleillement
+- Code météo du jour
+
+### 📅 Prévisions à venir
+
+Des prévisions simplifiées sont créées pour :
+- **J+1**
+- **J+2**
+- **J+3**
+- **J+4**
+
+Pour chaque jour :
+- température max
+- température min
+- code météo
+- cumul de précipitations
+
+### ⚠️ Alertes météo
+
+Le plugin gère :
+- l’état binaire des alertes
+- leur niveau
+- un résumé global
+- le nombre d’alertes actives
+- le niveau maximum
+- la source utilisée
+
+Types d’alertes pris en charge :
+- Vent
+- Orage
+- Pluie
+- Neige
+- Chaleur
+- Gel
+- Verglas
+- Crues
+
+---
+
+## 🖥️ Widget du plugin
+
+Le plugin fournit un widget visuel enrichi pour le dashboard Jeedom.
+
+Il peut afficher :
+- la météo actuelle
+- l’icône météo du jour
+- les températures mini / maxi
+- l’humidité
+- la température ressentie
+- la couverture nuageuse
+- la pression
+- le vent et les rafales
+- les précipitations
+- la durée d’ensoleillement
+- le lever et le coucher du soleil
+- les prévisions **J+1 à J+4**
+- la barre des alertes avec couleurs par niveau
+
+### Niveaux de couleur des alertes
+
+Le widget applique une couleur selon le niveau d’alerte :
+- niveau 0 : neutre
+- niveau 1 : vigilance faible
+- niveau 2 : vigilance modérée
+- niveau 3 : vigilance forte
+- niveau 4 : vigilance maximale
+
+### Graphique horaire
+
+Le widget intègre aussi un **graphique horaire** accessible à la demande.
+
+Il permet d’afficher les données sous forme visuelle, avec :
+- sélection du jour
+- icônes météo
+- indications de vent
+- graphique horaire dédié
+
+---
+
+## 🔄 Rafraîchissement des données
+
+Le plugin crée automatiquement une commande d’action :
+
+- **Rafraîchir**
+
+Cette commande lance la récupération complète des données météo.
+
+### Rafraîchissement automatique
+
+Le plugin exécute également un rafraîchissement automatique toutes les **10 minutes**, entre **hh:05** et **hh:55**.
+
+Cela permet de garder les informations météo et les alertes à jour sans démon permanent.
+
+---
+
+## 🔔 Notifications d’alerte
+
+Vous pouvez lier une commande de notification Jeedom pour être alerté automatiquement.
+
+### Fonctionnement
+
+Quand une alerte :
+- atteint le seuil configuré
+- et monte par rapport au niveau précédent
+
+alors le plugin envoie :
+- soit la commande de notification choisie
+- soit un message Jeedom interne si aucune commande n’est définie
+
+### Personnalisation
+
+Vous pouvez utiliser les options de la commande de notification pour personnaliser :
+- le **titre**
+- le **message**
+
+Le placeholder `%type%` peut être utilisé pour remplacer automatiquement le type d’alerte.
+
+Exemple :
+- titre : `Alerte SwissMeteo - %type%`
+- message : `Nouvelle alerte %type% détectée`
+
+---
+
+## 🧩 Sources utilisées
+
+### Météo et prévisions
+
+Les données météo sont récupérées via :
+- **Open-Meteo**
+- modèle **MétéoSuisse ICON-CH**
+
+### Alertes
+
+Le plugin interroge d’abord :
+- l’API utilisée par l’application **MétéoSuisse**
+
+Si cette source n’est pas disponible, le plugin bascule automatiquement vers :
+- **MeteoAlarm**
+
+Le champ **Source alertes** permet de savoir quelle source a été utilisée.
+
+---
+
+## 📁 Fichiers générés
+
+Le plugin peut générer un fichier de données par équipement pour le graphique horaire.
+
+Ce fichier est supprimé automatiquement lors de la suppression de l’équipement.
+
+---
+
+## 🛠️ Dépannage
+
+### Aucune donnée météo
+
+Vérifiez :
+- que la **latitude** et la **longitude** sont bien renseignées
+- qu’elles sont **numériques**
+- que la machine Jeedom a accès à Internet
+- que **Python 3** est disponible
+
+### Pas d’alertes MétéoSuisse
+
+Vérifiez :
+- que le **NPA** est bien renseigné
+- qu’il s’agit d’un **NPA suisse valide**
+- que la source des alertes n’est pas passée en fallback
+
+### Le widget plugin ne s’affiche pas
+
+Vérifiez :
+- que l’option **widget du plugin** est activée
+- que les sections **bloc principal**, **alertes** ou **graphique** ne sont pas masquées
+- que vous n’utilisez pas volontairement le rendu Jeedom standard
+
+### Pas de notification
+
+Vérifiez :
+- qu’une **commande action/message** est bien sélectionnée
+- que le seuil du type d’alerte concerné est configuré
+- que le niveau d’alerte a réellement **augmenté**
+
+---
+
+## ✅ Résumé
+
+Le plugin **SwissMeteo** permet d’intégrer dans Jeedom :
+- la météo actuelle en Suisse
+- les prévisions sur plusieurs jours
+- les alertes météo officielles
+- un widget complet avec graphique
+- des notifications automatiques selon seuils
+
+C’est une solution légère, sans démon permanent, pensée pour une intégration météo claire et visuelle dans Jeedom.

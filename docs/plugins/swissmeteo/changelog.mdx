@@ -1,0 +1,32 @@
+---
+title: Changelog
+description: Historique des versions du plugin SwissMeteo
+hide_title: true
+sidebar_position: 99
+---
+## 2026-04-03
+
+### Améliorations
+- Refonte importante du plugin SwissMeteo
+- Reprise de la récupération des données météo et des alertes
+- Ajout de la gestion des données horaires pour les graphiques
+- Refonte du widget dashboard
+- Refonte de l’interface desktop du plugin
+- Ajout des traductions de langue
+- Ajout des images du widget dans le plugin
+
+### Technique
+- Suppression de l’ancienne arborescence Python `resources/swissmeteo` et `resources/jeedom`
+- Migration vers un script principal `resources/weather.py`
+- Ajout d’un endpoint AJAX pour la récupération des données de graphique
+- Refactoring de `swissmeteo.class.php`
+- Refactoring de `core/php/swissmeteo.php`
+- Mise à jour des informations du plugin pour Jeedom 4.4
+- Suppression de la gestion des dépendances Jeedom
+
+---
+
+## 1.0.0
+
+### Initial
+- Version initiale du plugin SwissMeteo

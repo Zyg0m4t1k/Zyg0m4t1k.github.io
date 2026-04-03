@@ -201,7 +201,21 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=2861"
+    }
+  },
+  {
+    "id": "swissmeteo",
+    "name": "Météo Suisse",
+    "description": "Ce plugin permet de créer des télécommandes virtuelles et d’assigner des actions (unique,message,scénario...) aux boutons.",
+    "icon": "swissmeteo_icon.png",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/swissmeteo/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4145"
     }
   }
 ];
