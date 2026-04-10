@@ -123,10 +123,6 @@ Chaque équipement Lumina correspond généralement à :
 - une zone (Couloir, Dressing, Entrée)
 - ou un usage spécifique (Ambiance soirée, Détection nuit)
 
-<!-- screenshot: formulaire de création d'un équipement Lumina avec le champ Nom -->
-<!-- path: /img/plugins/lumina/equipment_new.png -->
-<!-- ![Création d'un nouvel équipement Lumina](/img/plugins/lumina/equipment_new.png) -->
-
 ---
 
 ## 🗂 Les onglets de configuration
@@ -136,7 +132,7 @@ L'équipement Lumina est organisé en **4 onglets** :
 | Onglet | Rôle |
 |---|---|
 | **Équipement** | Paramètres généraux et panneau d'état en temps réel |
-| **Configuration** | Actionneurs, lux, lampes et périodes horaires |
+| **Minuteries** | Actionneurs, lux, lampes et périodes horaires |
 | **Ambiances** | Création et gestion des ambiances lumineuses |
 | **Commandes** | Liste des commandes générées automatiquement |
 
@@ -148,7 +144,7 @@ Cet onglet contient les **paramètres généraux** (nom, objet parent, catégori
 
 <!-- screenshot: onglet Equipement avec panneau d'état montrant minuterie armée, période active, durée, seuil lux -->
 <!-- path: /img/plugins/lumina/tab_equipment.png -->
-<!-- ![Onglet Équipement avec le panneau d'état en temps réel](/img/plugins/lumina/tab_equipment.png) -->
+![Onglet Équipement avec le panneau d'état en temps réel](/img/plugins/lumina/tab_equipment.png)
 
 Le panneau d'état affiche :
 
@@ -163,7 +159,7 @@ Le panneau d'état affiche :
 
 ---
 
-## 🔌 Onglet Configuration — Actionneurs
+## 🔌 Onglet Minuteries — Actionneurs
 
 Les **actionneurs binaires** sont les déclencheurs de la minuterie.
 
@@ -176,9 +172,7 @@ Exemples d'actionneurs compatibles :
 - Bouton physique ou virtuel
 - Commande virtuelle d'un scénario
 
-<!-- screenshot: section Actionneurs avec un détecteur de présence ajouté -->
-<!-- path: /img/plugins/lumina/actuators.png -->
-<!-- ![Configuration des actionneurs binaires](/img/plugins/lumina/actuators.png) -->
+![Configuration des actionneurs binaires](/img/plugins/lumina/actuators.png)
 
 **Logique multi-actionneurs :**
 
@@ -190,13 +184,10 @@ Cela permet d'utiliser plusieurs détecteurs dans une même pièce sans extincti
 
 ---
 
-## ☀️ Onglet Configuration — Luminosité (Lux)
+## ☀️ Onglet Minuteries — Luminosité (Lux)
 
 Lumina peut utiliser une **commande info numérique de luminosité** pour conditionner le déclenchement.
 
-<!-- screenshot: champ commande lux avec le sélecteur de commande -->
-<!-- path: /img/plugins/lumina/lux_cmd.png -->
-<!-- ![Sélection de la commande lux](/img/plugins/lumina/lux_cmd.png) -->
 
 Si la luminosité ambiante est **supérieure ou égale** au seuil de la période active, Lumina n'allume pas les lumières.
 
@@ -211,7 +202,7 @@ Exemple : seuil de 50 lux → si la pièce est déjà à 80 lux, Lumina ne fait 
 
 ---
 
-## 💡 Onglet Configuration — Lampes
+## 💡 Onglet Minuteries — Lampes
 
 La section **Lampes** permet de déclarer les lampes gérées par la minuterie de cet équipement Lumina.
 
@@ -223,17 +214,13 @@ Lumina propose un système d'ajout automatique : en cliquant sur le **+**, vous 
 - la commande **Température couleur**
 - la commande **Régler niveau**
 
-<!-- screenshot: section Lampes vide avec le bouton + pour ajouter -->
-<!-- path: /img/plugins/lumina/lamps_empty.png -->
-<!-- ![Section Lampes vide avant ajout](/img/plugins/lumina/lamps_empty.png) -->
 
-<!-- screenshot: modal d'ajout automatique d'une lampe depuis un équipement Jeedom existant -->
-<!-- path: /img/plugins/lumina/lamps_auto_add.png -->
-<!-- ![Ajout automatique d'une lampe depuis un équipement Jeedom](/img/plugins/lumina/lamps_auto_add.png) -->
+![Section Lampes vide avant ajout](/img/plugins/lumina/lamps_empty.png)
 
-<!-- screenshot: lampe correctement configurée avec On Off couleur température et niveau détectés -->
-<!-- path: /img/plugins/lumina/lamps_detected.png -->
-<!-- ![Lampe avec toutes ses commandes détectées automatiquement](/img/plugins/lumina/lamps_detected.png) -->
+
+![Ajout automatique d'une lampe depuis un équipement Jeedom](/img/plugins/lumina/lamps_auto_add.png)
+
+
 
 :::warning Important
 Lumina doit utiliser les **commandes action** de la lampe.
@@ -255,21 +242,10 @@ Pour les lampes compatibles, Lumina envoie en plus de la commande On :
 
 Ces valeurs sont définies **par période** dans la configuration de chaque lampe.
 
-<!-- screenshot: configuration de la couleur sur une lampe avec le sélecteur de couleur -->
-<!-- path: /img/plugins/lumina/lamp_color.png -->
-<!-- ![Configuration de la couleur pour une lampe](/img/plugins/lumina/lamp_color.png) -->
-
-<!-- screenshot: configuration de la température de couleur avec le slider Kelvin -->
-<!-- path: /img/plugins/lumina/lamp_temperature.png -->
-<!-- ![Configuration de la température de couleur](/img/plugins/lumina/lamp_temperature.png) -->
-
-<!-- screenshot: configuration du niveau d'intensité avec le slider pourcentage -->
-<!-- path: /img/plugins/lumina/lamp_level.png -->
-<!-- ![Configuration du niveau d'intensité (%)](/img/plugins/lumina/lamp_level.png) -->
 
 ---
 
-## 🕒 Onglet Configuration — Périodes horaires
+## 🕒 Onglet Minuteries — Périodes horaires
 
 Les **périodes** sont au cœur de la logique Lumina.
 
@@ -285,13 +261,10 @@ Chaque période définit un comportement différent selon le moment de la journ�
 | **Seuil lux** | Seuil de luminosité spécifique à cette période |
 | **Actions ON** | Surcharge couleur/temp/niveau pour chaque lampe |
 
-<!-- screenshot: liste des périodes configurées avec leurs onglets matin soirée nuit -->
-<!-- path: /img/plugins/lumina/periods_list.png -->
-<!-- ![Liste des périodes de la journée](/img/plugins/lumina/periods_list.png) -->
 
-<!-- screenshot: édition d'une période avec les champs début fin durée seuil lux et actions -->
-<!-- path: /img/plugins/lumina/period_edit.png -->
-<!-- ![Édition d'une période horaire](/img/plugins/lumina/period_edit.png) -->
+![Liste des périodes de la journée](/img/plugins/lumina/periods_list.png)
+
+
 
 **Règles de validation des périodes :**
 
@@ -306,9 +279,6 @@ Chaque période définit un comportement différent selon le moment de la journ�
 
 Lumina peut générer automatiquement des périodes basées sur le **lever et coucher du soleil** en renseignant votre latitude et longitude.
 
-<!-- screenshot: champs latitude longitude avec le bouton Générer Lever Coucher -->
-<!-- path: /img/plugins/lumina/sun_periods.png -->
-<!-- ![Génération automatique des périodes solaires](/img/plugins/lumina/sun_periods.png) -->
 
 ---
 
@@ -353,10 +323,6 @@ Quand le mode OFF est activé :
 
 Il est géré via les commandes `Activer mode OFF` et `Désactiver mode OFF`.
 
-<!-- screenshot: widget dashboard montrant le mode OFF actif avec le point rouge -->
-<!-- path: /img/plugins/lumina/mode_off.png -->
-<!-- ![Mode OFF actif sur le widget](/img/plugins/lumina/mode_off.png) -->
-
 ---
 
 ## 🎭 Onglet Ambiances
@@ -370,13 +336,7 @@ Une ambiance contient :
 - des **actions supplémentaires** à l'activation (onAmb)
 - des **actions supplémentaires** à la désactivation (offAmb)
 
-<!-- screenshot: onglet Ambiances avec plusieurs ambiances listées -->
-<!-- path: /img/plugins/lumina/ambiances_section.png -->
-<!-- ![Section Ambiances avec la liste des ambiances configurées](/img/plugins/lumina/ambiances_section.png) -->
-
-<!-- screenshot: édition d'une ambiance avec ses lampes et ses couleurs -->
-<!-- path: /img/plugins/lumina/ambiance_edit.png -->
-<!-- ![Édition d'une ambiance lumineuse](/img/plugins/lumina/ambiance_edit.png) -->
+![Section Ambiances avec la liste des ambiances configurées](/img/plugins/lumina/ambiances_section.png)
 
 **Comportement des ambiances :**
 
@@ -432,13 +392,9 @@ Ces commandes sont directement utilisables dans :
 
 Lumina dispose d'un **widget intégré** pour le dashboard et la vue mobile.
 
-<!-- screenshot: widget Lumina sur le dashboard avec le badge mode et les boutons Armer Désarmer -->
-<!-- path: /img/plugins/lumina/widget_dashboard.png -->
-<!-- ![Widget Lumina sur le dashboard Jeedom](/img/plugins/lumina/widget_dashboard.png) -->
+![Widget Lumina sur le dashboard Jeedom](/img/plugins/lumina/widget_dashboard.png) 
 
-<!-- screenshot: widget Lumina sur la vue mobile -->
-<!-- path: /img/plugins/lumina/widget_mobile.png -->
-<!-- ![Widget Lumina sur la vue mobile](/img/plugins/lumina/widget_mobile.png) -->
+![Widget Lumina sur la vue mobile](/img/plugins/lumina/widget_mobile.png)
 
 Le widget affiche :
 

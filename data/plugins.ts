@@ -35,13 +35,13 @@ const plugins: PluginItem[] = [
     "icon": "lumina_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/lumina/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4639"
     }
   },
   {
