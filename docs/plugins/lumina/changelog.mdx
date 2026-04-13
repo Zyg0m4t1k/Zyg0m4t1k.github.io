@@ -6,11 +6,12 @@ sidebar_position: 99
 
 ## 2026-04-13
 
+- Vérification du lux lors du reset de la minuterie : si la luminosité est suffisante, les lumières sont éteintes et la minuterie stoppée. 
+- Simplification du tableau de statut de l'équipement
 - Ajout du `last_trigger` : utilisation de `event_id` au lieu de `cmd_id` dans `checkActuator` pour récupérer le nom du déclencheur                                          
 - Ajout du mode courant dans le panneau de statut (`lumina_status_panel`)                                                                                                         
 - Suppression du polling toutes les 10s sur le panneau de statut ; remplacé par un appel ajax unique au chargement et une mise à jour temps réel via
   `jeedom.cmd.addUpdateFunction` 
-- Vérification du lux lors du reset de la minuterie : si la luminosité est suffisante, les lumières sont éteintes et la minuterie stoppée. 
 
 ## 2026-02-27
 
