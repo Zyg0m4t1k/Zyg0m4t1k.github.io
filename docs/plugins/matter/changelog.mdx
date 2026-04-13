@@ -4,6 +4,12 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-04-13
+
+- cron() : ajout d'une vérification toutes les minutes que le watchdog OTBR tourne. Si mort : dump de l'état Docker (status, exit code, OOMKilled, FinishedAt) + 20 dernières lignes de logs du   
+  container en ERROR dans matter_otbr, puis relance automatique du watchdog.                                                                                                                          
+- Versions des dépendances npm fixées en exact (suppression du ^) : @matter-server/ws-client, matter-server et ws verrouillés à 0.5.10 / 8.20.0.    
+
 ## 2026-04-04
 
 - Ajout d’un système de watchdog pour OTBR (relance automatique en cas de problème)
