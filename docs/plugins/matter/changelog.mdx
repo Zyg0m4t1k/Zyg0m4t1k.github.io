@@ -8,7 +8,13 @@ sidebar_position: 99
 
 - cron() : ajout d'une vérification toutes les minutes que le watchdog OTBR tourne. Si mort : dump de l'état Docker (status, exit code, OOMKilled, FinishedAt) + 20 dernières lignes de logs du   
   container en ERROR dans matter_otbr, puis relance automatique du watchdog.                                                                                                                          
-- Versions des dépendances npm fixées en exact (suppression du ^) : @matter-server/ws-client, matter-server et ws verrouillés à 0.5.10 / 8.20.0.    
+- Versions des dépendances npm fixées en exact (suppression du ^) : @matter-server/ws-client, matter-server et ws verrouillés à 0.5.10 / 8.20.0.  
+- Empêche le watchdog de se bloquer silencieusement si Docker ne répond pas                                                                                  
+- Le watchdog laisse maintenant un message dans les logs quand il s'arrête                                                                                   
+- Le heartbeat périodique ne saute plus de cycles                                                                                                            
+- Corrige des fausses alertes error dans les logs quand le watchdog redémarre alors que tout va bien                                                         
+- Correction d'un bug de démarrage concurrent du watchdog
+- Meilleure détection du PID du watchdog (plus fiable si le fichier PID est désynchronisé)   
 
 ## 2026-04-04
 
