@@ -67,7 +67,7 @@ const plugins: PluginItem[] = [
     "icon": "telejee_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/telejee/"
     },
