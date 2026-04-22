@@ -4,6 +4,21 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-04-22
+
+- Ajout du support UART OTBR pour clés USB (baudrate, options).
+- Ajout configuration dédiée + preset Slaesh CC2652RB.
+- Construction et logs explicites de la RADIO_URL.
+- Support URL RCP personnalisée en TCP local + validation.
+- Vérification connectivité TCP avec erreur claire.
+- Séparation stricte modes OTBR local / distant.
+- Blocage actions locales et init Thread en mode distant.
+- Amélioration statut OTBR distant (plus de faux Docker OK).
+- Meilleure gestion des URL radio réseau (spinel+).
+- Validation dataset Thread renforcée.
+- Amélioration du commissioning Matter over Thread (reconnect).
+- Diagnostics OTBR et commissioning plus clairs.
+
 ## 2026-04-13
 
 - cron() : ajout d'une vérification toutes les minutes que le watchdog OTBR tourne. Si mort : dump de l'état Docker (status, exit code, OOMKilled, FinishedAt) + 20 dernières lignes de logs du   
