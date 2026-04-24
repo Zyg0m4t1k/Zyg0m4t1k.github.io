@@ -1,6 +1,6 @@
 ---
 title: Plugin Telejee
-description: Guide TV, chaînes Jeedom et télécommandes virtuelles dans Jeedom — XMLTV filtré, actions sur logo et automatisations liées aux programmes.
+description: Guide TV, chaînes Jeedom et télécommandes virtuelles dans Jeedom.
 hide_title: true
 ---
 
@@ -10,370 +10,367 @@ import PluginHero from '@site/src/components/PluginHero';
   pluginId="telejee"
   id="Telejee"
   title="Plugin Telejee"
-  description="Guide TV, chaînes Jeedom et télécommandes virtuelles dans Jeedom — XMLTV filtré, actions sur logo et automatisations liées aux programmes."
+  description="Guide TV, chaînes Jeedom et télécommandes virtuelles dans Jeedom."
   icon="/img/plugins/telejee_icon.png"
-  donateUrl="https://www.paypal.me/Zyg0m4t1k"
   isNew
 />
 
-Le plugin **Telejee** permet de centraliser dans Jeedom :
+Le plugin **Telejee** permet de regrouper dans Jeedom :
 
-- un **guide des programmes TV** basé sur des données **XMLTV**
-- la création de **chaînes TV comme équipements Jeedom**
-- des **actions automatiques** liées à une émission ou à un clic sur un logo
-- des **télécommandes virtuelles** avec plusieurs layouts
+- un **guide des programmes TV**
+- des **chaînes TV** sous forme d’équipements Jeedom
+- des **actions au clic** sur les logos des chaînes
+- des **actions automatiques** au début ou à la fin d’une émission
+- des **télécommandes virtuelles** personnalisables
 
-L’objectif est simple : regrouper l’**EPG**, l’**accès aux chaînes** et les **commandes multimédia** dans une seule interface.
+L’objectif est de piloter plus facilement son environnement multimédia depuis Jeedom.
 
 ---
 
-## ✨ Fonctionnement général
+## ✨ Fonctionnalités principales
 
-Telejee s’appuie sur un fonctionnement en trois blocs.
+Telejee propose plusieurs usages complémentaires :
 
-### 1. Un index de chaînes
-
-Le plugin maintient un index des chaînes disponibles à partir des données XMLTV.
-
-Cet index sert à :
-
-- afficher les chaînes disponibles dans l’interface de création
-- proposer un filtrage par **genre**
-- créer rapidement des équipements Jeedom pour les chaînes souhaitées
-
-### 2. Un XMLTV local filtré
-
-Telejee peut synchroniser un **XMLTV filtré selon les chaînes actives** dans Jeedom.
-
-Cela permet de :
-
-- ne conserver que les chaînes réellement utilisées
-- accélérer l’exploitation des programmes
-- simplifier les mises à jour du guide TV
-
-### 3. Des équipements Jeedom orientés usage
-
-Deux types principaux sont utilisés dans le plugin :
-
-- **Chaînes TV** : une chaîne devient un équipement Jeedom avec son logo et ses informations de programme
-- **Télécommandes** : un équipement de type télécommande permet d’associer des actions Jeedom à des boutons virtuels
+- création de chaînes TV depuis une liste classée par genre
+- affichage des programmes TV : maintenant, à venir, ce soir et fin de soirée
+- fiche détail d’un programme avec image, horaire, genre et description si disponible
+- recherche d’émissions sur une chaîne
+- déclenchement d’actions au début ou à la fin d’un programme recherché (en bétâ)
+- télécommandes virtuelles avec plusieurs présentations
+- affichage adapté au dashboard et au mobile
+- gestion optionnelle des chaînes visibles par utilisateur
 
 ---
 
 ## 🔧 Prérequis
 
-- **Jeedom 4.4 minimum**
-- une connexion Internet pour récupérer les données XMLTV
-- des commandes Jeedom, virtuelles ou des scénarios à associer aux boutons et aux logos
-
-Compatibilité annoncée :
-
-- Jeedom Smart, Luna, Atlas
-- Raspberry Pi
-- Docker
-- DIY x86 / x64
-- Mobile
+- Jeedom installé et fonctionnel
+- accès Internet pour récupérer les données TV
+- des équipements, commandes ou scénarios Jeedom à associer aux actions
 
 ---
 
 ## 🚀 Installation
 
-### Installation depuis le Market
-
 1. Allez dans **Plugins → Gestion des plugins → Market**
 2. Recherchez **Telejee**
-3. Installez puis activez le plugin
-
-<!-- screenshot: installation du plugin Telejee depuis le Market Jeedom -->
-<!-- path: /img/plugins/telejee/install.png -->
-<!-- ![Installation du plugin Telejee](/img/plugins/telejee/install.png) -->
+3. Installez le plugin
+4. Activez le plugin
 
 ---
 
-## ⚙️ Configuration globale du plugin
+## ✅ Mise en route recommandée
 
-Une fois le plugin installé, ouvrez :
+Après l’installation, l’utilisation normale du plugin se fait dans cet ordre.
 
-**Plugins → Multimédia → Telejee → Configuration**
-
-Les options principales sont les suivantes.
-
-| Paramètre | Description |
-|---|---|
-| **Forcer la mise à jour des données** | Lance une mise à jour complète des données XMLTV |
-| **Sync XMLTV filtré selon chaînes actives** | Regénère un XMLTV local limité aux chaînes actives dans Jeedom |
-| **Reconstruire l’index des chaînes disponibles** | Reconstruit le fichier d’index des chaînes si la liste semble incomplète ou incohérente |
-| **Activer l’affichage par ordre** | Permet de gérer un affichage ordonné des chaînes |
-| **Code localisation** | Permet d’adapter le fuseau horaire si besoin |
-| **Activer la gestion des utilisateurs** | Permet de limiter les chaînes visibles selon l’utilisateur Jeedom |
-
-<!-- screenshot: page de configuration globale avec mise à jour XMLTV, sync filtrée, reconstruction index, fuseau et gestion utilisateurs -->
-<!-- path: /img/plugins/telejee/plugin_config.png -->
-<!-- ![Configuration globale du plugin Telejee](/img/plugins/telejee/plugin_config.png) -->
-
-:::tip
-Si vous avez un doute sur la cohérence des chaînes proposées, commencez par **reconstruire l’index des chaînes**, puis relancez la **synchronisation XMLTV filtrée**.
-:::
-
-:::tip
-La synchronisation filtrée est particulièrement utile si vous n’utilisez qu’une partie des chaînes disponibles.
-:::
-
----
-
-## 📺 Création et gestion des chaînes
-
-### Ajouter des chaînes
+### 1. Créer les chaînes
 
 Depuis la page principale du plugin, cliquez sur **Chaînes**.
 
-Une fenêtre permet alors de :
+Une fenêtre permet de :
 
-- choisir un **genre** ou afficher toutes les chaînes
-- charger la liste disponible
-- filtrer la liste avec une **recherche**
-- cocher plusieurs chaînes
-- créer automatiquement les équipements Jeedom correspondants
+- choisir un genre ou afficher toutes les chaînes
+- cliquer sur **Afficher les chaînes**
+- rechercher une chaîne par son nom
+- cocher les chaînes souhaitées
+- cliquer sur **Créer les équipements**
 
-Chaque chaîne créée utilise comme base son **identifiant XMLTV** et récupère son **logo**.
+Chaque chaîne créée devient un équipement Jeedom avec son logo et ses informations de programme.
 
-<!-- screenshot: fenêtre de création des chaînes avec filtre genre, recherche, liste et cases à cocher -->
-<!-- path: /img/plugins/telejee/channels_create.png -->
-<!-- ![Création des chaînes dans Telejee](/img/plugins/telejee/channels_create.png) -->
+![Création des chaînes dans Telejee](/img/plugins/telejee/channels_create.png)
 
-### Ce qui est créé pour une chaîne
+### 2. Ordonner les chaînes
 
-Lorsqu’une chaîne est ajoutée, Telejee crée un équipement de type chaîne avec :
+Une fois les chaînes créées, ouvrez chaque chaîne et renseignez le champ **Ordre d’affichage** si vous souhaitez maîtriser l’ordre d’affichage.
 
-- son **nom**
-- son **logo**
-- son identifiant XMLTV
-- des commandes d’information programme :
-  - **En ce moment**
-  - **À venir**
-  - **Ce soir**
-  - **En fin de soirée**
+L’ordre est utilisé lorsque l’option d’affichage par ordre est activée dans la configuration du plugin.
 
-Ces informations sont ensuite mises à jour automatiquement à partir du XMLTV local.
+:::tip
+Il est conseillé de créer d’abord toutes les chaînes, puis de les classer ensuite.
+:::
 
-### Action sur le logo de la chaîne
+### 3. Créer les programmes
 
-Chaque chaîne peut exécuter une ou plusieurs actions au clic sur son logo.
+Après la création des chaînes, cliquer sur le bouton **Charger les programmes**.
 
-Exemples d’usage :
+Il permet de générer les programmes TV pour les chaînes créées.
 
-- zapper sur une chaîne
-- lancer un scénario multimédia
-- envoyer une commande vers une box, une TV ou un ampli
+Si vous ne cliquez pas sur ce bouton, les programmes seront chargés automatiquement lors de la mise à jour prévue par le plugin.
 
-Vous pouvez aussi définir plusieurs actions avec options Jeedom.
-
-<!-- screenshot: configuration d’une chaîne avec logo et section actions sur clic logo -->
-<!-- path: /img/plugins/telejee/channel_logo_action.png -->
-<!-- ![Actions au clic sur le logo d’une chaîne](/img/plugins/telejee/channel_logo_action.png) -->
+:::tip
+Pour une première installation, il est recommandé de cliquer sur **Charger les programmes** juste après avoir créé les chaînes.
+:::
 
 ---
 
-## 🗓️ Guide TV et programmes
+## ⚙️ Configuration du plugin
 
-Telejee exploite les données XMLTV pour alimenter les chaînes et le guide TV.
+La configuration globale se trouve dans :
 
-### Informations disponibles
+**Plugins → Gestion des plugins → Telejee → Configuration**
 
-Selon les données présentes, un programme peut contenir :
+Cette page contient surtout des options générales et des boutons de maintenance.
 
-- le **titre**
-- l’**heure**
-- la **durée**
-- le **genre**
-- le **résumé**
-- une **image / icône**
-- un **lien**
+### Affichage par ordre
 
-### Vue programme
+L’option **Activer l’affichage par ordre** permet d’utiliser le champ **Ordre d’affichage** configuré sur chaque chaîne.
 
-Le plugin maintient en pratique deux grands types d’informations :
+À utiliser si vous voulez afficher les chaînes dans un ordre précis plutôt que dans l’ordre par défaut.
 
-- **maintenant / à venir**
-- **soirée / fin de soirée**
+### Localisation
 
-Cela permet un affichage rapide sur les équipements chaînes et dans les interfaces dédiées.
+Le champ **Code localisation** permet d’indiquer un fuseau horaire particulier si votre fuseau ne correspond pas à celui des chaînes TV.
 
-<!-- screenshot: vue guide TV avec programmes en cours, à venir, soirée et fin de soirée -->
-<!-- path: /img/plugins/telejee/epg_guide.png -->
-<!-- ![Guide TV Telejee](/img/plugins/telejee/epg_guide.png) -->
+Dans la majorité des cas, il n’est pas nécessaire de le remplir.
 
-### Fiche programme
+### Utilisateurs
 
-Lorsqu’un programme est ouvert en détail, l’utilisateur peut consulter une fiche plus complète avec les métadonnées disponibles.
+L’option **Utilisateurs** permet de choisir les chaînes visibles selon l’utilisateur Jeedom.
 
-<!-- screenshot: fiche détail d’un programme avec titre, heure, image, genre, résumé et lien -->
-<!-- path: /img/plugins/telejee/program_detail.png -->
-<!-- ![Détail d’un programme TV](/img/plugins/telejee/program_detail.png) -->
-
----
-
-## 🔎 Recherche d’émission et automatisations
-
-Chaque équipement chaîne peut aussi être configuré pour **surveiller un ou plusieurs titres** d’émission.
-
-Dans la configuration de la chaîne, vous pouvez renseigner :
-
-- un ou plusieurs textes de **recherche** séparés par des virgules
-- une **plage horaire** pendant laquelle les actions sont autorisées
-- des actions à exécuter :
-  - **au début** de l’émission
-  - **à la fin** de l’émission
-- un délai optionnel en **minutes** pour décaler ces actions
-
-Exemples d’usage :
-
-- lancer automatiquement une ambiance quand une émission commence
-- envoyer une notification au début d’un film
-- exécuter une action quand un programme se termine
-
-<!-- screenshot: configuration recherche émission avec texte recherché, plage horaire, actions début et fin -->
-<!-- path: /img/plugins/telejee/search_actions.png -->
-<!-- ![Recherche d’émission et actions automatiques](/img/plugins/telejee/search_actions.png) -->
+Les utilisateurs avec le profil **admin** gardent l’accès complet.
 
 :::warning
-La plage horaire doit être saisie au **format Jeedom**. Si elle est configurée, les actions liées à la recherche ne s’exécutent qu’à l’intérieur de cette plage.
+Les boutons présents dans la configuration du plugin sont principalement prévus en cas de problème.
+Ils ne sont pas destinés à l’utilisation normale au quotidien.
+:::
+
+### Boutons de maintenance
+
+| Bouton | Utilisation |
+|---|---|
+| **Forcer la mise à jour des données** | À utiliser si les données TV ne semblent pas à jour |
+| **Sync XMLTV filtré selon chaînes actives** | À utiliser si les programmes ne correspondent plus aux chaînes actives |
+| **Reconstruire l’index des chaînes disponibles** | À utiliser si la liste des chaînes semble incomplète ou incorrecte |
+
+:::tip
+En usage normal, passez par la création des chaînes puis par le bouton **Charger les programmes** proposé après la création.
+Les boutons de configuration servent surtout à réparer ou relancer une synchronisation.
+:::
+
+<!-- screenshot: configuration globale du plugin Telejee avec options affichage, localisation, utilisateurs et boutons de maintenance -->
+<!-- path: /img/plugins/telejee/plugin_config.png -->
+<!-- ![Configuration globale du plugin Telejee](/img/plugins/telejee/plugin_config.png) -->
+
+---
+
+## 📺 Équipement chaîne
+
+Chaque chaîne créée possède sa propre configuration.
+
+### Onglet Équipement
+
+Vous pouvez y régler :
+
+- le nom de la chaîne
+- l’objet parent
+- la catégorie Jeedom
+- l’activation
+- la visibilité
+- l’ordre d’affichage
+- les utilisateurs autorisés, si l’option utilisateurs est activée
+
+### Onglet Configuration
+
+Cet onglet permet de définir les actions liées à la chaîne.
+
+Vous pouvez configurer :
+
+- une ou plusieurs actions au clic sur le **logo de la chaîne**
+- une ou plusieurs actions sur le bouton **play**
+- une recherche d’émission
+- une plage horaire d’autorisation
+- des actions au début d’une émission recherchée
+- des actions en fin d’émission recherchée
+- un décalage en minutes pour les actions de début ou de fin
+
+![Configuration d’une chaîne Telejee](/img/plugins/telejee/channel_config.png)
+
+---
+
+## 🗓️ Programmes TV
+
+Telejee affiche les informations principales des programmes pour chaque chaîne.
+
+Les vues disponibles sont :
+
+- **En ce moment**
+- **À venir**
+- **Ce soir**
+- **En fin de soirée**
+
+Selon les données disponibles, un programme peut afficher :
+
+- le titre
+- l’horaire
+- l’image
+- le genre
+- la description
+
+
+![Programmes TV Telejee](/img/plugins/telejee/programmes.png)
+
+### Détail d’un programme
+
+En ouvrant un programme, une fiche détail peut afficher :
+
+- l’image du programme
+- l’horaire
+- le titre
+- le genre
+- la description
+- un bouton de recherche Allociné
+
+---
+
+## 🔎 Recherche d’émission
+
+Dans la configuration d’une chaîne, le champ **Recherche** permet de surveiller un ou plusieurs titres d’émission.
+
+Pour rechercher plusieurs titres, séparez-les par une virgule.
+
+Exemple :
+
+```text
+Journal, Film du soir, Série préférée
+```
+
+Vous pouvez ensuite définir :
+
+- une action au début de l’émission
+- une action à la fin de l’émission
+- un délai en minutes avant ou après l’action
+- une plage horaire pendant laquelle les actions sont autorisées
+
+### Format de la plage horaire
+
+La plage horaire se renseigne au format Jeedom.
+
+Exemples :
+
+```text
+2030 à 2300
+615 à 1030
+```
+
+En dehors de cette plage, les actions de recherche ne seront pas exécutées.
+
+:::tip
+Cette fonction est utile pour lancer une ambiance, envoyer une notification ou déclencher un scénario quand une émission précise commence.
 :::
 
 ---
 
 ## 🎮 Télécommandes virtuelles
 
-Telejee permet de créer des équipements de type **télécommande**.
+Telejee permet aussi de créer des équipements de type **Télécommande**.
 
-### Créer une télécommande
+Depuis la page principale du plugin, cliquez sur **Télécommande**, puis donnez un nom à la télécommande.
 
-Depuis la page principale, cliquez sur **Télécommande**, donnez un nom à la télécommande puis choisissez son layout dans la configuration de l’équipement.
+Une fois créée, ouvrez l’équipement pour choisir le type de télécommande.
 
-Quatre layouts sont disponibles :
+### Types disponibles
 
 - **Universelle**
 - **TV**
 - **Design**
 - **Paysage**
 
-Pour chaque télécommande, vous pouvez associer des actions Jeedom à de nombreux boutons.
+Chaque type propose une présentation différente avec ses propres boutons.
 
-<!-- screenshot: création d’une télécommande puis choix du layout dans l’équipement -->
-<!-- path: /img/plugins/telejee/telco_create.png -->
-<!-- ![Création d’une télécommande Telejee](/img/plugins/telejee/telco_create.png) -->
+![Choix du type de télécommande Telejee](/img/plugins/telejee/telco_type.png)
+
+### Associer des actions aux boutons
+
+Dans la configuration de la télécommande, chaque bouton peut recevoir une ou plusieurs actions Jeedom.
+
+Vous pouvez par exemple associer :
+
+- une commande TV
+- une commande ampli
+- un scénario
+- une action virtuelle
+- une commande de box multimédia
+
 
 ### Layout Universelle
 
-Layout complet orienté télécommande classique avec navigation, volume, chaînes, lecture média, pavé numérique et boutons contextuels.
+Télécommande complète avec pavé numérique, navigation, volume, chaînes et commandes de lecture.
 
-<!-- screenshot: télécommande layout Universelle -->
-<!-- path: /img/plugins/telejee/telco_universelle.png -->
-<!-- ![Télécommande Universelle](/img/plugins/telejee/telco_universelle.png) -->
+![Télécommande Universelle Telejee](/img/plugins/telejee/telco_universelle.png)
 
 ### Layout TV
 
-Layout plus centré sur un usage TV simple et direct.
+Télécommande orientée usage TV classique.
 
-<!-- screenshot: télécommande layout TV -->
-<!-- path: /img/plugins/telejee/telco_tv.png -->
-<!-- ![Télécommande TV](/img/plugins/telejee/telco_tv.png) -->
+![Télécommande TV Telejee](/img/plugins/telejee/telco_tv.png)
 
 ### Layout Design
 
-Layout plus épuré, pratique pour une interface plus visuelle ou minimaliste.
+Télécommande plus visuelle et plus épurée.
 
-<!-- screenshot: télécommande layout Design -->
-<!-- path: /img/plugins/telejee/telco_design.png -->
-<!-- ![Télécommande Design](/img/plugins/telejee/telco_design.png) -->
+
+![Télécommande Design Telejee](/img/plugins/telejee/telco_design.png)
 
 ### Layout Paysage
 
-Layout pensé pour un affichage large, tablette ou usage paysage, avec une interface plus riche.
+Télécommande prévue pour un affichage large, par exemple sur tablette ou écran mural.
 
-<!-- screenshot: télécommande layout Paysage sur écran large -->
-<!-- path: /img/plugins/telejee/telco_paysage.png -->
-<!-- ![Télécommande Paysage](/img/plugins/telejee/telco_paysage.png) -->
-
----
-
-## ⚡ Actions disponibles sur les télécommandes
-
-Selon le layout, vous pouvez rattacher des actions Jeedom à différents groupes de boutons, par exemple :
-
-- **Power ON / OFF**
-- navigation
-- lecture / pause / stop
-- volume
-- changement de chaîne
-- boutons contextuels
-- boutons spécifiques au mode paysage
-
-Le plugin masque les commandes techniques dans l’interface Jeedom et les utilise comme base pour piloter la télécommande visuelle.
+![Télécommande Paysage Telejee](/img/plugins/telejee/telco_paysage.png)
 
 ---
 
 ## 👤 Gestion par utilisateur
 
-Si l’option **Utilisateurs** est activée dans la configuration globale, Telejee peut adapter la liste des chaînes visibles selon l’utilisateur connecté.
+Si l’option **Utilisateurs** est activée, vous pouvez choisir les chaînes visibles pour chaque utilisateur non administrateur.
 
-Les profils **admin** conservent l’accès complet.
+Dans la configuration d’une chaîne, cochez les utilisateurs autorisés.
 
-Cela peut être utile pour :
-
-- simplifier l’interface pour certains utilisateurs
-- masquer certaines chaînes
-- personnaliser l’affichage selon les profils Jeedom
+Les administrateurs conservent toujours l’accès complet.
 
 ---
 
-## 📱 Utilisation mobile
+## 📱 Mobile
 
-Le plugin propose aussi un affichage mobile avec panel et widgets adaptés.
+Telejee propose un affichage mobile afin de retrouver les chaînes, les programmes et les télécommandes depuis l’application ou l’interface mobile Jeedom.
 
-Cela permet de :
-
-- parcourir les équipements Telejee depuis mobile
-- afficher les chaînes et télécommandes
-- profiter d’un affichage plus adapté aux petits écrans
-
-<!-- screenshot: panel mobile Telejee avec accès aux objets et équipements -->
-<!-- path: /img/plugins/telejee/mobile_panel.png -->
-<!-- ![Panel mobile Telejee](/img/plugins/telejee/mobile_panel.png) -->
 
 ---
 
-## 🧩 Conseils d’usage
+## 🧩 Conseils d’utilisation
 
-### Pour un usage simple
+### Première configuration
 
-- créez uniquement les chaînes utiles
-- associez une action au clic sur le logo
-- utilisez le XMLTV filtré pour garder une base légère
+1. Créez les chaînes depuis le bouton **Chaînes**
+2. Ordonnez les chaînes si besoin
+3. Cliquez sur **Charger les programmes**
+4. Configurez les actions sur les logos ou les recherches d’émission
+5. Créez vos télécommandes si nécessaire
 
-### Pour un usage plus avancé
+### Si les programmes ne s’affichent pas
 
-- configurez des recherches d’émissions
-- ajoutez des actions au début et à la fin des programmes
-- créez plusieurs télécommandes selon les pièces ou les usages
+- vérifiez que les chaînes sont bien créées et activées
+- utilisez le bouton **Charger les programmes** après création
+- en dernier recours, utilisez les boutons de maintenance dans la configuration du plugin
 
-### En cas de liste incohérente
+### Si une chaîne n’apparaît pas
 
-Ordre conseillé :
-
-1. **Reconstruire l’index des chaînes**
-2. **Synchroniser le XMLTV filtré**
-3. **Forcer la mise à jour des données** si nécessaire
+- ouvrez **Chaînes**
+- choisissez **Toutes les chaînes** ou le bon genre
+- utilisez la recherche dans la fenêtre
+- si la liste semble incorrecte, utilisez **Reconstruire l’index des chaînes disponibles** dans la configuration du plugin
 
 ---
 
 ## 📚 Résumé
 
-Telejee est un plugin multimédia orienté **TV et pilotage** qui combine :
+Telejee est un plugin multimédia pour Jeedom qui permet de réunir :
 
-- la récupération et l’exploitation des **programmes TV**
-- la création de **chaînes pilotables** dans Jeedom
-- des **automatisations** liées aux émissions
-- des **télécommandes virtuelles** avec plusieurs présentations
+- les chaînes TV
+- le guide des programmes
+- les actions sur les logos
+- les déclenchements liés aux émissions
+- les télécommandes virtuelles
 
-C’est une approche pratique pour réunir dans Jeedom à la fois le **guide TV**, les **actions sur les chaînes** et le **contrôle multimédia**.
+L’usage recommandé est simple : **créer les chaînes**, **les ordonner**, puis **charger les programmes** depuis le bouton proposé après création.
+
+Les boutons de la configuration globale sont à garder comme outils de maintenance en cas de problème.
