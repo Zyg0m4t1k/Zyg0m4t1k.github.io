@@ -73,7 +73,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=1415"
     }
   },
   // --- Reste du catalogue ---
@@ -82,7 +82,7 @@ const plugins: PluginItem[] = [
     "name": "Jeeloc",
     "description": "Centralisez plusieurs localisations dans un widget Jeedom avec carte interactive OpenStreetMap, géocodage automatique et calcul de distances.",
     "icon": "jeeloc_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/jeeloc/"
     },
