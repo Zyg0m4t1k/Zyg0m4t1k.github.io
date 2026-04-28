@@ -4,6 +4,37 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 28.04.2026
+
+### Nouveautés
+- Nouveau widget **"Réveil Analogique"** (`reveil_analog`) : horloge analogique CSS/JS pure avec 4 aiguilles (heures, minutes, secondes, alarme), pistes circulaires, dots lumineux et effet dôme 3D.
+- Support complet des **thèmes Jeedom Light et Dark** pour tous les widgets via un fichier utilitaire CSS dédié (`jeedom-theme-utils.css`) basé sur les variables CSS natives de Jeedom.
+
+### Améliorations
+- Widget **"Design Réveil"** (`reveil_design`) : les boutons H−/H+ et M−/M+ sont maintenant regroupés en une seule ligne sous le cercle SVG.
+- Widget **"Réveil Analogique"** : suppression des boutons de jours sur le widget (les jours restent configurables et enregistrés, l'affichage est épuré).
+- Adaptation automatique des couleurs, fonds, bordures et ombres selon le thème actif (Light/Dark) pour les widgets réveil, design et événement.
+
+---
+
+## 27.04.2026
+
+### Nouveautés
+- Ajout d'un nouveau widget **"Design Réveil"** (`reveil_design`) disponible en vue dashboard et mobile, avec cercle de progression SVG et boutons de réglage H±/M±.
+
+### Améliorations
+- Ajout de la méthode `postSave()` pour rafraîchir automatiquement le widget après chaque sauvegarde.
+- Mise à jour du CSS (`tasklauncher-theme.css`) pour le style du nouveau widget design.
+- Amélioration du panel mobile : navigation par objet et affichage des équipements TaskLauncher.
+- Amélioration du panel desktop : chargement dynamique des équipements.
+
+### Correctifs
+- Correction de la typo `displayExeption` → `displayException` dans l'ajax.
+- Nettoyage des logs de debug restants dans l'ajax et la classe.
+- Message d'erreur de format heure/minutes allégé.
+
+---
+
 ## 06.03.2026
 
 ### Nouveautés

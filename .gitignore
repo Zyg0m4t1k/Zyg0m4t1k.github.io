@@ -33,6 +33,7 @@ build/
 ########################
 .vscode/
 .idea/
+*.code-workspace
 
 ########################
 # System

@@ -4,6 +4,37 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-04-28
+
+- La case **Code partagé / réseau** dans la fenêtre de commissioning est désormais décochée par défaut.
+- **Correction** : la visibilité (`Afficher`) et le nom des commandes ne sont plus écrasés lors d'un sync si l'utilisateur les a personnalisés — ces valeurs ne sont maintenant appliquées qu'à la création de la commande.
+
+## 2026-04-27
+
+- Documentation complète des modes de connexion du dongle Thread : USB, TCP via socat, TCP direct, et Distant.
+- Ajout d'un tableau récapitulatif des modes de connexion avec les matériels compatibles.
+- Ajout des préréglages UART documentés (Slaesh CC2652RB, SLZB Thread RCP, TCP socat EFR32).
+- Nouvelles entrées de dépannage pour les connexions réseau (socat, TCP, distant).
+- **Correction importante** : le watchdog OTBR détectait bien les pannes du conteneur mais ne le relançait jamais. C'est corrigé.
+- Le watchdog redémarre maintenant automatiquement le conteneur OTBR s'il s'arrête de façon inattendue (délai de 60 secondes entre deux tentatives pour éviter les boucles).
+- Si le conteneur est complètement disparu ou dans un état irrécupérable, le watchdog recrée entièrement le conteneur OTBR avec la même configuration que lors du démarrage.
+- Clarification des rôles : le **watchdog** gère la surveillance et le redémarrage d'OTBR, le **cron Jeedom** vérifie uniquement que le watchdog tourne et le relance si nécessaire.
+
+:::note
+Après une recréation complète du conteneur par le watchdog, le réseau Thread redémarre sans restauration automatique du dataset. Si les appareils Thread ne se reconnectent pas, utilisez **Gestion Matter & Thread → Injecter le dataset** pour restaurer votre réseau.
+:::
+
+## 2026-04-22
+
+- **Correction importante** : le watchdog OTBR détectait bien les pannes du conteneur mais ne le relançait jamais. C'est corrigé.
+- Le watchdog redémarre maintenant automatiquement le conteneur OTBR s'il s'arrête de façon inattendue (délai de 60 secondes entre deux tentatives pour éviter les boucles).
+- Si le conteneur est complètement disparu ou dans un état irrécupérable, le watchdog recrée entièrement le conteneur OTBR avec la même configuration que lors du démarrage.
+- Clarification des rôles : le **watchdog** gère la surveillance et le redémarrage d'OTBR, le **cron Jeedom** vérifie uniquement que le watchdog tourne et le relance si nécessaire.
+
+:::note
+Après une recréation complète du conteneur par le watchdog, le réseau Thread redémarre sans restauration automatique du dataset. Si les appareils Thread ne se reconnectent pas, utilisez **Gestion Matter & Thread → Injecter le dataset** pour restaurer votre réseau.
+:::
+
 ## 2026-04-22
 
 - Ajout du support UART OTBR pour clés USB (baudrate, options).

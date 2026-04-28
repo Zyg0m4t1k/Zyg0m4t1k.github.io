@@ -4,6 +4,13 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-04-27
+
+- **Correction** : la lumière ne s'éteignait plus après une sortie de pièce lorsque la **minuterie immédiate** était activée. Le cron pouvait être annulé (ex. retour de présence simultané à un allumage par le lux), laissant le système croire à tort qu'une minuterie était en cours et bloquant toute extinction ultérieure.
+  - Lors d'un **retour de présence**, le cron de minuterie immédiate n'est plus annulé (la minuterie doit courir jusqu'à expiration indépendamment des va-et-vient).
+  - Lors d'une **fin de détection**, la vérification `immediateTimer` contrôle désormais si le cron existe réellement avant d'ignorer l'événement.
+- **Logs debug enrichis** dans `checkActuator` : chaque événement indique maintenant le nom du détecteur, la période active, l'état de la minuterie immédiate, la valeur lux/seuil et l'heure d'extinction prévue.
+
 ## 2026-04-13
 
 - Vérification du lux lors du reset de la minuterie : si la luminosité est suffisante, les lumières sont éteintes et la minuterie stoppée. 

@@ -487,9 +487,96 @@ Le plugin Matter peut fonctionner avec :
 
 ### 🧱 Prérequis OTBR
 
-- Docker installé et fonctionnel  
-- Utilisateur `www-data` dans le groupe `docker`  
-- Dongle compatible Thread (Sonoff, SkyConnect, etc.)
+- Docker installé et fonctionnel
+- Utilisateur `www-data` dans le groupe `docker`
+- Un dongle ou hub Thread compatible (voir ci-dessous)
+
+---
+
+### 🔌 Modes de connexion du dongle Thread
+
+Le plugin supporte **trois façons de connecter votre dongle Thread**, selon votre matériel.
+
+#### Mode OTBR
+
+Choisissez d’abord **comment OTBR fonctionne** :
+
+| Mode | Quand l’utiliser |
+|------|-----------------|
+| **Local (USB + Docker)** | Le dongle est branché directement sur le serveur Jeedom |
+| **Distant** | OTBR tourne sur un hub réseau séparé (ex : SLZB-06xU avec OTBR intégré) |
+
+---
+
+#### 1. USB — Dongle branché directement
+
+C’est le cas le plus courant : votre clé Thread est branchée sur un port USB du serveur Jeedom.
+
+- Le plugin détecte automatiquement les dongles disponibles
+- Choisissez de préférence le chemin `/dev/serial/by-id/...` (stable, ne change pas au redémarrage)
+
+**Matériels compatibles :** Sonoff Zigbee Dongle Plus (Thread), SkyConnect, Slaesh CC2652RB, tout stick Thread USB
+
+**Paramètres UART** : la plupart des dongles fonctionnent sans configuration supplémentaire. Si votre clé ne se connecte pas, utilisez un **préréglage** :
+
+| Préréglage | Matériel |
+|-----------|----------|
+| Slaesh CC2652RB | Slaesh CC2652RB |
+| SLZB Thread RCP (EFR32) | SLZB-06x en USB |
+
+---
+
+#### 2. TCP via socat — Clé Thread sur le réseau (recommandé pour SLZB)
+
+Votre clé Thread est connectée à un appareil réseau qui expose son port série via TCP (Serial-over-IP). Le plugin crée automatiquement un pont local via **socat**.
+
+- Saisir l’adresse de votre appareil au format `ip:port` (port 6638 par défaut)
+- Exemple : `192.168.1.10:6638`
+
+**Matériels compatibles :** SLZB-06x, SLZB-MR4U et tout adaptateur Serial-over-IP
+
+**Paramètre UART recommandé** pour ces appareils : utiliser le préréglage `TCP via socat (EFR32/SLZB-MR4U)`
+
+:::tip
+Ce mode est **plus fiable** que le TCP direct pour les appareils SLZB car socat gère la conversion du protocole série.
+:::
+
+---
+
+#### 3. TCP direct — Connexion réseau native (avancé)
+
+Connexion directe en protocole spinel sur TCP, sans intermédiaire. Réservé aux appareils compatibles avec le protocole `spinel+hdlc+uart+tcp://`.
+
+Deux sous-modes :
+- **Auto** : saisir `ip:port`, le plugin construit l’URL automatiquement
+- **URL complète** : saisir l’URL spinel complète (ex : `spinel+hdlc+uart+tcp://192.168.1.10:6638`)
+
+---
+
+#### 4. Distant — OTBR sur un hub réseau
+
+OTBR tourne sur un appareil externe (ex : SLZB-06xU avec "Thread + OTBR on device" activé). Jeedom se connecte à son API via l’adresse HTTP.
+
+- Sélectionner le mode **Distant** dans la configuration
+- Saisir l’URL de l’API REST de votre hub : `http://192.168.1.x:8080`
+- Le plugin lit et écrit le dataset Thread directement sur le hub
+
+**Important en mode distant :**
+- Le conteneur Docker local n’est **pas utilisé**
+- Le watchdog local ne tourne **pas** (inutile)
+- Les boutons Lancer/Arrêter/Redémarrer OTBR sont désactivés
+- La gestion du réseau Thread se fait depuis Jeedom, mais c’est le hub qui l’exécute
+
+---
+
+#### Tableau récapitulatif
+
+| Mode | Où est le dongle | Docker Jeedom | Watchdog |
+|------|-----------------|---------------|----------|
+| USB | Branché sur Jeedom | Oui | Oui |
+| TCP socat | Sur le réseau | Oui | Oui |
+| TCP direct | Sur le réseau | Oui | Oui |
+| Distant | Sur un hub externe | Non | Non |
 
 ---
 
@@ -497,14 +584,14 @@ Le plugin Matter peut fonctionner avec :
 
 Depuis la page **Configuration → OTBR** :
 
-1. Cliquer sur **Installer le support Thread**  
-2. Attendre la fin de l’installation (quelques minutes)  
+1. Cliquer sur **Installer le support Thread**
+2. Attendre la fin de l’installation (quelques minutes)
 3. Vérifier l’état :
    - Docker : **OK**
    - www-data dans docker : **OK**
 
-4. Si Docker n’est pas accessible ou droits `www-data` incorrects :  
-   👉 Cliquer sur **Redémarrer Apache**  
+4. Si Docker n’est pas accessible ou droits `www-data` incorrects :
+   👉 Cliquer sur **Redémarrer Apache**
    ⚠️ À faire **une seule fois après installation**
 
 5. Cliquer sur **Lancer OTBR**
@@ -633,8 +720,46 @@ Fonctions disponibles :
 
 ### 🔄 Synchronisation des équipements
 
-- Les devices sont automatiquement détectés après commissioning  
-- Une synchronisation peut être lancée manuellement si nécessaire  
+- Les devices sont automatiquement détectés après commissioning
+- Une synchronisation peut être lancée manuellement si nécessaire
+
+---
+
+### 🛡️ Surveillance automatique (Watchdog)
+
+Le plugin inclut un système de surveillance qui tourne en arrière-plan dès qu'OTBR est démarré. Il vérifie toutes les **30 secondes** que tout fonctionne correctement.
+
+#### Ce qu'il surveille
+
+| Situation détectée | Action automatique |
+|---|---|
+| Le conteneur OTBR s'est arrêté | Redémarrage du conteneur (après 60s) |
+| Le conteneur a disparu ou est irrécupérable | Recréation complète du conteneur |
+| Le réseau Thread est perdu (`detached`) | Redémarrage de la couche Thread |
+| Le réseau Thread est désactivé | Relance du réseau Thread |
+
+#### Rôle du cron Jeedom
+
+La tâche planifiée de Jeedom (exécutée chaque minute) vérifie uniquement que le **watchdog lui-même tourne**. Si le watchdog s'est arrêté pour une raison quelconque, Jeedom le relance automatiquement.
+
+```
+Jeedom (cron 1 min)
+  └─ Watchdog actif ? Non → relance le watchdog
+       └─ Watchdog (toutes les 30s)
+            └─ OTBR OK ? Non → redémarre OTBR
+```
+
+#### Après une recréation complète
+
+Si le conteneur OTBR a dû être entièrement recréé (cas rare), le réseau Thread redémarre sans votre dataset. Vos appareils Thread risquent de ne pas se reconnecter.
+
+**Solution :** Allez dans **Gestion Matter & Thread → Injecter le dataset** et collez votre dataset de sauvegarde.
+
+:::tip Bonne pratique
+Pensez à copier votre dataset Thread régulièrement depuis **Gestion Matter & Thread → Récupérer le dataset actuel**. C'est votre "clé" pour retrouver vos appareils Thread en cas de problème.
+:::
+
+---
 
 ## 🐛 Dépannage
 
@@ -665,6 +790,46 @@ Fonctions disponibles :
 - Vérifiez les clusters détectés dans l'onglet Équipement
 - Relancez une synchronisation complète
 - Si le problème persiste, supprimez l'équipement et re-synchronisez le nœud
+
+### OTBR ne démarre pas (dongle USB non détecté)
+
+1. Vérifiez que le dongle est bien branché : allez dans **Configuration → OTBR** et cliquez sur **Rafraîchir les ports**
+2. Préférez le chemin `/dev/serial/by-id/...` s'il est disponible (plus stable)
+3. Si le dongle ne répond pas, essayez un **Préréglage UART** (Slaesh CC2652RB ou SLZB Thread RCP)
+4. Consultez les logs **matter_otbr** pour voir l'erreur exacte
+
+### OTBR ne se connecte pas (mode TCP socat ou TCP direct)
+
+1. Vérifiez que l'adresse `ip:port` est correcte (port 6638 par défaut pour SLZB)
+2. Testez que l'appareil est joignable sur le réseau
+3. Pour les SLZB : vérifiez que le mode "Serial-over-IP" ou "Thread RCP" est activé dans l'interface de l'appareil
+4. En cas d'échec de connexion, essayez le préréglage UART `TCP via socat (EFR32/SLZB-MR4U)`
+5. Consultez les logs **matter_otbr**
+
+### Le hub distant (mode Distant) n'est pas joignable
+
+1. Vérifiez l'URL de l'API REST : `http://ip-du-hub:8080`
+2. Vérifiez que votre hub a bien le mode OTBR activé
+3. Testez l'URL dans un navigateur : vous devez voir une réponse JSON
+4. Vérifiez qu'il n'y a pas de pare-feu entre Jeedom et le hub
+
+### OTBR s'est arrêté et ne redémarre pas
+
+Le watchdog gère normalement ce cas automatiquement. Si OTBR reste arrêté :
+
+1. Consultez les logs **matter_otbr** pour voir ce qui s'est passé
+2. Vérifiez que Docker fonctionne sur la machine
+3. Allez dans **Configuration → OTBR** et cliquez sur **Lancer OTBR** manuellement
+4. Si le watchdog lui-même est arrêté, attendez jusqu'à 1 minute que Jeedom le relance automatiquement
+
+### Les appareils Thread ne répondent plus après un redémarrage d'OTBR
+
+Si OTBR a dû être recréé entièrement (cas rare), le dataset Thread a été perdu :
+
+1. Allez dans **Gestion Matter & Thread → Injecter le dataset**
+2. Collez votre dataset de sauvegarde
+3. Cliquez sur **Injecter le dataset**
+4. Attendez quelques secondes que les appareils se reconnectent
 
 ### Après mise à jour des dépendances
 

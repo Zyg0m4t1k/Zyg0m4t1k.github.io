@@ -10,6 +10,19 @@ Ce fichier liste les évolutions, corrections et améliorations du plugin **Cale
 
 ---
 
+## 2026-04-28
+
+### Nouveautés
+- Nouveau **widget carte événement** (`eventCal`) pour les équipements de type événement : affichage de la date, heure, titre et lieu du prochain événement dans un style carte avec entête colorée et système d'urgence visuel (couleur selon le délai restant).
+- Support complet des **thèmes Jeedom Light et Dark** pour le widget calendrier FullCalendar (`jeedom-theme-utils.css`).
+
+### Améliorations
+- Le widget événement gère automatiquement l'état "Aucun événement" (entête grise, message centré).
+- Adaptation des couleurs de l'entête selon l'imminence de l'événement : vert (>24h), orange (<24h), rouge (<1h), rouge foncé (<5min), gris (terminé ou aucun).
+- Vue mobile disponible pour le widget carte événement.
+
+---
+
 ## 2026-04-02
 
 - Fix : inclusion des dépendances Composer (psr/log) dans l’archive

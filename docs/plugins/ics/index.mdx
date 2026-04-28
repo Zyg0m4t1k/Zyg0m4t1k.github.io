@@ -171,6 +171,39 @@ Rendu sur le dashboard. Vue mobile OK.
 
 ![widgetDash](/img/plugins/ics/widgetDash.png)
 
+### Widget Carte Événement
+
+Les équipements de type **Événement** disposent d'un widget carte dédié qui affiche le prochain événement correspondant.
+
+<!-- ![Widget carte événement — aucun événement](/img/plugins/ics/eventcal_empty.png) -->
+<!-- ![Widget carte événement — avec données](/img/plugins/ics/eventcal_widget.png) -->
+
+Le widget affiche :
+- le **mois** dans l'entête colorée
+- le **numéro du jour** en grand
+- le **jour de la semaine**
+- l'**heure** (masquée si journée entière)
+- le **titre** de l'événement
+- la **localisation** si renseignée
+
+L'entête change de couleur selon l'imminence de l'événement :
+
+| Délai | Couleur |
+|---|---|
+| Plus de 24h | Rouge (normal) |
+| Moins de 24h | Orange |
+| Moins d'1h | Rouge vif |
+| Moins de 5 min | Rouge foncé |
+| Terminé | Gris |
+| Aucun événement | Gris + "Aucun événement" |
+
+### Thèmes Light et Dark
+
+Le widget calendrier et le widget carte événement s'adaptent automatiquement au thème Jeedom actif (Light ou Dark).
+
+<!-- ![Widget calendrier thème Light](/img/plugins/ics/theme_light.png) -->
+<!-- ![Widget calendrier thème Dark](/img/plugins/ics/theme_dark.png) -->
+
 ---
 
 ## 🎛 Les commandes
