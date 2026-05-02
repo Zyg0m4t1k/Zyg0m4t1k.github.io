@@ -4,10 +4,20 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-04-29
+
+- Ajout du type d'équipement **Trajet** : calcul de durée et distance routière via l'API Mapbox Directions
+- Ajout de la clé API Mapbox dans la configuration globale du plugin
+- Nouveau widget dédié aux trajets (durée, distance, heure de calcul, icône selon profil)
+- Profils de trajet disponibles : voiture avec trafic, voiture, vélo, piéton
+- Support départ/arrivée dynamique via commande GPS Jeedom ou coordonnées fixes
+- Géocodage d'adresse intégré dans l'interface de configuration des trajets
+- Commandes créées automatiquement : Durée, Distance, Statut, Calculer
+
 ## 2026-04-26
 
 - Réintégration de **MapQuest**  / Nominatim avec gestion des contraintes (clé API + limites)
-- Correction d’une erreur JavaScript impactant l’interface
+- Correction d'une erreur JavaScript impactant l'interface
 - Mise à jour des icônes pour une meilleure cohérence visuelle
 - Amélioration globale de la stabilité du reverse geocoding
 

@@ -6,12 +6,12 @@ hide_title: true
 
 import PluginHero from '@site/src/components/PluginHero';
 
- description="Centraliser des coordonnées GPS existantes, les afficher sur une carte et suivre des distances ou présences autour d’un repère."
+ description="Centraliser des coordonnées GPS existantes, les afficher sur une carte et suivre des distances ou présences autour d'un repère."
 
  <PluginHero
   pluginId="jeeloc"
   title="Jeeloc"
- description="Centraliser des coordonnées GPS existantes, les afficher sur une carte et suivre des distances ou présences autour d’un repère."
+ description="Centraliser des coordonnées GPS existantes, les afficher sur une carte et suivre des distances ou présences autour d'un repère."
   icon="/img/plugins/jeeloc_icon.png"
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
@@ -21,20 +21,16 @@ Le plugin **Jeeloc** sert à regrouper plusieurs localisations dans Jeedom.
 
 Il ne localise pas directement un téléphone ou une personne. Il utilise des commandes Jeedom déjà existantes qui renvoient des coordonnées GPS, par exemple depuis un plugin de localisation, une commande personnalisée ou une position fixe.
 
-Jeeloc permet ensuite de :
+Jeeloc propose deux types d'équipements :
 
-- afficher les positions sur une carte interactive
-- afficher une vue résumé avec adresse, distance et état de présence
-- suivre plusieurs personnes, véhicules ou lieux
-- calculer la distance entre un repère et les autres positions
-- créer automatiquement des commandes de présence
-- utiliser les informations dans les scénarios Jeedom
+- **Localisation** : affiche des positions sur une carte interactive, calcule des distances et gère des présences
+- **Trajet** : calcule le temps de trajet et la distance routière entre deux points via l'API Mapbox
 
 ---
 
 ## ✅ Prérequis
 
-Avant d’utiliser Jeeloc, il faut disposer d’au moins une source de coordonnées GPS.
+Avant d'utiliser Jeeloc, il faut disposer d'au moins une source de coordonnées GPS.
 
 La commande utilisée doit retourner une valeur au format :
 
@@ -42,7 +38,7 @@ La commande utilisée doit retourner une valeur au format :
 latitude,longitude
 ```
 
-Jeeloc n’a pas de dépendances à installer et ne lance pas de démon.
+Jeeloc n'a pas de dépendances à installer et ne lance pas de démon.
 
 ---
 
@@ -56,13 +52,15 @@ Jeeloc n’a pas de dépendances à installer et ne lance pas de démon.
 Plugins → Organisation → Jeeloc
 ```
 
-Après activation, le plugin apparaît sous forme de **panel** et d’équipements Jeedom.
+Après activation, le plugin apparaît sous forme de **panel** et d'équipements Jeedom.
 
 ---
 
 ## ⚙️ Configuration globale du plugin
 
-La configuration globale concerne le **reverse geocoding**.
+La configuration globale contient deux sections.
+
+### 🌍 Reverse geocoding
 
 Le reverse geocoding permet de transformer une coordonnée GPS en adresse lisible : rue, code postal, ville.
 
@@ -72,12 +70,12 @@ Jeeloc propose deux modes :
 - **MapQuest** : ancien mode conservé en option, avec clé API MapQuest
 
 
-### 🔧 Options disponibles
+#### 🔧 Options disponibles
 
 | Option | Utilisation |
 |---|---|
 | Utiliser MapQuest | Active le reverse geocoding via MapQuest |
-| Clé MapQuest | Clé API MapQuest utilisée uniquement si l’option MapQuest est activée |
+| Clé MapQuest | Clé API MapQuest utilisée uniquement si l'option MapQuest est activée |
 
 :::info
 Si **Utiliser MapQuest** est décoché, Jeeloc utilise automatiquement **Nominatim / OpenStreetMap**.
@@ -88,8 +86,23 @@ Si **Utiliser MapQuest** est coché mais que la clé MapQuest est vide, Jeeloc b
 :::
 
 :::tip
-Nominatim ne demande pas de clé API. Jeeloc envoie un User-Agent propre à l’installation afin d’identifier correctement les requêtes.
+Nominatim ne demande pas de clé API. Jeeloc envoie un User-Agent propre à l'installation afin d'identifier correctement les requêtes.
 :::
+
+### 🗺️ Calcul de trajet (Mapbox)
+
+Le calcul de trajet utilise l'API **Mapbox Directions**.
+
+| Option | Utilisation |
+|---|---|
+| Clé API Mapbox | Clé commençant par `pk.` nécessaire pour les équipements de type Trajet |
+
+:::info
+La clé Mapbox est uniquement nécessaire si vous créez des équipements de type **Trajet**.
+Elle n'est pas utilisée pour les équipements de type **Localisation**.
+:::
+
+Pour obtenir une clé Mapbox, créer un compte gratuit sur [mapbox.com](https://www.mapbox.com).
 
 ---
 
@@ -106,17 +119,17 @@ Quand une position est lue, Jeeloc peut récupérer et enregistrer :
 
 ### 🌍 Fonctionnement avec Nominatim
 
-Lorsque MapQuest n’est pas activé, Jeeloc interroge **Nominatim OpenStreetMap**.
+Lorsque MapQuest n'est pas activé, Jeeloc interroge **Nominatim OpenStreetMap**.
 
 Dans ce mode :
 
-- aucune clé API n’est nécessaire
+- aucune clé API n'est nécessaire
 - un User-Agent unique est généré par installation
-- la réponse est utilisée pour remplir l’adresse affichée dans le widget et le panel
+- la réponse est utilisée pour remplir l'adresse affichée dans le widget et le panel
 
 ### 🧭 Fonctionnement avec MapQuest
 
-MapQuest reste disponible pour les utilisateurs qui souhaitent continuer à l’utiliser.
+MapQuest reste disponible pour les utilisateurs qui souhaitent continuer à l'utiliser.
 
 Pour utiliser MapQuest :
 
@@ -128,60 +141,57 @@ Si la clé est absente, Jeeloc ne bloque pas le plugin et revient automatiquemen
 
 ### 🚦 Limitation des appels
 
-Jeeloc évite de refaire une recherche d’adresse inutilement.
+Jeeloc évite de refaire une recherche d'adresse inutilement.
 
 Le comportement est le suivant :
 
 - la position est lue depuis une commande Jeedom ou depuis des coordonnées fixes
-- Jeeloc compare avec l’ancienne position connue
-- si le déplacement dépasse l’offset configuré, l’adresse est recalculée
-- l’adresse, la ville, le code postal et la date du dernier calcul sont enregistrés
+- Jeeloc compare avec l'ancienne position connue
+- si le déplacement dépasse l'offset configuré, l'adresse est recalculée
+- l'adresse, la ville, le code postal et la date du dernier calcul sont enregistrés
 
 :::tip
-Pour une position GPS de téléphone, un offset entre **100 m et 300 m** est souvent plus stable qu’une valeur trop basse.
-Cela évite les changements trop fréquents liés à l’imprécision GPS.
+Pour une position GPS de téléphone, un offset entre **100 m et 300 m** est souvent plus stable qu'une valeur trop basse.
+Cela évite les changements trop fréquents liés à l'imprécision GPS.
 :::
 
 ---
 
-## 🗺️ Créer un équipement Jeeloc
+## 📍 Localisation
 
-Dans la page du plugin, cliquer sur **Ajouter** pour créer un nouvel équipement.
+Un équipement **Localisation** permet de regrouper plusieurs positions GPS sur une carte interactive, de calculer les distances par rapport à un repère et de suivre la présence.
 
-Un équipment Jeeloc représente une carte ou un groupe de localisations.
+### 🗺️ Créer un équipement Localisation
 
+Dans la page du plugin, cliquer sur **+ Localisation** pour créer un nouvel équipement.
 
-Dans l’onglet **Équipement**, renseigner :
+Dans l'onglet **Équipement**, renseigner :
 
-- le nom de l’équipement
-- l’objet parent
+- le nom de l'équipement
+- l'objet parent
 - les catégories Jeedom
-- l’état actif / visible
+- l'état actif / visible
 
----
+### 🧩 Configuration de l'équipement Localisation
 
-## 🧩 Configuration de l'équipement 
-
-Dans l’onglet **Configuration**, vous pouvez régler :
+Dans l'onglet **Configuration**, vous pouvez régler :
 
 | Paramètre | Rôle |
 |---|---|
 | Fréquence de rafraîchissement des données | Permet de lancer automatiquement la mise à jour des positions |
-| Widget | Affiche le plan par défaut dans le widget si l’option est activée |
+| Widget | Affiche le plan par défaut dans le widget si l'option est activée |
 
-Le bouton avec l’icône d’aide permet de générer facilement une expression cron Jeedom.
+Le bouton avec l'icône d'aide permet de générer facilement une expression cron Jeedom.
 
----
+### 📌 Ajouter des localisations
 
-## 📌 Ajouter des localisations
+Dans la section **Équipements**, Jeeloc propose deux types d'ajout.
 
-Dans la section **Équipements**, Jeeloc propose deux types d’ajout.
+#### 🔗 Ajouter une commande
 
-### 🔗 Ajouter une commande
+Utiliser **Commandes** si la position vient d'une commande Jeedom existante.
 
-Utiliser **Commandes** si la position vient d’une commande Jeedom existante.
-
-C’est le cas le plus courant.
+C'est le cas le plus courant.
 
 La commande choisie doit retourner des coordonnées au format :
 
@@ -189,18 +199,18 @@ La commande choisie doit retourner des coordonnées au format :
 latitude,longitude
 ```
 
-Exemples d’usage :
+Exemples d'usage :
 
 - téléphone suivi par un autre plugin
-- position d’un véhicule
-- position d’une personne
+- position d'un véhicule
+- position d'une personne
 - commande virtuelle contenant une coordonnée GPS
 
-### 🏠 Ajouter des coordonnées fixes
+#### 🏠 Ajouter des coordonnées fixes
 
 Utiliser **Coordonnées** pour saisir directement une position fixe.
 
-C’est utile pour créer un lieu de référence :
+C'est utile pour créer un lieu de référence :
 
 - maison
 - travail
@@ -208,9 +218,7 @@ C’est utile pour créer un lieu de référence :
 - gare
 - parking
 
----
-
-## 🎨 Personnaliser l’affichage
+### 🎨 Personnaliser l'affichage
 
 Chaque localisation peut être personnalisée.
 
@@ -220,21 +228,19 @@ Chaque localisation peut être personnalisée.
 | Localisation | Commande Jeedom ou coordonnées fixes |
 | Marker | Couleur du marqueur sur la carte |
 | Icône | Icône Font Awesome utilisée sur le marqueur |
-| Couleur | Couleur de l’icône |
+| Couleur | Couleur de l'icône |
 | Image | Image personnalisée affichée dans la vue résumé |
 | Repère | Définit la localisation comme point de référence pour les distances |
-| Offset | Distance en mètres utilisée pour la présence et le recalcul d’adresse |
+| Offset | Distance en mètres utilisée pour la présence et le recalcul d'adresse |
 | Affichage | Affiche ou masque la localisation dans le widget |
 
 
 :::warning
-Il ne faut définir qu’un seul **repère** par plan.
+Il ne faut définir qu'un seul **repère** par plan.
 Le repère sert de point central pour calculer la distance avec les autres localisations.
 :::
 
----
-
-## 🏡 Fonctionnement du repère et de la présence
+### 🏡 Fonctionnement du repère et de la présence
 
 Le **repère** est la position de référence.
 
@@ -244,7 +250,7 @@ Pour chaque localisation non repère, Jeeloc crée automatiquement une commande 
 
 La présence passe à :
 
-- `1` si la localisation est dans la zone définie par l’offset
+- `1` si la localisation est dans la zone définie par l'offset
 - `0` si la localisation est en dehors de cette zone
 
 Exemple :
@@ -256,76 +262,158 @@ Exemple :
 | Offset | 100 |
 | Résultat | Présent si le téléphone est à 100 mètres ou moins de la maison |
 
-Les commandes de présence orphelines sont nettoyées automatiquement lorsqu’une localisation est supprimée ou modifiée.
+Les commandes de présence orphelines sont nettoyées automatiquement lorsqu'une localisation est supprimée ou modifiée.
 
----
+### 🧭 Widget Localisation
 
-## 🧭 Widget Jeeloc
+Le widget Localisation propose deux vues.
 
-Le widget Jeeloc propose deux vues.
-
-### 🗺️ Vue carte
+#### 🗺️ Vue carte
 
 La vue carte affiche les marqueurs sur une carte OpenStreetMap.
 
 Chaque marqueur peut afficher :
 
 - le nom
-- l’adresse
+- l'adresse
 - la date du dernier reverse geocoding
 - la position sur la carte
 
 Des boutons permettent aussi de centrer la carte sur une localisation précise.
 
-### 📋 Vue résumé
+#### 📋 Vue résumé
 
 La vue résumé affiche les localisations sous forme de liste.
 
 Elle peut afficher :
 
-- l’image ou l’icône
+- l'image ou l'icône
 - le nom
-- l’adresse
+- l'adresse
 - le temps écoulé depuis la dernière adresse connue
 - la distance au repère
-- l’état de présence
+- l'état de présence
 
 Le bouton de bascule du widget permet de passer de la carte au résumé.
 
----
-
-## ⚡ Commandes créées par le plugin
-
-Jeeloc crée ou utilise plusieurs types de commandes.
+### ⚡ Commandes créées (Localisation)
 
 | Commande | Type | Description |
 |---|---|---|
 | Refresh | Action | Force la mise à jour des localisations |
-| Localisation | Info string | Stocke ou lit une coordonnée GPS |
-| Présence | Info binaire | Indique si la localisation est dans la zone du repère |
+| Présence `<nom>` | Info binaire | Indique si la localisation est dans la zone du repère |
 
-Les commandes de présence peuvent être historisées et utilisées dans les scénarios Jeedom.
+---
+
+## 🚗 Trajet
+
+Un équipement **Trajet** calcule la durée et la distance routière entre deux points en utilisant l'API **Mapbox Directions**.
+
+:::info
+Une **clé API Mapbox** est obligatoire pour utiliser ce type d'équipement.
+Elle doit être renseignée dans la **Configuration globale du plugin**.
+:::
+
+### 🗺️ Créer un équipement Trajet
+
+Dans la page du plugin, cliquer sur **+ Trajet** pour créer un nouvel équipement.
+
+Dans l'onglet **Équipement**, renseigner :
+
+- le nom du trajet
+- l'objet parent
+- les catégories Jeedom
+- l'état actif / visible
+
+### 🧩 Configuration du trajet
+
+La configuration du trajet se fait dans l'onglet **Trajet**.
+
+#### 📍 Départ
+
+Le point de départ peut être défini de deux façons :
+
+| Option | Description |
+|---|---|
+| Commande GPS (dynamique) | Commande info Jeedom retournant `lat,lng`. Prioritaire sur les coordonnées fixes. Utile pour suivre la position d'une personne ou d'un véhicule. |
+| Latitude / Longitude fixes | Coordonnées saisies manuellement. Utiliser le bouton **Géocoder** pour convertir une adresse en coordonnées. |
+
+:::tip
+Si une commande GPS est renseignée, elle est utilisée en priorité.
+Les coordonnées fixes ne sont utilisées que si aucune commande n'est sélectionnée.
+:::
+
+#### 🏁 Arrivée
+
+Le point d'arrivée fonctionne de la même façon que le départ :
+
+| Option | Description |
+|---|---|
+| Commande GPS (dynamique) | Commande info Jeedom retournant `lat,lng`. Prioritaire sur les coordonnées fixes. |
+| Latitude / Longitude fixes | Coordonnées saisies manuellement ou géocodées depuis une adresse. |
+
+#### 🚗 Profil de trajet
+
+Le profil détermine le mode de transport utilisé pour le calcul.
+
+| Profil | Description |
+|---|---|
+| Voiture (avec trafic) | Calcul en voiture en tenant compte du trafic en temps réel (défaut) |
+| Voiture | Calcul en voiture sans trafic |
+| Vélo | Calcul à vélo |
+| Piéton | Calcul à pied |
+
+### ⚡ Commandes créées (Trajet)
+
+Jeeloc crée automatiquement les commandes suivantes pour chaque équipement Trajet :
+
+| Commande | Type | Unité | Description |
+|---|---|---|---|
+| Calculer | Action | — | Déclenche le calcul du trajet via Mapbox |
+| Durée | Info numérique | min | Durée estimée du trajet en minutes |
+| Distance | Info numérique | km | Distance du trajet en kilomètres |
+| Statut | Info texte | — | `OK` si le calcul a réussi, message d'erreur sinon |
+
+### 🖥️ Widget Trajet
+
+Le widget Trajet affiche :
+
+- l'icône du mode de transport (voiture, vélo, piéton)
+- la durée du trajet en grand (ex : `23 min` ou `1h05 trajet`)
+- la distance
+- l'heure du dernier calcul
+- un bouton de recalcul manuel
+
+Si aucun calcul n'a encore été effectué, le widget affiche `Aucune donnée`.
+
+### 🔄 Rafraîchissement automatique
+
+Pour recalculer automatiquement le trajet à intervalles réguliers, configurer une fréquence de rafraîchissement dans l'onglet **Configuration** de l'équipement.
+
+Exemple de cas d'usage :
+
+- recalculer le temps de trajet vers le bureau toutes les 10 minutes le matin
+- déclencher le calcul depuis un scénario avant de partir
 
 ---
 
 ## 🤖 Utilisation dans les scénarios
 
-Jeeloc peut être utilisé dans les scénarios Jeedom pour déclencher des actions selon la présence ou la distance.
+Jeeloc peut être utilisé dans les scénarios Jeedom pour déclencher des actions selon la présence, la distance ou la durée de trajet.
 
 Exemples :
 
 - lancer une action quand une personne arrive à la maison
 - envoyer une notification si un véhicule quitte une zone
 - activer un mode maison quand une présence passe à `1`
-- afficher une information de localisation dans un virtuel
-
-La commande la plus simple à utiliser dans les scénarios est généralement la commande **Présence**.
+- afficher le temps de trajet dans un message de notification
+- prévenir quand le trajet dépasse un seuil de durée
 
 ---
 
 ## 🖼️ Gestion des images personnalisées
 
-Jeeloc permet d’associer une image à une localisation.
+Jeeloc permet d'associer une image à une localisation.
 
 Les images peuvent être utilisées pour rendre la vue résumé plus lisible.
 
@@ -344,19 +432,20 @@ Les noms de fichiers doivent rester simples : lettres, chiffres, tirets et under
 
 ## 🖥️ Panel Jeeloc
 
-Le plugin dispose aussi d’un affichage en panel.
+Le plugin dispose aussi d'un affichage en panel.
 
-Le panel permet d’afficher les plans Jeeloc en dehors du dashboard classique.
+Le panel permet d'afficher les plans Jeeloc en dehors du dashboard classique.
 
 ---
 
 ## 💡 Bonnes pratiques
 
-- Utiliser un nom clair pour chaque localisation
-- Garder un seul repère par plan
+- Utiliser un nom clair pour chaque localisation et chaque trajet
+- Garder un seul repère par plan Localisation
 - Mettre un offset réaliste, surtout pour les téléphones
 - Éviter les rafraîchissements trop fréquents
-- Laisser MapQuest désactivé si vous n’avez pas de clé API MapQuest
+- Laisser MapQuest désactivé si vous n'avez pas de clé API MapQuest
 - Préférer Nominatim pour une configuration simple sans clé API
+- Pour les trajets Mapbox, préférer le profil **Voiture (avec trafic)** pour des durées réalistes
 
 ---

@@ -4,6 +4,21 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 01.05.2026
+
+### Nouveautés
+- Widget **"Réveil Analogique"** :  Possibilité de masquer l'horloge` et `les contrôles` dans la configuration desktop, avec affichage conditionnel des options.
+
+### Améliorations
+- Tous les widgets (**Réveil Analogique**, **Design Réveil**, **Horloge**, **Événement**) s'adaptent automatiquement au **thème Jeedom actif** (Light / Dark) : couleurs, fonds, bordures et ombres suivent le thème sans configuration supplémentaire.
+- Widget **"Design Réveil"** (`reveil_design`) : les boutons H−/H+/M−/M+ sont regroupés en une seule ligne uniforme sous le cercle (dashboard et mobile), cohérent avec le style du widget analogique.
+- Theme : Tous les widgets sont désormais toutes mappées sur les variables Jeedom normalisées `--jee-*` pour une adaptation automatique Light/Dark.
+
+### Correctifs
+- Correction d'un bug cron.
+
+---
+
 ## 28.04.2026
 
 ### Nouveautés
@@ -20,17 +35,17 @@ sidebar_position: 99
 ## 27.04.2026
 
 ### Nouveautés
-- Ajout d'un nouveau widget **"Design Réveil"** (`reveil_design`) disponible en vue dashboard et mobile, avec cercle de progression SVG et boutons de réglage H±/M±.
+- Ajout d'un nouveau widget disponible en vue dashboard et mobile, avec cercle de progression  et boutons de réglage H±/M±.
 
 ### Améliorations
-- Ajout de la méthode `postSave()` pour rafraîchir automatiquement le widget après chaque sauvegarde.
-- Mise à jour du CSS (`tasklauncher-theme.css`) pour le style du nouveau widget design.
+- Amélioration de rafraichissemnent automatiquement du widget.
+- Mise à jour du CSS.
 - Amélioration du panel mobile : navigation par objet et affichage des équipements TaskLauncher.
 - Amélioration du panel desktop : chargement dynamique des équipements.
 
 ### Correctifs
 - Correction de la typo `displayExeption` → `displayException` dans l'ajax.
-- Nettoyage des logs de debug restants dans l'ajax et la classe.
+- Nettoyage des logs de debug restants.
 - Message d'erreur de format heure/minutes allégé.
 
 ---

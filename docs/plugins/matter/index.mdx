@@ -535,11 +535,35 @@ Votre clé Thread est connectée à un appareil réseau qui expose son port sér
 
 **Matériels compatibles :** SLZB-06x, SLZB-MR4U et tout adaptateur Serial-over-IP
 
+**Mode à activer sur le dongle :** `Thread to remote OTBR`
+
 **Paramètre UART recommandé** pour ces appareils : utiliser le préréglage `TCP via socat (EFR32/SLZB-MR4U)`
 
 :::tip
 Ce mode est **plus fiable** que le TCP direct pour les appareils SLZB car socat gère la conversion du protocole série.
 :::
+
+:::note
+En mode `Thread to remote OTBR`, l’API REST du dongle (port 8080) est désactivée sur le dongle lui-même. Un `curl http://ip-du-dongle:8080` qui échoue est **normal et attendu** dans cette configuration. Seul le port série TCP (6638) est utilisé.
+:::
+
+**Configuration Jeedom (exemple SLZB sur 192.168.1.147) :**
+
+| Paramètre | Valeur |
+|---|---|
+| Mode plugin | Local (USB + Docker) |
+| Type connexion RCP | TCP réseau via socat |
+| Adresse TCP RCP | `192.168.1.147:6638` |
+| Docker OTBR | Actif sur Jeedom |
+
+**Vérifications :**
+```bash
+# Connexion TCP au dongle — doit répondre
+nc -vz 192.168.1.147 6638
+
+# État Thread dans le conteneur OTBR — doit afficher leader, router ou child
+docker exec -it otbr ot-ctl state
+```
 
 ---
 
@@ -553,13 +577,29 @@ Deux sous-modes :
 
 ---
 
-#### 4. Distant — OTBR sur un hub réseau
+#### 4. Distant — OTBR sur un hub réseau (expérimental)
 
-OTBR tourne sur un appareil externe (ex : SLZB-06xU avec "Thread + OTBR on device" activé). Jeedom se connecte à son API via l’adresse HTTP.
+OTBR tourne sur un appareil externe (ex : SLZB-06xU avec "Thread + OTBR on device" activé). Jeedom se connecte à son API REST via l’adresse HTTP.
+
+**Mode à activer sur le dongle :** `Thread + OTBR running on device`
 
 - Sélectionner le mode **Distant** dans la configuration
 - Saisir l’URL de l’API REST de votre hub : `http://192.168.1.x:8080`
 - Le plugin lit et écrit le dataset Thread directement sur le hub
+
+**Configuration Jeedom (exemple SLZB sur 192.168.1.147) :**
+
+| Paramètre | Valeur |
+|---|---|
+| Mode plugin | Distant |
+| URL OTBR | `http://192.168.1.147:8080` |
+| Docker OTBR | Arrêté sur Jeedom |
+
+**Vérification :**
+```bash
+# L’API REST du dongle doit répondre
+curl http://192.168.1.147:8080
+```
 
 **Important en mode distant :**
 - Le conteneur Docker local n’est **pas utilisé**
@@ -571,12 +611,12 @@ OTBR tourne sur un appareil externe (ex : SLZB-06xU avec "Thread + OTBR on devic
 
 #### Tableau récapitulatif
 
-| Mode | Où est le dongle | Docker Jeedom | Watchdog |
-|------|-----------------|---------------|----------|
-| USB | Branché sur Jeedom | Oui | Oui |
-| TCP socat | Sur le réseau | Oui | Oui |
-| TCP direct | Sur le réseau | Oui | Oui |
-| Distant | Sur un hub externe | Non | Non |
+| Mode | Mode dongle | Docker Jeedom | Port utilisé | Watchdog |
+|------|-------------|---------------|--------------|----------|
+| USB | — | Oui | /dev/ttyUSB* | Oui |
+| TCP socat | Thread to remote OTBR | Oui | TCP 6638 | Oui |
+| TCP direct | Thread to remote OTBR | Oui | TCP 6638 | Oui |
+| Distant | Thread + OTBR on device | Non | HTTP 8080 | Non |
 
 ---
 
