@@ -217,7 +217,24 @@ const plugins: PluginItem[] = [
       "github": "https://github.com/Zyg0m4t1k/",
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4145"
     }
+  },
+   {
+    "id": "whatwatt",
+    "name": "Whattwat",
+    "description": "Ce plugin permet d'intégrer le compteur d’énergie connecté WhatWatt dans Jeedom pour suivre consommation, production, tension, courant et énergie électrique.",
+    "icon": "whatwatt_icon.png",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x","Node.js"],
+    "routes": {
+      "page": "/docs/plugins/whatwatt/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": ""
+    }
   }
+  
+  
+  
 ];
 
 export default plugins;

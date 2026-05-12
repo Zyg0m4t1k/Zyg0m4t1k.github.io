@@ -1,0 +1,475 @@
+---
+title: WhatWatt
+description: Intégrer le compteur d’énergie connecté WhatWatt dans Jeedom pour suivre consommation, production, tension, courant et énergie électrique.
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="whatwatt"
+  title="WhatWatt"
+  description="Intégrer le compteur d’énergie connecté WhatWatt dans Jeedom pour suivre consommation, production, tension, courant et énergie électrique."
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  icon="/img/plugins/whatwatt_icon.png"
+  isNew
+/>
+
+:::info Prérequis
+Le plugin **MQTT Manager** doit être installé et fonctionnel.
+
+Avant d’utiliser WhatWatt, vérifiez que :
+
+- le plugin **MQTT Manager** est installé
+- le daemon MQTT Manager est démarré
+- le broker MQTT est accessible depuis Jeedom
+- le boîtier WhatWatt publie bien ses données sur le topic configuré
+
+Sans MQTT Manager actif, le plugin WhatWatt ne pourra pas recevoir les données MQTT du compteur.
+:::
+
+
+# Manuel d’utilisation — Plugin WhatWatt
+
+Le plugin **WhatWatt** permet d’intégrer dans Jeedom le compteur d’énergie connecté WhatWatt afin de suivre en temps réel :
+
+- la consommation électrique
+- l’injection réseau
+- l’énergie totale
+- les tensions et courants
+- les données par phase
+- les valeurs avancées réseau
+- les données Live SSE
+- l’état de communication MQTT
+
+Le plugin privilégie **MQTT** comme source principale et peut utiliser automatiquement le **Live SSE** comme solution de secours.
+
+---
+
+# Fonctionnalités principales
+
+## Intégration MQTT native
+
+Le plugin utilise le plugin **MQTT Manager** de Jeedom pour recevoir les données envoyées par WhatWatt.
+
+Fonctionnalités :
+
+- découverte automatique des compteurs
+- création automatique des équipements
+- création automatique des commandes
+- mise à jour temps réel
+- gestion multi-compteurs
+- conservation du dernier payload reçu
+- diagnostic MQTT intégré
+
+Topic d’écoute par défaut :
+
+```text
+whatwatt/+/state
+```
+
+Topic recommandé côté WhatWatt :
+
+```text
+whatwatt/${sys.id}/state
+```
+
+---
+
+## Fallback Live SSE
+
+Le plugin embarque un daemon NodeJS permettant d’utiliser l’API Live  du boîtier WhatWatt.
+
+Le Live SSE sert principalement :
+
+- en secours du MQTT
+- pour le diagnostic
+- pour continuer à recevoir les valeurs si MQTT devient indisponible
+
+Le daemon :
+
+- gère le streaming temps réel
+- supporte l’authentification 
+- masque automatiquement les informations sensibles dans les logs
+- surveille l’état de connexion
+- bascule automatiquement la source active
+
+---
+
+## Création automatique des équipements
+
+Lorsqu’un nouveau compteur est détecté :
+
+1. le plugin l'identifie automatiquement 
+2. l’équipement Jeedom est créé
+3. les commandes sont générées automatiquement
+4. les unités et types sont configurés
+5. les valeurs sont immédiatement mises à jour
+
+Le plugin peut également :
+
+- recréer les commandes depuis le dernier payload
+- ajouter automatiquement les nouvelles valeurs découvertes
+- conserver les données techniques utiles au diagnostic
+
+---
+
+# Installation
+
+## 1 — Installer le plugin
+
+Depuis le Market Jeedom :
+
+```text
+Plugins → Gestion des plugins → Market
+```
+
+Installer puis activer le plugin **WhatWatt**.
+
+---
+
+## 2 — Vérifier MQTT Manager
+
+Le plugin nécessite :
+
+- le plugin MQTT Manager
+- un broker MQTT fonctionnel
+- un daemon MQTT actif
+
+Dans la configuration du plugin, un assistant affiche automatiquement :
+
+- le broker MQTT
+- le port
+- le topic
+- l’utilisateur
+- le mot de passe
+
+afin de simplifier la configuration du boîtier WhatWatt.
+
+---
+
+## 3 — Configurer le boîtier WhatWatt
+
+Dans l’interface WhatWatt :
+
+- activer MQTT
+- renseigner le login et mot de passe 
+- renseigner le topic MQTT défini dans la configuration générale du plugin
+- enregistrer la configuration
+
+Après quelques secondes, l’équipement apparaît automatiquement dans Jeedom.
+
+---
+
+# Équipement WhatWatt
+
+Chaque équipement contient :
+
+- l’identifiant système
+- le topic MQTT
+- le dernier payload MQTT
+- le dernier payload Live SSE
+
+Le plugin peut fonctionner :
+
+- en MQTT uniquement
+- en Live SSE uniquement
+- en mode hybride MQTT + fallback Live SSE
+
+---
+
+
+## 📊 Variables WhatWatt
+
+Les données remontées par WhatWatt permettent de suivre la consommation électrique, l’injection éventuelle, l’état du compteur et plusieurs informations techniques utiles au diagnostic.
+
+> ⚠️ Toutes les valeurs ne sont pas forcément disponibles selon le compteur, le protocole utilisé, le firmware ou l’interface connectée.
+>
+> Une valeur absente ou `null` n’est donc pas forcément une erreur : cela signifie généralement que le compteur ne fournit pas cette information.
+
+---
+
+### ⚡ Variables visibles par défaut
+
+Ces commandes correspondent aux informations les plus utiles au quotidien.
+
+**🔌 Puissance consommée**  
+Puissance instantanée utilisée par votre installation.  
+→ C’est la valeur principale pour suivre la consommation en temps réel.
+
+**🔋 Puissance injectée**  
+Puissance renvoyée vers le réseau, par exemple avec des panneaux solaires.  
+→ La valeur reste généralement à `0` si aucune production n’est présente.
+
+**📈 Énergie consommée**  
+Total d’énergie utilisée par l’installation.  
+→ Sert au suivi global de la consommation et au calcul de la facture.
+
+**📉 Énergie injectée**  
+Total d’énergie renvoyée vers le réseau.  
+→ Utile principalement en cas de production solaire ou d’autoconsommation.
+
+**⚡ Tension L1 / L2 / L3**  
+Tension électrique par phase, exprimée en volts.  
+→ En monophasé, seule L1 est généralement renseignée. La valeur attendue est autour de 230 V.
+
+**🔌 Courant L1 / L2 / L3**  
+Courant électrique par phase, exprimé en ampères.  
+→ Permet de visualiser la charge instantanée sur chaque phase.
+
+**📡 Statut compteur**  
+État de communication avec le compteur.  
+Exemples possibles :
+
+- `OK` → fonctionnement normal
+- `NO DATA` → aucune donnée exploitable reçue
+- `NOT CONNECTED` → compteur non détecté ou non joignable
+
+**🕒 Date compteur**  
+Date et heure fournies par le compteur.  
+→ Permet de vérifier la cohérence et la fraîcheur des données reçues.
+
+---
+
+### ⚙️ Variables avancées
+
+Ces commandes sont utiles pour une analyse plus fine de l’installation.
+
+**⚡ Puissance consommée L1 / L2 / L3**  
+Consommation détaillée par phase.  
+→ Très utile en triphasé pour équilibrer les charges.
+
+**🔋 Puissance injectée L1 / L2 / L3**  
+Injection d’énergie détaillée par phase.  
+→ Permet d’analyser la répartition de la production.
+
+**🧾 Tarif**  
+Tarif en cours, par exemple heures pleines / heures creuses si l’information est disponible.  
+→ Utile pour les automatisations et les calculs de coût.
+
+**📊 Facteur de puissance**  
+Indicateur de qualité de la consommation, généralement compris entre 0 et 1.  
+→ `1` correspond à une consommation optimale ; une valeur faible peut indiquer des pertes ou une charge peu efficace.
+
+**⚡ Puissance apparente**  
+Puissance totale vue par le réseau, exprimée en VA ou kVA selon la source.  
+→ Utile pour surveiller la puissance appelée et l’abonnement électrique.
+
+---
+
+### 🛠️ Variables techniques
+
+Ces informations sont principalement utiles pour le diagnostic, le support et le mode expert.
+
+**⚡ Puissance réactive**  
+Puissance liée aux charges inductives ou capacitives, comme certains moteurs ou transformateurs.  
+→ Elle ne correspond pas directement à l’énergie réellement consommée, mais peut influencer la qualité électrique.
+
+**📈 Énergie réactive**  
+Accumulation de la puissance réactive dans le temps.  
+→ Principalement utile pour l’analyse avancée ou le debug.
+
+**📶 WiFi RSSI**  
+Qualité du signal Wi-Fi, exprimée en dBm.  
+→ Exemple : `-50 dBm` est bon, `-80 dBm` est faible.
+
+**🌐 IP WiFi**  
+Adresse IP du WhatWatt sur le réseau Wi-Fi.  
+→ Utile pour vérifier la connectivité ou accéder à l’interface du boîtier.
+
+**🔌 État Ethernet**  
+Statut de la connexion filaire, par exemple `up` ou `down`.  
+→ Permet de savoir si le boîtier utilise ou détecte le réseau Ethernet.
+
+**🧠 Firmware**  
+Version logicielle du WhatWatt.  
+→ Information utile pour le support, les mises à jour et le debug.
+
+**🆔 ID système**  
+Identifiant unique du boîtier WhatWatt.  
+→ Permet de différencier plusieurs équipements.
+
+**⚙️ Type compteur**  
+Type de compteur connecté, par exemple DSMR, DLMS ou autre selon l’installation.
+
+**🔗 Protocole compteur**  
+Protocole utilisé pour lire les données du compteur.
+
+---
+
+### 🎯 Résumé des niveaux d’affichage
+
+- **Essentiel** → puissance, énergie et suivi quotidien
+- **Avancé** → analyse par phase, tarif, optimisation
+- **Technique** → diagnostic réseau, compteur, firmware et debug
+
+
+# Commandes disponibles
+
+Les commandes sont générées automatiquement selon les données reçues.
+
+## Valeurs principales
+
+| Commande | Description |
+|---|---|
+| Puissance consommée | Consommation instantanée |
+| Puissance injectée | Injection réseau instantanée |
+| Énergie consommée | Total énergie consommée |
+| Énergie injectée | Total énergie injectée |
+| Tarif | Tarif courant |
+| Source données | MQTT ou Live SSE |
+| Dernière communication | Dernière mise à jour |
+
+---
+
+## Valeurs par phase
+
+| Commande | Description |
+|---|---|
+| Tension L1/L2/L3 | Tension par phase |
+| Courant L1/L2/L3 | Intensité par phase |
+| Puissance phase 1/2/3 | Puissance détaillée |
+
+---
+
+## Valeurs avancées
+
+Selon les données envoyées par WhatWatt :
+
+- puissance apparente
+- puissance réactive
+- énergie réactive
+- facteur de puissance
+- informations réseau
+- informations techniques
+
+---
+
+# Conversion automatique des puissances
+
+Le plugin peut convertir automatiquement les puissances en watts côté Jeedom.
+
+Option disponible :
+
+```text
+Convertir les puissances en W
+```
+
+Cette option est utile si le boîtier envoie certaines valeurs en kW.
+
+---
+
+# Mode Live SSE
+
+## Activation
+
+Dans l’équipement :
+
+1. activer le fallback Live SSE
+2. renseigner l’adresse IP du boîtier
+3. renseigner le mot de passe Live si nécessaire
+4. définir le timeout MQTT
+
+Exemple :
+
+```text
+192.168.1.160
+```
+---
+
+# Page Santé
+
+Le plugin dispose d’une page Santé avancée permettant de vérifier :
+
+- l’état MQTT
+- l’état du daemon Live SSE
+- la dernière réception MQTT
+- la dernière réception Live
+- la source active
+- les équipements configurés
+- les dernières erreurs réseau
+- les valeurs critiques
+- les bascules MQTT ↔ Live
+
+Cette page simplifie fortement le diagnostic.
+
+---
+
+# Logs
+
+Logs disponibles :
+
+| Log | Description |
+|---|---|
+| whatwatt | Log principal du plugin |
+| whatwatt_live | Daemon Live SSE |
+| mqtt2 | Réception MQTT |
+
+Le mode Debug est recommandé uniquement pour le diagnostic.
+
+---
+
+# Dépannage
+
+## Aucun équipement créé
+
+Vérifier :
+
+- MQTT Manager actif
+- broker accessible
+- topic MQTT correct
+- daemon MQTT démarré
+- communication réseau OK
+
+---
+
+## Pas de données MQTT
+
+Vérifier :
+
+```text
+whatwatt/${sys.id}/state
+```
+
+et contrôler :
+
+- IP du broker
+- identifiants MQTT
+- pare-feu
+- réseau local
+
+---
+
+## Live SSE ne fonctionne pas
+
+Tester :
+
+```text
+http://IP_WHATWATT/api/v1/live
+```
+
+ou :
+
+```bash
+curl -N --digest -u ":motdepasse" "http://IP_WHATWATT/api/v1/live"
+```
+
+Puis vérifier :
+
+- mot de passe
+- réseau local
+- daemon WhatWatt Live
+- logs du plugin
+
+---
+
+# Recommandations
+
+Pour une utilisation optimale :
+
+- utiliser MQTT comme source principale
+- activer le fallback Live SSE uniquement en secours
+- éviter le mode Debug en permanence
+- conserver un broker MQTT stable sur le réseau local
+
+---
+
