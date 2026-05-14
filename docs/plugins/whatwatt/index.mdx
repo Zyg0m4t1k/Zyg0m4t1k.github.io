@@ -135,6 +135,11 @@ Le plugin nécessite :
 - un broker MQTT fonctionnel
 - un daemon MQTT actif
 
+
+---
+
+## 3 — Configurer le boîtier WhatWatt
+
 Dans la configuration du plugin, un assistant affiche automatiquement :
 
 - le broker MQTT
@@ -145,16 +150,74 @@ Dans la configuration du plugin, un assistant affiche automatiquement :
 
 afin de simplifier la configuration du boîtier WhatWatt.
 
----
-
-## 3 — Configurer le boîtier WhatWatt
+![Configuration générale](/img/plugins/whatwatt/config_plugin.png)
 
 Dans l’interface WhatWatt :
 
 - activer MQTT
-- renseigner le login et mot de passe 
-- renseigner le topic MQTT défini dans la configuration générale du plugin
+- renseigner le login , le mot de passe de mqtt et le topic MQTT défini dans la configuration générale du plugin
+- Copiez le payload suivant dans la configuration MQTT du boîtier WhatWatt
+
+:::info
+
+Ce payload permet au plugin de récupérer :
+- les mesures énergétiques
+- les informations compteur
+- les informations réseau
+- les données système WhatWatt
+
+:::
+
+```json title="Payload MQTT WhatWatt"
+{
+  "P_In": ${1_7_0},
+  "P_Out": ${2_7_0},
+
+  "P_P1_In": ${21_7_0},
+  "P_P2_In": ${41_7_0},
+  "P_P3_In": ${61_7_0},
+
+  "P_P1_Out": ${22_7_0},
+  "P_P2_Out": ${42_7_0},
+  "P_P3_Out": ${62_7_0},
+
+  "I_P1": ${31_7_0},
+  "I_P2": ${51_7_0},
+  "I_P3": ${71_7_0},
+
+  "V_P1": ${32_7_0},
+  "V_P2": ${52_7_0},
+  "V_P3": ${72_7_0},
+
+  "rP_In": ${3_7_0},
+  "rP_Out": ${4_7_0},
+
+  "E_In": ${1_8_0},
+  "E_Out": ${2_8_0},
+
+  "rE_In": ${3_8_0},
+  "rE_Out": ${4_8_0},
+  "Apparent_Power": ${9_7_0},
+  "Power_Factor": ${13_7_0},
+  "Tariff": ${tariff},
+  "Firmware": "${sys.firmware}",
+  "DateTime": "${meter.date_time}",
+  "Wifi_Status": "${wifi.sta.status}",
+  "Wifi_RSSI": "${wifi.sta.rssi}",
+  "Wifi_IP": "${wifi.sta.ip}",
+  "Eth_State": "${eth.state}",
+  "Eth_IP": "${eth.ip}",
+  "Meter_Status": "${meter.status}",
+  "Meter_Model": "${meter.model}",
+  "Meter_Vendor": "${meter.vendor}",
+  "Sys_Id": "${sys.id}"
+}
+
+```
+
 - enregistrer la configuration
+
+![Configuration Whatwatt](/img/plugins/whatwatt/config_whatwatt.png)
 
 Après quelques secondes, l’équipement apparaît automatiquement dans Jeedom.
 
@@ -168,6 +231,9 @@ Chaque équipement contient :
 - le topic MQTT
 - le dernier payload MQTT
 - le dernier payload Live SSE
+- etc ...
+
+![Equipement](/img/plugins/whatwatt/equipment.png)
 
 Le plugin peut fonctionner :
 
