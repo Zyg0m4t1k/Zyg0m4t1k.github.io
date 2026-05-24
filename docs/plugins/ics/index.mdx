@@ -88,6 +88,7 @@ Paramètres :
 - **Couleur** : la couleur des événements dans l'agenda
 - **Fériés** : si un événement existe dans le calendrier le jour sera considéré comme férié (voir la doc sur les commandes)
 - **Widget** : le nombre de jours sur le widget
+- **Mini-Cal** : affiche le widget sous forme de grille mensuelle (au lieu de la liste FullCalendar)
 - **Jours** : le nombre de jours à sauvegarder
 
 Vous pouvez ensuite naviguer via les onglets.
@@ -171,12 +172,27 @@ Rendu sur le dashboard. Vue mobile OK.
 
 ![widgetDash](/img/plugins/ics/widgetDash.png)
 
+### Widget Mini-Cal
+
+L'option **Mini-Cal** (disponible dans les configurations url, local, caldav et widget) remplace le widget liste FullCalendar par une **grille mensuelle** :
+
+- Affichage du mois en cours avec navigation précédent/suivant
+- Chaque jour indique la présence d'événements : point vert et compteur si des événements existent, point rouge sinon
+- Les jours du mois précédent et suivant apparaissent en opacité réduite
+- Un **clic sur un jour** ouvre une tuile flottante listant les événements du jour (heure ou "Toute la journée" et titre)
+- Un bouton **"Liste"** dans la tuile permet de basculer vers la vue liste FullCalendar, avec un bouton **"Mois"** pour revenir à la grille
+
+![Widget Mini-Cal — vue grille](/img/plugins/ics/mini_cal_grid.png)
+![Widget Mini-Cal — tuile jour](/img/plugins/ics/mini_cal_tile.png)
+
+---
+
 ### Widget Carte Événement
 
 Les équipements de type **Événement** disposent d'un widget carte dédié qui affiche le prochain événement correspondant.
 
-<!-- ![Widget carte événement — aucun événement](/img/plugins/ics/eventcal_empty.png) -->
-<!-- ![Widget carte événement — avec données](/img/plugins/ics/eventcal_widget.png) -->
+![Widget carte événement — aucun événement](/img/plugins/ics/eventcal_empty.png)
+![Widget carte événement — avec données](/img/plugins/ics/eventcal_widget.png)
 
 Le widget affiche :
 - le **mois** dans l'entête colorée
@@ -190,7 +206,7 @@ L'entête change de couleur selon l'imminence de l'événement :
 
 | Délai | Couleur |
 |---|---|
-| Plus de 24h | Rouge (normal) |
+| Plus de 24h | Vert |
 | Moins de 24h | Orange |
 | Moins d'1h | Rouge vif |
 | Moins de 5 min | Rouge foncé |

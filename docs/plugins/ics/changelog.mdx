@@ -10,6 +10,20 @@ Ce fichier liste les évolutions, corrections et améliorations du plugin **Cale
 
 ---
 
+## 2026-05-24
+
+### Nouveautés
+- **Migration FullCalendar v4 → v6** : remplacement complet de la bibliothèque par les bundles modulaires FC6 (`core`, `daygrid`, `timegrid`, `list`, `interaction`, `locales-all`). Suppression des dépendances moment.js et jquery-ui.
+- Nouveau **widget Mini-Cal** (`eqLogic_min`) : grille mensuelle entièrement custom (sans FC), avec indicateurs visuels d'événements par jour (point vert/rouge, compteur), navigation mois précédent/suivant, et tuile flottante au clic sur un jour affichant la liste des événements (heure ou "Toute la journée", titre).
+- Option **"Mini-Cal"** ajoutée dans les formulaires de configuration de tous les types de calendrier (url, local, caldav, widget) : permet de choisir entre le widget liste FC6 et le widget grille mini.
+
+### Améliorations
+- Le widget `eventCal` injecte désormais correctement les données du prochain événement (`timestamp`, `title`, `allday`, `location`) depuis les commandes Jeedom via `toHtml()`.
+- Le thème Jeedom Light/Dark est désormais appliqué également au widget Mini-Cal via les variables CSS `--jee-*`.
+- La vue mobile bénéficie des mêmes nouveaux widgets (Mini-Cal et eventCal).
+
+---
+
 ## 2026-04-28
 
 ### Nouveautés
