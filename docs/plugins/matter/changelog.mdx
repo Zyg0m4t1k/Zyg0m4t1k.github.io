@@ -4,6 +4,13 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-05-24
+
+- Mise à jour des dépendances daemon : `matter-server` et `@matter-server/ws-client` `0.5.10` → `0.7.1`.
+- changement de canal Thread en mode Router/leader : quand OTBR n'est pas Leader (ex: un HomePod ou autre border router détient le rôle de Leader), `dataset commit pending` restait local et n'était jamais propagé au réseau. Le changement de canal depuis l'interface ne fonctionnait pas dans ce cas. Corrigé en utilisant `dataset updater start` qui envoie un `MGMT_PENDING_SET.req` directement au Leader, avec un délai minimum de 300 secondes pour laisser le temps à tous les nœuds Thread de migrer.
+- **Gestion du canal Thread dans la configuration** : nouvelle section permettant de lire le canal actuel, de le modifier avec confirmation, et de sauvegarder/restaurer le dataset avant modification.
+- correction du nom de propriété pour la température de couleur .
+
 ## 2026-04-29
 
 - Documentation OTBR enrichie avec les scénarios concrets Option A (TCP socat — recommandé) et Option B (distant — expérimental) pour les dongles SLZB et équivalents.

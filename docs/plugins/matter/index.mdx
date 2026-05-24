@@ -21,20 +21,12 @@ Il s'appuie sur **Matter Server (JS)** (projet Home Assistant) pour communiquer 
 
 ---
 
-:::warning Migration importante (v0.5.0)
+:::important Après chaque mise à jour du plugin
+**Relancez toujours l'installation des dépendances** après une mise à jour du plugin Matter.
 
-La version **0.5.0** introduit une refonte complète du plugin avec un passage à **Matter JS (Node.js)**.
+👉 **Plugins → Matter → Configuration → Installer les dépendances**
 
-⚠️ Il est **fortement conseillé** de :
-- Désinstaller l’ancienne version du plugin (démon Python)
-- Installer ensuite la nouvelle version
-
-💾 Sauvegarde des données :
-- Sauvegarder `chip.json` et les fichiers `*.json` (ex : `xyzyvysvzsz.json`) présents dans `data/matter-server`
-- Après installation, les remettre dans `plugins/matter/data/`
-
-⚠️ À faire **avant de lancer le démon** (avant activation du plugin)
-
+Puis redémarrez le démon. Ne pas le faire peut provoquer des erreurs de démarrage ou des dysfonctionnements.
 :::
 
 ---
@@ -734,10 +726,58 @@ Fonctions disponibles :
 
 ---
 
+### 📡 Canal Thread
+
+Le canal Thread est le canal radio utilisé par tous les appareils de votre réseau. Il est stocké dans le dataset actif et doit être identique sur tous les nœuds.
+
+:::warning Usage avancé
+Changer le canal affecte **tous les appareils Thread** du réseau. L’opération est réversible via la restauration du backup, mais peut temporairement déconnecter certains équipements.
+:::
+
+#### Lire le canal actuel
+
+Depuis **Configuration → OTBR**, cliquez sur l’icône 🔄 à côté du champ Canal Thread pour lire le canal actuellement actif.
+
+#### Changer le canal
+
+1. Saisissez le nouveau canal (valeurs autorisées : **11 à 26**)
+2. Cliquez sur **Changer**
+3. Confirmez l’avertissement
+
+Le comportement dépend du **rôle OTBR** dans le réseau Thread :
+
+| Rôle OTBR | Mécanisme | Délai |
+|-----------|-----------|-------|
+| **Leader** | `dataset commit pending` — propagé directement | ~30 secondes |
+| **Router** | `dataset updater start` — soumis au Leader du réseau | ~5 minutes |
+
+:::note Rôle Router
+Si un autre border router (HomePod, Apple TV 4K, Google Nest Hub…) est Leader de votre réseau Thread, OTBR est en mode **Router**. Le changement de canal est soumis au Leader via `MGMT_PENDING_SET.req` — le basculement prend ~5 minutes si le Leader l’accepte.
+:::
+
+#### Sauvegarde et restauration
+
+Avant toute modification, le plugin **sauvegarde automatiquement** le dataset actif en configuration Jeedom.
+
+| Action | Description |
+|--------|-------------|
+| **Sauvegarder le dataset** | Ouvre la fenêtre Gestion Matter & Thread pour copier le dataset manuellement |
+| **Restaurer le backup** | Réinjecte le dataset sauvegardé avant le dernier changement de canal |
+
+:::tip Bonne pratique
+Utilisez le bouton **Sauvegarder le dataset** avant tout changement de canal. En cas de problème, **Restaurer le backup** permet de revenir à l’état précédent en quelques secondes.
+:::
+
+:::note
+Le changement de canal Thread depuis l'interface fonctionne maintenant que votre OTBR soit **Leader** ou **Router**. En mode Router, le basculement prend ~5 minutes (délai de propagation au réseau). Vérifiez le canal avec **Lire le canal** après ce délai.
+:::
+
+---
+
 ### 💡 Conseil
 
-👉 Privilégier l’utilisation d’un **dataset existant** si vous avez déjà un réseau Thread  
-👉 Cela garantit une continuité et évite toute perte d’équipements  
+👉 Privilégier l’utilisation d’un **dataset existant** si vous avez déjà un réseau Thread
+👉 Cela garantit une continuité et évite toute perte d’équipements
 
 ---
 
