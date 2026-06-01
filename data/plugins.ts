@@ -35,7 +35,7 @@ const plugins: PluginItem[] = [
     "icon": "lumina_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/lumina/"
     },
@@ -51,7 +51,7 @@ const plugins: PluginItem[] = [
     "icon": "matter_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "Node.js"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x", "Node.js"],
     "routes": {
       "page": "/docs/plugins/matter/"
     },
@@ -67,7 +67,7 @@ const plugins: PluginItem[] = [
     "icon": "telejee_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/telejee/"
     },
@@ -97,7 +97,7 @@ const plugins: PluginItem[] = [
     "description": "Intégration complète des équipements myStrom et Dingz dans Jeedom — pilotage local, sans cloud obligatoire.",
     "icon": "mystr0m_icon.png",
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/mystr0m/"
     },
@@ -111,7 +111,7 @@ const plugins: PluginItem[] = [
     "name": "iOSCloud",
     "description": "Intégration iCloud / Find My : synchronisation des appareils, localisation, état batterie et automatisations Jeedom.",
     "icon": "ioscloud_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x", "python"],
     "routes": {
       "page": "/docs/plugins/ioscloud/"
     },
@@ -209,7 +209,7 @@ const plugins: PluginItem[] = [
     "name": "Météo Suisse",
     "description": "Ce plugin permet de créer des télécommandes virtuelles et d’assigner des actions (unique,message,scénario...) aux boutons.",
     "icon": "swissmeteo_icon.png",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/swissmeteo/"
     },
