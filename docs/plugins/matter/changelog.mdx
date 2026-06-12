@@ -35,6 +35,15 @@ sidebar_position: 99
   - La page santé affiche les 4 niveaux séparément
   - La page de configuration affiche également les 4 niveaux (badge Daemon ajouté entre Wrapper et Server)
 
+  desktop/modal/health.php — Page Santé
+  - fix: la page santé ne se chargeait plus après fermeture/réouverture (guard _bound bloquait loadReport)
+  - fix: ajout d'un message de chargement centré visible dès l'ouverture (panels masqués jusqu'à réception des données)
+
+  install_apt.sh / matter.class.php — cap_net_raw Node.js
+  - fix: après setcap cap_net_raw+eip, vérifie que Node s'exécute encore
+    - si Node échoue (Operation not permitted) : setcap -r appliqué automatiquement
+  - fix: la page santé détecte et remonte en erreur le cas "cap présente mais Node inutilisable"
+
 - Mise à jour des dépendances daemon : `matter-server` et `@matter-server/ws-client` `0.8.0` → `1.0.0`.
 
 ## 2026-06-12                                                                                                                                                                   
