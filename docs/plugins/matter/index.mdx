@@ -215,6 +215,23 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 
 > En mode externe, renseignez l'URL WebSocket de votre serveur Matter (ex. `ws://192.168.1.50:5580/ws`).
 
+### Niveau de log
+
+La page de configuration affiche le niveau de log actif pour chaque composant sous forme de **badges colorés** :
+
+| Badge | Composant |
+|-------|-----------|
+| **Jeedom** | Niveau de log configuré dans Jeedom (paramètre global) |
+| **Wrapper** | Niveau actif dans le script `rpc-wrapper.mjs` |
+| **Daemon** | Niveau actif dans le processus `daemon.js` (Matter Server JS) |
+| **Server** | Niveau de log du serveur Matter |
+
+Les boutons **Debug / Info / Notice / Warning / Error** permettent de changer le niveau à chaud, sans redémarrer le démon. Le changement est appliqué immédiatement et sauvegardé.
+
+:::tip
+En production, utilisez **Notice** ou **Warning** pour réduire le volume de logs. Passez en **Debug** temporairement pour diagnostiquer un problème.
+:::
+
 ---
 
 ## ➕ Ajouter un appareil Matter
@@ -401,6 +418,75 @@ La page Santé (accessible via le bouton **Santé** sur la page du plugin) affic
 - **Diagnostiquer** : rafraîchit le rapport de santé
 - **Réparation auto** : tente de corriger automatiquement les problèmes détectés
 - **Mode jumelage** : active le mode commissioning Bluetooth
+
+### Diagnostic IPv6 / Thread
+
+La page Santé intègre des contrôles avancés pour identifier les problèmes de commissionnement Thread, particulièrement utiles sur les VM et environnements virtualisés.
+
+#### Vérifications IPv6 effectuées
+
+| Vérification | Description |
+|---|---|
+| `ipv6_kernel` | IPv6 activé au niveau noyau (`/proc/sys/.../all/disable_ipv6`) |
+| `ipv6_iface` | IPv6 activé sur l'interface réseau Matter (route par défaut) |
+| `ipv6_linklocal` | Présence d'une adresse `fe80::` (minimum requis) |
+| `ipv6_global` | Présence d'une adresse globale/ULA — **bloquant** si absente (commissioning Thread impossible) |
+| `ipv6_forwarding` | Forwarding IPv6 actif = warning (mode routeur non recommandé) |
+| `ipv6_accept_ra` | Warning uniquement si `accept_ra=0` ET aucune adresse globale/ULA |
+| `ipv6_nmcli` | NetworkManager présent et interface gérée (bloquant si absent) |
+| `ipv6_thread_routes` | Routes ULA Thread (`fdxx::/64`) détectées via les Route Information Options |
+
+#### Détection des routes Thread
+
+Le plugin vérifie la présence de routes Thread de la forme `fdxx::/64` :
+
+```text
+fd54:cc13:a99f::/64 via ...
+fde3:c292:b227:1::/64 via ...
+```
+
+Leur présence confirme que les annonces du Border Router (HomePod, OTBR…) sont correctement prises en compte. L'absence de ces routes est souvent la cause réelle d'un commissionnement Thread impossible, même quand IPv6 semble actif.
+
+#### Correction automatique
+
+Si aucune route Thread n'est détectée, un bouton **Corriger** permet d'appliquer automatiquement :
+
+```bash
+net.ipv6.conf.<interface>.accept_ra_rt_info_max_plen=64
+```
+
+Ce paramètre autorise Linux à accepter les routes annoncées via les **Route Information Options (RIO)** des Border Routers Thread. Il est persistant (ajouté dans `/etc/sysctl.d/`).
+
+#### Cas typique sur VM
+
+Sur une VM avec IPv6 actif et HomePod/OTBR fonctionnel, le commissionnement Thread peut échouer silencieusement si :
+
+```text
+accept_ra_rt_info_max_plen = 0  ← valeur par défaut Linux
+```
+
+Après correction via la page Santé :
+
+```text
+Routes Thread fdxx:: détectées → commissionnement Thread fonctionnel
+```
+
+#### Bonnes pratiques VM / Docker
+
+- Utiliser un réseau **bridge** (éviter le NAT)
+- Vérifier IPv6 directement dans la VM (pas seulement sur l'hôte)
+- Appliquer les paramètres IPv6 dans la VM elle-même
+- Utiliser `--network=host` pour Docker si Matter Server est conteneurisé
+- Éviter les réflecteurs mDNS / Avahi qui peuvent interférer
+
+#### Diagnostic rapide en CLI
+
+```bash
+# Vérifier les routes Thread
+ip -6 route | grep "^fd"
+```
+
+Si aucune route `fdxx::/64` n'apparaît alors que vous avez un Border Router actif, utilisez le bouton **Corriger** de la page Santé.
 
 ---
 

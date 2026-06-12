@@ -4,6 +4,38 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## beta
+
+  install_apt.sh
+  - fix: contrainte Node.js mise à jour >= 22.13.0 < 24 (était >= 18)
+  - fix: installation via setup_22.x NodeSource (était setup_20.x)
+
+  matter.class.php — getHealthReport()
+  - feat: check IPv6 éclaté en 8 sous-vérifications distinctes (était un seul check disable_ipv6)
+    - ipv6_kernel — IPv6 noyau global (/proc/sys/.../all/disable_ipv6)
+    - ipv6_iface — IPv6 sur l'interface Matter auto-détectée (route par défaut)
+    - ipv6_linklocal — présence d'une adresse fe80:: (minimum requis)
+    - ipv6_global — présence d'une adresse globale/ULA — bloquant si absente (commissioning Thread impossible)
+    - ipv6_forwarding — forwarding IPv6 actif = warning (mode routeur)
+    - ipv6_accept_ra — warning uniquement si accept_ra=0 ET aucune adresse globale/ULA (évite faux positif NM)
+    - ipv6_nmcli — bloquant si absent ou interface non-gérée, avec commandes de fix
+    - ipv6_thread_routes — routes ULA Thread/RIO détectées (informatif)
+
+  security: daemon.js / rpc-wrapper.mjs
+  - La clé API Jeedom est désormais transmise via la variable d'environnement JEEDOM_APIKEY
+    au lieu de l'argument CLI --jeedom-apikey (évite l'exposition dans ps aux)
+  - Le log debug masque la clé avec ***
+
+  daemon.js / rpc-wrapper.mjs / log.mjs — Niveau de log
+  - feat: alignement du niveau de log de daemon.js avec le wrapper à chaud via SIGUSR1
+    - log.mjs : ajout export getLevel()
+    - daemon.js : écrit le niveau dans un fichier .loglevel au démarrage ; handler SIGUSR1 pour rechargement à chaud
+    - rpc-wrapper.mjs : set_loglevel écrit le fichier et envoie SIGUSR1 à daemon.js (ppid)
+    - get_loglevel retourne désormais 4 niveaux : Jeedom / Wrapper / Daemon / Server
+  - La page santé affiche les 4 niveaux séparément
+  - La page de configuration affiche également les 4 niveaux (badge Daemon ajouté entre Wrapper et Server)
+
+- Mise à jour des dépendances daemon : `matter-server` et `@matter-server/ws-client` `0.8.0` → `1.0.0`.
 
 ## 2026-06-12                                                                                                                                                                   
                                                                                                                                                                               
