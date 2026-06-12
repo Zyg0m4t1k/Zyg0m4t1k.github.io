@@ -1,0 +1,50 @@
+---
+title: Widgets MyHome
+description: Liste des widgets compatibles MyHome déclarés dans widget.json.
+sidebar_position: 20
+---
+
+# 🧩 Widgets MyHome
+
+Cette section documente les widgets déclarés compatibles MyHome dans `widget.json`.
+
+## 📋 Widgets détectés
+
+| Widget | Description | Largeur | Hauteur | Paramètres |
+| --- | --- | --- | --- | --- |
+| [server_card](./server_card.mdx) | Card monitoring serveur : SSH status, barres CPU/RAM/Disk/Swap, uptime et réseau. Compatible plugins Monitoring et servermonitor. | 260px | auto | 6 |
+| [allinone_card](./allinone_card.mdx) | Card famille d'équipements : header compteur, liste avec toggles individuels, boutons tout ON/OFF. | 320px | auto | 9 |
+| [overview_card](./overview_card.mdx) | Card résumé d'un objet Jeedom : badges ON/OFF, température, humidité… | 280px | 160px | 4 |
+| [overview_core](./overview_core.mdx) | Synthèse Jeedom type core : tous les objets visibles ou un objet précis | 100% | auto | 4 |
+| [room_summary](./room_summary.mdx) | Résumé informatif par pièce : température, lumières, prises, volets ou autres résumés Jeedom sélectionnés | 360px | auto | 8 |
+| [weather_card](./weather_card.mdx) | Widget météo complet sous forme de card : température, humidité, vent, pression, pluie, lever/coucher du soleil et prévisions J+1 à J+3. | 320px | 360px | 4 |
+| [custom_horizontal_widget](./custom_horizontal_widget.mdx) | Widget horizontal personnalisable | 360px | 70px | 5 |
+| [universal_card](./universal_card.mdx) | Widget universel switch / slider | 360px | 70px | 12 |
+| [color_zone](./color_zone.mdx) | Zone overlay fond plein — couleur accent, opacité et border-radius configurables. Widget décoratif sans commande. | 300px | 200px | 7 |
+| [myhome_zone](./myhome_zone.mdx) | Zone décorative overlay (contour rectangulaire ou ligne) | 300px | 200px | 7 |
+| [status_card](./status_card.mdx) | Widget récapitulatif d'état : lumières, volets, prises, daemons, mises à jour, messages | 280px | 64px | 6 |
+| [scenario_card](./scenario_card.mdx) | Widget scénario horizontal type universal_card : démarrer, arrêter, activer, désactiver et logs. | 380px | 92px | 10 |
+| [timeline_tools](./timeline_tools.mdx) | Timeline Jeedom core modernisée : ligne verticale, événements cmd/scénario et rendu Tools glass | 380px | 450px | 8 |
+
+
+## 🚀 Utilisation générale
+
+Les widgets MyHome sont ajoutés depuis la **palette** dans une page cible.
+
+Flux recommandé :
+
+```text
+Palette
+  ↓
+Choix de la page cible
+  ↓
+Ajout du widget
+  ↓
+Ouverture du sous-plan
+  ↓
+Positionnement et personnalisation
+```
+
+:::info
+Les dimensions indiquées sont les dimensions par défaut déclarées dans le plugin. Elles peuvent ensuite être ajustées dans le sous-plan Jeedom.
+:::

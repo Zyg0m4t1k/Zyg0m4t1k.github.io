@@ -1,0 +1,100 @@
+---
+title: MyHome
+description: Présentation du module MyHome du plugin Tools.
+sidebar_position: 1
+---
+
+# 🏠 MyHome
+
+**MyHome** est le module de création d'interfaces du plugin Tools.
+
+Il permet de créer une interface Jeedom moderne pour :
+
+- tablette murale ;
+- smartphone ;
+- écran tactile ;
+- dashboard domotique ;
+- affichage kiosque ;
+- interface familiale simplifiée.
+
+MyHome s'appuie sur les **plans Jeedom**, mais ajoute une couche d'organisation :
+
+- un projet principal ;
+- des pages ;
+- un sous-plan par page ;
+- un thème graphique ;
+- un menu de navigation ;
+- une palette d'ajout rapide ;
+- des cards prêtes à l'emploi ;
+- des widgets MyHome spécialisés.
+
+## 🏗️ Architecture générale
+
+```text
+Projet MyHome
+│
+├── Thème
+├── Menu
+├── Palette
+│
+├── Page Accueil
+│   └── Sous-plan Jeedom
+│
+├── Page Salon
+│   └── Sous-plan Jeedom
+│
+├── Page Énergie
+│   └── Sous-plan Jeedom
+│
+└── Page Sécurité
+    └── Sous-plan Jeedom
+```
+
+Chaque page MyHome correspond à un **planHeader Jeedom distinct**. Le projet garde le lien entre les pages, le thème, le menu et le rendu final.
+
+## ✅ Ce que fait MyHome
+
+MyHome sert à construire une interface complète sans repartir de zéro à chaque page.
+
+Il centralise :
+
+- la navigation ;
+- l'ambiance visuelle ;
+- la structure des pages ;
+- l'ajout rapide des éléments ;
+- l'intégration des widgets Tools ;
+- l'intégration des équipements Jeedom via des cards.
+
+## ⚠️ Ce que MyHome ne remplace pas
+
+MyHome ne remplace pas totalement l'éditeur de plans Jeedom.
+
+:::important
+Le positionnement précis, les dimensions, les superpositions et la finition visuelle se font directement dans les **sous-plans Jeedom**.
+:::
+
+MyHome prépare le cadre, les pages, le menu, les fonds et la palette. Ensuite, le design fin se fait dans les sous-plans.
+
+## 🔄 Cycle de création recommandé
+
+```text
+1. Préparer les widgets/cards utiles
+2. Créer un projet MyHome
+3. Choisir un thème
+4. Configurer le fond
+5. Configurer le menu
+6. Créer les pages
+7. Utiliser la palette
+8. Ouvrir les sous-plans
+9. Positionner les widgets et équipements
+10. Finaliser le design
+```
+
+## 📚 Pages de cette section
+
+- [Création d'un projet](./creation-projet.mdx)
+- [Thèmes](./themes.mdx)
+- [Menus](./menus.mdx)
+- [Palette](./palette.mdx)
+- [Pages et sous-plans](./pages-sousplans.mdx)
+- [Bonnes pratiques](./bonnes-pratiques.mdx)

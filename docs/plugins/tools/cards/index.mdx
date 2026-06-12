@@ -1,0 +1,54 @@
+---
+title: Cards équipement
+description: Cards d'équipements disponibles dans Tools.
+sidebar_position: 30
+---
+
+# 🃏 Cards équipement
+
+Les cards sont des rendus prêts à l'emploi pour des familles d'équipements Jeedom.
+
+Elles sont utilisées pour obtenir rapidement une interface cohérente dans MyHome.
+
+## 📋 Cards détectées
+
+| Card | Description | Template source | Variables |
+| --- | --- | --- | --- |
+| [light_card](./light_card.mdx) | Card d'équipement lumière : état, actions ON/OFF, toggle, luminosité, couleur et température de couleur si disponibles. | core/config/widgets_card/dashboard/eqLogic_light_card.html | 15 |
+| [multimedia_card](./multimedia_card.mdx) | Card multimédia : état, titre, artiste, contrôles lecture et volume. | core/config/widgets_card/dashboard/eqLogic_multimedia_card.html | 18 |
+| [outlet_card](./outlet_card.mdx) | Card d'équipement prise : état, actions ON/OFF/toggle, puissance et consommation si disponibles. | core/config/widgets_card/dashboard/eqLogic_outlet_card.html | 13 |
+| [security_card](./security_card.mdx) | Card sécurité / alarme : état, armement, déclenchement, mode et boutons d'action. | core/config/widgets_card/dashboard/eqLogic_security_card.html | 16 |
+| [shutter_card](./shutter_card.mdx) | Card volet / BSO : position, boutons montée/descente/stop, slider et visualisation. | core/config/widgets_card/dashboard/eqLogic_shutter_card.html | 13 |
+| [thermostat_card](./thermostat_card.mdx) | Card thermostat : température actuelle, consigne, état, barre de chauffe, modes et réglage de consigne. | core/config/widgets_card/dashboard/eqLogic_thermostat_card.html | 15 |
+
+
+## 🧩 Principe
+
+Une card regroupe :
+
+- le nom de l'équipement ;
+- l'icône ;
+- l'état principal ;
+- les boutons d'action ;
+- les commandes secondaires utiles ;
+- le style MyHome.
+
+## 🚀 Utilisation
+
+```text
+Équipement Jeedom
+       ↓
+Generic types / commandes reconnues
+       ↓
+Card Tools
+       ↓
+Ajout dans MyHome
+       ↓
+Positionnement dans le sous-plan
+```
+
+## 📷 Capture à ajouter
+
+{/* ![Cards Tools](/img/plugins/tools/cards/cards-overview.png) */}
+
+*Image commentée à préparer : comparaison des cards principales.*

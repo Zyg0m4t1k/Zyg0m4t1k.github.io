@@ -1,0 +1,66 @@
+---
+title: multimedia_card
+description: "Card multimédia : état, titre, artiste, contrôles lecture et volume."
+---
+
+# 🎵 multimedia_card
+
+## 📝 Description
+
+Card multimédia : état, titre, artiste, contrôles lecture et volume.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_multimedia_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_MEDIA_ARTIST |
+| CMD_ID_MEDIA_STATE |
+| CMD_ID_MEDIA_STATUS |
+| CMD_ID_MEDIA_TITLE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| MC_ACCENT |
+| MC_ARTIST |
+| MC_BTN_NEXT |
+| MC_BTN_PAUSE |
+| MC_BTN_PREVIOUS |
+| MC_BTN_RESUME |
+| MC_BTN_STOP |
+| MC_EQ_ID |
+| MC_NAME |
+| MC_STATE_CLASS |
+| MC_STATUS_LABEL |
+| MC_TITLE |
+| MC_TOOLS_ID |
+| MC_VOLUME |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![multimedia_card](/img/plugins/tools/cards/multimedia_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

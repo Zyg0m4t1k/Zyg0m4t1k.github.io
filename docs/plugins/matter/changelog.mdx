@@ -4,7 +4,21 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## 2026-05-01
+
+## [beta]                                                                                                                                                                     
+                                                                                                                                                                              
+### Ajouté                                                                                                                                                                    
+- Contrôle dynamique du niveau de log du daemon Matter depuis la page santé et la configuration                                                                             
+(boutons Debug / Info / Notice / Warning / Error, appliqué immédiatement et sauvegardé)                                                                                     
+                                                                                                                                                                                
+### Corrigé
+- Niveau de log Jeedom maintenant propagé aux scripts OTBR (`install_otbr.sh`, `start_otbr.sh`)
+via la variable d'environnement `MATTER_LOGLEVEL`
+- Heartbeat du watchdog OTBR abaissé de `INFO` à `NOTICE` pour éviter des logs intempestifs
+quand Jeedom est configuré en `warning` ou `error`
+- Mise à jour des dépendances daemon : `matter-server` et `@matter-server/ws-client` `0.7.1` → `0.8.0`.
+
+## 2026-06-01
 
 - Ajout du support des aspirateurs robots Matter (RVC) avec contrôle du mode, de l'état opérationnel et des actions start/pause/resume/retour à la base. 
 - Mise à jour de l'icône du plugin

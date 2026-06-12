@@ -1,0 +1,57 @@
+---
+title: allinone_card
+description: "Card famille d'équipements : header compteur, liste avec toggles individuels, boutons tout ON/OFF."
+---
+
+# allinone_card
+
+## 📝 Description
+
+Card famille d'équipements : header compteur, liste avec toggles individuels, boutons tout ON/OFF.
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `allinone_card` |
+| Largeur par défaut | `320px` |
+| Hauteur par défaut | `auto` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| family | light | light, shutter, alarm, switch, outlet | Famille d'équipements : light|shutter|alarm|switch|outlet |
+| objects |  |  | Ids objets Jeedom séparés par virgule (vide = tous) |
+| accent | #62d5ff | #62d5ff, #55efc4, #ffd166, #ff9f43, #a29bfe, #fd79a8 | Couleur accent |
+| label |  |  | Libellé (vide = auto selon famille, none pour masquer) |
+| icon |  |  | Icône FontAwesome (vide = auto selon famille, none pour masquer) |
+| img |  |  | Image à la place de l'icône (chemin dans data/images) |
+| show_list | 1 | 1, 0 | Afficher la liste des équipements : 1|0 |
+| show_room | 1 | 1, 0 | Afficher la pièce dans la liste : 1|0 |
+| show_actions | 1 | 1, 0 | Afficher les boutons tout ON/OFF : 1|0 |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **allinone_card**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![allinone_card](/img/plugins/tools/widgets/allinone_card.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.

@@ -1,0 +1,156 @@
+---
+title: Création d'un projet MyHome
+description: Ordre recommandé pour créer un projet MyHome.
+sidebar_position: 2
+---
+
+# 🚀 Création d'un projet MyHome
+
+Un projet MyHome est le conteneur principal de l'interface.
+
+Il regroupe :
+
+- le thème ;
+- le mode de fond ;
+- la taille du canvas ;
+- le mode d'affichage ;
+- le menu ;
+- les pages ;
+- la palette d'ajout ;
+- les sous-plans associés.
+
+## ✅ Avant de commencer
+
+Il est conseillé de préparer les éléments qui seront utilisés dans l'interface :
+
+- équipements Jeedom correctement configurés ;
+- commandes avec generic types cohérents ;
+- widgets Tools nécessaires ;
+- cards souhaitées ;
+- scénarios à afficher ou contrôler.
+
+Cette préparation permet ensuite de gagner du temps avec la palette MyHome.
+
+## 1️⃣ Étape 1 — Créer le projet
+
+Depuis le plugin Tools, créer un équipement de type **MyHome**.
+
+Paramètres de base :
+
+| Paramètre | Rôle |
+|---|---|
+| Nom | Nom du projet MyHome |
+| Objet parent | Objet Jeedom auquel rattacher le projet |
+| Activer | Active le projet |
+| Visible | Rend le projet visible dans Jeedom |
+
+## 2️⃣ Étape 2 — Choisir le thème
+
+Le thème définit l'ambiance graphique globale.
+
+Il influence :
+
+- les couleurs ;
+- les fonds ;
+- les cards ;
+- les widgets ;
+- les bordures ;
+- les ombres ;
+- les effets glass ou flat.
+
+Le thème se choisit dans l'onglet général du projet.
+
+## 3️⃣ Étape 3 — Configurer le fond
+
+MyHome propose deux modes principaux :
+
+| Mode | Description |
+|---|---|
+| Aucun / fond du thème | Le fond est celui défini par le thème |
+| Image / URL | Une image ou une URL est utilisée comme fond |
+
+Le champ image accepte un chemin local ou une URL.
+
+## 4️⃣ Étape 4 — Configurer le canvas
+
+Le canvas correspond à la surface de conception.
+
+Paramètres disponibles :
+
+| Paramètre | Défaut constaté | Rôle |
+|---|---:|---|
+| Largeur canvas | 1920 px | Largeur logique du design |
+| Hauteur canvas | 1080 px | Hauteur logique du design |
+| Responsive | activé | Adapte le rendu selon l'écran |
+| Mode d'affichage | contain | Définit comment le canvas s'adapte au viewport |
+
+## 🖥️ Modes d'affichage
+
+| Mode | Description |
+|---|---|
+| contain | Réduit le canvas pour tenir dans l'écran. Mode recommandé. |
+| cover | Remplit l'écran, mais peut rogner une partie du canvas. |
+| scroll | Garde la taille réelle et autorise le défilement. |
+| none | Pas d'adaptation automatique. |
+
+## 5️⃣ Étape 5 — Configurer le menu
+
+Le menu permet de naviguer entre les pages.
+
+Il faut choisir :
+
+- la position ;
+- la taille ;
+- l'alignement ;
+- l'accent couleur ;
+- les entrées de menu ;
+- les icônes ;
+- les pages liées.
+
+Voir la page [Menus](./menus.mdx).
+
+## 6️⃣ Étape 6 — Créer les pages
+
+Chaque page représente un écran de l'interface.
+
+Exemples :
+
+- Accueil ;
+- Salon ;
+- Cuisine ;
+- Chambres ;
+- Énergie ;
+- Sécurité ;
+- Multimédia.
+
+Chaque page possède son propre sous-plan Jeedom.
+
+## 7️⃣ Étape 7 — Utiliser la palette
+
+La palette permet d'ajouter rapidement les éléments dans une page cible :
+
+- widgets ;
+- cards ;
+- équipements ;
+- templates ;
+- menus ;
+- zones.
+
+Voir la page [Palette](./palette.mdx).
+
+## 8️⃣ Étape 8 — Ouvrir le design
+
+Le bouton **Ouvrir le Design** ouvre le plan Jeedom lié au projet ou à la page.
+
+C'est ici que l'on ajuste :
+
+- la position ;
+- la taille ;
+- l'ordre d'affichage ;
+- les superpositions ;
+- les zones visuelles ;
+- le rendu final.
+
+:::important
+La finition graphique se fait dans les sous-plans Jeedom. MyHome organise le projet, mais le placement précis reste dans l'éditeur de plans.
+:::

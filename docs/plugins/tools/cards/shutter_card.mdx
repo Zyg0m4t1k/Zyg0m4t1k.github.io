@@ -1,0 +1,61 @@
+---
+title: shutter_card
+description: "Card volet / BSO : position, boutons montée/descente/stop, slider et visualisation."
+---
+
+# 🪟 shutter_card
+
+## 📝 Description
+
+Card volet / BSO : position, boutons montée/descente/stop, slider et visualisation.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_shutter_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_FLAP_STATE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| SC_ACCENT |
+| SC_BSO |
+| SC_BTNS_BLOCK |
+| SC_CSS_V |
+| SC_EQ_ID |
+| SC_NAME |
+| SC_POS_VAL |
+| SC_SLAT_HEIGHT |
+| SC_SLIDER_POS |
+| SC_STATE_CLASS |
+| SC_STATE_LABEL |
+| SC_TOOLS_ID |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![shutter_card](/img/plugins/tools/cards/shutter_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

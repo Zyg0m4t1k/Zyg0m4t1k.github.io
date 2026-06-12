@@ -1,0 +1,58 @@
+---
+title: scenario_card
+description: "Widget scénario horizontal type universal_card : démarrer, arrêter, activer, désactiver et logs."
+---
+
+# scenario_card
+
+## 📝 Description
+
+Widget scénario horizontal type universal_card : démarrer, arrêter, activer, désactiver et logs.
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `scenario_card` |
+| Largeur par défaut | `380px` |
+| Hauteur par défaut | `92px` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| size | normal | normal, large, compact | Taille : normal|large|compact |
+| title |  |  | Titre affiché (vide = masqué, valeur = affiché, none = masqué) |
+| icon | fas fa-play-circle |  | Icône principale (none pour masquer) |
+| accent | #62d5ff |  | Couleur accent |
+| icon_start |  |  | Icône bouton démarrer (none pour masquer) |
+| icon_stop |  |  | Icône bouton stop (none pour masquer) |
+| icon_enable |  |  | Icône bouton activer/désactiver (none pour masquer) |
+| show_log | 1 | 1, 0 | Afficher bouton log : 1|0 |
+| show_lastlaunch | 1 | 1, 0 | Afficher dernier lancement : 1|0 |
+| scenario_id |  |  | Id du scénario |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **scenario_card**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![scenario_card](/img/plugins/tools/widgets/scenario_card.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.

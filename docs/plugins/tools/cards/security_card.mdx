@@ -1,0 +1,64 @@
+---
+title: security_card
+description: "Card sécurité / alarme : état, armement, déclenchement, mode et boutons d'action."
+---
+
+# 🔒 security_card
+
+## 📝 Description
+
+Card sécurité / alarme : état, armement, déclenchement, mode et boutons d'action.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_security_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_ALARM_ENABLE_STATE |
+| CMD_ID_ALARM_MODE |
+| CMD_ID_ALARM_STATE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| SEC_ACCENT |
+| SEC_BADGE_LABEL |
+| SEC_BTN_ARMED |
+| SEC_BTN_RELEASED |
+| SEC_CSS_V |
+| SEC_ENABLED_LABEL |
+| SEC_EQ_ID |
+| SEC_MODE |
+| SEC_MODE_BTNS |
+| SEC_NAME |
+| SEC_STATE_CLASS |
+| SEC_TOOLS_ID |
+| SEC_TRIGGERED_LABEL |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![security_card](/img/plugins/tools/cards/security_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

@@ -1,0 +1,52 @@
+---
+title: overview_core
+description: "Synthèse Jeedom type core : tous les objets visibles ou un objet précis"
+---
+
+# overview_core
+
+## 📝 Description
+
+Synthèse Jeedom type core : tous les objets visibles ou un objet précis
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `overview_core` |
+| Largeur par défaut | `100%` |
+| Hauteur par défaut | `auto` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| mode | all |  | Mode d'affichage : all = tous les objets visibles, object = objet précis |
+| object_id |  |  | Id de l'objet Jeedom si mode = object |
+| title |  |  | Titre optionnel affiché au-dessus de la synthèse |
+| show_empty | 0 |  | 1 = afficher les objets sans résumé, 0 = masquer le bouton configuration si aucun résumé |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **overview_core**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![overview_core](/img/plugins/tools/widgets/overview_core.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.

@@ -1,0 +1,78 @@
+---
+title: Templates builtin
+description: Principe des templates builtin du plugin Tools.
+sidebar_position: 40
+---
+
+# 📐 Templates builtin
+
+Les templates builtin servent à généraliser le rendu des commandes Jeedom.
+
+Ils ne sont pas documentés un par un ici, car le principe est volontairement commun : un type de commande Jeedom est associé à un rendu compatible Tools/MyHome.
+
+## 🧩 Principe général
+
+```text
+Commande Jeedom
+      ↓
+Type / sous-type / generic type
+      ↓
+Template builtin
+      ↓
+Rendu dans Dashboard / Mobile / MyHome
+```
+
+## 📋 Catégories couvertes
+
+Les templates builtin couvrent notamment :
+
+- `cmd.info.binary`
+- `cmd.info.numeric`
+- `cmd.info.string`
+- `cmd.action.other`
+- `cmd.action.slider`
+- `cmd.action.color`
+- `cmd.action.message`
+- `cmd.action.select`
+
+## 📦 Templates détectés
+
+| Version | Nombre |
+|---|---:|
+| Dashboard | 43 |
+| Mobile | 43 |
+
+## 🏠 Templates MyHome par generic type
+
+| Template | Fichier |
+| --- | --- |
+| default_card.html | core/config/myhome/templates/default_card.html |
+| energy_card.html | core/config/myhome/templates/energy_card.html |
+| light_card.html | core/config/myhome/templates/light_card.html |
+| opening_card.html | core/config/myhome/templates/opening_card.html |
+| temperature_card.html | core/config/myhome/templates/temperature_card.html |
+
+
+## 🎨 Templates theme_generic_type
+
+| Template | Fichier |
+| --- | --- |
+| default_card.html | core/config/templates/theme_generic_type/default_card.html |
+| energy_card.html | core/config/templates/theme_generic_type/energy_card.html |
+| light_card.html | core/config/templates/theme_generic_type/light_card.html |
+| opening_card.html | core/config/templates/theme_generic_type/opening_card.html |
+| temperature_card.html | core/config/templates/theme_generic_type/temperature_card.html |
+
+
+## 🚀 Utilisation recommandée
+
+- Utiliser les templates builtin pour les commandes simples.
+- Utiliser les cards pour les équipements complets.
+- Utiliser les widgets MyHome pour les composants plus riches.
+- Garder les réglages visuels finaux dans les sous-plans Jeedom.
+
+## 📷 Capture à ajouter
+
+{/* ![Templates Tools](/img/plugins/tools/templates/builtin.png) */}
+
+*Image commentée à préparer : exemple de commande Jeedom rendue avec un template builtin.*

@@ -1,0 +1,63 @@
+---
+title: light_card
+description: "Card d'équipement lumière : état, actions ON/OFF, toggle, luminosité, couleur et température de couleur si disponibles."
+---
+
+# 💡 light_card
+
+## 📝 Description
+
+Card d'équipement lumière : état, actions ON/OFF, toggle, luminosité, couleur et température de couleur si disponibles.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_light_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_LIGHT_STATE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| LC_ACCENT |
+| LC_BTN_OFF |
+| LC_BTN_ON |
+| LC_BTN_TOGGLE |
+| LC_COLOR |
+| LC_CSS_V |
+| LC_EQ_ID |
+| LC_MODE |
+| LC_NAME |
+| LC_SLIDER_CT |
+| LC_SLIDER_LUM |
+| LC_STATE_CLASS |
+| LC_STATE_LABEL |
+| LC_TOOLS_ID |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![light_card](/img/plugins/tools/cards/light_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

@@ -1,0 +1,56 @@
+---
+title: timeline_tools
+description: "Timeline Jeedom core modernisée : ligne verticale, événements cmd/scénario et rendu Tools glass"
+---
+
+# timeline_tools
+
+## 📝 Description
+
+Timeline Jeedom core modernisée : ligne verticale, événements cmd/scénario et rendu Tools glass
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `timeline_tools` |
+| Largeur par défaut | `380px` |
+| Hauteur par défaut | `450px` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| folder | main |  | Dossier timeline Jeedom : main par défaut |
+| limit | 20 |  | Nombre maximum d'événements affichés, de 1 à 100 |
+| title | auto |  | auto = Timeline, none = titre masqué, ou texte personnalisé |
+| accent | var(--mh-accent) |  | Couleur accent (#rrggbb ou variable CSS) |
+| compact | 0 |  | 1 = affichage compact |
+| show_meta | 1 |  | 1 = affiche type/groupe/plugin |
+| show_now | 1 |  | 1 = affiche le marqueur maintenant |
+| time_spacing | 1 |  | 1 = espace légèrement les événements selon l'écart temporel |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **timeline_tools**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![timeline_tools](/img/plugins/tools/widgets/timeline_tools.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.

@@ -1,0 +1,54 @@
+---
+title: status_card
+description: "Widget récapitulatif d'état : lumières, volets, prises, daemons, mises à jour, messages"
+---
+
+# status_card
+
+## 📝 Description
+
+Widget récapitulatif d'état : lumières, volets, prises, daemons, mises à jour, messages
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `status_card` |
+| Largeur par défaut | `280px` |
+| Hauteur par défaut | `64px` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| mode | light |  | Mode : light|shutter|socket|thermostat|alarm|daemon|update|message |
+| icon |  |  | Icône FontAwesome (vide = icône par défaut selon mode) |
+| accent | #62d5ff |  | Couleur accent |
+| label_on |  |  | Label état actif (vide = valeur par défaut) |
+| label_off |  |  | Label état inactif / alerte (vide = valeur par défaut) |
+| format | horizontal |  | Disposition : horizontal|card |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **status_card**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![status_card](/img/plugins/tools/widgets/status_card.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.

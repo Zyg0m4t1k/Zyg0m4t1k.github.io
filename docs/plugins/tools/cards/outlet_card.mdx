@@ -1,0 +1,61 @@
+---
+title: outlet_card
+description: "Card d'équipement prise : état, actions ON/OFF/toggle, puissance et consommation si disponibles."
+---
+
+# 🔌 outlet_card
+
+## 📝 Description
+
+Card d'équipement prise : état, actions ON/OFF/toggle, puissance et consommation si disponibles.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_outlet_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_ENERGY_STATE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| LC_CSS_V |
+| OC_ACCENT |
+| OC_BTN_OFF |
+| OC_BTN_ON |
+| OC_BTN_TOGGLE |
+| OC_CONSO_ROW |
+| OC_EQ_ID |
+| OC_NAME |
+| OC_POWER_ROW |
+| OC_STATE_CLASS |
+| OC_STATE_LABEL |
+| OC_TOOLS_ID |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![outlet_card](/img/plugins/tools/cards/outlet_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

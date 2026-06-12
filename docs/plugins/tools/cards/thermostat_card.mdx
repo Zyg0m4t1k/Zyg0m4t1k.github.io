@@ -1,0 +1,63 @@
+---
+title: thermostat_card
+description: "Card thermostat : température actuelle, consigne, état, barre de chauffe, modes et réglage de consigne."
+---
+
+# 🌡️ thermostat_card
+
+## 📝 Description
+
+Card thermostat : température actuelle, consigne, état, barre de chauffe, modes et réglage de consigne.
+
+## 📁 Template source
+
+```text
+core/config/widgets_card/dashboard/eqLogic_thermostat_card.html
+```
+
+## 🎛️ Commandes attendues
+
+Les variables suivantes indiquent les commandes Jeedom que la card peut utiliser :
+
+| Variable commande |
+| --- |
+| CMD_ID_THERMOSTAT_SETPOINT |
+| CMD_ID_THERMOSTAT_STATE |
+| CMD_ID_THERMOSTAT_TEMPERATURE |
+
+
+## 🎨 Variables de rendu
+
+| Variable de rendu |
+| --- |
+| TC_ACCENT |
+| TC_CSS_V |
+| TC_EQ_ID |
+| TC_HEATING_CLASS |
+| TC_MODE_BTNS |
+| TC_NAME |
+| TC_SETPOINT |
+| TC_SLIDER_SETPOINT |
+| TC_STATE_CLASS |
+| TC_STATE_LABEL |
+| TC_TEMP |
+| TC_TOOLS_ID |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Vérifier que l'équipement possède les commandes nécessaires.
+2. Vérifier les generic types si la détection automatique est utilisée.
+3. Ajouter la card depuis la palette ou via l'équipement.
+4. Ouvrir le sous-plan.
+5. Ajuster la position, la taille et l'ordre visuel.
+
+## 📷 Capture à ajouter
+
+{/* ![thermostat_card](/img/plugins/tools/cards/thermostat_card.png) */}
+
+*Image commentée à préparer : annoter l'icône, l'état, les commandes principales et les commandes secondaires.*
+
+## ℹ️ Remarque
+
+La card applique son style via les CSS MyHome correspondants. Le rendu final peut varier selon le thème actif.

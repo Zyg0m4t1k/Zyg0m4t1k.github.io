@@ -218,6 +218,20 @@ const plugins: PluginItem[] = [
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4145"
     }
   },
+  {
+    "id": "tools",
+    "name": "Tools",
+    "description": "Plugin regroupant plusieurs outils de création d'interface pour Jeedom : MyHome (constructeur d'interfaces basé sur les plans), cards équipements, widgets spécialisés et templates.",
+    "icon": "tools_icon.png",
+    "badges": ["Jeedom 4.4+", "dev", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/tools/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
    {
     "id": "whatwatt",
     "name": "Whattwat",

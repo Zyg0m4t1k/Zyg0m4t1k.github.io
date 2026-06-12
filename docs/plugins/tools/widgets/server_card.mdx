@@ -1,0 +1,54 @@
+---
+title: server_card
+description: "Card monitoring serveur : SSH status, barres CPU/RAM/Disk/Swap, uptime et réseau. Compatible plugins Monitoring et servermonitor."
+---
+
+# server_card
+
+## 📝 Description
+
+Card monitoring serveur : SSH status, barres CPU/RAM/Disk/Swap, uptime et réseau. Compatible plugins Monitoring et servermonitor.
+
+## Compatibilité
+
+| Élément | Valeur |
+|---|---|
+| Compatible MyHome | Oui |
+| Type widget | `server_card` |
+| Largeur par défaut | `260px` |
+| Hauteur par défaut | `auto` |
+| Dashboard | Oui |
+| Mobile | Oui |
+
+## ⚙️ Paramètres
+
+| Paramètre | Défaut | Options | Description |
+| --- | --- | --- | --- |
+| eq_id |  |  | Id de l'équipement source (plugin Monitoring ou servermonitor) |
+| show | cpu,ram,disk | cpu,ram,disk, cpu,ram,swap,disk, cpu,ram,swap | Métriques affichées séparées par virgule : cpu|ram|swap|disk |
+| accent | #62d5ff | #62d5ff, #55efc4, #ffd166, #ff9f43, #a29bfe | Couleur accent |
+| title |  |  | Titre (vide = nom équipement source, none pour masquer) |
+| icon |  |  | Icône FontAwesome (vide = fas fa-server, none pour masquer) |
+| img |  |  | Image à la place de l'icône (chemin dans data/images) |
+
+
+## 🏠 Utilisation dans MyHome
+
+1. Ouvrir le projet MyHome.
+2. Aller dans l'onglet **Palette**.
+3. Choisir la page cible.
+4. Ajouter le widget **server_card**.
+5. Ouvrir le sous-plan Jeedom.
+6. Positionner et redimensionner le widget.
+
+## 📷 Capture à ajouter
+
+{/* ![server_card](/img/plugins/tools/widgets/server_card.png) */}
+
+*Image commentée à préparer : montrer le rendu du widget, les zones importantes et l'effet du thème.*
+
+## Notes
+
+- Les couleurs peuvent être influencées par le thème MyHome.
+- Les dimensions peuvent être adaptées dans le sous-plan.
+- Les paramètres optionnels permettent d'affiner le rendu sans modifier le template.
