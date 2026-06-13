@@ -203,6 +203,17 @@ Le **code météo WMO** est un nombre standard utilisé par les services météo
 
 Les commandes **H**, **H+1** et **H+2** donnent le code WMO pour l'heure en cours et les deux heures suivantes.
 
+### ☀️ Rayonnement solaire
+
+Le plugin fournit le **rayonnement solaire à courte onde** (en W/m²), qui indique la puissance du rayonnement solaire atteignant la surface à un instant donné.
+
+Trois commandes sont disponibles :
+- **Rayonnement solaire** — heure courante
+- **Rayonnement solaire H+1** — heure suivante
+- **Rayonnement solaire H+2** — dans deux heures
+
+Ces données proviennent des données horaires Open-Meteo (`shortwave_radiation`).
+
 ### ☀️ Prévisions du jour
 
 Le plugin récupère aussi pour aujourd’hui :
