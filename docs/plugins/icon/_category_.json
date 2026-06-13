@@ -1,0 +1,8 @@
+{
+  "label": "Icônes",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "plugins/icon/index"
+  }
+}

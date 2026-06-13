@@ -1,0 +1,216 @@
+---
+title: Plugin Icônes
+description: Ajoutez et gérez des packs d’icônes personnalisés dans Jeedom.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="icon"
+  title="Plugin Icônes"
+  description="Ajoutez, installez, désinstallez et prévisualisez des packs d’icônes personnalisés dans Jeedom."
+  image="/img/plugins/icon/icon_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+---
+
+# Plugin Icônes
+
+Le plugin **Icônes** permet d’ajouter des **packs d’icônes personnalisés** dans Jeedom.
+
+Il sert principalement à :
+- importer un pack d’icônes au format `.zip`
+- installer un pack dans Jeedom
+- désinstaller un pack
+- prévisualiser les icônes disponibles dans un pack
+- utiliser ensuite ces icônes dans les interfaces Jeedom compatibles
+
+---
+
+# ✅ À quoi ça sert ?
+
+Le plugin est utile si vous voulez enrichir Jeedom avec vos propres bibliothèques d’icônes.
+
+Exemples d’utilisation :
+- ajouter un pack d’icônes personnalisé
+- centraliser plusieurs familles d’icônes
+- retrouver rapidement le nom d’une icône grâce à la prévisualisation
+- utiliser ces icônes dans les widgets, designs, vues ou éléments Jeedom selon les usages disponibles dans votre installation
+
+---
+
+# 🔧 Prérequis
+
+- Jeedom **4.4 minimum**
+- Accès administrateur Jeedom
+- Un pack d’icônes compatible au format `.zip`
+
+> Le plugin ne nécessite pas de dépendances à installer.
+
+---
+
+# 🚀 Installation
+
+## 1) Installation depuis le Market
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Icônes**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+---
+
+# 📦 Format d’un pack d’icônes
+
+Un pack doit être fourni sous forme d’archive `.zip`.
+
+L’archive doit contenir au minimum :
+
+```text
+style.css
+fonts/<nom_du_pack>.ttf
+```
+
+Le nom du fichier `.ttf` doit correspondre au nom de l’archive.
+
+Exemple :
+
+```text
+monpack.zip
+├── style.css
+└── fonts/
+    └── monpack.ttf
+```
+
+Si ces fichiers ne sont pas présents, l’import est refusé.
+
+---
+
+# ⬆️ Importer un pack d’icônes
+
+1. Allez dans **Plugins → Gestion des plugins → Icônes**
+2. Cliquez sur **Configuration**
+3. Cliquez sur **Importer un pack d’icônes**
+4. Sélectionnez votre fichier `.zip`
+5. Validez l’import
+
+Le pack est ajouté dans les données du plugin et devient disponible dans la page de gestion.
+
+> Les captures seront ajoutées ensuite.
+
+---
+
+# 🧩 Installer un pack
+
+Une fois le pack importé :
+
+1. Ouvrez la page du plugin **Icônes**
+2. Repérez le pack dans la liste
+3. Cliquez sur **Installer**
+4. Confirmez l’action
+
+Lors de l’installation, le plugin copie le pack dans le dossier Jeedom prévu pour les polices d’icônes.
+
+---
+
+# 🗑️ Désinstaller un pack
+
+Pour retirer un pack installé :
+
+1. Ouvrez la page du plugin **Icônes**
+2. Repérez le pack installé
+3. Cliquez sur **Désinstaller**
+4. Confirmez l’action
+
+Le pack est retiré du dossier des polices Jeedom.
+
+> La désinstallation retire le pack installé, mais ne supprime pas forcément l’archive/source importée dans le plugin.
+
+---
+
+# 👀 Prévisualiser les icônes
+
+Le bouton **Prévisualiser** ouvre une fenêtre avec les icônes du pack.
+
+La prévisualisation permet de :
+- voir toutes les icônes détectées dans le `style.css`
+- rechercher une icône par son nom
+- sélectionner visuellement une icône
+- retrouver la classe CSS à utiliser
+
+---
+
+# 🔎 Recherche dans la prévisualisation
+
+Dans la fenêtre de prévisualisation, un champ **Rechercher** permet de filtrer les icônes.
+
+Exemple :
+- tapez `light`
+- seules les icônes contenant `light` dans leur nom restent visibles
+
+---
+
+# ⚙️ Fonctionnement technique simple
+
+Le plugin fonctionne avec deux emplacements principaux :
+
+```text
+plugins/icon/data/<nom_du_pack>/
+data/fonts/<nom_du_pack>/
+```
+
+- `plugins/icon/data/<nom_du_pack>/` : pack importé dans le plugin
+- `data/fonts/<nom_du_pack>/` : pack installé et utilisable par Jeedom
+
+Quand vous cliquez sur **Installer**, le plugin copie le pack vers `data/fonts`.
+
+Quand vous cliquez sur **Désinstaller**, le plugin supprime le pack installé depuis `data/fonts`.
+
+---
+
+# 📌 Commandes disponibles
+
+Le plugin **Icônes** ne crée pas de commandes Jeedom utilisables dans les scénarios.
+
+Il s’agit d’un plugin de gestion/extension d’interface, pas d’un plugin d’équipement.
+
+---
+
+# ⚠️ Points importants
+
+- Le fichier importé doit être un `.zip`
+- Taille maximale acceptée : **50 Mo**
+- Le pack doit contenir `style.css`
+- Le pack doit contenir `fonts/<nom_du_pack>.ttf`
+- L’import nécessite un accès administrateur
+- L’installation/désinstallation nécessite une confirmation
+
+---
+
+# 🧹 Nettoyage lors de l’installation ou mise à jour
+
+Lors de l’installation ou de la mise à jour du plugin, certains anciens dossiers d’icônes historiques peuvent être supprimés afin d’éviter les conflits avec les anciens emplacements Jeedom.
+
+Les anciens packs concernés peuvent notamment être :
+- `brands`
+- `brankic`
+- `comptes`
+- `font-awesome`
+- `icomoon`
+- `jeedom2-color`
+- `meteocons`
+
+---
+
+# ✅ Conclusion
+
+Le plugin **Icônes** est simple :
+
+- vous importez un pack `.zip`
+- vous l’installez dans Jeedom
+- vous pouvez le prévisualiser
+- vous utilisez ensuite les icônes dans vos interfaces Jeedom
+
+Il permet de centraliser proprement vos packs d’icônes personnalisés et de les rendre disponibles dans Jeedom.
