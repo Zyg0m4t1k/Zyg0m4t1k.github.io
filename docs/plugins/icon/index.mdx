@@ -1,5 +1,5 @@
 ---
-title: Plugin Icônes
+title: Icônes
 description: Ajoutez et gérez des packs d’icônes personnalisés dans Jeedom.
 hide_title: true
 ---
@@ -8,7 +8,7 @@ import PluginHero from '@site/src/components/PluginHero';
 
 <PluginHero
   pluginId="icon"
-  title="Plugin Icônes"
+  title="Icônes"
   description="Ajoutez, installez, désinstallez et prévisualisez des packs d’icônes personnalisés dans Jeedom."
   image="/img/plugins/icon/icon_icon.png"
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
@@ -29,7 +29,7 @@ Il sert principalement à :
 
 ---
 
-# ✅ À quoi ça sert ?
+## ✅ À quoi ça sert ?
 
 Le plugin est utile si vous voulez enrichir Jeedom avec vos propres bibliothèques d’icônes.
 
@@ -41,7 +41,7 @@ Exemples d’utilisation :
 
 ---
 
-# 🔧 Prérequis
+## 🔧 Prérequis
 
 - Jeedom **4.4 minimum**
 - Accès administrateur Jeedom
@@ -51,9 +51,9 @@ Exemples d’utilisation :
 
 ---
 
-# 🚀 Installation
+## 🚀 Installation
 
-## 1) Installation depuis le Market
+### 1) Installation depuis le Market
 
 1. Allez dans **Plugins → Gestion des plugins → Market**
 2. Recherchez **Icônes**
@@ -62,7 +62,7 @@ Exemples d’utilisation :
 
 ---
 
-# 📦 Format d’un pack d’icônes
+## 📦 Format d’un pack d’icônes
 
 Un pack doit être fourni sous forme d’archive `.zip`.
 
@@ -88,7 +88,7 @@ Si ces fichiers ne sont pas présents, l’import est refusé.
 
 ---
 
-# ⬆️ Importer un pack d’icônes
+## ⬆️ Importer un pack d’icônes
 
 1. Allez dans **Plugins → Gestion des plugins → Icônes**
 2. Cliquez sur **Configuration**
@@ -102,7 +102,7 @@ Le pack est ajouté dans les données du plugin et devient disponible dans la pa
 
 ---
 
-# 🧩 Installer un pack
+## 🧩 Installer un pack
 
 Une fois le pack importé :
 
@@ -115,7 +115,7 @@ Lors de l’installation, le plugin copie le pack dans le dossier Jeedom prévu 
 
 ---
 
-# 🗑️ Désinstaller un pack
+## 🗑️ Désinstaller un pack
 
 Pour retirer un pack installé :
 
@@ -130,7 +130,7 @@ Le pack est retiré du dossier des polices Jeedom.
 
 ---
 
-# 👀 Prévisualiser les icônes
+## 👀 Prévisualiser les icônes
 
 Le bouton **Prévisualiser** ouvre une fenêtre avec les icônes du pack.
 
@@ -140,9 +140,7 @@ La prévisualisation permet de :
 - sélectionner visuellement une icône
 - retrouver la classe CSS à utiliser
 
----
-
-# 🔎 Recherche dans la prévisualisation
+### 🔎 Recherche dans la prévisualisation
 
 Dans la fenêtre de prévisualisation, un champ **Rechercher** permet de filtrer les icônes.
 
@@ -152,7 +150,7 @@ Exemple :
 
 ---
 
-# ⚙️ Fonctionnement technique simple
+## ⚙️ Fonctionnement technique
 
 Le plugin fonctionne avec deux emplacements principaux :
 
@@ -170,7 +168,7 @@ Quand vous cliquez sur **Désinstaller**, le plugin supprime le pack installé d
 
 ---
 
-# 📌 Commandes disponibles
+## 📌 Commandes disponibles
 
 Le plugin **Icônes** ne crée pas de commandes Jeedom utilisables dans les scénarios.
 
@@ -178,7 +176,7 @@ Il s’agit d’un plugin de gestion/extension d’interface, pas d’un plugin 
 
 ---
 
-# ⚠️ Points importants
+## ⚠️ Points importants
 
 - Le fichier importé doit être un `.zip`
 - Taille maximale acceptée : **50 Mo**
@@ -189,7 +187,7 @@ Il s’agit d’un plugin de gestion/extension d’interface, pas d’un plugin 
 
 ---
 
-# 🧹 Nettoyage lors de l’installation ou mise à jour
+## 🧹 Nettoyage lors de l’installation ou mise à jour
 
 Lors de l’installation ou de la mise à jour du plugin, certains anciens dossiers d’icônes historiques peuvent être supprimés afin d’éviter les conflits avec les anciens emplacements Jeedom.
 
@@ -204,13 +202,13 @@ Les anciens packs concernés peuvent notamment être :
 
 ---
 
-# 💡 Packs d'icônes recommandés
+## 💡 Packs d’icônes recommandés
 
-Il existe plusieurs packs d'icônes gratuits très utilisés dans les projets domotiques et les dashboards Jeedom.
+Il existe plusieurs packs d’icônes gratuits très utilisés dans les projets domotiques et les dashboards Jeedom.
 
-## Material Design Icons (MDI)
+### Material Design Icons (MDI)
 
-Le pack le plus populaire dans l'univers domotique.
+Le pack le plus populaire dans l’univers domotique.
 
 Avantages :
 
@@ -233,14 +231,14 @@ Lien : [pictogrammers.com/library/mdi/](https://pictogrammers.com/library/mdi/)
 
 ---
 
-## Font Awesome Free
+### Font Awesome Free
 
 Une référence incontournable du web.
 
 Avantages :
 
 - Très connu
-- Plusieurs milliers d'icônes
+- Plusieurs milliers d’icônes
 - Fonctionne déjà dans Jeedom
 - Contient également une collection de logos de marques
 
@@ -250,7 +248,7 @@ Lien : [fontawesome.com](https://fontawesome.com/)
 
 ---
 
-## Tabler Icons
+### Tabler Icons
 
 Pack moderne particulièrement adapté aux dashboards récents.
 
@@ -265,7 +263,7 @@ Lien : [tabler.io/icons](https://tabler.io/icons)
 
 ---
 
-## Lucide Icons
+### Lucide Icons
 
 Alternative légère et open source.
 
@@ -282,19 +280,19 @@ Lien : [lucide.dev/icons/](https://lucide.dev/icons/)
 
 :::tip Conseils
 
-Pour un usage domotique, **Material Design Icons (MDI)** est généralement le meilleur choix grâce à son immense catalogue d'icônes spécialisées (maison, énergie, chauffage, capteurs, sécurité, etc.).
+Pour un usage domotique, **Material Design Icons (MDI)** est généralement le meilleur choix grâce à son immense catalogue d’icônes spécialisées (maison, énergie, chauffage, capteurs, sécurité, etc.).
 
 **Font Awesome** est idéal pour les logos et les icônes génériques.
 
 **Tabler Icons** et **Lucide Icons** sont particulièrement adaptés aux thèmes modernes et aux interfaces épurées.
 
-Vous pouvez importer plusieurs packs afin de disposer d'une bibliothèque d'icônes complète dans Jeedom.
+Vous pouvez importer plusieurs packs afin de disposer d’une bibliothèque d’icônes complète dans Jeedom.
 
 :::
 
 ---
 
-# ✅ Conclusion
+## ✅ Conclusion
 
 Le plugin **Icônes** est simple :
 
