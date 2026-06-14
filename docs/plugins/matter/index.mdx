@@ -112,6 +112,27 @@ Si votre Jeedom ne dispose pas de Bluetooth intégré, vous pouvez utiliser une 
 Sans Bluetooth disponible, cochez l'option **Réseau uniquement** lors du jumelage. Cela fonctionne si l'appareil est déjà accessible sur le réseau local (appareils Thread via Border Router, ou appareils Wi‑Fi déjà provisionnés).
 :::
 
+#### Mode BLE Proxy (Bluetooth distant)
+
+Si votre Jeedom n'a pas de Bluetooth mais qu'une autre machine sur votre réseau en dispose (PC Windows, Raspberry Pi, Home Assistant…), vous pouvez utiliser le **mode BLE Proxy**.
+
+Dans ce mode, le serveur Matter expose un endpoint WebSocket `ws://<ip-jeedom>:5580/ble` sur lequel un client distant se connecte et proxy toutes les opérations Bluetooth (scan, connexion GATT, BTP).
+
+**Activation :**
+
+1. Dans **Plugins → Matter → Configuration**, section Commissioning, cochez **BLE Proxy (distant)**
+2. Sauvegardez et redémarrez le démon
+3. Sur la machine distante, lancez un client BLE Proxy compatible, par exemple :
+
+```bash
+# Python (Windows / Linux / macOS) — nécessite : pip install websockets bleak
+python ble_proxy_client.py ws://192.168.1.x:5580/ble
+```
+
+:::note
+Le mode BLE Proxy et l'adaptateur Bluetooth local sont **mutuellement exclusifs**. Activez l'un ou l'autre.
+:::
+
 ### 🔑 6️⃣ Code Matter obligatoire
 
 Pour l'inclusion, vous aurez besoin du **code à 11 chiffres** de votre appareil.

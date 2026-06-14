@@ -6,6 +6,15 @@ sidebar_position: 99
 
 ## beta
 
+  daemon.js / matter.class.php / configuration.php — BLE Proxy
+  - feat: ajout du mode **BLE Proxy** pour le commissioning Wi-Fi via un client Bluetooth distant
+    - nouvelle option de configuration "BLE Proxy (distant)" dans la section Commissioning
+    - quand activé, le serveur Matter expose `ws://<ip>:5580/ble` (protocole BLE Proxy WebSocket v1)
+    - un client distant (Home Assistant, script Python/Bleak sur Windows…) se connecte sur ce endpoint
+      et proxy les opérations BLE (scan, connect, GATT, BTP) vers le serveur
+    - incompatible avec l'adaptateur Bluetooth local (mutuellement exclusif)
+    - s'appuie sur `@matter-server/ble-proxy` (déjà inclus dans les dépendances)
+
   install_apt.sh
   - fix: contrainte Node.js mise à jour >= 22.13.0 < 24 (était >= 18)
   - fix: installation via setup_22.x NodeSource (était setup_20.x)
