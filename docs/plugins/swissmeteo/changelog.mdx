@@ -5,6 +5,18 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-06-16
+
+- Ajout des alertes **Avalanche** et **Incendie forêt** (commandes binaires + niveaux 0–4)
+- Correction du mapping des types d'alertes MeteoSwiss (indices officiels corrigés pour verglas, chaleur, crues…)
+- Intégration des **icônes officielles MétéoSuisse Open Data** (`local-forecasting`) :
+  - le script météo récupère les numéros de symboles officiels via l'API STAC (`jww003i0` horaire, `jp2000d0` journalier)
+  - sélection du point de prévision par NPA ou coordonnées GPS (point le plus proche)
+  - cache disque transparent (6h pour le catalogue STAC, 24h pour le point géo)
+  - fallback automatique vers le mapping WMO si l'API est indisponible
+- Correction du mapping WMO → symbole MétéoSuisse dans le widget (codes 56, 57, 77, 80, 81, 82)
+- Fix : event listeners JS déplacés sur `#div_pageContainer` (évite des effets de bord sur d'autres pages Jeedom)
+
 ## 2026-06-13
 
 - Ajout des commandes **Rayonnement solaire**, **Rayonnement solaire H+1** et **Rayonnement solaire H+2** (W/m²)
