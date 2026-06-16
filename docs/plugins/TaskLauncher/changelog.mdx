@@ -4,6 +4,21 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-06-16
+
+### Nouveautés
+- Nouveau widget **Minuteur (secondes)** (`chrono_sec`) :
+  - décompte en temps réel piloté par un **démon Node.js** dédié (plus précis que les crons Jeedom)
+  - commandes automatiques : `Etat Timer` (info binaire), `Démarrer` (action slider 1–86400 s), `Arrêter` (action)
+  - durée par défaut configurable
+  - arrêt automatique si l'équipement est désactivé ou supprimé
+  - widget dashboard et mobile inclus
+
+### Correctifs
+- Event listeners JS déplacés sur `#div_pageContainer` (évite des effets de bord sur d'autres pages Jeedom)
+
+---
+
 ## 01.05.2026
 
 ### Nouveautés
