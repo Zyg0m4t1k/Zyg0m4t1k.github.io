@@ -299,6 +299,16 @@ Contient les informations générales et les métadonnées Matter (en lecture se
 
 ![Fiche équipement](/img/plugins/matter/device_page.png)
 
+### Section Debug
+
+L'onglet Équipement contient une section **Debug** avec le bouton suivant :
+
+| Bouton | Description |
+|--------|-------------|
+| **Dump node brut** | Récupère et affiche la structure JSON complète du nœud Matter (clusters, attributs, endpoints) |
+
+Le dump s'affiche dans une fenêtre avec un bouton **Copier** pour coller le contenu dans un ticket de support ou pour analyser les attributs disponibles sur l'appareil.
+
 ### Onglet Commandes
 
 Liste des commandes créées automatiquement selon les clusters détectés.
@@ -978,6 +988,10 @@ Pensez à copier votre dataset Thread régulièrement depuis **Gestion Matter & 
 - Vérifiez les clusters détectés dans l'onglet Équipement
 - Relancez une synchronisation complète
 - Si le problème persiste, supprimez l'équipement et re-synchronisez le nœud
+
+:::tip Analyser les clusters d'un appareil
+Utilisez le bouton **Dump node brut** (onglet Équipement → section Debug) pour inspecter la structure complète d'un nœud Matter. Utile si des commandes attendues ne sont pas créées après synchronisation.
+:::
 
 ### OTBR ne démarre pas (dongle USB non détecté)
 

@@ -6,6 +6,12 @@ sidebar_position: 99
 
 ## beta
 
+  desktop/php/matter.php / matter.js / matter.ajax.php — Debug
+  - feat: ajout d'un bouton **Dump node brut** dans la section Debug de l'onglet Équipement
+    - appelle le démon pour récupérer la structure JSON complète du nœud Matter (clusters, attributs, endpoints)
+    - affiche le résultat dans une modal avec un bouton **Copier** vers le presse-papier
+    - utile pour analyser les clusters disponibles sur un device ou diagnostiquer des commandes manquantes
+
   daemon.js / matter.class.php / configuration.php — BLE Proxy
   - feat: ajout du mode **BLE Proxy** pour le commissioning Wi-Fi via un client Bluetooth distant
     - nouvelle option de configuration "BLE Proxy (distant)" dans la section Commissioning
