@@ -4,6 +4,15 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-06-16 Beta
+
+- Refonte complète du widget **Trajet** : durée en grand, delta de trafic coloré, arrivée estimée, barre de congestion, niveau de trafic, temps depuis le dernier calcul
+- Nouvelle commande **Durée habituelle** : durée de référence sans trafic fournie par Mapbox (profil voiture avec trafic uniquement)
+- Calcul automatique du delta trafic (durée actuelle − durée habituelle) et du niveau de trafic (Fluide / Modéré / Dense / Très dense)
+- Appel à `refreshWidget()` après chaque calcul Mapbox pour mise à jour immédiate du widget
+- Correction : `ReferenceError: cmd_id is not defined` sur le bouton refresh du widget Localisation
+- Correction : div principale du widget Trajet mise en conformité Jeedom ce qui permet l'affichage sur le design
+
 ## 2026-06-14 Beta
 
 - Suppression totale de jQuery

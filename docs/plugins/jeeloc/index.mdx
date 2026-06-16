@@ -139,6 +139,20 @@ Pour utiliser MapQuest :
 
 Si la clé est absente, Jeeloc ne bloque pas le plugin et revient automatiquement sur Nominatim.
 
+### 📊 Comparatif des services
+
+| Service | Gratuit | Quota gratuit | Clé API requise |
+|---|---|---|---|
+| **Nominatim** *(OpenStreetMap)* | Oui | 1 requête/seconde max sur le serveur public OSM *(pas de quota mensuel fixe)* | Non |
+| **MapQuest** Open Geocoding | Oui | 15 000 transactions/mois | Oui |
+| **Mapbox** Geocoding | Oui | 100 000 requêtes/mois | Oui |
+
+| Service | Avantages | Inconvénients |
+|---|---|---|
+| **Nominatim** | Gratuit, sans inscription, open source | Limité à 1 req/s, politique d'usage stricte |
+| **MapQuest** | Gratuit jusqu'à 15 000 req/mois, basé sur OSM | Nécessite une clé API |
+| **Mapbox** | Très bonne qualité, 100 000 req/mois gratuites | Nécessite une clé API |
+
 ### 🚦 Limitation des appels
 
 Jeeloc évite de refaire une recherche d'adresse inutilement.
@@ -370,22 +384,29 @@ Jeeloc crée automatiquement les commandes suivantes pour chaque équipement Tra
 | Commande | Type | Unité | Description |
 |---|---|---|---|
 | Calculer | Action | — | Déclenche le calcul du trajet via Mapbox |
-| Durée | Info numérique | min | Durée estimée du trajet en minutes |
+| Durée | Info numérique | min | Durée estimée du trajet en minutes (avec trafic) |
+| Durée habituelle | Info numérique | min | Durée sans trafic (référence Mapbox). Disponible uniquement avec le profil **Voiture (avec trafic)** |
 | Distance | Info numérique | km | Distance du trajet en kilomètres |
 | Statut | Info texte | — | `OK` si le calcul a réussi, message d'erreur sinon |
 | Mode | Info texte | — | Libellé du profil utilisé (ex : `Voiture (trafic)`) |
 
 ### 🖥️ Widget Trajet
 
-Le widget Trajet affiche :
+Le widget Trajet affiche dans l'ordre :
 
-- l'icône du mode de transport (voiture, vélo, piéton)
-- la durée du trajet en grand (ex : `23 min` ou `1h05`)
-- la distance
-- l'heure du dernier calcul
-- un bouton de recalcul manuel
+- l'icône du mode de transport et le nom du trajet dans l'en-tête, avec un bouton de recalcul manuel
+- la **durée en grand** (ex : `23 min` ou `1h05`) accompagnée du **delta de trafic** (ex : `+9 min` en orange si retard, vert si gain)
+- l'**arrivée estimée** calculée depuis l'heure du dernier calcul + la durée (ex : `Arrivée estimée à 08:42`)
+- une **barre colorée** indiquant le niveau de trafic global : verte (fluide), jaune (modéré), orange (dense), rouge (très dense)
+- un tableau synthétique : **Distance** et **Trafic** (masqué si fluide)
+- le temps écoulé depuis le dernier calcul (ex : `Mis à jour il y a 2 min`)
 
-Si aucun calcul n'a encore été effectué, le widget affiche `Aucune donnée`.
+Si aucun calcul n'a encore été effectué, le widget affiche une icône d'itinéraire vide.
+
+:::info
+Le delta de trafic et la barre colorée ne sont significatifs qu'avec le profil **Voiture (avec trafic)**, qui est le seul à fournir une durée habituelle de référence.
+Pour les autres profils, la durée habituelle est identique à la durée calculée et aucun delta n'est affiché.
+:::
 
 ### 🔄 Rafraîchissement automatique
 
