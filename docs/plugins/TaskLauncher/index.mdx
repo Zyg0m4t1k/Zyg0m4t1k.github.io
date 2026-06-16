@@ -23,6 +23,7 @@ Il permet notamment de gérer :
 - 🕒 des **horloges**
 - 📅 des **événements programmés**
 - ⏳ des **décomptes à partir d’une date**
+- ⏱️ des **minuteurs en secondes** (démon Node.js)
 
 ---
 
@@ -100,6 +101,34 @@ Les horloges permettent d’afficher l’heure sur le dashboard ou dans un desig
 
 ![Widget horloge digitale](/img/plugins/TaskLauncher/digiclock.png)
 
+### ⏱️ Minuteur (secondes)
+
+Le **Minuteur (secondes)** permet de lancer un décompte précis en secondes, piloté par un démon Node.js dédié (plus réactif que les crons Jeedom à la minute).
+
+{/* ![Widget minuteur secondes](/img/plugins/TaskLauncher/chrono_sec.png) */}
+
+#### Commandes créées automatiquement
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `Etat Timer` | Info binaire | `1` = minuteur en cours, `0` = arrêté |
+| `Démarrer` | Action slider (1–86400) | Lance le décompte pour la durée spécifiée en secondes |
+| `Arrêter` | Action | Stoppe le minuteur immédiatement |
+
+#### Configuration
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Durée par défaut (secondes)** | Valeur pré-remplie au démarrage du widget |
+
+:::tip Utilisation dans les scénarios
+La commande `Démarrer` accepte une valeur en secondes (1 à 86400). Exemple : envoyer `300` pour un minuteur de 5 minutes. La commande `Etat Timer` peut être surveillée pour déclencher une action à la fin du décompte.
+:::
+
+:::note Démon requis
+Ce type d'équipement nécessite que le démon TaskLauncher soit actif. Le démon démarre automatiquement avec le plugin si Node.js est installé sur le système.
+:::
+
 ### 📅 Événements
 
 Les événements permettent de lancer des actions ou des scénarios à une **date précise**.
@@ -118,6 +147,7 @@ Lors de l’ajout d’un nouvel équipement, vous choisissez le type souhaité :
 - ⏰ Réveil
 - 🕒 Horloge
 - 📅 Événement
+- ⏱️ Minuteur (secondes)
 
 Une fois créé, l’équipement apparaît dans la liste et peut être configuré selon son usage.
 
