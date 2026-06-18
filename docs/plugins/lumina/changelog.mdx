@@ -4,6 +4,10 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-06-18
+
+- Ajout du mode **Suspendu** : nouvelle commande `Suspendre` qui éteint les lumières et bloque l'automatisme jusqu'à ce que tous les détecteurs de présence soient à 0, puis revient automatiquement en mode Auto
+
 ## 2026-04-27
 
 - **Correction** : la lumière ne s'éteignait plus après une sortie de pièce lorsque la **minuterie immédiate** était activée. Le cron pouvait être annulé (ex. retour de présence simultané à un allumage par le lux), laissant le système croire à tort qu'une minuterie était en cours et bloquant toute extinction ultérieure.
