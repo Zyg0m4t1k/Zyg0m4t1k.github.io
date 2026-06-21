@@ -6,11 +6,13 @@ sidebar_position: 99
 
 ## 2026-06-21
 
+  - feat: ajout d'un bouton **Infos avancées du nœud** dans la section Debug de l'onglet Équipement — affiche endpoints, clusters, attributs globaux (FeatureMap, ClusterRevision, CommandLists, EventList), attributs standard et attributs fabricant (vendor ≥ 0xFF00) mis en évidence
   - fix: version matter-server épinglée à 1.1.0 (matter.js 0.17.3) pour éviter un downgrade lors de la réinstallation des dépendances — la version 1.0.0 rejetait certains appareils (ex: Nuki) à cause d'une vérification d'attestation plus stricte
   - fix: synchronisation du dataset Thread depuis un OTBR distant (SLZB) — le SLZB renvoie un JSON structuré au lieu d'un TLV hex ; le plugin reconstruit désormais le TLV correctement depuis les champs `NetworkKey`, `Channel`, `ExtPanId`, etc.
 
 ## beta
 
+  - feat: ajout d'un bouton **Infos avancées du nœud** dans la section Debug de l'onglet Équipement — affiche endpoints, clusters, attributs globaux (FeatureMap, ClusterRevision, CommandLists, EventList), attributs standard et attributs fabricant (vendor ≥ 0xFF00) mis en évidence
   - feat: mode OTBR distant — ajout d'un bouton **Synchroniser le dataset** qui récupère automatiquement le dataset depuis l'OTBR distant sans jamais le modifier
   - fix: le code erreur 409 (dataset déjà actif sur l'OTBR distant) n'est plus affiché comme une erreur bloquante
   - feat: l'action de remplacement du dataset de l'OTBR distant est maintenant dans une section avancée avec une confirmation obligatoire pour éviter toute manipulation accidentelle
