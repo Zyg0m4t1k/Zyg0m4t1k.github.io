@@ -4,6 +4,11 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-06-21
+
+  - fix: version matter-server épinglée à 1.1.0 (matter.js 0.17.3) pour éviter un downgrade lors de la réinstallation des dépendances — la version 1.0.0 rejetait certains appareils (ex: Nuki) à cause d'une vérification d'attestation plus stricte
+  - fix: synchronisation du dataset Thread depuis un OTBR distant (SLZB) — le SLZB renvoie un JSON structuré au lieu d'un TLV hex ; le plugin reconstruit désormais le TLV correctement depuis les champs `NetworkKey`, `Channel`, `ExtPanId`, etc.
+
 ## beta
 
   - feat: mode OTBR distant — ajout d'un bouton **Synchroniser le dataset** qui récupère automatiquement le dataset depuis l'OTBR distant sans jamais le modifier
