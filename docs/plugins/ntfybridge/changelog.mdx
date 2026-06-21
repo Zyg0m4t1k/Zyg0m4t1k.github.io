@@ -1,0 +1,29 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-06-20
+
+* Profils d'envoi nommés — modale dédiée, usage via `[profile=nom]` dans le message
+* Envoi de fichiers locaux via PUT binaire ntfy — commande `send_file` et inline `[file=/chemin]`
+* Multi-commandes dans les templates de réponse — syntaxe `{#id#}`, bouton d'insertion au curseur
+* Commandes `exec_reply` et `exec_action` — déclenchement depuis un scénario Jeedom via select uid
+* Options de publication étendues — markdown, icône, délai, cache ntfy, firebase par équipement et inline
+* Mode silencieux — plages horaires, priorité faible, désactivation envois sortants / réponses auto
+
+## 2026-06-19
+
+* Assistant reverse proxy — wizard 5 étapes (Nginx, Apache, NPM, Traefik, Cloudflare)
+* Mode embarqué / externe — ntfy intégré ou serveur ntfy distant
+* Panel gestion utilisateurs ntfy — droits par topic (read-write, read-only, deny-all)
+* Auto-détection du port ntfy avec bouton reset
+
+## 2026-06-01
+
+* Règles d'action avec confirmation — boutons Oui ✓ / Non ✗ via token sécurisé 128 bits
+* Règles de réponse — lecture de commandes info Jeedom et réponse automatique
+* Mode silencieux global par équipement
+* Matching mot exact (word boundary) pour éviter les faux positifs
+* Mise à disposition du plugin

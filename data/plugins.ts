@@ -247,6 +247,22 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "ntfybridge",
+    "name": "ntfybridge",
+    "description": "Communication bidirectionnelle entre Jeedom et ntfy. Recevez des alertes riches et pilotez votre domotique par message depuis votre téléphone.",
+    "icon": "ntfybridge_icon.png",
+    "status": "beta",
+    "ribbon": "Beta",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "Node.js"],
+    "routes": {
+      "page": "/docs/plugins/ntfybridge/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
+  {
     "id": "icon",
     "name": "Plugin Icônes",
     "description": "Ajoutez, installez, désinstallez et prévisualisez des packs d’icônes personnalisés dans Jeedom.",
