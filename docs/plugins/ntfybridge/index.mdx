@@ -1,6 +1,7 @@
 ---
 title: ntfybridge
 description: Plugin Jeedom de communication bidirectionnelle avec ntfy — recevez des alertes riches et pilotez votre domotique par message depuis votre téléphone.
+hide_title: true
 ---
 
 import PluginHero from '@site/src/components/PluginHero';
@@ -12,9 +13,10 @@ import TabItem from '@theme/TabItem';
   title="ntfybridge"
   description="Communication bidirectionnelle entre Jeedom et ntfy. Recevez des alertes riches et pilotez votre domotique par message depuis votre téléphone."
   icon="/img/plugins/ntfybridge_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
 
-# Manuel d'utilisation — Plugin ntfybridge
+# 📡 Manuel d'utilisation — Plugin ntfybridge
 
 Le plugin **ntfybridge** connecte Jeedom à [ntfy](https://ntfy.sh), une application de notifications open-source disponible sur iOS, Android et Web.
 
@@ -25,10 +27,10 @@ La communication est **bidirectionnelle** :
 
 ---
 
-# Ce que vous pouvez faire
+# ✨ Ce que vous pouvez faire
 
 <Tabs>
-  <TabItem value="jeedom-to-phone" label="🏠 Jeedom → Téléphone" default>
+<TabItem value="jeedom-to-phone" label="🏠 Jeedom → Téléphone" default>
 
 **Jeedom vous contacte, vous informe, vous alerte.**
 
@@ -40,8 +42,8 @@ La communication est **bidirectionnelle** :
 - ⏰ Message différé — "Rappel dans 30 minutes"
 - 🗂️ Profils d'envoi nommés : *urgent*, *discret*, *rapport*…
 
-  </TabItem>
-  <TabItem value="phone-to-jeedom" label="📱 Téléphone → Jeedom">
+</TabItem>
+<TabItem value="phone-to-jeedom" label="📱 Téléphone → Jeedom">
 
 **Vous interrogez ou pilotez Jeedom par message.**
 
@@ -51,19 +53,19 @@ La communication est **bidirectionnelle** :
 - ✅ *"Confirmer l'ouverture du portail ?"* avec boutons **Oui ✓ / Non ✗**
 - 🩺 `ping` → Jeedom répond avec son état de santé
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
 
-# Modes de configuration
+# 🔀 Modes de configuration
 
 :::tip Configuration recommandée
 **Mode embarqué + sous-domaine HTTPS** — installation all-in-one, données chez vous, toutes les fonctionnalités (push iOS natif, boutons de confirmation, icônes, fichiers joints).
 :::
 
 <Tabs groupId="ntfy-mode">
-  <TabItem value="embedded-https" label="⭐ Embarqué + sous-domaine" default>
+<TabItem value="embedded-https" label="⭐ Embarqué + sous-domaine" default>
 
 ntfy est inclus dans le plugin et exposé via reverse proxy sur un sous-domaine.
 
@@ -75,10 +77,10 @@ ntfy est inclus dans le plugin et exposé via reverse proxy sur un sous-domaine.
 
 **Contraintes :**
 - Nécessite un nom de domaine (ex: `ntfy.mondomaine.fr`)
-- Nécessite un reverse proxy (Apache, Nginx, NPM, Traefik, Cloudflare…)
+- Nécessite un reverse proxy (Apache, Nginx, NPM, Traefik, Cloudflare…) — [voir configuration →](#reverse-proxy)
 
-  </TabItem>
-  <TabItem value="embedded-local" label="Embarqué local / VPN">
+</TabItem>
+<TabItem value="embedded-local" label="Embarqué local / VPN">
 
 ntfy est inclus, accessible uniquement sur le réseau local ou via VPN.
 
@@ -90,8 +92,8 @@ ntfy est inclus, accessible uniquement sur le réseau local ou via VPN.
 - Boutons Oui/Non non fonctionnels hors réseau local
 - Push iOS natif indisponible sans HTTPS public
 
-  </TabItem>
-  <TabItem value="external-public" label="Externe — ntfy.sh">
+</TabItem>
+<TabItem value="external-public" label="Externe — ntfy.sh">
 
 Le plugin se connecte au service public ntfy.sh.
 
@@ -99,8 +101,8 @@ Le plugin se connecte au service public ntfy.sh.
 
 **Contraintes :** Quota 250 messages/jour, topics semi-publics, dépendance externe.
 
-  </TabItem>
-  <TabItem value="external-self" label="Externe — auto-hébergé">
+</TabItem>
+<TabItem value="external-self" label="Externe — auto-hébergé">
 
 Le plugin se connecte à votre propre serveur ntfy (VPS, NAS…).
 
@@ -108,17 +110,17 @@ Le plugin se connecte à votre propre serveur ntfy (VPS, NAS…).
 
 **Contraintes :** Serveur à maintenir, panel utilisateurs désactivé dans Jeedom.
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
 
-# Installation
+# 📦 Installation
 
-## 1 — Installer le plugin
+## 1️⃣ Installer le plugin
 
 ```text
-Plugins → Gestion des plugins → Market → ntfybridge → Installer stable
+Plugins → Gestion des plugins → Market → ntfybridge → Installer
 ```
 
 Activer le plugin après installation.
@@ -129,7 +131,479 @@ Node.js (≥ 18) et le binaire ntfy sont installés automatiquement. Aucune inte
 
 ---
 
-## 2 — Configurer le reverse proxy (mode embarqué + sous-domaine)
+## 2️⃣ Créer un équipement
+
+1. **Plugins → ntfybridge → Ajouter**
+2. Nommer, activer
+3. Configurer les topics :
+   - **Topic d'écoute** : Jeedom reçoit les messages sur ce topic (ex: `maison_cmd`)
+   - **Topic de réponse** : Jeedom envoie ses réponses sur ce topic (ex: `maison_reply`)
+4. **Sauvegarder** — les commandes sont créées automatiquement
+
+:::tip
+Le topic est l'équivalent d'un mot de passe. Choisir un nom difficile à deviner.
+:::
+
+S'abonner dans l'app ntfy en copiant l'URL affichée dans la section **Abonnement** de l'équipement.
+
+---
+
+# 🗂️ Configuration de l'équipement
+
+Chaque équipement ntfybridge dispose de quatre onglets.
+
+## ⚙️ Onglet Équipement
+
+### 📡 Topics
+
+| Champ | Rôle |
+|---|---|
+| **Topic d'écoute** | Topic ntfy sur lequel Jeedom reçoit les messages entrants (SSE). Ex: `maison_cmd` |
+| **Topic de réponse** | Topic ntfy sur lequel Jeedom envoie ses réponses automatiques et confirmations. Ex: `maison_reply` |
+
+:::tip
+Les deux topics peuvent être identiques si vous n'avez qu'un seul topic pour tout. Séparer les topics permet cependant de s'abonner uniquement aux réponses sans recevoir ses propres commandes en écho.
+:::
+
+### 🔧 Valeurs par défaut
+
+Ces valeurs s'appliquent à chaque envoi si aucune surcharge n'est définie par commande cache ou paramètre inline.
+
+| Paramètre | Description |
+|---|---|
+| **Priorité** | Niveau de notification : 1=min (silencieux) · 2=low · 3=défaut · 4=high · 5=urgent (son fort) |
+| **Tags** | Emojis affichés dans la notification, séparés par virgule (ex: `loudspeaker,bell`) |
+| **Markdown** | Active le rendu **gras**, *italique*, listes dans le corps du message |
+| **Icône** | URL d'une image affichée comme icône (Android uniquement) |
+| **Délai** | Envoi différé : `30m`, `9am`, `2026-01-01T09:00`… |
+| **Cache ntfy** | Mise en cache côté serveur ntfy (`yes`/`no`). Vide = comportement serveur |
+| **Firebase** | Activation du push Firebase (`yes`/`no`). Vide = comportement serveur |
+
+### 🔒 Sécurité
+
+| Paramètre | Description |
+|---|---|
+| **Utilisateurs autorisés** | Liste des utilisateurs ntfy autorisés à envoyer des commandes, séparés par virgule. Vide = tous |
+| **Mots interdits** | Mots dont la présence dans le message bloque tout traitement (ex: `delete,rm,sudo`) |
+| **Timeout confirmation** | Délai d'expiration d'une demande de confirmation Oui/Non, en secondes (défaut : 60 s) |
+
+### 🔕 Mode silencieux
+
+| Option | Description |
+|---|---|
+| **Mode silencieux global** | Bloque tous les envois et réponses automatiques |
+| **Désactiver les envois sortants** | Bloque définitivement la commande `send_message` |
+| **Désactiver les réponses automatiques** | Ignore les règles Réponses et Actions pour les messages entrants |
+| **En mode silencieux** | Comportement : bloquer complètement *ou* passer en priorité 1 (min, silencieux) |
+| **Plages horaires** | Périodes de silence automatique (ex: 22:00 → 08:00) |
+
+:::info
+Désactiver les envois sortants est utile par exemple pour un équipement dédié uniquement à la réception de commandes, sans jamais envoyer de notification sur le topic d'écoute.
+:::
+
+---
+
+## 💬 Onglet Réponses
+
+Définit ce que Jeedom répond quand il reçoit un message correspondant à des mots-clés.
+
+### 📋 Colonnes de la règle
+
+| Champ | Description |
+|---|---|
+| **Nom** | Libellé de la règle (affiché dans le select `Déclencher réponse`) |
+| **Mots-clés** | Termes déclencheurs, séparés par virgule. Ex: `température salon, temp salon` |
+| **Mode** | **Contient** : le mot-clé peut être dans un mot plus long · **Mot exact** : doit être un mot séparé (évite les faux positifs) |
+| **Réponse** | Texte envoyé, avec références `{#id_commande#}` pour insérer des valeurs en temps réel |
+| **Titre** | Titre de la notification ntfy (optionnel) |
+| **Priorité** | Priorité de la réponse (1–5) |
+| **Tags** | Emojis ntfy pour la réponse |
+| **Image URL** | URL d'une image attachée à la réponse |
+
+### 🔗 Références de commandes dans la réponse
+
+Cliquer sur **+** pour ouvrir le sélecteur de commandes Jeedom et insérer `{#id#}` à la position du curseur.
+
+```text title="Exemple de template multi-commandes"
+Salon : {#364#} °C — Humidité : {#365#} % — CO₂ : {#366#} ppm
+```
+
+Plusieurs commandes peuvent être combinées dans le même template. Les valeurs sont lues en parallèle au moment de l'envoi.
+
+:::info
+Chaque règle peut envoyer la réponse sur un topic différent du topic de réponse par défaut de l'équipement (champ **Topic de réponse** optionnel par règle).
+:::
+
+---
+
+## ⚡ Onglet Actions
+
+Définit ce que Jeedom **exécute** quand il reçoit un message correspondant à des mots-clés.
+
+### 📋 Champs de la règle
+
+| Champ | Description |
+|---|---|
+| **Nom** | Libellé de la règle (affiché dans le select `Déclencher action`) |
+| **Mots-clés** | Termes déclencheurs, séparés par virgule |
+| **Mode** | Contient *ou* Mot exact (voir Onglet Réponses) |
+| **Action** | Commande ou scénario Jeedom à exécuter (sélecteur standard Jeedom) |
+| **Confirmation** | Si activé : envoie une notification avec boutons Oui ✓ / Non ✗ avant d'exécuter |
+| **Texte de confirmation** | Message affiché avec les boutons (ex: `Ouvrir le portail ?`) |
+| **Texte succès** | Message envoyé après exécution réussie |
+| **Texte annulation** | Message envoyé si l'utilisateur clique Non |
+| **Priorité / Tags** | Paramètres ntfy de la notification de confirmation |
+
+### ✅ Confirmation Oui / Non
+
+Quand la confirmation est activée, Jeedom génère un **token sécurisé** (128 bits, usage unique) et envoie une notification ntfy avec deux boutons HTTP.
+
+- **Oui ✓** → Jeedom exécute l'action et envoie le texte succès
+- **Non ✗** → Jeedom envoie le texte annulation et supprime le token
+
+Le token expire automatiquement après le timeout configuré (onglet Équipement → Sécurité).
+
+:::warning
+Les boutons ntfy s'affichent dans le **détail du message** (tap sur la notification), pas en bandeau sur l'écran verrouillé. Les boutons nécessitent que l'URL externe Jeedom soit accessible depuis Internet.
+:::
+
+:::tip Désactiver les notifications sur le topic d'action
+Si vous ne souhaitez pas recevoir les messages de confirmation/succès/annulation sur le topic de réponse, laisser les champs **Texte succès** et **Texte annulation** vides, et désactiver la confirmation. Seule l'exécution de l'action aura lieu, sans retour ntfy.
+:::
+
+---
+
+## 🎛️ Onglet Commandes
+
+Les commandes sont créées **automatiquement** à la sauvegarde de l'équipement. Aucune action manuelle requise.
+
+### 📤 Commandes d'envoi
+
+| Commande | Type | Rôle |
+|---|---|---|
+| **Envoyer message** | Action / message | Déclenche l'envoi réel. Titre + corps. |
+| **Priorité** | Action / slider (1–5) | Définit la priorité du prochain envoi (stocké en cache) |
+| **Tags** | Action / string | Définit les tags du prochain envoi |
+| **URL** | Action / string | Définit l'URL de clic du prochain envoi |
+| **Image** | Action / string | Définit l'URL d'image attachée |
+| **Fichier** | Action / string | Chemin d'un fichier local à envoyer en pièce jointe (PUT binaire) |
+| **Topic** | Action / string | Surcharge ponctuelle du topic d'envoi |
+| **Markdown** | Action / slider (0/1) | Active ou désactive le rendu Markdown |
+| **Icône** | Action / string | URL d'icône pour la notification |
+| **Délai** | Action / string | Envoi différé (`30m`, `9am`…) |
+| **Cache ntfy** | Action / string | Surcharge du cache ntfy (`yes`/`no`) |
+| **Firebase** | Action / string | Surcharge Firebase (`yes`/`no`) |
+
+### 🔁 Commandes de déclenchement
+
+| Commande | Type | Rôle |
+|---|---|---|
+| **Déclencher réponse** | Action / select | Exécute une règle Réponse depuis un scénario Jeedom |
+| **Déclencher action** | Action / select | Exécute une règle Action depuis un scénario Jeedom |
+
+:::info Ordre d'exécution dans un scénario
+Les commandes de cache (Priorité, Tags, Icône…) doivent être appelées **avant** `Envoyer message` dans le scénario. La commande `Envoyer message` lit les caches, envoie la notification, puis **réinitialise** tous les caches.
+:::
+
+```text title="Exemple de scénario Jeedom"
+Bloc action :
+  1. [Maison][ntfybridge] Priorité → 5
+  2. [Maison][ntfybridge] Tags → warning,fire
+  3. [Maison][ntfybridge] Envoyer message
+       Titre   : Alarme
+       Message : Mouvement détecté zone A
+```
+
+---
+
+# 📤 Envoyer des notifications
+
+## La commande send_message
+
+Dans un scénario Jeedom :
+
+```text
+Action → Message → [équipement ntfybridge] Envoyer message
+Titre  : Alarme
+Message : Mouvement détecté zone A
+```
+
+## ⚙️ Options d'envoi
+
+Appeler les commandes de cache **avant** `send_message`, ou utiliser les paramètres **inline** directement dans le message :
+
+| Option | Commande cache | Inline | Valeurs |
+|---|---|---|---|
+| Priorité | `send_priority` (1–5) | `[priority=5]` | 1=min · 2=low · 3=défaut · 4=high · 5=urgent |
+| Tags | `send_tags` | `[tags=warning,bell]` | emojis ntfy séparés par virgule |
+| Icône | `send_icon` | `[icon=https://...]` | URL image (Android uniquement) |
+| Markdown | `send_markdown` (0/1) | `[md=1]` | **gras**, *italique*, listes |
+| Délai | `send_delay` | `[delay=30m]` | `30m`, `9am`, `2026-01-01T09:00` |
+| Fichier | `send_file` | `[file=/chemin]` | chemin absolu sur le serveur |
+| Topic | `send_topic` | `[topic=alertes]` | surcharge ponctuelle |
+| URL clic | `send_url` | `[url=https://...]` | URL ouverte au tap |
+
+Exemple complet avec inline :
+
+```text
+[priority=5][tags=warning,fire][title=Alerte] Mouvement détecté zone A
+```
+
+:::info Compatibilité plateformes
+| Fonctionnalité | Android | iOS | Web |
+|---|---|---|---|
+| Icônes personnalisées | ✅ | ❌ | ✅ |
+| Markdown | ✅ | ⚠️ partiel | ✅ |
+| Boutons d'action | ✅ | ✅ | ✅ |
+| Fichiers joints | ✅ | ✅ | ✅ |
+| Push natif sans HTTPS public | Firebase | ❌ | — |
+:::
+
+---
+
+# 🗂️ Profils d'envoi
+
+Groupez vos paramètres récurrents en profils nommés. Ouvrir depuis **Plugins → ntfybridge → Profils**.
+
+## 📊 Niveaux de priorité
+
+| Niveau | Valeur | Comportement |
+|---|---|---|
+| min | `1` | Silencieux, sans son ni vibration — rapports passifs |
+| low | `2` | Discret — bannière silencieuse |
+| default | `3` | Comportement standard de l'appareil |
+| high | `4` | Son + vibration, même en mode ne pas déranger |
+| urgent | `5` | Son fort + vibration + contourne le mode silencieux |
+
+## 🏷️ Tags courants
+
+Les tags correspondent aux noms d'emojis ntfy, séparés par virgule.
+
+| Tag | Emoji | Usage |
+|---|---|---|
+| `warning` | ⚠️ | Alerte générale |
+| `rotating_light` | 🚨 | Urgence, alarme |
+| `fire` | 🔥 | Incendie, température critique |
+| `bell` | 🔔 | Notification, rappel |
+| `information_source` | ℹ️ | Information, rapport |
+| `white_check_mark` | ✅ | Succès, confirmation |
+| `x` | ❌ | Erreur, échec |
+| `house` | 🏠 | Domotique générale |
+| `thermometer` | 🌡️ | Température |
+| `lock` | 🔒 | Sécurité, alarme |
+| `droplet` | 💧 | Eau, pluie, humidité |
+| `electric_plug` | 🔌 | Énergie, coupure |
+| `camera` | 📷 | Caméra, détection |
+| `zzz` | 💤 | Mode nuit, silence |
+
+## ➕ Créer un profil
+
+| Champ | Exemple |
+|---|---|
+| Nom | `alerte` |
+| Priorité | 5 |
+| Tags | `warning,rotating_light` |
+| Icône | `https://...` |
+| Markdown | ✅ |
+
+## 🚀 Utiliser un profil
+
+```text
+[profile=alerte] Intrusion détectée
+[profile=info] Rapport journalier prêt
+[profile=alerte][priority=3] Priorité surchargée par dessus le profil
+```
+
+---
+
+# 💬 Règles de réponse
+
+Quand un message entrant correspond à des mots-clés, Jeedom lit une commande info et répond.
+
+**Exemple :**
+- Mots-clés : `température salon, temp salon`
+- Réponse : `Température salon : {#364#} °C — Humidité : {#365#} %`
+
+Cliquer sur **+** dans le champ réponse pour insérer une référence `{#id#}` via le sélecteur de commandes Jeedom. Plusieurs commandes peuvent être combinées dans le même template.
+
+---
+
+# ⚡ Règles d'action
+
+Quand un message correspond, Jeedom exécute une action.
+
+**Sans confirmation** → action immédiate + message de succès.
+
+**Avec confirmation** → Jeedom envoie une notification avec boutons **Oui ✓ / Non ✗**. Le token expire après le délai configuré (défaut : 60 s).
+
+:::warning
+Les boutons ntfy s'affichent dans le **détail du message** (appui long ou tap sur la notification), pas en bandeau.
+:::
+
+---
+
+# 🔕 Mode silencieux
+
+Par équipement :
+
+- **Mode silencieux global** : bloque tous les envois
+- **Désactiver envois sortants** : bloque `send_message`
+- **Désactiver réponses automatiques** : ignore les règles
+- **Plages horaires** : ex. silencieux de 22 h à 8 h
+- **Comportement** : bloquer complètement *ou* passer en priorité minimale (1)
+
+---
+
+# 🚨 Mode Secours
+
+Le Mode Secours permet d'interroger et de dépanner Jeedom **depuis l'application ntfy**, même quand l'interface web est inaccessible (Apache ou PHP en panne, Jeedom qui ne répond plus).
+
+Le démon ntfybridge tourne **indépendamment** de Jeedom. Il peut donc continuer à répondre à vos messages même quand tout le reste est KO.
+
+---
+
+## ⚙️ Configurer le Mode Secours
+
+Ouvrir la configuration du plugin :
+
+```text
+Plugins → ntfybridge → (icône secours)
+```
+
+### 📡 Topics secours
+
+| Champ | Description |
+|---|---|
+| **Topic action** | Topic ntfy sur lequel vous envoyez vos commandes de secours. Ex: `maison_rescue` |
+| **Topic réponse** | Topic sur lequel Jeedom vous répond. Peut être différent pour mieux organiser vos abonnements ntfy. |
+
+:::tip
+Séparer le topic secours de vos topics habituels permet de s'y abonner uniquement quand vous en avez besoin — sans polluer vos notifications normales.
+:::
+
+---
+
+## 🛠️ Commandes natives
+
+Ces commandes sont disponibles **sans aucune configuration supplémentaire**, même si PHP est inaccessible.
+
+Envoyez le mot-clé dans ntfy → Jeedom répond automatiquement.
+
+| Commande | Ce que vous recevez |
+|---|---|
+| `ping` | Confirmation de vie + heure du serveur, charge CPU, RAM libre, uptime |
+| `health` | État complet : CPU, RAM, espace disque, température, uptime |
+| `log ntfybridged` | Les 20 dernières lignes du log du démon ntfybridge |
+| `log <nom_log>` | Les 20 dernières lignes de n'importe quel log Jeedom |
+| `jeedom` | Rapport de santé Jeedom : base de données, plugins, services |
+| `emergency` | Diagnostic Apache, PHP-FPM et MySQL — avec boutons **Redémarrer** pour chaque service en panne |
+
+Cocher les commandes à activer dans la modale Secours. Il est recommandé d'activer au minimum `ping` et `emergency`.
+
+### 🔴 La commande `emergency` en détail
+
+Quand vous envoyez `emergency` :
+
+1. Jeedom vérifie l'état d'Apache, PHP-FPM et MySQL
+2. Pour chaque service en panne, vous recevez une notification ntfy avec deux boutons : **Oui ✓** (redémarrer) et **Non ✗** (ignorer)
+3. Si vous appuyez sur **Oui**, le service redémarre et vous recevez un accusé de réception
+
+Si tous les services sont opérationnels, vous recevez simplement un message "tout va bien".
+
+:::info Droits sudo nécessaires
+Pour que le redémarrage des services fonctionne, les droits sudo doivent être accordés à l'utilisateur `www-data`. La modale Secours affiche exactement le bloc de configuration à copier dans `/etc/sudoers.d/ntfybridge`.
+:::
+
+---
+
+## ✏️ Commandes personnalisées
+
+Vous pouvez ajouter vos propres commandes : envoyer un mot-clé dans ntfy déclenche l'exécution d'un script sur le serveur, et le résultat vous est renvoyé.
+
+### ➕ Ajouter une commande
+
+1. Ouvrir la modale Secours
+2. Cliquer **Ajouter une commande**
+3. Remplir :
+
+| Champ | Description |
+|---|---|
+| **Nom** | Libellé affiché (ex: `Espace disque`) |
+| **Mots-clés** | Ce que vous tapez dans ntfy pour déclencher la commande (ex: `espace disque, disk`) |
+| **Script** | Fichier à exécuter, sélectionné parmi les scripts disponibles dans `data/rescue_scripts/` |
+| **Type** | Langage du script : `sh` (bash), `php`, `node`, `py` (Python) |
+| **Confirmation** | Si activé : Jeedom vous demande Oui/Non avant d'exécuter |
+| **Timeout** | Délai maximum d'exécution en secondes (5–120 s) |
+
+4. Cliquer **Sauvegarder**
+
+### 📁 Déposer un script
+
+Les scripts doivent être placés dans :
+
+```text
+plugins/ntfybridge/data/rescue_scripts/
+```
+
+Formats acceptés : `.sh`, `.php`, `.js`, `.py`
+
+Le script s'exécute et sa sortie (stdout) est envoyée comme réponse ntfy. En cas d'erreur ou de timeout, vous recevez un message d'erreur sans que le démon ne soit affecté.
+
+:::tip Scripts de test fournis
+Le dossier contient déjà quatre scripts de test (`test_hello.sh`, `test_hello.php`, `test_hello.js`, `test_hello.py`) qui renvoient simplement la date et la version du langage — pratique pour vérifier que l'exécution fonctionne avant d'ajouter vos propres scripts.
+:::
+
+:::warning Sécurité
+- Seuls les fichiers avec une extension `.sh`, `.php`, `.js` ou `.py` sont acceptés
+- Les noms de fichiers suspects (tentatives de traversée de répertoire) sont automatiquement rejetés
+- L'accès est contrôlé par les ACL ntfy configurées dans le panel utilisateurs
+:::
+
+---
+
+# 📱 Pilotage depuis le téléphone
+
+## 🍎 iOS — Raccourcis natifs
+
+1. App **Raccourcis** → Nouveau raccourci
+2. Ajouter l'action **Demander du texte** *(invite facultative)*
+3. Ajouter l'action **Obtenir le contenu de l'URL**
+   - URL : `https://ntfy.votredomaine.fr/mon_topic`
+   - Méthode : `POST`
+   - Corps de la requête : **Texte fourni par l'étape précédente**
+4. Ajouter le raccourci sur l'écran d'accueil ou l'utiliser avec **Siri**
+
+:::tip Invite facultative
+Ne pas renseigner de question dans l'action "Demander du texte". Selon la version d'iOS, une invite obligatoire peut être envoyée avec le message et fausser la correspondance des mots-clés dans ntfybridge.
+:::
+
+:::info L'idée d'origine
+ntfybridge est né de ce concept : un raccourci iOS envoie un POST → Jeedom reçoit et agit.
+:::
+
+## 🤖 Android
+
+| Application | Points forts |
+|---|---|
+| **HTTP Request Shortcuts** (F-Droid) | Simple, widget, open-source |
+| **Tasker** | Très puissant, automatisations avancées |
+| **MacroDroid** | Accessible, actions HTTP intégrées |
+
+---
+
+# 📄 Logs
+
+| Log | Description |
+|---|---|
+| `ntfybridge` | Log principal du plugin et du démon |
+
+Activer **Debug** uniquement pour le diagnostic.
+
+---
+
+<div id="reverse-proxy"></div>
+
+# 🌐 Configurer le reverse proxy (mode embarqué + sous-domaine)
 
 L'assistant intégré génère la configuration Apache en 5 étapes.
 
@@ -167,448 +641,15 @@ sudo certbot renew --dry-run
 
 ---
 
-## 3 — Créer un équipement
+# 🔍 Dépannage
 
-1. **Plugins → ntfybridge → Ajouter**
-2. Nommer, activer
-3. Configurer les topics :
-   - **Topic d'écoute** : Jeedom reçoit les messages sur ce topic (ex: `maison_cmd`)
-   - **Topic de réponse** : Jeedom envoie ses réponses sur ce topic (ex: `maison_reply`)
-4. **Sauvegarder** — les commandes sont créées automatiquement
-
-:::tip
-Le topic est l'équivalent d'un mot de passe. Choisir un nom difficile à deviner.
-:::
-
-S'abonner dans l'app ntfy en copiant l'URL affichée dans la section **Abonnement** de l'équipement.
-
----
-
-# Configuration de l'équipement
-
-Chaque équipement ntfybridge dispose de quatre onglets.
-
-## Onglet Équipement
-
-### Topics
-
-| Champ | Rôle |
-|---|---|
-| **Topic d'écoute** | Topic ntfy sur lequel Jeedom reçoit les messages entrants (SSE). Ex: `maison_cmd` |
-| **Topic de réponse** | Topic ntfy sur lequel Jeedom envoie ses réponses automatiques et confirmations. Ex: `maison_reply` |
-
-:::tip
-Les deux topics peuvent être identiques si vous n'avez qu'un seul topic pour tout. Séparer les topics permet cependant de s'abonner uniquement aux réponses sans recevoir ses propres commandes en écho.
-:::
-
-### Valeurs par défaut
-
-Ces valeurs s'appliquent à chaque envoi si aucune surcharge n'est définie par commande cache ou paramètre inline.
-
-| Paramètre | Description |
-|---|---|
-| **Priorité** | Niveau de notification : 1=min (silencieux) · 2=low · 3=défaut · 4=high · 5=urgent (son fort) |
-| **Tags** | Emojis affichés dans la notification, séparés par virgule (ex: `loudspeaker,bell`) |
-| **Markdown** | Active le rendu **gras**, *italique*, listes dans le corps du message |
-| **Icône** | URL d'une image affichée comme icône (Android uniquement) |
-| **Délai** | Envoi différé : `30m`, `9am`, `2026-01-01T09:00`… |
-| **Cache ntfy** | Mise en cache côté serveur ntfy (`yes`/`no`). Vide = comportement serveur |
-| **Firebase** | Activation du push Firebase (`yes`/`no`). Vide = comportement serveur |
-
-### Sécurité
-
-| Paramètre | Description |
-|---|---|
-| **Utilisateurs autorisés** | Liste des utilisateurs ntfy autorisés à envoyer des commandes, séparés par virgule. Vide = tous |
-| **Mots interdits** | Mots dont la présence dans le message bloque tout traitement (ex: `delete,rm,sudo`) |
-| **Timeout confirmation** | Délai d'expiration d'une demande de confirmation Oui/Non, en secondes (défaut : 60 s) |
-
-### Mode silencieux
-
-| Option | Description |
-|---|---|
-| **Mode silencieux global** | Bloque tous les envois et réponses automatiques |
-| **Désactiver les envois sortants** | Bloque définitivement la commande `send_message` |
-| **Désactiver les réponses automatiques** | Ignore les règles Réponses et Actions pour les messages entrants |
-| **En mode silencieux** | Comportement : bloquer complètement *ou* passer en priorité 1 (min, silencieux) |
-| **Plages horaires** | Périodes de silence automatique (ex: 22:00 → 08:00) |
-
-:::info
-Désactiver les envois sortants est utile par exemple pour un équipement dédié uniquement à la réception de commandes, sans jamais envoyer de notification sur le topic d'écoute.
-:::
-
----
-
-## Onglet Réponses
-
-Définit ce que Jeedom répond quand il reçoit un message correspondant à des mots-clés.
-
-### Colonnes de la règle
-
-| Champ | Description |
-|---|---|
-| **Nom** | Libellé de la règle (affiché dans le select `Déclencher réponse`) |
-| **Mots-clés** | Termes déclencheurs, séparés par virgule. Ex: `température salon, temp salon` |
-| **Mode** | **Contient** : le mot-clé peut être dans un mot plus long · **Mot exact** : doit être un mot séparé (évite les faux positifs) |
-| **Réponse** | Texte envoyé, avec références `{#id_commande#}` pour insérer des valeurs en temps réel |
-| **Titre** | Titre de la notification ntfy (optionnel) |
-| **Priorité** | Priorité de la réponse (1–5) |
-| **Tags** | Emojis ntfy pour la réponse |
-| **Image URL** | URL d'une image attachée à la réponse |
-
-### Références de commandes dans la réponse
-
-Cliquer sur **+** pour ouvrir le sélecteur de commandes Jeedom et insérer `{#id#}` à la position du curseur.
-
-```text title="Exemple de template multi-commandes"
-Salon : {#364#} °C — Humidité : {#365#} % — CO₂ : {#366#} ppm
-```
-
-Plusieurs commandes peuvent être combinées dans le même template. Les valeurs sont lues en parallèle au moment de l'envoi.
-
-:::info
-Chaque règle peut envoyer la réponse sur un topic différent du topic de réponse par défaut de l'équipement (champ **Topic de réponse** optionnel par règle).
-:::
-
----
-
-## Onglet Actions
-
-Définit ce que Jeedom **exécute** quand il reçoit un message correspondant à des mots-clés.
-
-### Champs de la règle
-
-| Champ | Description |
-|---|---|
-| **Nom** | Libellé de la règle (affiché dans le select `Déclencher action`) |
-| **Mots-clés** | Termes déclencheurs, séparés par virgule |
-| **Mode** | Contient *ou* Mot exact (voir Onglet Réponses) |
-| **Action** | Commande ou scénario Jeedom à exécuter (sélecteur standard Jeedom) |
-| **Confirmation** | Si activé : envoie une notification avec boutons Oui ✓ / Non ✗ avant d'exécuter |
-| **Texte de confirmation** | Message affiché avec les boutons (ex: `Ouvrir le portail ?`) |
-| **Texte succès** | Message envoyé après exécution réussie |
-| **Texte annulation** | Message envoyé si l'utilisateur clique Non |
-| **Priorité / Tags** | Paramètres ntfy de la notification de confirmation |
-
-### Confirmation Oui / Non
-
-Quand la confirmation est activée, Jeedom génère un **token sécurisé** (128 bits, usage unique) et envoie une notification ntfy avec deux boutons HTTP.
-
-- **Oui ✓** → Jeedom exécute l'action et envoie le texte succès
-- **Non ✗** → Jeedom envoie le texte annulation et supprime le token
-
-Le token expire automatiquement après le timeout configuré (onglet Équipement → Sécurité).
-
-:::warning
-Les boutons ntfy s'affichent dans le **détail du message** (tap sur la notification), pas en bandeau sur l'écran verrouillé. Les boutons nécessitent que l'URL externe Jeedom soit accessible depuis Internet.
-:::
-
-:::tip Désactiver les notifications sur le topic d'action
-Si vous ne souhaitez pas recevoir les messages de confirmation/succès/annulation sur le topic de réponse, laisser les champs **Texte succès** et **Texte annulation** vides, et désactiver la confirmation. Seule l'exécution de l'action aura lieu, sans retour ntfy.
-:::
-
----
-
-## Onglet Commandes
-
-Les commandes sont créées **automatiquement** à la sauvegarde de l'équipement. Aucune action manuelle requise.
-
-### Commandes d'envoi
-
-| Commande | Type | Rôle |
-|---|---|---|
-| **Envoyer message** | Action / message | Déclenche l'envoi réel. Titre + corps. |
-| **Priorité** | Action / slider (1–5) | Définit la priorité du prochain envoi (stocké en cache) |
-| **Tags** | Action / string | Définit les tags du prochain envoi |
-| **URL** | Action / string | Définit l'URL de clic du prochain envoi |
-| **Image** | Action / string | Définit l'URL d'image attachée |
-| **Fichier** | Action / string | Chemin d'un fichier local à envoyer en pièce jointe (PUT binaire) |
-| **Topic** | Action / string | Surcharge ponctuelle du topic d'envoi |
-| **Markdown** | Action / slider (0/1) | Active ou désactive le rendu Markdown |
-| **Icône** | Action / string | URL d'icône pour la notification |
-| **Délai** | Action / string | Envoi différé (`30m`, `9am`…) |
-| **Cache ntfy** | Action / string | Surcharge du cache ntfy (`yes`/`no`) |
-| **Firebase** | Action / string | Surcharge Firebase (`yes`/`no`) |
-
-### Commandes de déclenchement
-
-| Commande | Type | Rôle |
-|---|---|---|
-| **Déclencher réponse** | Action / select | Exécute une règle Réponse depuis un scénario Jeedom |
-| **Déclencher action** | Action / select | Exécute une règle Action depuis un scénario Jeedom |
-
-:::info Ordre d'exécution dans un scénario
-Les commandes de cache (Priorité, Tags, Icône…) doivent être appelées **avant** `Envoyer message` dans le scénario. La commande `Envoyer message` lit les caches, envoie la notification, puis **réinitialise** tous les caches.
-:::
-
-```text title="Exemple de scénario Jeedom"
-Bloc action :
-  1. [Maison][ntfybridge] Priorité → 5
-  2. [Maison][ntfybridge] Tags → warning,fire
-  3. [Maison][ntfybridge] Envoyer message
-       Titre   : Alarme
-       Message : Mouvement détecté zone A
-```
-
----
-
-# Envoyer des notifications
-
-## La commande send_message
-
-Dans un scénario Jeedom :
-
-```text
-Action → Message → [équipement ntfybridge] Envoyer message
-Titre  : Alarme
-Message : Mouvement détecté zone A
-```
-
-## Options d'envoi
-
-Appeler les commandes de cache **avant** `send_message`, ou utiliser les paramètres **inline** directement dans le message :
-
-| Option | Commande cache | Inline | Valeurs |
-|---|---|---|---|
-| Priorité | `send_priority` (1–5) | `[priority=5]` | 1=min · 2=low · 3=défaut · 4=high · 5=urgent |
-| Tags | `send_tags` | `[tags=warning,bell]` | emojis ntfy séparés par virgule |
-| Icône | `send_icon` | `[icon=https://...]` | URL image (Android uniquement) |
-| Markdown | `send_markdown` (0/1) | `[md=1]` | **gras**, *italique*, listes |
-| Délai | `send_delay` | `[delay=30m]` | `30m`, `9am`, `2026-01-01T09:00` |
-| Fichier | `send_file` | `[file=/chemin]` | chemin absolu sur le serveur |
-| Topic | `send_topic` | `[topic=alertes]` | surcharge ponctuelle |
-| URL clic | `send_url` | `[url=https://...]` | URL ouverte au tap |
-
-Exemple complet avec inline :
-
-```text
-[priority=5][tags=warning,fire][title=Alerte] Mouvement détecté zone A
-```
-
-:::info Compatibilité plateformes
-| Fonctionnalité | Android | iOS | Web |
-|---|---|---|---|
-| Icônes personnalisées | ✅ | ❌ | ✅ |
-| Markdown | ✅ | ⚠️ partiel | ✅ |
-| Boutons d'action | ✅ | ✅ | ✅ |
-| Fichiers joints | ✅ | ✅ | ✅ |
-| Push natif sans HTTPS public | Firebase | ❌ | — |
-:::
-
----
-
-# Profils d'envoi
-
-Groupez vos paramètres récurrents en profils nommés.
-
-Ouvrir depuis **Plugins → ntfybridge → Profils** :
-
-| Champ | Exemple |
-|---|---|
-| Nom | `urgent` |
-| Priorité | 5 |
-| Tags | `warning,fire` |
-| Icône | `https://...` |
-| Markdown | ✅ |
-
-Utiliser dans un message :
-
-```text
-[profile=urgent] Intrusion détectée
-[profile=discret] Rapport journalier prêt
-[profile=urgent][priority=3] Priorité surchargée
-```
-
----
-
-# Règles de réponse
-
-Quand un message entrant correspond à des mots-clés, Jeedom lit une commande info et répond.
-
-**Exemple :**
-- Mots-clés : `température salon, temp salon`
-- Réponse : `Température salon : {#364#} °C — Humidité : {#365#} %`
-
-Cliquer sur **+** dans le champ réponse pour insérer une référence `{#id#}` via le sélecteur de commandes Jeedom. Plusieurs commandes peuvent être combinées dans le même template.
-
----
-
-# Règles d'action
-
-Quand un message correspond, Jeedom exécute une action.
-
-**Sans confirmation** → action immédiate + message de succès.
-
-**Avec confirmation** → Jeedom envoie une notification avec boutons **Oui ✓ / Non ✗**. Le token expire après le délai configuré (défaut : 60 s).
-
-:::warning
-Les boutons ntfy s'affichent dans le **détail du message** (appui long ou tap sur la notification), pas en bandeau.
-:::
-
----
-
-# Mode silencieux
-
-Par équipement :
-
-- **Mode silencieux global** : bloque tous les envois
-- **Désactiver envois sortants** : bloque `send_message`
-- **Désactiver réponses automatiques** : ignore les règles
-- **Plages horaires** : ex. silencieux de 22 h à 8 h
-- **Comportement** : bloquer complètement *ou* passer en priorité minimale (1)
-
----
-
-# Mode Secours
-
-Le Mode Secours permet d'interroger et de dépanner Jeedom **depuis l'application ntfy**, même quand l'interface web est inaccessible (Apache ou PHP en panne, Jeedom qui ne répond plus).
-
-Le démon ntfybridge tourne **indépendamment** de Jeedom. Il peut donc continuer à répondre à vos messages même quand tout le reste est KO.
-
----
-
-## Configurer le Mode Secours
-
-Ouvrir la configuration du plugin :
-
-```text
-Plugins → ntfybridge → (icône secours)
-```
-
-### Topics secours
-
-| Champ | Description |
-|---|---|
-| **Topic action** | Topic ntfy sur lequel vous envoyez vos commandes de secours. Ex: `maison_rescue` |
-| **Topic réponse** | Topic sur lequel Jeedom vous répond. Peut être différent pour mieux organiser vos abonnements ntfy. |
-| **Utilisateurs autorisés** | Liste des utilisateurs ntfy autorisés à envoyer des commandes secours (séparés par virgule). Vide = tous les utilisateurs. |
-
-:::tip
-Séparer le topic secours de vos topics habituels permet de s'y abonner uniquement quand vous en avez besoin — sans polluer vos notifications normales.
-:::
-
----
-
-## Commandes natives
-
-Ces commandes sont disponibles **sans aucune configuration supplémentaire**, même si PHP est inaccessible.
-
-Envoyez le mot-clé dans ntfy → Jeedom répond automatiquement.
-
-| Commande | Ce que vous recevez |
-|---|---|
-| `ping` | Confirmation de vie + heure du serveur, charge CPU, RAM libre, uptime |
-| `health` | État complet : CPU, RAM, espace disque, température, uptime |
-| `log ntfybridge` | Les 20 dernières lignes du log ntfybridge |
-| `log <nom_log>` | Les 20 dernières lignes de n'importe quel log Jeedom |
-| `jeedom` | Rapport de santé Jeedom : base de données, plugins, services |
-| `emergency` | Diagnostic Apache, PHP-FPM et MySQL — avec boutons **Redémarrer** pour chaque service en panne |
-
-Cocher les commandes à activer dans la modale Secours. Il est recommandé d'activer au minimum `ping` et `emergency`.
-
-### La commande `emergency` en détail
-
-Quand vous envoyez `emergency` :
-
-1. Jeedom vérifie l'état d'Apache, PHP-FPM et MySQL
-2. Pour chaque service en panne, vous recevez une notification ntfy avec deux boutons : **Oui ✓** (redémarrer) et **Non ✗** (ignorer)
-3. Si vous appuyez sur **Oui**, le service redémarre et vous recevez un accusé de réception
-
-Si tous les services sont opérationnels, vous recevez simplement un message "tout va bien".
-
-:::info Droits sudo nécessaires
-Pour que le redémarrage des services fonctionne, les droits sudo doivent être accordés à l'utilisateur `www-data`. La modale Secours affiche exactement le bloc de configuration à copier dans `/etc/sudoers.d/ntfybridge`.
-:::
-
----
-
-## Commandes personnalisées
-
-Vous pouvez ajouter vos propres commandes : envoyer un mot-clé dans ntfy déclenche l'exécution d'un script sur le serveur, et le résultat vous est renvoyé.
-
-### Ajouter une commande
-
-1. Ouvrir la modale Secours
-2. Cliquer **Ajouter une commande**
-3. Remplir :
-
-| Champ | Description |
-|---|---|
-| **Nom** | Libellé affiché (ex: `Espace disque`) |
-| **Mots-clés** | Ce que vous tapez dans ntfy pour déclencher la commande (ex: `espace disque, disk`) |
-| **Script** | Fichier à exécuter, sélectionné parmi les scripts disponibles dans `data/rescue_scripts/` |
-| **Type** | Langage du script : `sh` (bash), `php`, `node`, `py` (Python) |
-| **Confirmation** | Si activé : Jeedom vous demande Oui/Non avant d'exécuter |
-| **Timeout** | Délai maximum d'exécution en secondes (5–120 s) |
-
-4. Cliquer **Sauvegarder**
-
-### Déposer un script
-
-Les scripts doivent être placés dans :
-
-```text
-plugins/ntfybridge/data/rescue_scripts/
-```
-
-Formats acceptés : `.sh`, `.php`, `.js`, `.py`
-
-Le script s'exécute et sa sortie (stdout) est envoyée comme réponse ntfy. En cas d'erreur ou de timeout, vous recevez un message d'erreur sans que le démon ne soit affecté.
-
-:::tip Scripts de test fournis
-Le dossier contient déjà quatre scripts de test (`test_hello.sh`, `test_hello.php`, `test_hello.js`, `test_hello.py`) qui renvoient simplement la date et la version du langage — pratique pour vérifier que l'exécution fonctionne avant d'ajouter vos propres scripts.
-:::
-
-:::warning Sécurité
-- Seuls les fichiers avec une extension `.sh`, `.php`, `.js` ou `.py` sont acceptés
-- Les noms de fichiers suspects (tentatives de traversée de répertoire) sont automatiquement rejetés
-- L'utilisateur doit figurer dans **Utilisateurs autorisés** pour que ses commandes soient traitées
-:::
-
----
-
-# Pilotage depuis le téléphone
-
-## iOS — Raccourcis natifs
-
-1. App **Raccourcis** → nouveau raccourci → **Obtenir le contenu de l'URL**
-2. URL : `https://ntfy.votredomaine.fr/mon_topic` · Méthode : `POST`
-3. Corps : le message à envoyer (ex: `éteins tout`)
-4. Ajouter en widget écran d'accueil ou déclencher via **Siri**
-
-:::info L'idée d'origine
-ntfybridge est né de ce concept : un raccourci iOS envoie un POST → Jeedom reçoit et agit.
-:::
-
-## Android
-
-| Application | Points forts |
-|---|---|
-| **HTTP Request Shortcuts** (F-Droid) | Simple, widget, open-source |
-| **Tasker** | Très puissant, automatisations avancées |
-| **MacroDroid** | Accessible, actions HTTP intégrées |
-
----
-
-# Logs
-
-| Log | Description |
-|---|---|
-| `ntfybridge` | Log principal du plugin et du démon |
-
-Activer **Debug** uniquement pour le diagnostic.
-
----
-
-# Dépannage
-
-## Le démon ne démarre pas
+## ❌ Le démon ne démarre pas
 
 - Vérifier Node.js ≥ 18 : `node --version`
 - Port ntfy libre : bouton **Reset port** dans la configuration
 - Consulter les logs : **Plugins → ntfybridge → Logs**
 
-## Les boutons Oui/Non ne fonctionnent pas
+## ❌ Les boutons Oui/Non ne fonctionnent pas
 
 L'URL externe Jeedom doit être accessible depuis Internet :
 
@@ -616,12 +657,12 @@ L'URL externe Jeedom doit être accessible depuis Internet :
 Configuration → Général → URL d'accès externe
 ```
 
-## Aucune notification reçue
+## 🔕 Aucune notification reçue
 
 - Topic identique dans l'équipement et l'app ntfy
 - Utilisateur autorisé (`allowedUsers`)
 - Pas de mot interdit déclenché (`blacklistWords`)
 
-## Push iOS absent
+## 🍎 Push iOS absent
 
 Nécessite un sous-domaine HTTPS en mode embarqué, ou ntfy.sh en mode externe.

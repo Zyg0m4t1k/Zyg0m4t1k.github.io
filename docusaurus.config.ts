@@ -38,10 +38,9 @@ const config: Config = {
 			customCss: require.resolve('./src/css/custom.css'),
 		  },
 
-        gtag: {
-          trackingID: 'G-NH9FFB7GBH',
-          anonymizeIP: true,
-        },
+        gtag: process.env.NODE_ENV === 'production'
+          ? { trackingID: 'G-NH9FFB7GBH', anonymizeIP: true }
+          : undefined,
 
        sitemap: {
         changefreq: 'weekly',
