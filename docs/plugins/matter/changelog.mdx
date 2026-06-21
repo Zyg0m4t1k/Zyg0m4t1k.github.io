@@ -6,6 +6,10 @@ sidebar_position: 99
 
 ## beta
 
+  - feat: mode OTBR distant — ajout d'un bouton **Synchroniser le dataset** qui récupère automatiquement le dataset depuis l'OTBR distant sans jamais le modifier
+  - fix: le code erreur 409 (dataset déjà actif sur l'OTBR distant) n'est plus affiché comme une erreur bloquante
+  - feat: l'action de remplacement du dataset de l'OTBR distant est maintenant dans une section avancée avec une confirmation obligatoire pour éviter toute manipulation accidentelle
+
   desktop/php/matter.php / matter.js / matter.ajax.php — Debug
   - feat: ajout d'un bouton **Dump node brut** dans la section Debug de l'onglet Équipement
     - appelle le démon pour récupérer la structure JSON complète du nœud Matter (clusters, attributs, endpoints)
