@@ -4,73 +4,28 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## 2026-06-21
+## 2026-06-22
 
-  - feat: ajout d'un bouton **Infos avancées du nœud** dans la section Debug de l'onglet Équipement — affiche endpoints, clusters, attributs globaux (FeatureMap, ClusterRevision, CommandLists, EventList), attributs standard et attributs fabricant (vendor ≥ 0xFF00) mis en évidence
-  - fix: version matter-server épinglée à 1.1.0 (matter.js 0.17.3) pour éviter un downgrade lors de la réinstallation des dépendances — la version 1.0.0 rejetait certains appareils (ex: Nuki) à cause d'une vérification d'attestation plus stricte
-  - fix: synchronisation du dataset Thread depuis un OTBR distant (SLZB) — le SLZB renvoie un JSON structuré au lieu d'un TLV hex ; le plugin reconstruit désormais le TLV correctement depuis les champs `NetworkKey`, `Channel`, `ExtPanId`, etc.
+### Nouveautés
+- Ajout d'un bouton **Infos avancées du nœud** permettant d'afficher les informations détaillées d'un équipement Matter pour faciliter le diagnostic et le support.
+- Ajout d'un bouton **Dump du nœud** permettant d'afficher les informations brutes remontées par un équipement Matter.
+- Prise en charge des événements Matter **Door Lock** : la dernière action, la source (Manuel, Clavier, Distant…) et le type de credential (Code PIN, Empreinte, RFID…) sont désormais remontés comme commandes Jeedom.
 
-## beta
+### Améliorations
+- Mise à jour de **Matter Server vers la version 1.1.0** afin d'améliorer la stabilité et la compatibilité avec certains appareils Matter récents.
+- Nouveau mode **BLE Proxy** permettant le commissionnement d'appareils Matter Wi-Fi via un Bluetooth distant (VM, Docker, NAS, serveur sans Bluetooth, etc.).
+- Amélioration de la gestion des réseaux Thread avec les OTBR distants.
+- Diagnostic IPv6 et Thread entièrement revu pour faciliter l'identification des problèmes de commissionnement.
+- Amélioration de la gestion et de l'affichage des niveaux de logs.
+- Amélioration de la page Santé avec davantage d'informations et un fonctionnement plus fiable.
 
-  - feat: ajout d'un bouton **Infos avancées du nœud** dans la section Debug de l'onglet Équipement — affiche endpoints, clusters, attributs globaux (FeatureMap, ClusterRevision, CommandLists, EventList), attributs standard et attributs fabricant (vendor ≥ 0xFF00) mis en évidence
-  - feat: mode OTBR distant — ajout d'un bouton **Synchroniser le dataset** qui récupère automatiquement le dataset depuis l'OTBR distant sans jamais le modifier
-  - fix: le code erreur 409 (dataset déjà actif sur l'OTBR distant) n'est plus affiché comme une erreur bloquante
-  - feat: l'action de remplacement du dataset de l'OTBR distant est maintenant dans une section avancée avec une confirmation obligatoire pour éviter toute manipulation accidentelle
-
-  desktop/php/matter.php / matter.js / matter.ajax.php — Debug
-  - feat: ajout d'un bouton **Dump node brut** dans la section Debug de l'onglet Équipement
-    - appelle le démon pour récupérer la structure JSON complète du nœud Matter (clusters, attributs, endpoints)
-    - affiche le résultat dans une modal avec un bouton **Copier** vers le presse-papier
-    - utile pour analyser les clusters disponibles sur un device ou diagnostiquer des commandes manquantes
-
-  daemon.js / matter.class.php / configuration.php — BLE Proxy
-  - feat: ajout du mode **BLE Proxy** pour le commissioning Wi-Fi via un client Bluetooth distant
-    - nouvelle option de configuration "BLE Proxy (distant)" dans la section Commissioning
-    - quand activé, le serveur Matter expose `ws://<ip>:5580/ble` (protocole BLE Proxy WebSocket v1)
-    - un client distant (Home Assistant, script Python/Bleak sur Windows…) se connecte sur ce endpoint
-      et proxy les opérations BLE (scan, connect, GATT, BTP) vers le serveur
-    - incompatible avec l'adaptateur Bluetooth local (mutuellement exclusif)
-    - s'appuie sur `@matter-server/ble-proxy` (déjà inclus dans les dépendances)
-
-  install_apt.sh
-  - fix: contrainte Node.js mise à jour >= 22.13.0 < 24 (était >= 18)
-  - fix: installation via setup_22.x NodeSource (était setup_20.x)
-
-  matter.class.php — getHealthReport()
-  - feat: check IPv6 éclaté en 8 sous-vérifications distinctes (était un seul check disable_ipv6)
-    - ipv6_kernel — IPv6 noyau global (/proc/sys/.../all/disable_ipv6)
-    - ipv6_iface — IPv6 sur l'interface Matter auto-détectée (route par défaut)
-    - ipv6_linklocal — présence d'une adresse fe80:: (minimum requis)
-    - ipv6_global — présence d'une adresse globale/ULA — bloquant si absente (commissioning Thread impossible)
-    - ipv6_forwarding — forwarding IPv6 actif = warning (mode routeur)
-    - ipv6_accept_ra — warning uniquement si accept_ra=0 ET aucune adresse globale/ULA (évite faux positif NM)
-    - ipv6_nmcli — bloquant si absent ou interface non-gérée, avec commandes de fix
-    - ipv6_thread_routes — routes ULA Thread/RIO détectées (informatif)
-
-  security: daemon.js / rpc-wrapper.mjs
-  - La clé API Jeedom est désormais transmise via la variable d'environnement JEEDOM_APIKEY
-    au lieu de l'argument CLI --jeedom-apikey (évite l'exposition dans ps aux)
-  - Le log debug masque la clé avec ***
-
-  daemon.js / rpc-wrapper.mjs / log.mjs — Niveau de log
-  - feat: alignement du niveau de log de daemon.js avec le wrapper à chaud via SIGUSR1
-    - log.mjs : ajout export getLevel()
-    - daemon.js : écrit le niveau dans un fichier .loglevel au démarrage ; handler SIGUSR1 pour rechargement à chaud
-    - rpc-wrapper.mjs : set_loglevel écrit le fichier et envoie SIGUSR1 à daemon.js (ppid)
-    - get_loglevel retourne désormais 4 niveaux : Jeedom / Wrapper / Daemon / Server
-  - La page santé affiche les 4 niveaux séparément
-  - La page de configuration affiche également les 4 niveaux (badge Daemon ajouté entre Wrapper et Server)
-
-  desktop/modal/health.php — Page Santé
-  - fix: la page santé ne se chargeait plus après fermeture/réouverture (guard _bound bloquait loadReport)
-  - fix: ajout d'un message de chargement centré visible dès l'ouverture (panels masqués jusqu'à réception des données)
-
-  install_apt.sh / matter.class.php — cap_net_raw Node.js
-  - fix: après setcap cap_net_raw+eip, vérifie que Node s'exécute encore
-    - si Node échoue (Operation not permitted) : setcap -r appliqué automatiquement
-  - fix: la page santé détecte et remonte en erreur le cas "cap présente mais Node inutilisable"
-
-- Mise à jour des dépendances daemon : `matter-server` et `@matter-server/ws-client` `0.8.0` → `1.0.0`.
+### Corrections
+- Correction de problèmes de compatibilité pouvant empêcher l'ajout de certains appareils Matter.
+- Correction de la synchronisation du dataset Thread avec certains OTBR distants.
+- Correction de l'affichage de certaines erreurs OTBR pouvant être signalées à tort comme bloquantes.
+- Correction d'un problème pouvant empêcher la réouverture correcte de la page Santé.
+- Renforcement de la sécurité avec une meilleure protection de la clé API Jeedom.
+- Amélioration des vérifications effectuées lors de l'installation et des mises à jour des dépendances.
 
 ## 2026-06-12                                                                                                                                                                   
                                                                                                                                                                               
