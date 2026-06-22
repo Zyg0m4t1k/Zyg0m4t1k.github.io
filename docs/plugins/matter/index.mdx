@@ -239,19 +239,41 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 
 ### Niveau de log
 
-La page de configuration affiche le niveau de log actif pour chaque composant sous forme de **badges colorés** :
+Le niveau de log du plugin fonctionne sur un principe simple :
+
+- **Le niveau configuré dans Jeedom est la référence** (sélecteur natif Jeedom dans la Configuration, ou boutons Debug/Info/…/Error de la section Niveau de log). C'est la valeur persistante — elle est relue à chaque démarrage du démon.
+- **Les logs démon (`matterd`) et PHP (`matter`) utilisent ce niveau** au démarrage.
+
+La page de configuration affiche le niveau actif pour chaque composant sous forme de **badges colorés** :
 
 | Badge | Composant |
 |-------|-----------|
-| **Jeedom** | Niveau de log configuré dans Jeedom (paramètre global) |
 | **Wrapper** | Niveau actif dans le script `rpc-wrapper.mjs` |
-| **Daemon** | Niveau actif dans le processus `daemon.js` (Matter Server JS) |
-| **Server** | Niveau de log du serveur Matter |
+| **Daemon** | Niveau actif dans le processus `daemon.js` |
+| **Server** | Niveau de log du serveur Matter (Python Matter Server) |
 
-Les boutons **Debug / Info / Notice / Warning / Error** permettent de changer le niveau à chaud, sans redémarrer le démon. Le changement est appliqué immédiatement et sauvegardé.
+Les boutons **Debug / Info / Notice / Warning / Error** changent le niveau à chaud **et le sauvegardent**. Le bouton du niveau actif est mis en évidence en bleu.
+
+#### Indicateur visuel
+
+Lorsque les logs sont en mode verbose (Debug, Info ou Notice), un **bandeau orange** apparaît sur la page principale du plugin et une alerte s'affiche dans la Configuration pour rappeler de remettre le niveau en production.
+
+Tout disparaît automatiquement dès que le niveau est remis sur **Warning** ou **Error**.
+
+#### Contrôle fin par composant (page Santé)
+
+La page Santé permet de régler le niveau de chaque composant **indépendamment** :
+
+| Cible | Persistant | Usage |
+|-------|-----------|-------|
+| **Jeedom + Wrapper** | Oui — sauvegardé | Niveau de référence pour le prochain démarrage |
+| **Daemon** | Non — live uniquement | Debug temporaire du processus daemon.js |
+| **Server** | Non — live uniquement | Debug temporaire du serveur Matter |
 
 :::tip
-En production, utilisez **Notice** ou **Warning** pour réduire le volume de logs. Passez en **Debug** temporairement pour diagnostiquer un problème.
+Pour un debug rapide sans modifier le niveau de référence, utilisez les boutons **Daemon** ou **Server** de la page Santé (persist=non). Le niveau revient à la référence au prochain redémarrage du démon.
+
+En production, utilisez **Warning** ou **Error** pour réduire le volume de logs.
 :::
 
 ---
@@ -445,6 +467,20 @@ La page Santé (accessible via le bouton **Santé** sur la page du plugin) affic
 | Bluetooth | Disponibilité de l'adaptateur BT système |
 | IPv6 | Configuration réseau IPv6 (requis pour mDNS) |
 | Docker / OTBR | Statut du conteneur et du réseau Thread (si activé) |
+
+### Panneau Firmware
+
+La page Santé inclut un tableau **Firmware des équipements** listant pour chaque appareil Matter :
+
+| Colonne | Description |
+|---------|-------------|
+| **Équipement** | Nom de l'équipement Jeedom |
+| **Firmware actuel** | Version installée sur l'appareil |
+| **Disponible** | Version disponible (mise à jour OTA si différent) |
+| **Source** | Origine de la mise à jour (fabricant) |
+| **Dernière vérification** | Date de la dernière interrogation |
+
+Lorsqu'une mise à jour est disponible, un bouton **Mettre à jour** permet de la déclencher directement depuis Jeedom (OTA Matter).
 
 ### Actions disponibles
 
