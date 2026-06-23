@@ -259,6 +259,8 @@ Types d’alertes pris en charge :
 - Gel
 - Verglas
 - Crues
+- Avalanche
+- Incendie forêt
 
 ---
 
@@ -274,7 +276,7 @@ Il peut afficher :
 - la température ressentie
 - la couverture nuageuse
 - la pression
-- le vent et les rafales
+- le vent (vitesse + rafales) avec **boussole SVG** indiquant la direction
 - les précipitations
 - la durée d’ensoleillement
 - le lever et le coucher du soleil
@@ -294,11 +296,13 @@ Le widget applique une couleur selon le niveau d’alerte :
 
 Le widget intègre aussi un **graphique horaire** accessible à la demande.
 
-Il permet d’afficher les données sous forme visuelle, avec :
-- sélection du jour
-- icônes météo
-- indications de vent
-- graphique horaire dédié
+Il affiche par défaut les **prochaines 24h** depuis l’heure actuelle (bouton `Auj.`), ou une journée future au choix (`J+1` à `J+4`).
+
+Contenu du graphique :
+- courbes température, précipitations, humidité, vitesse du vent
+- **icônes météo officielles** toutes les 2h avec label heure et tooltip de la condition
+- **boussoles SVG** pour la direction du vent, avec tooltip vitesse + cardinal (ex: `25 km/h - SSO`)
+- **bouton toggle** `fa-layer-group` pour masquer/afficher les barres icônes et vent — le graphique s’agrandit automatiquement avec une animation fade
 
 ---
 
