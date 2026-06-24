@@ -12,6 +12,8 @@ sidebar_position: 99
 - **Contrôle du niveau de log par composant** depuis la page Santé : possibilité de régler indépendamment le niveau du Wrapper, du Démon (rpc-wrapper) et du Serveur Matter sans redémarrer quoi que ce soit.
 
 ### Corrections
+- **Conflit port 80 au démarrage** : le service natif `otbr-web` (installé avec `otbr-agent`) était actif sur le port 80 et entrait en conflit avec Apache. Il est désormais automatiquement désactivé lors de l'installation. L'option **Web GUI OTBR** est désactivée par défaut dans la configuration.
+- **Tableau Firmware vide dans la page Santé** : le tableau des firmwares ne se chargeait pas correctement. Corrigé.
 - **Correction critique** : le niveau de log configuré n'était pas correctement appliqué au redémarrage du démon. La valeur était sauvegardée sous une clé de configuration parasite (`plugin=jeedom`) qui prenait le dessus sur la valeur officielle Jeedom (`plugin=core`), ramenant silencieusement le démon au niveau Error au lieu du niveau configuré.
 
 ---
