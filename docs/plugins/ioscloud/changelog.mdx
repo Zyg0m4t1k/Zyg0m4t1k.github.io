@@ -5,6 +5,29 @@ sidebar_position: 99
 ---
 
 
+## 2026-06-24
+
+- Patch 8 : détection de session iCloud expirée pendant le cron et notification automatique
+- Bandeau rouge "Session iCloud expirée" dans la config du compte avec bouton **Réauthentifier** (efface la session corrompue puis relance une auth propre — résout le blocage 421 dû aux vieux cookies)
+- Sauvegarde de l'URL FMIP (`findme`) après chaque auth réussie : le fast path survit à la suppression du `setup_endpoint` par icloudpy
+- Exceptions FMIP (421) attrapées proprement au lieu de crasher le script silencieusement
+- Suppression du badge "Session active" (basé sur la présence du dossier, pas sur la validité réelle de la session)
+
+## 2026-06-24
+
+- Patch 8 : détection de session iCloud expirée pendant le cron et notification automatique
+- Bandeau rouge "Session iCloud expirée" dans la config du compte avec bouton **Réauthentifier** (efface la session corrompue puis relance une auth propre — résout le blocage 421 dû aux vieux cookies)
+- Sauvegarde de l'URL FMIP (`findme`) après chaque auth réussie : le fast path survit à la suppression du `setup_endpoint` par icloudpy
+- Exceptions FMIP (421) attrapées proprement au lieu de crasher le script silencieusement
+- Suppression du badge "Session active" (basé sur la présence du dossier, pas sur la validité réelle de la session)
+
+## 2026-06-23
+
+- Patch 7 : correction d'un cycle d'erreurs 421 infini qui empêchait la modale 2FA d'apparaître (endpoint de partition iCloud périmé effacé avant le re-login SRP)
+- Bouton Authentification dynamique : affiche "Re-authentification" (vert) si une session active est détectée, "Authentification" (orange) sinon, avec badge "Session active"
+- Logs Python séparés dans `ioscloud_daemon` pour distinguer les logs PHP des logs du script iCloud
+- Suppression de logs debug dupliqués dans `dependancy_info` et `createCommand`
+
 ## 2026-06-21
 
 - Correction d'un problème d'authentification iCloud pouvant bloquer la reconnexion automatique
