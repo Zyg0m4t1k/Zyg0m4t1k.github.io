@@ -7,14 +7,18 @@ sidebar_position: 99
 ## beta
 
 ### Nouveautés
+- **Page Santé centralisée** : nouvelle page listant tous les équipements Matter avec leur état (actif, visible, disponible, firmware, types Matter). L'ancienne page Santé est renommée **Diagnostic**.
+- **Indicateur de disponibilité** : un point vert/rouge indique en temps réel si chaque équipement est joignable, sur la page Santé et sur la page principale.
 - **Indicateur visuel niveau de log verbose** : un bandeau d'avertissement apparaît automatiquement sur la page principale du plugin lorsque les logs sont en mode Debug, Info ou Notice. Le bouton actif est mis en évidence dans la Configuration. Tout disparaît dès que le niveau est remis sur Warning ou Error.
-- **Panneau Firmware dans la page Santé** : la page Santé affiche désormais un tableau listant le firmware actuel et disponible pour chaque équipement Matter, avec la date de dernière vérification.
 - **Contrôle du niveau de log par composant** depuis la page Santé : possibilité de régler indépendamment le niveau du Wrapper, du Démon (rpc-wrapper) et du Serveur Matter sans redémarrer quoi que ce soit.
+
+### Améliorations
+- **Matter Server mis à jour vers la version 1.1.2** et dépendance `ws` vers 8.21.0.
+- **Suppression de code mort** : les fonctions `startEmbeddedServer` / `stopEmbeddedServer` pointant vers une ancienne architecture ont été retirées.
 
 ### Corrections
 - **Conflit port 80 au démarrage** : le service natif `otbr-web` (installé avec `otbr-agent`) était actif sur le port 80 et entrait en conflit avec Apache. Il est désormais automatiquement désactivé lors de l'installation. L'option **Web GUI OTBR** est désactivée par défaut dans la configuration.
-- **Tableau Firmware vide dans la page Santé** : le tableau des firmwares ne se chargeait pas correctement. Corrigé.
-- **Correction critique** : le niveau de log configuré n'était pas correctement appliqué au redémarrage du démon. La valeur était sauvegardée sous une clé de configuration parasite (`plugin=jeedom`) qui prenait le dessus sur la valeur officielle Jeedom (`plugin=core`), ramenant silencieusement le démon au niveau Error au lieu du niveau configuré.
+- **Correction critique** : le niveau de log configuré n'était pas correctement appliqué au redémarrage du démon.
 
 ---
 
