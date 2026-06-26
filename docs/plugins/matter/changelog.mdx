@@ -19,6 +19,7 @@ sidebar_position: 99
 ### Corrections
 - **Conflit port 80 au démarrage** : le service natif `otbr-web` (installé avec `otbr-agent`) était actif sur le port 80 et entrait en conflit avec Apache. Il est désormais automatiquement désactivé lors de l'installation. L'option **Web GUI OTBR** est désactivée par défaut dans la configuration.
 - **Correction critique** : le niveau de log configuré n'était pas correctement appliqué au redémarrage du démon.
+- **Commissionnement Wi-Fi** : les champs SSID et mot de passe sont désormais toujours visibles lors du commissionnement. Ils se masquent automatiquement en mode multi-admin (appareil déjà sur le réseau). Un texte d'aide précise de laisser ces champs vides pour un appareil Thread.
 
 ---
 
