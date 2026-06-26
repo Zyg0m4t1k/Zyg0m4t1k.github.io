@@ -327,10 +327,14 @@ L'onglet Équipement contient une section **Debug** avec deux boutons :
 
 | Bouton | Description |
 |--------|-------------|
-| **Infos nœud** | Affiche une vue structurée des clusters, attributs et endpoints du nœud Matter |
+| **Infos avancées du nœud** | Affiche une vue structurée des clusters, attributs et endpoints du nœud Matter |
 | **Dump node brut** | Récupère et affiche la structure JSON complète du nœud Matter (clusters, attributs, endpoints) |
 
-La modal **Infos nœud** présente les données de façon lisible par cluster et endpoint. Le **Dump node brut** affiche le JSON complet avec un bouton **Copier** pour faciliter le partage lors d'un ticket de support.
+La modal **Infos avancées** présente les données de façon lisible par cluster et endpoint. Le **Dump node brut** affiche le JSON complet avec un bouton **Copier** pour faciliter le partage lors d'un ticket de support.
+
+:::tip Firmware
+La version firmware et les éventuelles mises à jour OTA disponibles sont visibles dans la **Page Santé** (tableau centralisé de tous les équipements).
+:::
 
 ### Onglet Commandes
 
@@ -379,8 +383,14 @@ Toutes les commandes dimmables, plus :
 |----------|------|-------------|
 | `lock` | Action | Verrouiller |
 | `unlock` | Action | Déverrouiller |
-| `lock_state` | Info | État (Locked / Unlocked / Jammed) |
+| `is_locked` | Info binaire | Verrouillée (1) / Déverrouillée (0) |
+| `lock_state_text` | Info texte | État lisible (Verrouillé / Déverrouillé / Bloqué) |
+| `lock_state_raw` | Info numérique | Valeur brute Matter (0/1/2/3) |
 | `set_lock_mode` | Action | Mode de la serrure |
+| `lock_last_action` | Info | Dernière action (Verrouillage, Déverrouillage…) |
+| `lock_last_source` | Info | Source (Manuel, Clavier, Distant, Biométrique…) |
+| `lock_last_credential` | Info | Type de credential (Code PIN, RFID, Empreinte…) |
+| `lock_last_date` | Info | Horodatage de la dernière action |
 
 **Modes disponibles pour `set_lock_mode` :**
 
@@ -449,9 +459,47 @@ Les boutons génèrent des commandes événementielles selon les pressions déte
 
 ## ❤️ Page Santé
 
-La page Santé (accessible via le bouton **Santé** sur la page du plugin) affiche un rapport de diagnostic complet.
+La page Santé (bouton **Santé** sur la page principale du plugin) affiche un **tableau centralisé de tous vos équipements Matter** avec leur état en temps réel.
 
-![Page santé](/img/plugins/matter/health_page.png)
+{/* ![Page santé — tableau équipements](/img/plugins/matter/health_devices.png) */}
+
+### Colonnes du tableau
+
+| Colonne | Description |
+|---------|-------------|
+| **ID** | Numéro de nœud Matter |
+| **Nom** | Nom de l'équipement Jeedom |
+| **Actif** | L'équipement est activé dans Jeedom |
+| **Visible** | L'équipement est visible dans Jeedom |
+| **Disponible** | 🟢 Joignable / 🔴 Non joignable (temps réel) |
+| **Produit** | Fabricant et nom du produit |
+| **Firmware actuel** | Version installée sur l'appareil |
+| **MAJ disponible** | Version disponible via OTA (badge jaune si mise à jour) |
+| **Dernière vérif.** | Date de la dernière vérification firmware |
+| **Types Matter** | Types de device Matter détectés |
+
+### Actions disponibles
+
+- **Actualiser** : recharge le tableau
+- **Vérifier tous les firmware** : lance une vérification OTA sur tous les équipements
+
+:::tip
+L'indicateur **Disponible** (🟢/🔴) reflète la valeur de la commande `available` de chaque équipement, mise à jour en temps réel par le démon.
+:::
+
+### Indicateur de disponibilité sur la page principale
+
+Un point vert ou rouge apparaît également sur chaque carte d'équipement de la page principale du plugin, permettant de voir en un coup d'œil quels appareils sont joignables.
+
+{/* ![Indicateur disponible carte équipement](/img/plugins/matter/health_available_card.png) */}
+
+---
+
+## 🔍 Page Diagnostic
+
+La page Diagnostic (bouton **Diagnostic** sur la page principale) affiche un **rapport de vérification complet** de l'état du plugin.
+
+{/* ![Page diagnostic](/img/plugins/matter/diagnostic_page.png) */}
 
 ### Vérifications effectuées
 
@@ -468,23 +516,9 @@ La page Santé (accessible via le bouton **Santé** sur la page du plugin) affic
 | IPv6 | Configuration réseau IPv6 (requis pour mDNS) |
 | Docker / OTBR | Statut du conteneur et du réseau Thread (si activé) |
 
-### Panneau Firmware
-
-La page Santé inclut un tableau **Firmware des équipements** listant pour chaque appareil Matter :
-
-| Colonne | Description |
-|---------|-------------|
-| **Équipement** | Nom de l'équipement Jeedom |
-| **Firmware actuel** | Version installée sur l'appareil |
-| **Disponible** | Version disponible (mise à jour OTA si différent) |
-| **Source** | Origine de la mise à jour (fabricant) |
-| **Dernière vérification** | Date de la dernière interrogation |
-
-Lorsqu'une mise à jour est disponible, un bouton **Mettre à jour** permet de la déclencher directement depuis Jeedom (OTA Matter).
-
 ### Actions disponibles
 
-- **Diagnostiquer** : rafraîchit le rapport de santé
+- **Diagnostiquer** : rafraîchit le rapport
 - **Réparation auto** : tente de corriger automatiquement les problèmes détectés
 - **Mode jumelage** : active le mode commissioning Bluetooth
 
