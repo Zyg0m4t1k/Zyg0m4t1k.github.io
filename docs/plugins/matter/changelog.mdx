@@ -23,6 +23,17 @@ sidebar_position: 99
 
 ---
 
+## 2026-07-04
+
+### Nouveautés
+- **Mise à jour firmware depuis la page Santé** : un bouton "Mettre à jour" apparaît directement sur les équipements disposant d'un firmware plus récent.
+- **Suivi de la mise à jour en temps réel** : l'avancement du téléchargement firmware est maintenant visible via les commandes `ota_update_state` et `ota_update_progress` (créées automatiquement si l'appareil le supporte).
+
+### Corrections
+- **Compatibilité port HTTP non-standard** : le démon pouvait ne pas rappeler Jeedom correctement sur les installations avec un port différent de 80, sous Docker, ou derrière un reverse proxy.
+
+---
+
 ## 2026-06-22
 
 ### Nouveautés
