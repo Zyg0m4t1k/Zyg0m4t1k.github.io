@@ -461,8 +461,20 @@ Créées automatiquement si l'appareil le supporte.
 
 | Commande | Description |
 |----------|-------------|
-| `ota_update_state` | État de la mise à jour (0=Idle, 4=Downloading, 5=Applying…) |
+| `ota_update_state` | État de la mise à jour (valeur numérique, voir tableau ci-dessous) |
 | `ota_update_progress` | Progression en % (-1 si non applicable) |
+
+| Valeur | Signification |
+|--------|---------------|
+| 0 | Unknown |
+| 1 | Idle — pas de mise à jour en cours |
+| 2 | Querying — interrogation du serveur OTA |
+| 3 | DelayedOnQuery — nouvel essai différé |
+| 4 | Downloading — téléchargement en cours |
+| 5 | Applying — installation en cours |
+| 6 | DelayedOnApply — application différée |
+| 7 | RollingBack — retour arrière |
+| 8 | DelayedOnUserConsent — attente confirmation utilisateur |
 
 ---
 
