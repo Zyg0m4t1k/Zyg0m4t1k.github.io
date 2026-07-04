@@ -455,6 +455,15 @@ Les boutons génèrent des commandes événementielles selon les pressions déte
 | `battery` | Niveau de batterie (%) |
 | `batteryVoltage` | Tension batterie (V) |
 
+### Mise à jour firmware (OTA)
+
+Créées automatiquement si l'appareil le supporte.
+
+| Commande | Description |
+|----------|-------------|
+| `ota_update_state` | État de la mise à jour (0=Idle, 4=Downloading, 5=Applying…) |
+| `ota_update_progress` | Progression en % (-1 si non applicable) |
+
 ---
 
 ## ❤️ Page Santé
@@ -482,6 +491,7 @@ La page Santé (bouton **Santé** sur la page principale du plugin) affiche un *
 
 - **Actualiser** : recharge le tableau
 - **Vérifier tous les firmware** : lance une vérification OTA sur tous les équipements
+- **Mettre à jour** *(bouton par ligne)* : déclenche la mise à jour firmware directement depuis le tableau, sur les équipements pour lesquels une version plus récente est disponible (badge jaune)
 
 :::tip
 L'indicateur **Disponible** (🟢/🔴) reflète la valeur de la commande `available` de chaque équipement, mise à jour en temps réel par le démon.
