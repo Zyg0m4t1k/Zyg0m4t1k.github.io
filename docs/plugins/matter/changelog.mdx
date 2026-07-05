@@ -4,35 +4,26 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## beta
+## 2026-07-06
 
 ### Nouveautés
 - **Page Santé centralisée** : nouvelle page listant tous les équipements Matter avec leur état (actif, visible, disponible, firmware, types Matter). L'ancienne page Santé est renommée **Diagnostic**.
 - **Indicateur de disponibilité** : un point vert/rouge indique en temps réel si chaque équipement est joignable, sur la page Santé et sur la page principale.
 - **Indicateur visuel niveau de log verbose** : un bandeau d'avertissement apparaît automatiquement sur la page principale du plugin lorsque les logs sont en mode Debug, Info ou Notice. Le bouton actif est mis en évidence dans la Configuration. Tout disparaît dès que le niveau est remis sur Warning ou Error.
 - **Contrôle du niveau de log par composant** depuis la page Santé : possibilité de régler indépendamment le niveau du Wrapper, du Démon (rpc-wrapper) et du Serveur Matter sans redémarrer quoi que ce soit.
+- **Mise à jour firmware depuis la page Santé** : un bouton "Mettre à jour" apparaît directement sur les équipements disposant d'un firmware plus récent.
+- **Suivi de la mise à jour en temps réel** : l'avancement du téléchargement firmware est maintenant visible via les commandes `ota_update_state` et `ota_update_progress` (créées automatiquement si l'appareil le supporte).
+
+
 
 ### Améliorations
-- **Matter Server mis à jour vers la version 1.1.2** et dépendance `ws` vers 8.21.0.
+- **Matter Server mis à jour vers la version 1.1.7** : optimisations significatives des performances (conversion bitmap, décodage WebSocket, gestion des bridges volumineux), meilleure tolérance aux appareils non conformes et réduction de l'usage CPU sur les réseaux MDNS chargés.
 - **Suppression de code mort** : les fonctions `startEmbeddedServer` / `stopEmbeddedServer` pointant vers une ancienne architecture ont été retirées.
 
 ### Corrections
 - **Conflit port 80 au démarrage** : le service natif `otbr-web` (installé avec `otbr-agent`) était actif sur le port 80 et entrait en conflit avec Apache. Il est désormais automatiquement désactivé lors de l'installation. L'option **Web GUI OTBR** est désactivée par défaut dans la configuration.
 - **Correction critique** : le niveau de log configuré n'était pas correctement appliqué au redémarrage du démon.
 - **Commissionnement Wi-Fi** : les champs SSID et mot de passe sont désormais toujours visibles lors du commissionnement. Ils se masquent automatiquement en mode multi-admin (appareil déjà sur le réseau). Un texte d'aide précise de laisser ces champs vides pour un appareil Thread.
-
----
-
-## 2026-07-04
-
-### Nouveautés
-- **Mise à jour firmware depuis la page Santé** : un bouton "Mettre à jour" apparaît directement sur les équipements disposant d'un firmware plus récent.
-- **Suivi de la mise à jour en temps réel** : l'avancement du téléchargement firmware est maintenant visible via les commandes `ota_update_state` et `ota_update_progress` (créées automatiquement si l'appareil le supporte).
-
-### Améliorations
-- **Matter Server mis à jour vers la version 1.1.7** : optimisations significatives des performances (conversion bitmap, décodage WebSocket, gestion des bridges volumineux), meilleure tolérance aux appareils non conformes et réduction de l'usage CPU sur les réseaux MDNS chargés.
-
-### Corrections
 - **Compatibilité port HTTP non-standard** : le démon pouvait ne pas rappeler Jeedom correctement sur les installations avec un port différent de 80, sous Docker, ou derrière un reverse proxy.
 
 ---
