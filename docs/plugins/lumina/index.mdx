@@ -27,6 +27,7 @@ Il est pensé pour gérer :
 - la **couleur**, la **température de couleur** et le **niveau**
 - un **seuil de luminosité** via une commande lux
 - le **mode OFF** pour couper toute automatisation
+- le **mode Suspendu** pour éteindre et geler l'automatisme jusqu'au départ de tous les occupants
 
 Lumina ne pilote pas un protocole spécifique. Il s'appuie sur les **commandes Jeedom existantes** de vos équipements lumière.
 
@@ -325,6 +326,32 @@ Il est géré via les commandes `Activer mode OFF` et `Désactiver mode OFF`.
 
 ---
 
+## ⏸ Mode Suspendu
+
+Le **mode Suspendu** permet d'éteindre les lumières et de geler toute automatisation jusqu'à ce que la pièce soit vide, puis de reprendre automatiquement.
+
+Quand la commande `Suspendre` est exécutée :
+
+1. Les lumières sont **éteintes immédiatement**
+2. Lumina **bloque les actionneurs** (aucun allumage automatique)
+3. Lumina **surveille les détecteurs de présence** en continu
+4. Dès que **tous les détecteurs sont à 0** (pièce vide), Lumina repasse automatiquement en **mode Auto**
+
+Ce mode est particulièrement utile pour :
+
+- Forcer l'extinction quand quelqu'un a allumé manuellement et que vous voulez repartir sur une base propre
+- Éteindre et attendre que tout le monde soit sorti avant de reprendre l'automatisme
+- Éviter de perturber quelqu'un encore présent tout en préparant l'extinction finale
+
+:::info Différence avec le mode OFF
+Le **mode OFF** bloque l'automatisme indéfiniment (jusqu'à désactivation manuelle).
+Le **mode Suspendu** se lève automatiquement quand la pièce se vide — sans intervention.
+:::
+
+Il est activé via la commande `Suspendre`.
+
+---
+
 ## 🎭 Onglet Ambiances
 
 Les ambiances permettent de définir des **scènes lumineuses nommées**, indépendantes des périodes.
@@ -359,6 +386,7 @@ Lumina génère automatiquement un ensemble de commandes à la sauvegarde de l'�
 | `État minuterie` | info binaire | 1 = minuterie armée, 0 = désarmée |
 | `Mode courant` | info string | `minuterie`, `ambiance` ou `aucun` |
 | `État OFF` | info binaire | 1 = mode OFF actif |
+| `État suspendu` | info binaire | 1 = mode Suspendu actif |
 | `État ambiance` | info binaire | 1 = une ambiance est active |
 | `Période active` | info string | Nom de la période horaire en cours |
 | `Durée active` | info numérique | Durée en minutes de la période en cours |
@@ -372,6 +400,7 @@ Lumina génère automatiquement un ensemble de commandes à la sauvegarde de l'�
 | `Désactiver minuterie` | Désarme la minuterie |
 | `Activer mode OFF` | Active le mode OFF (bloquer automatisations) |
 | `Désactiver mode OFF` | Désactive le mode OFF |
+| `Suspendre` | Éteint les lumières et bloque l'automatisme jusqu'à ce que tous les détecteurs soient à 0, puis reprend en mode Auto |
 | `Activer ambiance` | Active une ambiance (sélection par liste) |
 | `Désactiver ambiance` | Désactive l'ambiance en cours |
 
@@ -437,6 +466,9 @@ Les commandes Lumina s'utilisent naturellement dans les scénarios Jeedom.
 
 // Activer le mode OFF
 [Salon][Lumina][Activer mode OFF]
+
+// Suspendre (éteindre et attendre que la pièce soit vide)
+[Salon][Lumina][Suspendre]
 ```
 
 ---
