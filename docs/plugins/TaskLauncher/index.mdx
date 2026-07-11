@@ -24,6 +24,7 @@ Il permet notamment de gérer :
 - 📅 des **événements programmés**
 - ⏳ des **décomptes à partir d’une date**
 - ⏱️ des **minuteurs en secondes** (démon Node.js)
+- 🔔 des **rappels** avec compte à rebours et alertes d’urgence
 
 ---
 
@@ -129,6 +130,69 @@ La commande `Démarrer` accepte une valeur en secondes (1 à 86400). Exemple : e
 Ce type d'équipement nécessite que le démon TaskLauncher soit actif. Le démon démarre automatiquement avec le plugin si Node.js est installé sur le système.
 :::
 
+### 🔔 Rappel
+
+Le widget **Rappel** permet de suivre une échéance importante directement depuis le dashboard ou l'application mobile. Il affiche un compte à rebours en temps réel avec un anneau de progression coloré, et peut déclencher des actions Jeedom à l'approche ou à l'atteinte de l'échéance.
+
+![Widget rappel](/img/plugins/TaskLauncher/rappel.png)
+
+L'anneau change de couleur automatiquement selon le temps restant :
+
+| Temps restant | Couleur |
+|---------------|---------|
+| Plus de 24 h | 🟢 Vert |
+| Moins de 24 h | 🟠 Orange |
+| Moins de 1 h | 🔴 Rouge |
+| Moins de 5 min | 🔴 Rouge pulsant |
+| Échu | ⚫ Gris |
+
+Depuis le widget, deux boutons permettent d'agir directement :
+
+- **Snooze +1h** : reporte l'alerte d'une heure
+- **Marquer comme fait** : clôture le rappel
+
+#### Configuration générale
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Titre de la tâche** | Nom affiché sur le widget |
+| **Échéance** | Date et heure cible au format `YYYY-MM-DD HH:MM` |
+| **Récurrence** | Replanifie automatiquement après l'échéance : Aucune, Quotidienne, Hebdomadaire, Mensuelle, Annuelle |
+| **Afficher la date de création** | Affiche ou masque la ligne "Créé le" sur le widget |
+| **État** | Permet de remettre un rappel terminé en attente |
+
+:::tip Récurrence
+Avec la récurrence activée, le rappel se replanifie automatiquement après chaque échéance — idéal pour les rendez-vous réguliers, paiements mensuels, etc.
+:::
+
+#### Alertes avant échéance
+
+Choisissez à quel(s) moment(s) vous souhaitez être alerté avant l'échéance :
+
+| Option | Déclenchement |
+|--------|--------------|
+| **J−7** | 7 jours avant |
+| **J−1** | La veille |
+| **H−1** | 1 heure avant |
+| **À l'échéance** | Au moment exact (activé par défaut) |
+
+Plusieurs options peuvent être cochées simultanément.
+
+#### Actions à exécuter
+
+Définissez les actions ou scénarios Jeedom à lancer au moment de chaque alerte. Ces actions s'exécutent aux moments définis ci-dessus (J−7, J−1, H−1, à l'échéance).
+
+Exemples : envoyer une notification, allumer une lumière, lancer un scénario.
+
+#### Snooze automatique
+
+Si le rappel est échu et que personne n'a répondu, le snooze automatique reporte l'alerte sans intervention manuelle.
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Durée** | Délai de report : 30 min, 1 h, 2 h, 4 h, 8 h, 24 h ou 48 h |
+| **Maximum** | Nombre de reports automatiques (illimité ou de 1 à 10) |
+
 ### 📅 Événements
 
 Les événements permettent de lancer des actions ou des scénarios à une **date précise**.
@@ -148,6 +212,7 @@ Lors de l’ajout d’un nouvel équipement, vous choisissez le type souhaité :
 - 🕒 Horloge
 - 📅 Événement
 - ⏱️ Minuteur (secondes)
+- 🔔 Rappel
 
 Une fois créé, l’équipement apparaît dans la liste et peut être configuré selon son usage.
 
