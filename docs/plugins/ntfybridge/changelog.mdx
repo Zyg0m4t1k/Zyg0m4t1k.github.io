@@ -4,6 +4,15 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-07-24
+
+* Audit sécurité — 14 corrections : HTTP catch-all, sanitize CRLF, centralisation rescue via RPC, identité /health, ports bornés, debounce reload, validation URL, mot de passe min 8 chars
+* Interface d'écoute ntfy configurable (localhost / LAN)
+* Interpréteur des scripts rescue déduit automatiquement de l'extension du fichier
+* Node.js ≥ 22 requis, SHA256 checksum pour le binaire ntfy
+* Commande `ping` secours : ajout résolution DNS Jeedom (détection coupure tunnel VPN)
+* Suppression templates vides et variable morte JS
+
 ## 2026-06-20
 
 * Profils d'envoi nommés — modale dédiée, usage via `[profile=nom]` dans le message

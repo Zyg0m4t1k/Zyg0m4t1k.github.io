@@ -27,6 +27,165 @@ La communication est **bidirectionnelle** :
 
 ---
 
+## Pourquoi ntfybridge ?
+
+La plupart des solutions de notification domotique sont à sens unique : la box envoie une alerte, point final. Pour agir, il faut ouvrir l'app, naviguer, chercher le bon bouton.
+
+**ntfybridge inverse la logique.** Votre domotique devient une conversation : vous posez une question, Jeedom répond. Vous donnez un ordre, Jeedom demande confirmation. Le tout depuis une simple notification — sans ouvrir Jeedom.
+
+En mode embarqué, ntfy devient aussi une **messagerie privée** entre les membres du foyer. Chaque utilisateur dispose de son propre accès contrôlé par le panel intégré — pas besoin de WhatsApp, Telegram ou autre service tiers pour se prévenir que le portail est ouvert ou que le dîner est prêt.
+
+Et quand tout plante — Apache en panne, Jeedom inaccessible — le **mode secours** prend le relais. Le démon tourne indépendamment : un `ping` ou `emergency` depuis ntfy suffit pour diagnostiquer et relancer les services, sans SSH ni accès web.
+
+Tout reste **chez vous** : ntfy est embarqué, aucun cloud obligatoire, aucun quota, vos données ne transitent par aucun serveur tiers.
+
+---
+
+## 🚀 Démarrage rapide — 9 étapes
+
+Parcours minimal pour avoir un Jeedom joignable par notification depuis votre téléphone, sans créer d'équipement.
+
+| # | Étape | Détail |
+|---|---|---|
+| 1 | **Installer le plugin** | Market Jeedom ou GitHub → activer le plugin |
+| 2 | **Installer les dépendances** | Bouton *Relancer* — installe Node.js ≥ 22 et le binaire ntfy automatiquement |
+| 3 | **Configurer le serveur ntfy** | Mode embarqué : définir l'identifiant admin et le mot de passe → [voir détails ↓](#-configurer-le-serveur-ntfy) |
+| 4 | **Démarrer le démon** | Bouton *Relancer* — le serveur ntfy démarre avec le démon |
+| 5 | **Ouvrir les ports sur la box Internet** | Rediriger les ports **80** (HTTP) et **443** (HTTPS) vers l'IP de votre Jeedom |
+| 6 | **Tester le reverse proxy** | Lancer l'assistant intégré, suivre les 5 étapes → [voir reverse proxy ↓](#reverse-proxy) |
+| 7 | **Créer un utilisateur ntfy** | Panel utilisateurs : ajouter un compte avec droits sur le topic secours → [voir panel ↓](#-gérer-les-utilisateurs-panel) |
+| 8 | **Installer l'app ntfy** | Télécharger sur [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), ajouter le serveur, s'authentifier → [voir app ↓](#-installer-et-configurer-lapp-ntfy) |
+| 9 | **Configurer les topics secours et tester le ping** | Modale Secours : renseigner le topic action et réponse, activer `ping`, envoyer `ping` depuis l'app → [voir secours ↓](#-mode-secours) |
+
+:::tip Résultat
+En 9 étapes, votre Jeedom est joignable de n'importe où par notification — même si l'interface web est en panne.
+:::
+
+---
+
+# 🖥️ Configurer le serveur ntfy
+
+```text
+Plugins → Gestion des plugins → ntfybridge → Configuration
+```
+
+<Tabs groupId="server-setup">
+<TabItem value="embedded" label="⭐ Mode embarqué (recommandé)" default>
+
+Le serveur ntfy est intégré au plugin — tout est automatique.
+
+| Paramètre | Description |
+|---|---|
+| **Port ntfy** | Auto-détecté au premier démarrage. Boutons **Tester** et **Auto-détecter** disponibles |
+| **Identifiant admin** | Compte administrateur ntfy, généré à l'installation (défaut : `ntfyadmin`) |
+| **Interface d'écoute** | **Localhost** (recommandé, derrière reverse proxy) ou **LAN** (toutes les interfaces) |
+| **URL publique** | À renseigner uniquement pour un accès depuis Internet (ex: `https://ntfy.mondomaine.fr`) |
+
+**Pour exposer ntfy sur Internet** : renseigner l'URL publique puis cliquer sur **Assistant reverse proxy**. L'assistant génère la configuration en 5 étapes pour Apache, Nginx, NPM, Traefik ou Cloudflare.
+
+:::tip Première mise en route
+1. Sauvegarder la configuration → le port est auto-détecté
+2. Démarrer le démon → le serveur ntfy démarre automatiquement
+3. (Optionnel) Lancer l'assistant reverse proxy pour l'accès externe
+:::
+
+</TabItem>
+<TabItem value="external" label="Mode externe">
+
+Le plugin se connecte à un serveur ntfy existant (ntfy.sh, auto-hébergé…).
+
+| Paramètre | Description |
+|---|---|
+| **URL du serveur** | URL complète : `https://ntfy.sh` ou `https://ntfy.monserveur.fr` |
+| **Nom d'utilisateur** | Compte ntfy ayant accès en lecture/écriture aux topics |
+| **Mot de passe** | Mot de passe du compte ntfy |
+
+Cliquer sur **Tester la connexion** pour valider les identifiants.
+
+:::warning
+En mode externe, la gestion des utilisateurs et des permissions n'est pas disponible dans Jeedom. Vous devez les configurer directement sur votre serveur ntfy.
+:::
+
+</TabItem>
+</Tabs>
+
+---
+
+# 👥 Gérer les utilisateurs (panel)
+
+```text
+Plugins → ntfybridge → Panel
+```
+
+:::info Mode embarqué uniquement
+Le panel de gestion des utilisateurs est disponible uniquement en mode embarqué. En mode externe, gérez les utilisateurs directement sur votre serveur ntfy.
+:::
+
+Le panel affiche un **tableau croisé Topics x Utilisateurs** permettant de gérer finement les droits d'accès.
+
+### Ajouter un utilisateur
+
+1. Cliquer sur **Ajouter un utilisateur**
+2. Saisir un nom d'utilisateur et un mot de passe (minimum 8 caractères)
+3. Cliquer sur **Créer**
+
+### Gérer les permissions
+
+Pour chaque combinaison utilisateur/topic, choisir le niveau d'accès :
+
+| Permission | Description |
+|---|---|
+| **read-write** | L'utilisateur peut publier et recevoir les messages sur ce topic |
+| **read-only** | L'utilisateur peut uniquement recevoir les messages |
+| **deny-all** | Accès interdit à ce topic |
+
+Chaque modification est **appliquée immédiatement** sur le serveur ntfy.
+
+### Supprimer un utilisateur
+
+Cliquer sur l'icône de suppression dans la colonne de l'utilisateur. La suppression est définitive.
+
+---
+
+# 📱 Installer et configurer l'app ntfy
+
+### Télécharger l'app
+
+| Plateforme | Lien |
+|---|---|
+| **iOS** | [App Store](https://apps.apple.com/app/ntfy/id1625396347) |
+| **Android** | [Google Play](https://play.google.com/store/apps/details?id=io.heckel.ntfy) ou [F-Droid](https://f-droid.org/packages/io.heckel.ntfy/) |
+| **Web** | Accéder à l'URL de votre serveur ntfy dans un navigateur |
+
+### S'abonner à un topic
+
+1. Ouvrir l'app ntfy
+2. Appuyer sur **+** (ajouter un abonnement)
+3. Configurer selon votre mode :
+
+<Tabs groupId="server-setup">
+<TabItem value="embedded" label="⭐ Mode embarqué" default>
+
+- **Avec sous-domaine** : saisir l'URL complète `https://ntfy.votredomaine.fr/votre_topic`
+- **En local / VPN** : saisir `http://IP_JEEDOM:PORT_NTFY/votre_topic`
+- Si authentification : renseigner le nom d'utilisateur et le mot de passe créés dans le [panel](#-gérer-les-utilisateurs-panel)
+
+</TabItem>
+<TabItem value="external" label="Mode externe">
+
+- **ntfy.sh** : saisir uniquement le nom du topic (ex: `maison_cmd`)
+- **Auto-hébergé** : saisir l'URL complète `https://ntfy.monserveur.fr/votre_topic`
+- Si authentification : renseigner vos identifiants ntfy
+
+</TabItem>
+</Tabs>
+
+:::tip
+L'URL d'abonnement est affichée dans la section **Abonnement** de chaque équipement ntfybridge — vous pouvez la copier directement.
+:::
+
+---
+
 # ✨ Ce que vous pouvez faire
 
 <Tabs>
@@ -126,7 +285,7 @@ Plugins → Gestion des plugins → Market → ntfybridge → Installer
 Activer le plugin après installation.
 
 :::info
-Node.js (≥ 18) et le binaire ntfy sont installés automatiquement. Aucune intervention manuelle.
+Node.js (≥ 22) et le binaire ntfy sont installés automatiquement. Aucune intervention manuelle.
 :::
 
 ---
@@ -491,7 +650,7 @@ Envoyez le mot-clé dans ntfy → Jeedom répond automatiquement.
 
 | Commande | Ce que vous recevez |
 |---|---|
-| `ping` | Confirmation de vie + heure du serveur, charge CPU, RAM libre, uptime |
+| `ping` | Confirmation de vie + heure du serveur, charge CPU, RAM libre, uptime, résolution DNS Jeedom |
 | `health` | État complet : CPU, RAM, espace disque, température, uptime |
 | `log ntfybridged` | Les 20 dernières lignes du log du démon ntfybridge |
 | `log <nom_log>` | Les 20 dernières lignes de n'importe quel log Jeedom |
@@ -530,8 +689,7 @@ Vous pouvez ajouter vos propres commandes : envoyer un mot-clé dans ntfy décle
 |---|---|
 | **Nom** | Libellé affiché (ex: `Espace disque`) |
 | **Mots-clés** | Ce que vous tapez dans ntfy pour déclencher la commande (ex: `espace disque, disk`) |
-| **Script** | Fichier à exécuter, sélectionné parmi les scripts disponibles dans `data/rescue_scripts/` |
-| **Type** | Langage du script : `sh` (bash), `php`, `node`, `py` (Python) |
+| **Script** | Fichier à exécuter, sélectionné parmi les scripts disponibles dans `data/rescue_scripts/`. L'interpréteur est déduit automatiquement de l'extension (`.sh`→bash, `.py`→python3, `.php`→php, `.js`→node) |
 | **Confirmation** | Si activé : Jeedom vous demande Oui/Non avant d'exécuter |
 | **Timeout** | Délai maximum d'exécution en secondes (5–120 s) |
 
@@ -645,7 +803,7 @@ sudo certbot renew --dry-run
 
 ## ❌ Le démon ne démarre pas
 
-- Vérifier Node.js ≥ 18 : `node --version`
+- Vérifier Node.js ≥ 22 : `node --version`
 - Port ntfy libre : bouton **Reset port** dans la configuration
 - Consulter les logs : **Plugins → ntfybridge → Logs**
 

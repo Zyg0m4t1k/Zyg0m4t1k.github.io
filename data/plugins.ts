@@ -29,19 +29,19 @@ export interface PluginItem {
 const plugins: PluginItem[] = [
   // --- À la une (ordre = gauche → droite) ---
   {
-    "id": "lumina",
-    "name": "Lumina",
-    "description": "Lumina centralise et pilote toutes les lumières de votre installation Jeedom, quel que soit le protocole utilisé (Hue, Zigbee, Z-Wave, Matter, Wi-Fi…).",
-    "icon": "lumina_icon.png",
+    "id": "ntfybridge",
+    "name": "ntfybridge",
+    "description": "Communication bidirectionnelle entre Jeedom et ntfy. Recevez des alertes riches et pilotez votre domotique par message depuis votre téléphone.",
+    "icon": "ntfybridge_icon.png",
     "featured": true,
     "ribbon": "Nouveau",
-    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "Node.js"],
     "routes": {
-      "page": "/docs/plugins/lumina/"
+      "page": "/docs/plugins/ntfybridge/"
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4639"
+      "market": null
     }
   },
   {
@@ -61,12 +61,40 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "ics",
+    "name": "ICS",
+    "description": "Transformez votre agenda Google, iCloud ou CalDAV en moteur domotique pour Jeedom : déclenchez automatiquement des actions et des scénarios à partir de vos événements de calendrier.",
+    "icon": "ics_icon.png",
+    "featured": true,
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/ics/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/ics",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3108"
+    }
+  },
+  {
+    "id": "lumina",
+    "name": "Lumina",
+    "description": "Lumina centralise et pilote toutes les lumières de votre installation Jeedom, quel que soit le protocole utilisé (Hue, Zigbee, Z-Wave, Matter, Wi-Fi…).",
+    "icon": "lumina_icon.png",
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/lumina/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4639"
+    }
+  },
+  {
     "id": "telejee",
     "name": "Telejee",
     "description": "Pilotez vos téléviseurs et appareils multimédia directement depuis Jeedom via réseau local — commandes, applications, volume et scénarios.",
     "icon": "telejee_icon.png",
-    "featured": true,
-    "ribbon": "Nouveau",
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/telejee/"
@@ -118,20 +146,6 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/ioscloud",
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3131"
-    }
-  },
-  {
-    "id": "ics",
-    "name": "ICS",
-    "description": "Transformez votre agenda Google, iCloud ou CalDAV en moteur domotique pour Jeedom : déclenchez automatiquement des actions et des scénarios à partir de vos événements de calendrier.",
-    "icon": "ics_icon.png",
-    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
-    "routes": {
-      "page": "/docs/plugins/ics/"
-    },
-    "links": {
-      "github": "https://github.com/Zyg0m4t1k/ics",
-      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3108"
     }
   },
   {
@@ -244,22 +258,6 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": ""
-    }
-  },
-  {
-    "id": "ntfybridge",
-    "name": "ntfybridge",
-    "description": "Communication bidirectionnelle entre Jeedom et ntfy. Recevez des alertes riches et pilotez votre domotique par message depuis votre téléphone.",
-    "icon": "ntfybridge_icon.png",
-    "status": "beta",
-    "ribbon": "Beta",
-    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "Node.js"],
-    "routes": {
-      "page": "/docs/plugins/ntfybridge/"
-    },
-    "links": {
-      "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
     }
   },
   {
