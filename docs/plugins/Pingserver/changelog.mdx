@@ -1,0 +1,32 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-07-13
+
+### Nouveautés
+- Vue **panel mobile** : liste unifiée avec icône, badge UP/DOWN, latence, perte de paquets et filtre Actifs / Inactifs / Tous.
+- Widget dashboard **état** : barre colorée gauche (vert/rouge) + badge UP/DOWN, icône chargée une seule fois.
+- Widget dashboard **latence** : valeur colorée selon seuils (vert < 50 ms, orange 50–200 ms, rouge > 200 ms), unité sous la valeur.
+- **Modes MQTT** : Local + publication MQTT et MQTT distant (esclave) avec création automatique d'équipements optionnelle.
+
+### Améliorations
+- Démon Python asyncio (`icmplib`) : pings parallèles par groupes (timeout/count), toutes les métriques envoyées à Jeedom (min/max RTT, jitter, perte de paquets).
+- Secrets (API key, mot de passe MQTT) passés via variables d'environnement (invisibles dans `ps aux`).
+- Fix `realpath()` sur le Python du venv qui résolvait vers `/usr/bin/python3` système.
+- `deamon_info()` vérifie maintenant que `icmplib` et `requests` sont importables avant d'autoriser le démarrage.
+- `install.php` : `mkdir` avec gestion d'erreur, copie des icônes absentes seulement.
+- Titre des widgets tronqué avec ellipsis (débordement corrigé).
+
+### Sécurité
+- Upload d'icône : validation type MIME (`getimagesize`), taille max 512×512 px, nom aléatoire.
+- Suppression d'icône : vérification `realpath`, protection des icônes système (`_` prefix), contrôle si utilisée.
+- `escapeshellarg` sur tous les paramètres du démon.
+- Validation MAC WoL par regex, validation IP/hôte dans `preUpdate`.
+
+### Packaging
+- Suppression de la documentation embarquée (`docs/`) et de `3rdparty/ServerPing`.
+- `.gitignore` : ajout `*.zip`, `.php-cs-fixer.php`, `.prettierrc`, `resources/venv/`, `__pycache__`.
+- Icône renommée `Pingserver_icon.png` (casse correcte).

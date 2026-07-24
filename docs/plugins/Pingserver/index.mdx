@@ -1,0 +1,212 @@
+---
+title: Pingserver
+description: Surveillez la disponibilité de vos équipements réseau (ping ICMP) depuis Jeedom avec état UP/DOWN, latence et perte de paquets.
+sidebar_position: 1
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="Pingserver"
+  title="Pingserver"
+  description="Surveillez la disponibilité de vos équipements réseau (ping ICMP) depuis Jeedom avec état UP/DOWN, latence et perte de paquets."
+  icon="/img/plugins/pingserver_icon.png"
+/>
+
+# Plugin Pingserver
+
+Le plugin **Pingserver** surveille la disponibilité de vos équipements réseau via **ping ICMP**. Il fonctionne grâce à un démon Python asyncio utilisant la bibliothèque `icmplib` pour effectuer des pings parallèles sans privilèges root.
+
+---
+
+## ✨ Fonctionnalités
+
+- 🟢 État **UP / DOWN** en temps réel
+- ⏱ **Latence** moyenne (ms) avec historique
+- 📉 **Perte de paquets** (%)
+- 🖼 **Icône personnalisée** par équipement
+- 📡 **MQTT** : partage inter-Jeedom (mode esclave)
+- 🌙 **Wake-on-LAN** intégré
+- 🔍 **Détection MAC** via `arp-scan`
+- 📱 **Vue mobile** avec filtre Actifs / Inactifs / Tous
+
+---
+
+## ⚙️ Dépendances
+
+| Composant | Rôle |
+|-----------|------|
+| `icmplib` | Ping ICMP asyncio (requis) |
+| `requests` | Communication démon → Jeedom (requis) |
+| `paho-mqtt` | Publication / abonnement MQTT (optionnel) |
+| `arp-scan` | Détection d'adresses MAC (optionnel) |
+| `wakeonlan` | Réveil réseau WoL (optionnel) |
+
+Installez les dépendances depuis la page de configuration du plugin.
+
+---
+
+## 🚀 Installation
+
+1. Installez le plugin depuis le Market Jeedom.
+2. Activez le plugin.
+3. Allez dans la configuration du plugin et lancez l'installation des dépendances.
+4. Démarrez le démon.
+
+---
+
+## ⚙️ Configuration du plugin
+
+### Mode de fonctionnement
+
+Le plugin propose trois modes qui déterminent comment les résultats de ping sont produits et partagés.
+
+#### Mode Local (défaut)
+
+Le démon Python effectue les pings directement depuis le Jeedom local et met à jour les commandes en temps réel. Aucune configuration réseau supplémentaire n'est requise.
+
+#### Mode Local + MQTT (maître)
+
+Le démon effectue les pings localement **et** publie chaque résultat sur un broker MQTT.
+
+- Topic publié : `{préfixe}/{adresse_ip}` (ex. `pingserver/192.168.1.10`)
+- Payload JSON : `{"host":"192.168.1.10","alive":true,"avg_rtt":1.2,"packet_loss":0.0,...}`
+- Les messages sont publiés avec **retain=true** : un esclave qui se connecte récupère immédiatement le dernier état connu.
+
+Cas d'usage typique : un Jeedom principal surveille les équipements et partage les résultats avec un ou plusieurs Jeedom secondaires.
+
+#### Mode MQTT distant (esclave)
+
+Le démon **ne fait aucun ping**. Il se contente d'écouter les messages MQTT publiés par un Jeedom maître et met à jour les commandes locales en conséquence.
+
+- Topic souscrit : `{préfixe}/#` (tous les équipements du maître)
+- À la réception d'un message, le plugin recherche l'équipement correspondant (par adresse IP) et met à jour ses commandes `etat`, `delai` et `packet_loss`.
+- Option **Création automatique** : si activée, un équipement est créé automatiquement à la réception d'un message inconnu. À n'activer que si la source MQTT est de confiance.
+
+:::tip Configuration maître / esclave
+**Jeedom A (maître)** → mode `Local + MQTT`, broker `192.168.1.1:1883`, préfixe `pingserver`
+
+**Jeedom B (esclave)** → mode `MQTT distant`, même broker, même préfixe
+
+Les deux Jeedom partagent les mêmes états en temps réel sans aucun polling HTTP entre eux.
+:::
+
+### Paramètres généraux
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Cycle de ping** | Intervalle entre deux séries de pings (10 – 3600 s, défaut 60 s) — ignoré en mode esclave |
+| **Port socket démon** | Port de communication interne (défaut 55109) |
+
+### Configuration MQTT
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Broker (hôte)** | Adresse IP ou nom DNS du broker MQTT |
+| **Port** | Port du broker (défaut 1883) |
+| **Utilisateur / Mot de passe** | Authentification MQTT (optionnel) |
+| **Préfixe topic** | Préfixe commun à tous les topics (défaut `pingserver`) — doit être identique sur maître et esclave |
+| **Création automatique** | Crée un équipement à la réception d'un message inconnu (mode esclave uniquement) |
+
+:::warning Sécurité MQTT
+La connexion MQTT est non chiffrée (pas de TLS). Réservez cet usage à un réseau local de confiance ou un broker accessible uniquement en VPN.
+:::
+
+---
+
+## 🖥 Création d'un équipement
+
+1. Allez dans **Plugins → Monitoring → Pingserver**.
+2. Cliquez sur **Ajouter**.
+3. Saisissez le **nom** de l'équipement.
+4. Configurez l'**adresse IP ou nom d'hôte** de la cible.
+5. Choisissez une **icône** (bibliothèque fournie ou image personnalisée).
+6. Enregistrez.
+
+### Paramètres de l'équipement
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Adresse IP / hôte** | Cible du ping (IPv4, IPv6 ou nom DNS) |
+| **Timeout** | Délai d'attente par paquet en secondes (0.5 – 10 s) |
+| **Nombre de paquets** | Nombre de paquets ICMP envoyés par cycle |
+| **Adresse MAC** | Pour Wake-on-LAN et détection ARP |
+| **Icône** | Image affichée sur le widget |
+
+---
+
+## 📊 Commandes créées automatiquement
+
+| Commande | Type | Description |
+|----------|------|-------------|
+| `etat` | Info binaire | `1` = UP, `0` = DOWN |
+| `delai` | Info numérique | Latence moyenne en ms |
+| `packet_loss` | Info numérique | Perte de paquets en % |
+| `Rafraîchir` | Action | Ping immédiat de l'équipement |
+| `Wake-on-LAN` | Action | Réveil réseau (si MAC configurée) |
+
+---
+
+## 🖼 Widgets dashboard
+
+### Widget état (`pingserver_etat`)
+
+Affiche l'icône de l'équipement avec :
+- une barre colorée à gauche (🟢 vert = UP, 🔴 rouge = DOWN)
+- un badge **UP** ou **DOWN**
+
+### Widget latence (`delai`)
+
+Affiche la latence en ms avec coloration automatique :
+
+| Valeur | Couleur |
+|--------|---------|
+| < 50 ms | 🟢 Vert |
+| 50 – 200 ms | 🟠 Orange |
+| > 200 ms | 🔴 Rouge |
+
+---
+
+## 📱 Vue mobile
+
+La vue mobile (**Panel**) affiche tous vos équipements Pingserver sur une seule page avec :
+
+- icône + nom + adresse IP
+- badge UP / DOWN
+- latence et perte de paquets
+- filtre **Tous / Actifs / Inactifs**
+- bouton **Rafraîchir**
+
+---
+
+## 🌙 Wake-on-LAN
+
+Pour utiliser le Wake-on-LAN :
+
+1. Renseignez l'**adresse MAC** dans la configuration de l'équipement.
+2. Assurez-vous que `wakeonlan` est installé sur le système.
+3. Utilisez la commande **Wake-on-LAN** depuis Jeedom ou un scénario.
+
+---
+
+## 🔍 Détection MAC (ARP)
+
+Si `arp-scan` est installé, le plugin peut détecter automatiquement l'adresse MAC d'un équipement en scannant le réseau local (toutes les 5 minutes via cron5).
+
+---
+
+## ✅ Compatibilité
+
+| Élément | Version |
+|---------|---------|
+| Jeedom | 4.4+ |
+| Debian | 11 à 13 |
+| Python | 3.9+ |
+
+---
+
+## 💡 Conseils
+
+- Utilisez un **cycle court** (10–30 s) pour détecter rapidement les pannes.
+- En mode **MQTT distant**, désactivez le cycle de ping — seuls les messages MQTT entrants sont traités.
+- Les icônes personnalisées sont stockées dans `data/icones/` et ne sont pas effacées lors des mises à jour.
