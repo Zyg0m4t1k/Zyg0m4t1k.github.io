@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import { translate } from '@docusaurus/Translate';
 import styles from './styles.module.css';
 
 // Docusaurus webpack supports importing YAML/JSON from @site
@@ -114,7 +115,7 @@ export default function PluginsGrid(): JSX.Element {
             <div className={styles.desc}>{p.description}</div>
 
             <div className={styles.footer}>
-              <Link className={`${styles.cta} ${styles.stretchedLink}`} to={to}>Voir →</Link>
+              <Link className={`${styles.cta} ${styles.stretchedLink}`} to={to}>{translate({ id: 'plugins.card.cta', message: 'Voir →' })}</Link>
               {allBadges.length > 0 && (
                 <div className={styles.badgeRow}>
                   {allBadges.map((b) => (

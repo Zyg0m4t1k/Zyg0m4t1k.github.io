@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import { translate } from '@docusaurus/Translate';
 import plugins from '@site/data/plugins';
 import styles from './styles.module.css';
 
@@ -47,7 +48,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
   return (
     <section className={styles.section}>
       <div className="container">
-        <h2 className={styles.sectionTitle}>À la une</h2>
+        <h2 className={styles.sectionTitle}>{translate({ id: 'featured.section.title', message: 'À la une' })}</h2>
 
         <div className={styles.layout}>
           {/* Hero card */}
@@ -78,7 +79,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
               </div>
               <p className={styles.heroDesc}>{hero.description}</p>
               <div className={styles.heroFooter}>
-                <Link className={`${styles.cta} ${styles.stretchedLink}`} to={hero.routes.page}>Voir la doc →</Link>
+                <Link className={`${styles.cta} ${styles.stretchedLink}`} to={hero.routes.page}>{translate({ id: 'featured.hero.cta', message: 'Voir la doc →' })}</Link>
                 <Badges badges={hero.badges} />
               </div>
             </div>
@@ -114,7 +115,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
                   </div>
                   <p className={styles.secondaryDesc}>{p.description}</p>
                   <div className={styles.secondaryFooter}>
-                    <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>Voir →</Link>
+                    <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>{translate({ id: 'featured.card.cta', message: 'Voir →' })}</Link>
                     <Badges badges={p.badges} />
                   </div>
                 </div>

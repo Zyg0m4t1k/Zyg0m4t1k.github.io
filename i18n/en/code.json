@@ -1,0 +1,19 @@
+{
+  "homepage.title": { "message": "Home" },
+  "homepage.description": { "message": "Docs & resources for my Jeedom plugins" },
+  "homepage.hero.title": { "message": "Zyg0m4t1k — Jeedom Plugins" },
+  "homepage.hero.subtitle": { "message": "Showcase, documentation and resources for my Jeedom plugins." },
+  "homepage.cta.plugins": { "message": "See plugins" },
+  "homepage.cta.docs": { "message": "Open the docs" },
+  "homepage.features.plugins.title": { "message": "Plugins" },
+  "homepage.features.plugins.desc": { "message": "Quick access to the list + detailed pages." },
+  "homepage.features.docs.title": { "message": "Docs" },
+  "homepage.features.docs.desc": { "message": "Installation guides, compatibility, dev, changelogs." },
+  "homepage.features.github.title": { "message": "GitHub" },
+  "homepage.features.github.desc": { "message": "Sources & releases on GitHub." },
+  "homepage.features.cta": { "message": "Open →" },
+  "featured.section.title": { "message": "Featured" },
+  "featured.hero.cta": { "message": "View docs →" },
+  "featured.card.cta": { "message": "View →" },
+  "plugins.card.cta": { "message": "View →" }
+}

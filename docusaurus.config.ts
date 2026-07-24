@@ -21,7 +21,15 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'fr',
-    locales: ['fr'],
+    locales: ['fr', 'en', 'de', 'es', 'it', 'pt'],
+    localeConfigs: {
+      fr: { label: 'Français', htmlLang: 'fr-FR' },
+      en: { label: 'English', htmlLang: 'en-US' },
+      de: { label: 'Deutsch', htmlLang: 'de-DE' },
+      es: { label: 'Español', htmlLang: 'es-ES' },
+      it: { label: 'Italiano', htmlLang: 'it-IT' },
+      pt: { label: 'Português', htmlLang: 'pt-PT' },
+    },
   },
 
   presets: [
@@ -82,6 +90,7 @@ themeConfig: {
         label: 'GitHub',
         position: 'right',
       },
+      { type: 'localeDropdown', position: 'right' },
     ],
   },
 

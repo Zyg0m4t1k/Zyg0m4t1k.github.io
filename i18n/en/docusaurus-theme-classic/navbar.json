@@ -1,0 +1,6 @@
+{
+  "item.label.Accueil": { "message": "Home", "description": "Navbar item label" },
+  "item.label.Plugins": { "message": "Plugins", "description": "Navbar item label" },
+  "item.label.Docs": { "message": "Docs", "description": "Navbar item label" },
+  "item.label.GitHub": { "message": "GitHub", "description": "Navbar item label" }
+}

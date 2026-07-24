@@ -1,0 +1,8 @@
+{
+  "link.title.Plugins": { "message": "Plugins", "description": "Footer section title" },
+  "link.item.label.Catalogue": { "message": "Catálogo", "description": "Footer link label" },
+  "link.item.label.Docs": { "message": "Docs", "description": "Footer link label" },
+  "link.title.Communauté": { "message": "Comunidad", "description": "Footer section title" },
+  "link.item.label.Jeedom": { "message": "Jeedom", "description": "Footer link label" },
+  "link.item.label.Forum Jeedom": { "message": "Foro Jeedom", "description": "Footer link label" }
+}
