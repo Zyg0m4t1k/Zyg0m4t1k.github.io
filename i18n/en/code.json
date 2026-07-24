@@ -15,5 +15,29 @@
   "featured.section.title": { "message": "Featured" },
   "featured.hero.cta": { "message": "View docs →" },
   "featured.card.cta": { "message": "View →" },
-  "plugins.card.cta": { "message": "View →" }
+  "plugins.card.cta": { "message": "View →" },
+  "plugins.page.description": { "message": "Jeedom plugins list" },
+
+  "plugin.ribbon.nouveau": { "message": "New" },
+  "plugin.ribbon.beta": { "message": "Beta" },
+  "plugin.ribbon.màj": { "message": "Update" },
+
+  "plugin.lumina.description": { "message": "Lumina centralizes and controls all the lights in your Jeedom setup, regardless of the protocol used (Hue, Zigbee, Z-Wave, Matter, Wi-Fi…)." },
+  "plugin.matter.description": { "message": "Plugin to integrate and control Matter-compatible devices with the universal home automation standard." },
+  "plugin.telejee.description": { "message": "Control your TVs and multimedia devices directly from Jeedom via local network — commands, apps, volume and scenarios." },
+  "plugin.jeeloc.description": { "message": "Centralize multiple locations in a Jeedom widget with interactive OpenStreetMap map, automatic geocoding and distance calculation." },
+  "plugin.mystr0m.description": { "message": "Full integration of myStrom and Dingz devices in Jeedom — local control, no cloud required." },
+  "plugin.ioscloud.description": { "message": "iCloud / Find My integration: device sync, location, battery status and Jeedom automations." },
+  "plugin.ics.description": { "message": "Turn your Google, iCloud or CalDAV calendar into a home automation engine for Jeedom: automatically trigger actions and scenarios from your calendar events." },
+  "plugin.switchbot.description": { "message": "SwitchBot integration via API: states, commands, automatic device synchronization." },
+  "plugin.groupe.description": { "message": "Plugin for creating a widget showing the state of a device group." },
+  "plugin.todo.description": { "message": "Plugin for creating todo lists." },
+  "plugin.TaskLauncher.description": { "message": "Plugin for creating alarm clock devices, clocks, events and launching customizable actions and scenarios." },
+  "plugin.telco.description": { "message": "This plugin lets you create virtual remotes and assign actions (single, message, scenario…) to buttons." },
+  "plugin.swissmeteo.description": { "message": "Swiss weather plugin: forecasts, current conditions and alerts from MeteoSwiss for Jeedom." },
+  "plugin.tools.description": { "message": "Plugin bundling several Jeedom interface tools: MyHome (plan-based interface builder), device cards, specialized widgets and templates." },
+  "plugin.whatwatt.description": { "message": "This plugin integrates the WhatWatt connected energy meter into Jeedom to track consumption, production, voltage, current and electrical energy." },
+  "plugin.ntfybridge.description": { "message": "Bidirectional communication between Jeedom and ntfy. Receive rich alerts and control your home automation by message from your phone." },
+  "plugin.icon.description": { "message": "Add, install, uninstall and preview custom icon packs in Jeedom." },
+  "plugin.Pingserver.description": { "message": "Monitor your network devices availability with ping and receive alerts on state changes." }
 }

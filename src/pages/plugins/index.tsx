@@ -1,10 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import { translate } from '@docusaurus/Translate';
 import PluginsGrid from '../../components/PluginsGrid';
 
 export default function PluginsIndex(): JSX.Element {
   return (
-    <Layout title="Plugins" description="Liste des plugins Jeedom">
+    <Layout title="Plugins" description={translate({ id: 'plugins.page.description', message: 'Liste des plugins Jeedom' })}>
       <main>
         <div style={{ padding: '2.5rem 0 1rem' }}>
           <div className="container">

@@ -53,7 +53,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
         <div className={styles.layout}>
           {/* Hero card */}
           <div className={styles.hero}>
-            <Ribbon text={hero.ribbon} />
+            <Ribbon text={hero.ribbon ? translate({ id: `plugin.ribbon.${hero.ribbon.toLowerCase()}`, message: hero.ribbon }) : undefined} />
             <div className={styles.heroInner}>
               <div className={styles.heroTop}>
                 {hero.icon && (
@@ -77,7 +77,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
                   </a>
                 )}
               </div>
-              <p className={styles.heroDesc}>{hero.description}</p>
+              <p className={styles.heroDesc}>{translate({ id: `plugin.${hero.id}.description`, message: hero.description })}</p>
               <div className={styles.heroFooter}>
                 <Link className={`${styles.cta} ${styles.stretchedLink}`} to={hero.routes.page}>{translate({ id: 'featured.hero.cta', message: 'Voir la doc →' })}</Link>
                 <Badges badges={hero.badges} />
@@ -90,7 +90,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
             <div className={styles.secondaryGrid}>
               {secondary.slice(0, 2).map((p) => (
                 <div key={p.id} className={styles.secondaryCard}>
-                  <Ribbon text={p.ribbon} />
+                  <Ribbon text={p.ribbon ? translate({ id: `plugin.ribbon.${p.ribbon.toLowerCase()}`, message: p.ribbon }) : undefined} />
                   <div className={styles.secondaryTop}>
                     {p.icon && (
                       <img
@@ -113,7 +113,7 @@ export default function FeaturedPlugins(): JSX.Element | null {
                       </a>
                     )}
                   </div>
-                  <p className={styles.secondaryDesc}>{p.description}</p>
+                  <p className={styles.secondaryDesc}>{translate({ id: `plugin.${p.id}.description`, message: p.description })}</p>
                   <div className={styles.secondaryFooter}>
                     <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>{translate({ id: 'featured.card.cta', message: 'Voir →' })}</Link>
                     <Badges badges={p.badges} />

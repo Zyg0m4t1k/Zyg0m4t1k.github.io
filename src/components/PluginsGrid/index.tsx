@@ -85,7 +85,7 @@ export default function PluginsGrid(): JSX.Element {
         return (
           <div key={p.id} className={styles.card}>
             {p.ribbon && (
-              <span className={styles.ribbon}>{p.ribbon}</span>
+              <span className={styles.ribbon}>{translate({ id: `plugin.ribbon.${p.ribbon.toLowerCase()}`, message: p.ribbon })}</span>
             )}
             <div className={styles.header}>
               <div className={styles.titleRow}>
@@ -112,7 +112,7 @@ export default function PluginsGrid(): JSX.Element {
               </div>
             </div>
 
-            <div className={styles.desc}>{p.description}</div>
+            <div className={styles.desc}>{translate({ id: `plugin.${p.id}.description`, message: p.description })}</div>
 
             <div className={styles.footer}>
               <Link className={`${styles.cta} ${styles.stretchedLink}`} to={to}>{translate({ id: 'plugins.card.cta', message: 'Voir →' })}</Link>
