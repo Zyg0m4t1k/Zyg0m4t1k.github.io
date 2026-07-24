@@ -1,0 +1,304 @@
+---
+title: Icons
+description: Add and manage custom icon packs in Jeedom.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="icon"
+  title="Icons"
+  description="Add, install, uninstall and preview custom icon packs in Jeedom."
+  image="/img/plugins/icon/icon_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+---
+
+# Icons Plugin
+
+The **Icons** plugin lets you add **custom icon packs** to Jeedom.
+
+It is mainly used to:
+- import an icon pack in `.zip` format
+- install a pack in Jeedom
+- uninstall a pack
+- preview the icons available in a pack
+- then use these icons in compatible Jeedom interfaces
+
+---
+
+## ✅ What is it for?
+
+The plugin is useful if you want to enrich Jeedom with your own icon libraries.
+
+Usage examples:
+- add a custom icon pack
+- centralize multiple icon families
+- quickly find an icon name thanks to the preview
+- use these icons in widgets, designs, views or Jeedom elements depending on the features available in your setup
+
+---
+
+## 🔧 Prerequisites
+
+- Jeedom **4.4 minimum**
+- Jeedom admin access
+- A compatible icon pack in `.zip` format
+
+> The plugin does not require any dependency installation.
+
+---
+
+## 🚀 Installation
+
+### 1) Install from the Market
+
+1. Go to **Plugins → Plugin Management → Market**
+2. Search for **Icons**
+3. Click **Install**
+4. Activate the plugin
+
+---
+
+## 📦 Icon pack format
+
+A pack must be provided as a `.zip` archive.
+
+The archive must contain at minimum:
+
+```text
+style.css
+fonts/<pack_name>.ttf
+```
+
+The `.ttf` file name must match the archive name.
+
+Example:
+
+```text
+mypack.zip
+├── style.css
+└── fonts/
+    └── mypack.ttf
+```
+
+If these files are not present, the import is rejected.
+
+---
+
+## ⬆️ Import an icon pack
+
+1. Go to **Plugins → Plugin Management → Icons**
+2. Click **Configuration**
+3. Click **Import an icon pack**
+4. Select your `.zip` file
+5. Confirm the import
+
+The pack is added to the plugin data and becomes available on the management page.
+
+> Screenshots will be added later.
+
+---
+
+## 🧩 Install a pack
+
+Once the pack is imported:
+
+1. Open the **Icons** plugin page
+2. Find the pack in the list
+3. Click **Install**
+4. Confirm the action
+
+During installation, the plugin copies the pack to the Jeedom directory designated for icon fonts.
+
+---
+
+## 🗑️ Uninstall a pack
+
+To remove an installed pack:
+
+1. Open the **Icons** plugin page
+2. Find the installed pack
+3. Click **Uninstall**
+4. Confirm the action
+
+The pack is removed from the Jeedom fonts directory.
+
+> Uninstalling removes the installed pack, but does not necessarily delete the imported archive/source in the plugin.
+
+---
+
+## 👀 Preview icons
+
+The **Preview** button opens a window with the pack's icons.
+
+The preview allows you to:
+- see all icons detected in the `style.css`
+- search for an icon by name
+- visually select an icon
+- find the CSS class to use
+
+### 🔎 Search in the preview
+
+In the preview window, a **Search** field lets you filter icons.
+
+Example:
+- type `light`
+- only icons containing `light` in their name remain visible
+
+---
+
+## ⚙️ Technical operation
+
+The plugin works with two main locations:
+
+```text
+plugins/icon/data/<pack_name>/
+data/fonts/<pack_name>/
+```
+
+- `plugins/icon/data/<pack_name>/`: pack imported in the plugin
+- `data/fonts/<pack_name>/`: pack installed and usable by Jeedom
+
+When you click **Install**, the plugin copies the pack to `data/fonts`.
+
+When you click **Uninstall**, the plugin removes the installed pack from `data/fonts`.
+
+---
+
+## 📌 Available commands
+
+The **Icons** plugin does not create Jeedom commands usable in scenarios.
+
+It is an interface management/extension plugin, not a device plugin.
+
+---
+
+## ⚠️ Important notes
+
+- The imported file must be a `.zip`
+- Maximum accepted size: **50 MB**
+- The pack must contain `style.css`
+- The pack must contain `fonts/<pack_name>.ttf`
+- Import requires admin access
+- Installation/uninstallation requires confirmation
+
+---
+
+## 🧹 Cleanup during installation or update
+
+During plugin installation or update, some legacy icon directories may be removed to avoid conflicts with old Jeedom locations.
+
+Affected legacy packs may include:
+- `brands`
+- `brankic`
+- `comptes`
+- `font-awesome`
+- `icomoon`
+- `jeedom2-color`
+- `meteocons`
+
+---
+
+## 💡 Recommended icon packs
+
+Several free icon packs are widely used in home automation projects and Jeedom dashboards.
+
+### Material Design Icons (MDI)
+
+The most popular pack in the home automation world.
+
+Advantages:
+
+- Over 8,000 icons
+- Home, lighting, shutters, heating, energy, weather, security, sensors…
+- Used by Jeedom, Home Assistant, OpenHAB, Node-RED, etc.
+- Free and regularly updated
+
+Examples:
+
+```text
+mdi-lightbulb
+mdi-home
+mdi-thermometer
+mdi-shutter
+mdi-motion-sensor
+```
+
+Link: [pictogrammers.com/library/mdi/](https://pictogrammers.com/library/mdi/)
+
+---
+
+### Font Awesome Free
+
+A must-have web reference.
+
+Advantages:
+
+- Very well known
+- Several thousand icons
+- Already works in Jeedom
+- Also includes a collection of brand logos
+
+Less home automation oriented than Material Design Icons.
+
+Link: [fontawesome.com](https://fontawesome.com/)
+
+---
+
+### Tabler Icons
+
+A modern pack particularly suited for recent dashboards.
+
+Advantages:
+
+- Very clean SVGs
+- MIT License
+- Consistent and minimalist design
+- Ideal for modern interfaces
+
+Link: [tabler.io/icons](https://tabler.io/icons)
+
+---
+
+### Lucide Icons
+
+A lightweight and open source alternative.
+
+Advantages:
+
+- Optimized SVGs
+- Open Source
+- Simple and elegant design
+- Easy to integrate into custom themes
+
+Link: [lucide.dev/icons/](https://lucide.dev/icons/)
+
+---
+
+:::tip Tips
+
+For home automation use, **Material Design Icons (MDI)** is generally the best choice thanks to its huge catalog of specialized icons (home, energy, heating, sensors, security, etc.).
+
+**Font Awesome** is ideal for logos and generic icons.
+
+**Tabler Icons** and **Lucide Icons** are particularly suited for modern themes and clean interfaces.
+
+You can import multiple packs to have a comprehensive icon library in Jeedom.
+
+:::
+
+---
+
+## ✅ Conclusion
+
+The **Icons** plugin is simple:
+
+- you import a `.zip` pack
+- you install it in Jeedom
+- you can preview it
+- you then use the icons in your Jeedom interfaces
+
+It lets you cleanly centralize your custom icon packs and make them available in Jeedom.

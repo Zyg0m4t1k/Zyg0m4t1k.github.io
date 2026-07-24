@@ -1,0 +1,468 @@
+---
+title: Jeeloc
+description: Centralize and display multiple Jeedom locations on an interactive map.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="jeeloc"
+  title="Jeeloc"
+  description="Centralize existing GPS coordinates, display them on a map and track distances or presence around a reference point."
+  icon="/img/plugins/jeeloc_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+The **Jeeloc** plugin is used to gather multiple locations in Jeedom.
+
+It does not directly locate a phone or a person. It uses existing Jeedom commands that return GPS coordinates, for example from a location plugin, a custom command or a fixed position.
+
+Jeeloc offers two device types:
+
+- **Location**: displays positions on an interactive map, calculates distances and manages presence
+- **Route**: calculates travel time and road distance between two points via the Mapbox API
+
+---
+
+## ✅ Prerequisites
+
+Before using Jeeloc, you need at least one GPS coordinate source.
+
+The command used must return a value in the format:
+
+```text
+latitude,longitude
+```
+
+Jeeloc has no dependencies to install and does not run a daemon.
+
+---
+
+## 📦 Installation
+
+1. Install the plugin from the Jeedom Market
+2. Activate the plugin
+3. Go to:
+
+```text
+Plugins → Organization → Jeeloc
+```
+
+After activation, the plugin appears as a **panel** and as Jeedom devices.
+
+---
+
+## ⚙️ Global plugin configuration
+
+The global configuration contains two sections.
+
+### 🌍 Reverse geocoding
+
+Reverse geocoding converts GPS coordinates into a readable address: street, postal code, city.
+
+Jeeloc offers two modes:
+
+- **Nominatim / OpenStreetMap**: default mode, no API key required
+- **MapQuest**: legacy mode kept as an option, requires a MapQuest API key
+
+#### 🔧 Available options
+
+| Option | Usage |
+|---|---|
+| Use MapQuest | Enables reverse geocoding via MapQuest |
+| MapQuest key | MapQuest API key, only used if the MapQuest option is enabled |
+
+:::info
+If **Use MapQuest** is unchecked, Jeeloc automatically uses **Nominatim / OpenStreetMap**.
+:::
+
+:::info
+If **Use MapQuest** is checked but the MapQuest key is empty, Jeeloc automatically falls back to **Nominatim**.
+:::
+
+:::tip
+Nominatim does not require an API key. Jeeloc sends a User-Agent specific to the installation to properly identify requests.
+:::
+
+### 🗺️ Route calculation (Mapbox)
+
+Route calculation uses the **Mapbox Directions** API.
+
+| Option | Usage |
+|---|---|
+| Mapbox API key | Key starting with `pk.` required for Route type devices |
+
+:::info
+The Mapbox key is only needed if you create **Route** type devices.
+It is not used for **Location** type devices.
+:::
+
+To obtain a Mapbox key, create a free account on [mapbox.com](https://www.mapbox.com).
+
+---
+
+## 📍 Reverse geocoding
+
+Reverse geocoding is only used to display a readable address from GPS coordinates.
+
+When a position is read, Jeeloc can retrieve and store:
+
+- the street
+- the postal code
+- the city
+- the date of the last reverse geocoding
+
+### 🌍 How it works with Nominatim
+
+When MapQuest is not enabled, Jeeloc queries **Nominatim OpenStreetMap**.
+
+In this mode:
+
+- no API key is needed
+- a unique User-Agent is generated per installation
+- the response is used to populate the address shown in the widget and panel
+
+### 🧭 How it works with MapQuest
+
+MapQuest remains available for users who wish to continue using it.
+
+To use MapQuest:
+
+1. check **Use MapQuest** in the plugin configuration
+2. enter a valid **MapQuest key**
+3. save the configuration
+
+If the key is missing, Jeeloc does not block the plugin and automatically falls back to Nominatim.
+
+### 📊 Service comparison
+
+| Service | Free | Free quota | API key required |
+|---|---|---|---|
+| **Nominatim** *(OpenStreetMap)* | Yes | 1 request/second max on the public OSM server *(no fixed monthly quota)* | No |
+| **MapQuest** Open Geocoding | Yes | 15,000 transactions/month | Yes |
+| **Mapbox** Geocoding | Yes | 100,000 requests/month | Yes |
+
+| Service | Advantages | Disadvantages |
+|---|---|---|
+| **Nominatim** | Free, no registration, open source | Limited to 1 req/s, strict usage policy |
+| **MapQuest** | Free up to 15,000 req/month, based on OSM | Requires an API key |
+| **Mapbox** | Very good quality, 100,000 req/month free | Requires an API key |
+
+### 🚦 Rate limiting
+
+Jeeloc avoids unnecessary address lookups.
+
+The behavior is as follows:
+
+- the position is read from a Jeedom command or from fixed coordinates
+- Jeeloc compares with the previously known position
+- if the movement exceeds the configured offset, the address is recalculated
+- the address, city, postal code and date of the last calculation are stored
+
+:::tip
+For a phone GPS position, an offset between **100 m and 300 m** is often more stable than a very low value.
+This avoids overly frequent changes caused by GPS inaccuracy.
+:::
+
+---
+
+## 📍 Location
+
+A **Location** device lets you group multiple GPS positions on an interactive map, calculate distances relative to a reference point and track presence.
+
+### 🗺️ Create a Location device
+
+On the plugin page, click **+ Location** to create a new device.
+
+In the **Device** tab, fill in:
+
+- the device name
+- the parent object
+- Jeedom categories
+- active / visible state
+
+### 🧩 Location device configuration
+
+In the **Configuration** tab, you can set:
+
+| Setting | Purpose |
+|---|---|
+| Data refresh frequency | Automatically triggers position updates |
+| Widget | Displays the map by default in the widget if the option is enabled |
+
+The help icon button lets you easily generate a Jeedom cron expression.
+
+### 📌 Adding locations
+
+In the **Devices** section, Jeeloc offers two ways to add locations.
+
+#### 🔗 Add a command
+
+Use **Commands** if the position comes from an existing Jeedom command.
+
+This is the most common case.
+
+The selected command must return coordinates in the format:
+
+```text
+latitude,longitude
+```
+
+Usage examples:
+
+- phone tracked by another plugin
+- vehicle position
+- person's position
+- virtual command containing GPS coordinates
+
+#### 🏠 Add fixed coordinates
+
+Use **Coordinates** to directly enter a fixed position.
+
+This is useful for creating a reference location:
+
+- home
+- work
+- school
+- train station
+- parking
+
+### 🎨 Customize the display
+
+Each location can be customized.
+
+| Field | Description |
+|---|---|
+| Name | Name shown on the map and in the summary |
+| Location | Jeedom command or fixed coordinates |
+| Marker | Marker color on the map |
+| Icon | Font Awesome icon used on the marker |
+| Color | Icon color |
+| Image | Custom image displayed in the summary view |
+| Reference | Sets the location as the reference point for distances |
+| Offset | Distance in meters used for presence and address recalculation |
+| Display | Shows or hides the location in the widget |
+
+:::warning
+Only one **reference point** should be defined per map.
+The reference point serves as the central point for calculating the distance to other locations.
+:::
+
+### 🏡 How reference point and presence work
+
+The **reference point** is the reference position.
+
+For example, if the reference is home, Jeeloc can calculate the distance between home and each tracked phone.
+
+For each non-reference location, Jeeloc automatically creates a binary presence command.
+
+Presence switches to:
+
+- `1` if the location is within the zone defined by the offset
+- `0` if the location is outside that zone
+
+Example:
+
+| Element | Value |
+|---|---|
+| Reference | Home |
+| Tracked location | Laurent's phone |
+| Offset | 100 |
+| Result | Present if the phone is within 100 meters of home |
+
+Orphaned presence commands are automatically cleaned up when a location is deleted or modified.
+
+### 🧭 Location widget
+
+The Location widget offers two views.
+
+#### 🗺️ Map view
+
+The map view displays markers on an OpenStreetMap map.
+
+Each marker can show:
+
+- the name
+- the address
+- the date of the last reverse geocoding
+- the position on the map
+
+Buttons also allow centering the map on a specific location.
+
+#### 📋 Summary view
+
+The summary view displays locations as a list.
+
+It can show:
+
+- the image or icon
+- the name
+- the address
+- time elapsed since the last known address
+- distance to the reference point
+- presence status
+
+The widget toggle button switches between map and summary views.
+
+### ⚡ Created commands (Location)
+
+| Command | Type | Description |
+|---|---|---|
+| Refresh | Action | Forces location update |
+| Presence `<name>` | Binary info | Indicates whether the location is within the reference point zone |
+
+---
+
+## 🚗 Route
+
+A **Route** device calculates the travel duration and road distance between two points using the **Mapbox Directions** API.
+
+:::info
+A **Mapbox API key** is required to use this device type.
+It must be entered in the **Global plugin configuration**.
+:::
+
+### 🗺️ Create a Route device
+
+On the plugin page, click **+ Route** to create a new device.
+
+In the **Device** tab, fill in:
+
+- the route name
+- the parent object
+- Jeedom categories
+- active / visible state
+
+### 🧩 Route configuration
+
+Route configuration is done in the **Route** tab.
+
+#### 📍 Departure
+
+The departure point can be defined in two ways:
+
+| Option | Description |
+|---|---|
+| GPS command (dynamic) | Jeedom info command returning `lat,lng`. Takes priority over fixed coordinates. Useful for tracking a person or vehicle position. |
+| Fixed latitude / longitude | Manually entered coordinates. Use the **Geocode** button to convert an address to coordinates. |
+
+:::tip
+If a GPS command is provided, it takes priority.
+Fixed coordinates are only used if no command is selected.
+:::
+
+#### 🏁 Arrival
+
+The arrival point works the same way as the departure:
+
+| Option | Description |
+|---|---|
+| GPS command (dynamic) | Jeedom info command returning `lat,lng`. Takes priority over fixed coordinates. |
+| Fixed latitude / longitude | Manually entered or geocoded coordinates from an address. |
+
+#### 🚗 Travel profile
+
+The profile determines the transport mode used for the calculation.
+
+| Profile | Description |
+|---|---|
+| Car (with traffic) | Car calculation taking real-time traffic into account (default) |
+| Car | Car calculation without traffic |
+| Bicycle | Bicycle calculation |
+| Walking | Walking calculation |
+
+### ⚡ Created commands (Route)
+
+Jeeloc automatically creates the following commands for each Route device:
+
+| Command | Type | Unit | Description |
+|---|---|---|---|
+| Calculate | Action | — | Triggers route calculation via Mapbox |
+| Duration | Numeric info | min | Estimated travel duration in minutes (with traffic) |
+| Typical duration | Numeric info | min | Duration without traffic (Mapbox reference). Only available with the **Car (with traffic)** profile |
+| Distance | Numeric info | km | Travel distance in kilometers |
+| Status | Text info | — | `OK` if calculation succeeded, error message otherwise |
+| Mode | Text info | — | Label of the profile used (e.g. `Car (traffic)`) |
+
+### 🖥️ Route widget
+
+The Route widget displays in order:
+
+- the transport mode icon and route name in the header, with a manual recalculation button
+- the **duration in large** (e.g. `23 min` or `1h05`) with the **traffic delta** (e.g. `+9 min` in orange if delayed, green if faster)
+- the **estimated arrival** calculated from the last calculation time + duration (e.g. `Estimated arrival at 08:42`)
+- a **colored bar** indicating the overall traffic level: green (flowing), yellow (moderate), orange (heavy), red (very heavy)
+- a summary table: **Distance** and **Traffic** (hidden if flowing)
+- time elapsed since the last calculation (e.g. `Updated 2 min ago`)
+
+If no calculation has been performed yet, the widget displays an empty route icon.
+
+:::info
+The traffic delta and colored bar are only meaningful with the **Car (with traffic)** profile, which is the only one providing a typical reference duration.
+For other profiles, the typical duration equals the calculated duration and no delta is shown.
+:::
+
+### 🔄 Automatic refresh
+
+To automatically recalculate the route at regular intervals, configure a refresh frequency in the device's **Configuration** tab.
+
+Example use cases:
+
+- recalculate travel time to the office every 10 minutes in the morning
+- trigger calculation from a scenario before leaving
+
+---
+
+## 🤖 Using in scenarios
+
+Jeeloc can be used in Jeedom scenarios to trigger actions based on presence, distance or travel duration.
+
+Examples:
+
+- launch an action when someone arrives home
+- send a notification if a vehicle leaves a zone
+- activate a home mode when presence switches to `1`
+- display travel time in a notification message
+- alert when travel time exceeds a duration threshold
+
+---
+
+## 🖼️ Custom image management
+
+Jeeloc lets you associate an image with a location.
+
+Images can be used to make the summary view more readable.
+
+Accepted formats:
+
+- PNG
+- JPG
+
+Limit:
+
+- 1 MB maximum per file
+
+File names should remain simple: letters, numbers, hyphens and underscores.
+
+---
+
+## 🖥️ Jeeloc panel
+
+The plugin also has a panel display.
+
+The panel lets you view Jeeloc maps outside the classic dashboard.
+
+---
+
+## 💡 Best practices
+
+- Use a clear name for each location and each route
+- Keep only one reference point per Location map
+- Set a realistic offset, especially for phones
+- Avoid overly frequent refreshes
+- Leave MapQuest disabled if you don't have a MapQuest API key
+- Prefer Nominatim for a simple configuration without an API key
+- For Mapbox routes, prefer the **Car (with traffic)** profile for realistic durations
+
+---

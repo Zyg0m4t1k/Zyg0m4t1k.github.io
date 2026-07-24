@@ -1,0 +1,191 @@
+---
+title: Todo Plugin
+description: Create simple task lists (notes, dates, costs) and use them in Jeedom.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="todo"
+  title="Todo Plugin"
+  description="Create simple task lists with notes, dates and budget tracking. Compatible with Jeedom scenarios."
+  image="/img/plugins/todo/todo_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+---
+
+# Todo Plugin
+
+The **Todo** plugin lets you create **task lists** in Jeedom.
+
+Each **list** appears as a widget on the Dashboard, with:
+- quick task addition
+- checkbox for "completed"
+- an "Info" window (note, date, costs)
+
+---
+
+# ✅ What is it for?
+
+Practical examples:
+- "Shopping": milk, bread, batteries…
+- "Home": change filter, take out bins…
+- "Projects": buy paint + track the budget
+- "Reminders": renew a document, call someone…
+
+---
+
+# 🔧 Prerequisites (simple)
+
+- Jeedom **4.5 minimum**
+- Debian **11 minimum**
+- PHP: Jeedom 4.5 works with **PHP 8**
+
+> The plugin does not require any dependency installation: you can use it right away.
+
+---
+
+# 🚀 Installation
+
+## 1) Install from the Market
+1. Go to **Plugins → Plugin Management → Market**
+2. Search for **Todo**
+3. Click **Install**
+4. Activate the plugin
+
+---
+
+# ➕ Create a task list
+
+1. Go to **Plugins → Organization → Todo**
+2. Click **Add**
+3. Give your list a name (e.g. "Shopping")
+4. Save
+
+![Create a list](/img/plugins/todo/create_list.png)
+
+✅ A "list" = a Jeedom device.
+
+---
+
+# 🧾 Add and manage tasks (the widget)
+
+Once the list is created, you can display it on your Dashboard.
+
+## Add a task
+- Type the text in the field
+- Click the validate button to the right of the field
+
+![Todo widget](/img/plugins/todo/widget_add.png)
+
+## Complete a task
+- Check the ✅ box
+➡️ The task is considered done and disappears from the active list.
+
+## Delete a task
+- Click the delete icon
+
+---
+
+# 📝 Task "Info" window (note, date, costs)
+
+On each task, you have a "note" icon.
+It opens a window with additional information.
+
+![Open info](/img/plugins/todo/modal_open.png)
+
+## 1) Note (free text)
+You can write a note to remember a detail:
+- product reference
+- explanation
+- link
+- important reminder
+
+## 2) Date (deadline)
+
+You can choose a date (e.g. "to do before Saturday").
+
+The icon changes color:
+- Green: future date
+- Orange: today
+- Red: overdue date
+
+## 3) Cost management (budget)
+
+The window also lets you track a budget:
+- Currency (CHF / € / other)
+- Unit price
+- Quantity
+- Detailed purchase lines
+- Automatic total calculation
+
+Example:
+- Currency: CHF
+- Quantity: 2
+- Price: 12.50
+➡️ Total = 25.00 CHF
+
+---
+
+# ⚙️ List settings
+
+In a list, you will find:
+- Name
+- Object (room)
+- Enable
+- Visible
+
+---
+
+# 📌 Available commands (for scenarios)
+
+Each list has commands usable in scenarios.
+
+## Main commands
+
+- **New todo** (Action) → Add a task automatically
+- **List** (Info) → Full list content
+- **Refresh** (Action) → Refresh
+- **Remove all** (Action) → Delete all tasks
+- **Cost** (Info) → Simple total
+- **Global cost** (Info) → Detailed total
+
+---
+
+# 💡 Tips & usage ideas
+
+## ✔ Add a task automatically
+
+Example: washing machine finished → create "Hang the laundry".
+
+In a scenario:
+Action → New todo
+Message → Hang the laundry
+
+---
+
+## ✔ Send the list by notification
+
+Use the **List** command
+Example:
+"Shopping list: #List command#"
+
+---
+
+## ✔ Monitor a budget
+
+Use **Global cost**
+Create a scenario:
+If global cost > 500 CHF → send an alert.
+
+---
+
+# ✅ Conclusion
+
+The Todo plugin stays simple:
+- Create a list
+- Add tasks
+- Add notes / dates / costs
+- Automate with scenarios

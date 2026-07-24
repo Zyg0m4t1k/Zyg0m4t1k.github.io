@@ -1,0 +1,85 @@
+---
+title: Groupe
+description: Group devices together and control a global state with a customizable widget.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="groupe"
+  title="Groupe"
+  description="Group devices together and control a global state with a customizable widget."
+  icon="/img/plugins/groupe_icon.png"
+  githubUrl="https://github.com/Zyg0m4t1k/"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+## 📌 Description
+
+The **Groupe** plugin lets you monitor the global state of a set of commands (e.g. multiple lights, shutters, alerts)
+and display a **widget** in your Jeedom views with customizable **icons / images**.
+
+---
+
+## 📦 Installation
+
+Like any Jeedom plugin:
+
+1. Install from the Market (or via ZIP)
+2. Activate the plugin
+3. Go to **Plugins → Monitoring → Groupe**
+
+---
+
+## ⚙️ Configuration
+
+### 1) Create a device
+
+Create a new device by clicking **+**.
+
+![Create device](/img/plugins/groupe/groupe5.png)
+
+### 2) Device settings
+
+- **Add a device**: select a device and its status commands, and (optionally) action commands if
+  **Enable actions** is checked.
+- **Invert**: if checked, the state (and therefore the icon/image) switches to **active** only if **all** devices are active.
+- **Icon ON**: widget icon when at least 1 command is active.
+- **Icon OFF**: widget icon when all commands are inactive.
+- **Image ON**: widget image when at least 1 command is active.
+- **Image OFF**: widget image when all commands are inactive.
+
+> Tip: you can choose between **icon** (FontAwesome) or **image** depending on your preferred look.
+
+---
+
+## 🧾 Commands
+
+![Commands](/img/plugins/groupe/groupe6.png)
+
+The plugin exposes a simple widget behavior:
+
+- If **no** device is active → click = **All ON** (activate all)
+- If **at least one** device is active → click = **All OFF** (deactivate all)
+
+---
+
+## 🧩 Widget
+
+Rendering examples:
+
+![Widget - lights](/img/plugins/groupe/light.png)
+
+![Widget - shutters](/img/plugins/groupe/volets.png)
+
+![Widget - alert](/img/plugins/groupe/alerte.png)
+
+> NOTE
+>
+> The widget updates as soon as a state changes.
+>
+> - Clicking on the info toggles the state (All ON / All OFF)
+> - Clicking on the icon opens a window (modal)
+
+![Modal](/img/plugins/groupe/groupe8.png)

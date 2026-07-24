@@ -1,0 +1,212 @@
+---
+title: Pingserver
+description: Monitor network device availability (ICMP ping) from Jeedom with UP/DOWN status, latency and packet loss.
+sidebar_position: 1
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="Pingserver"
+  title="Pingserver"
+  description="Monitor network device availability (ICMP ping) from Jeedom with UP/DOWN status, latency and packet loss."
+  icon="/img/plugins/pingserver_icon.png"
+/>
+
+# Pingserver Plugin
+
+The **Pingserver** plugin monitors the availability of your network devices via **ICMP ping**. It runs through a Python asyncio daemon using the `icmplib` library to perform parallel pings without root privileges.
+
+---
+
+## ✨ Features
+
+- 🟢 Real-time **UP / DOWN** status
+- ⏱ Average **latency** (ms) with history
+- 📉 **Packet loss** (%)
+- 🖼 **Custom icon** per device
+- 📡 **MQTT**: inter-Jeedom sharing (slave mode)
+- 🌙 Built-in **Wake-on-LAN**
+- 🔍 **MAC detection** via `arp-scan`
+- 📱 **Mobile view** with Active / Inactive / All filter
+
+---
+
+## ⚙️ Dependencies
+
+| Component | Role |
+|-----------|------|
+| `icmplib` | Asyncio ICMP ping (required) |
+| `requests` | Daemon → Jeedom communication (required) |
+| `paho-mqtt` | MQTT publish / subscribe (optional) |
+| `arp-scan` | MAC address detection (optional) |
+| `wakeonlan` | WoL network wake (optional) |
+
+Install dependencies from the plugin configuration page.
+
+---
+
+## 🚀 Installation
+
+1. Install the plugin from the Jeedom Market.
+2. Activate the plugin.
+3. Go to the plugin configuration and launch the dependency installation.
+4. Start the daemon.
+
+---
+
+## ⚙️ Plugin configuration
+
+### Operating mode
+
+The plugin offers three modes that determine how ping results are produced and shared.
+
+#### Local mode (default)
+
+The Python daemon performs pings directly from the local Jeedom and updates commands in real-time. No additional network configuration is required.
+
+#### Local + MQTT mode (master)
+
+The daemon performs pings locally **and** publishes each result to an MQTT broker.
+
+- Published topic: `{prefix}/{ip_address}` (e.g. `pingserver/192.168.1.10`)
+- JSON payload: `{"host":"192.168.1.10","alive":true,"avg_rtt":1.2,"packet_loss":0.0,...}`
+- Messages are published with **retain=true**: a slave that connects immediately receives the last known state.
+
+Typical use case: a primary Jeedom monitors devices and shares results with one or more secondary Jeedom instances.
+
+#### Remote MQTT mode (slave)
+
+The daemon **does not ping anything**. It simply listens to MQTT messages published by a master Jeedom and updates local commands accordingly.
+
+- Subscribed topic: `{prefix}/#` (all devices from the master)
+- Upon receiving a message, the plugin finds the corresponding device (by IP address) and updates its `state`, `delay` and `packet_loss` commands.
+- **Auto-create** option: if enabled, a device is automatically created when an unknown message is received. Only enable this if the MQTT source is trusted.
+
+:::tip Master / slave configuration
+**Jeedom A (master)** → `Local + MQTT` mode, broker `192.168.1.1:1883`, prefix `pingserver`
+
+**Jeedom B (slave)** → `Remote MQTT` mode, same broker, same prefix
+
+Both Jeedom instances share the same states in real-time without any HTTP polling between them.
+:::
+
+### General settings
+
+| Setting | Description |
+|---------|-------------|
+| **Ping cycle** | Interval between ping rounds (10 – 3600 s, default 60 s) — ignored in slave mode |
+| **Daemon socket port** | Internal communication port (default 55109) |
+
+### MQTT configuration
+
+| Setting | Description |
+|---------|-------------|
+| **Broker (host)** | IP address or DNS name of the MQTT broker |
+| **Port** | Broker port (default 1883) |
+| **User / Password** | MQTT authentication (optional) |
+| **Topic prefix** | Common prefix for all topics (default `pingserver`) — must be identical on master and slave |
+| **Auto-create** | Creates a device when an unknown message is received (slave mode only) |
+
+:::warning MQTT Security
+The MQTT connection is unencrypted (no TLS). Reserve this usage for a trusted local network or a broker accessible only via VPN.
+:::
+
+---
+
+## 🖥 Creating a device
+
+1. Go to **Plugins → Monitoring → Pingserver**.
+2. Click **Add**.
+3. Enter the device **name**.
+4. Configure the target **IP address or hostname**.
+5. Choose an **icon** (built-in library or custom image).
+6. Save.
+
+### Device settings
+
+| Setting | Description |
+|---------|-------------|
+| **IP address / host** | Ping target (IPv4, IPv6 or DNS name) |
+| **Timeout** | Wait time per packet in seconds (0.5 – 10 s) |
+| **Packet count** | Number of ICMP packets sent per cycle |
+| **MAC address** | For Wake-on-LAN and ARP detection |
+| **Icon** | Image displayed on the widget |
+
+---
+
+## 📊 Automatically created commands
+
+| Command | Type | Description |
+|---------|------|-------------|
+| `state` | Binary info | `1` = UP, `0` = DOWN |
+| `delay` | Numeric info | Average latency in ms |
+| `packet_loss` | Numeric info | Packet loss in % |
+| `Refresh` | Action | Immediate ping of the device |
+| `Wake-on-LAN` | Action | Network wake (if MAC is configured) |
+
+---
+
+## 🖼 Dashboard widgets
+
+### State widget (`pingserver_etat`)
+
+Displays the device icon with:
+- a colored bar on the left (🟢 green = UP, 🔴 red = DOWN)
+- an **UP** or **DOWN** badge
+
+### Latency widget (`delai`)
+
+Displays latency in ms with automatic coloring:
+
+| Value | Color |
+|-------|-------|
+| < 50 ms | 🟢 Green |
+| 50 – 200 ms | 🟠 Orange |
+| > 200 ms | 🔴 Red |
+
+---
+
+## 📱 Mobile view
+
+The mobile view (**Panel**) displays all your Pingserver devices on a single page with:
+
+- icon + name + IP address
+- UP / DOWN badge
+- latency and packet loss
+- **All / Active / Inactive** filter
+- **Refresh** button
+
+---
+
+## 🌙 Wake-on-LAN
+
+To use Wake-on-LAN:
+
+1. Enter the **MAC address** in the device configuration.
+2. Make sure `wakeonlan` is installed on the system.
+3. Use the **Wake-on-LAN** command from Jeedom or a scenario.
+
+---
+
+## 🔍 MAC detection (ARP)
+
+If `arp-scan` is installed, the plugin can automatically detect a device's MAC address by scanning the local network (every 5 minutes via cron5).
+
+---
+
+## ✅ Compatibility
+
+| Element | Version |
+|---------|---------|
+| Jeedom | 4.4+ |
+| Debian | 11 to 13 |
+| Python | 3.9+ |
+
+---
+
+## 💡 Tips
+
+- Use a **short cycle** (10–30 s) to quickly detect failures.
+- In **remote MQTT** mode, disable the ping cycle — only incoming MQTT messages are processed.
+- Custom icons are stored in `data/icones/` and are not deleted during updates.

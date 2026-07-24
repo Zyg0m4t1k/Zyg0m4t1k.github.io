@@ -1,0 +1,84 @@
+---
+sidebar_position: 1
+title: Introduction
+description: The clear and fast hub to install, configure and troubleshoot my Jeedom plugins.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+
+<PluginHero
+  title="Documentation — Jeedom Plugins"
+  description="A simple and efficient hub: installation, configuration, best practices and troubleshooting for my Jeedom plugins."
+  badges={["Compatible Jeedom 4.5", "Compatible Debian (Trixie)", "Unified docs"]}
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+---
+
+## 👋 Welcome
+
+Here you will find the documentation for **my Jeedom plugins**: short, structured pages focused on results.
+The goal: get up and running quickly, avoid common pitfalls, and have a single place where everything is up to date.
+
+---
+
+## ✅ What you'll find on this site
+
+- **Installation guides**: prerequisites, dependencies, permissions, venv (when needed)
+- **Step-by-step configuration**: Jeedom screens + concrete examples
+- **Commands & scenarios**: how to use the plugin in real life
+- **Troubleshooting**: common errors, what to check first, where to look
+- **Compatibility**: Jeedom / OS / PHP minimum, migrations, important notes
+
+{/*
+  💡 Tip: the docs are organized "plugin by plugin".
+  Each plugin has its main page + changelog, and (when useful) screenshots.
+*/}
+
+---
+
+## 🚀 Get started in 2 minutes
+
+### 1) Choose your plugin
+In the **Plugins** menu (on the left), open the page for the plugin you're interested in.
+
+
+### 2) Install then configure
+Follow the sections in order:
+1. Installation
+2. Configuration
+3. Usage / use cases
+
+### 3) If something goes wrong: check logs first
+Before digging further, retrieve from Jeedom:
+- **Plugin log**
+- **http.error** (if UI / AJAX issue)
+- **daemon** (if the plugin uses a Python service)
+
+---
+
+## 🧩 Best practices (quick)
+
+- Always check the **Jeedom version** and the **plugin version**
+- After an update, **restart the daemon** (if applicable)
+- If a device "doesn't respond", check that **commands** are updating properly and that **dependencies** are OK
+
+---
+
+## 🐞 Report a bug / request a feature
+
+To save time (and avoid back-and-forth), please provide:
+
+- **Jeedom** + **OS** version
+- **Plugin** version (and branch: stable/beta/dev)
+- Log excerpt (without sensitive info)
+- Steps to reproduce + what you expect
+
+---
+
+## ❤️ Support
+
+If this site and these plugins help you daily, you can support development via the support button at the top of the page.
+Thank you 🙏

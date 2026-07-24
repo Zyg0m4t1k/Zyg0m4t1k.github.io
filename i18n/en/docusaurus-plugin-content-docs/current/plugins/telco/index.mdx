@@ -1,0 +1,248 @@
+---
+title: Remote Controls Plugin
+description: Create customizable virtual remote controls in Jeedom to trigger commands, scenarios and automations from configurable buttons.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="telco"
+  title="Remote Controls"
+  description="Create customizable virtual remote controls in Jeedom to trigger commands, scenarios and automations from configurable buttons."
+  icon="/img/plugins/telco_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+The **Remote Controls** plugin lets you create **fully customizable virtual remote controls** in Jeedom.
+
+Each button can trigger:
+
+- a **Jeedom command** (action, info)
+- a **scenario**
+- an **interaction**
+- any **Jeedom-compatible action**
+
+This lets you group multiple actions into a **quick and visual interface**, ideal for a dashboard, a design or a wall-mounted touchscreen.
+
+---
+
+## ✨ How it works
+
+Telco creates Jeedom devices where each **button is associated with an action**.
+
+Press a button → execute the configured action.
+
+Usage examples:
+
+- **Media** remote for a living room (TV, set-top box, audio)
+- **Home** remote (shutters, lights, alarm)
+- **Favorite scenarios** control panel
+- Simplified interface for a **touchscreen**
+- Accessible remote for a **non-technical user**
+
+---
+
+## 🔧 Prerequisites
+
+- Working Jeedom installation (version 4.4+ recommended)
+- Existing commands or scenarios in Jeedom to associate with buttons
+
+---
+
+## 🚀 Plugin installation
+
+### 1️⃣ Install from the Market
+
+1. Go to **Plugins → Plugin Management → Market**
+2. Search for **Telecommandes**
+3. Click **Install**
+4. Activate the plugin
+
+<!-- screenshot: Jeedom Market page with the Telecommandes plugin and Install button -->
+<!-- path: /img/plugins/telco/install.png -->
+<!-- ![Installing the Remote Controls plugin from the Market](/img/plugins/telco/install.png) -->
+
+---
+
+### 2️⃣ Access the plugin
+
+1. Go to **Plugins → Organization → Remote Controls**
+2. The home page lists your existing remotes
+3. Click **Add** to create a new remote
+
+<!-- screenshot: Remote Controls plugin home page with Add button -->
+<!-- path: /img/plugins/telco/plugin_home.png -->
+<!-- ![Remote Controls plugin home page](/img/plugins/telco/plugin_home.png) -->
+
+---
+
+## ➕ Create a remote control
+
+From the plugin page, click **Add** then fill in:
+
+- **Name**: name of your remote (e.g. Living Room TV, Home, Scenarios)
+- **Parent object**: associated room or zone
+- **Type**: Media or Custom
+
+<!-- screenshot: creation form with Name, Parent object and Type fields -->
+<!-- path: /img/plugins/telco/create.png -->
+<!-- ![Creating a remote control in Telco](/img/plugins/telco/create.png) -->
+
+---
+
+## 🧩 The two remote control types
+
+### 1️⃣ Media remote
+
+The **Media** mode automatically generates a standard remote with a pre-defined layout suited for controlling audiovisual equipment.
+
+It includes the classic buttons:
+
+- Power On / Off
+- Navigation (up, down, left, right, OK)
+- Volume + / - / Mute
+- Channels + / -
+- Play / Pause / Stop / Next / Previous
+- Color buttons (Red, Green, Yellow, Blue)
+- Numeric keys 0–9
+- Menu, Back, Home
+
+Each button can be **customized**: you associate the Jeedom command of your choice.
+
+<!-- screenshot: generated media remote with all its buttons -->
+<!-- path: /img/plugins/telco/multimedia.png -->
+<!-- ![Media remote with standard layout](/img/plugins/telco/multimedia.png) -->
+
+---
+
+### 2️⃣ Custom remote
+
+The **Custom** mode lets you create your own buttons from scratch.
+
+For each button, you define:
+
+| Setting | Description |
+|---|---|
+| **Name** | Label displayed on the button |
+| **Icon** | Associated FontAwesome icon |
+| **Color** | Button color |
+| **Action** | Jeedom command or scenario to execute |
+| **Visible** | Show or hide the button |
+
+This lets you create **fully tailored interfaces** without layout constraints.
+
+<!-- screenshot: custom remote with colored custom buttons -->
+<!-- path: /img/plugins/telco/telcoperso.png -->
+<!-- ![Custom remote with configurable buttons](/img/plugins/telco/telcoperso.png) -->
+
+---
+
+## ⚙️ Button configuration
+
+On the device configuration page, each button has its own settings.
+
+### Associate an action with a button
+
+1. Click on the button to configure
+2. Choose the target **Jeedom command** (via the selector)
+3. Or choose a **scenario** to trigger
+4. Save
+
+<!-- screenshot: button configuration with the command selector -->
+<!-- path: /img/plugins/telco/button_config.png -->
+<!-- ![Button configuration with command association](/img/plugins/telco/button_config.png) -->
+
+### Disable a button
+
+A button can be **disabled** (hidden on the widget) without being deleted — useful for cleaning up the interface without losing the configuration.
+
+---
+
+## 📱 Dashboard and Mobile widget
+
+Each Telco remote generates a **visual widget** usable in:
+
+- the Jeedom **dashboard**
+- a custom **design**
+- the **mobile view**
+
+<!-- screenshot: Telco widget displayed on the Jeedom dashboard -->
+<!-- path: /img/plugins/telco/widget.png -->
+<!-- ![Media remote widget on the dashboard](/img/plugins/telco/widget.png) -->
+
+The widget is **interactive**: clicking a button immediately executes the associated action.
+
+---
+
+## 💡 Practical usage examples
+
+### TV / Set-top box remote
+
+Control of an Android TV or ISP box:
+
+- Power → `[TV][Turn On]`
+- Volume + → `[TV][Volume+]`
+- Netflix → `[TV][Launch Netflix]`
+- Favorite channel → `[Box][Channel BBC1]`
+
+<!-- screenshot: TV remote widget with streaming app logos -->
+<!-- path: /img/plugins/telco/widget_tv.png -->
+<!-- ![Telco widget for TV and streaming control](/img/plugins/telco/widget_tv.png) -->
+
+### Home remote
+
+Quick control panel for frequent actions:
+
+- Turn off everything → `[Scenario][Full shutdown]`
+- Open shutters → `[Living Room][Shutters up]`
+- Alarm ON → `[Alarm][Activate]`
+- Cinema ambiance → `[Lumina][Enable Cinema ambiance]`
+
+### Scenarios remote
+
+Group favorite scenarios in a simple interface:
+
+- Morning → `[Scenario][Wake up]`
+- Leaving → `[Scenario][Leave home]`
+- Night → `[Scenario][Night mode]`
+- Guests → `[Scenario][Guest mode]`
+
+---
+
+## 🧠 Best practices
+
+- Use **explicit FontAwesome icons** so buttons are understandable without reading the label
+- Group buttons by **theme** in separate remotes (audio, lights, scenarios)
+- On a **touchscreen**, prefer large buttons with little text
+- Use the **custom remote** for interfaces accessible to non-technical users
+- Test each button from the configuration page before exposing it on the dashboard
+
+---
+
+## 🔍 Troubleshooting
+
+### A button does not trigger anything
+
+- Check that the associated command is of **action type** and not info
+- Check that the target device is **enabled** in Jeedom
+- Test the command directly from its page in Jeedom
+
+### The widget does not appear on the dashboard
+
+- Check that the device is **visible** and **enabled**
+- Check that it is associated with a **parent object** displayed on the dashboard
+
+---
+
+## ❤️ Conclusion
+
+The **Remote Controls** plugin lets you build clear and ergonomic control interfaces in Jeedom in just a few minutes.
+
+In summary:
+
+1. Choose the type (Media or Custom)
+2. Associate each button with a Jeedom action
+3. The widget is ready to use on your dashboard
+
+Simple, visual, and accessible to everyone.

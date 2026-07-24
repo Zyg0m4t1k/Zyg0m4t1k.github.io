@@ -1,0 +1,293 @@
+---
+title: iOSCloud Plugin
+description: iCloud location tracking, presence management and actions on your Apple devices.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="ioscloud"
+  title="iOSCloud Plugin"
+  description="iCloud location tracking, presence management and actions on your Apple devices."
+  icon="/img/plugins/ioscloud_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+This document describes the **iOSCloud** plugin: configuration, authentication, devices, presence and scenarios.
+
+**Quick access:**
+
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Authentication procedure](#authentication-procedure)
+- [Device types](#device-types)
+- [Important settings](#important-settings)
+- [Using in scenarios](#using-in-scenarios)
+- [Practical tips](#practical-tips)
+
+---
+
+<span id="overview" />
+
+# Overview
+
+The **iOSCloud** plugin allows Jeedom to connect to your **iCloud** account in order to:
+
+- retrieve the **location** of your Apple devices (iPhone, iPad…)
+- automatically calculate **presence** (home / away)
+- trigger actions such as **playing a sound on a device** or **sending a message**
+
+> Goal: easily automate your presence and Apple devices in Jeedom.
+
+---
+
+<span id="prerequisites" />
+
+# Prerequisites
+
+## Minimum requirements
+
+- Jeedom **4.4 minimum**
+- Debian **11 minimum** (Debian 11 recommended)
+- PHP **7.4 minimum**
+- An **Apple iCloud** account
+- A trusted Apple device (to receive the security code)
+
+---
+
+<span id="installation" />
+
+# Installation
+
+## 1️⃣ Install the plugin
+
+1. Jeedom → **Plugins**
+2. **Market**
+3. Search for **iOSCloud**
+4. Install then activate
+
+---
+
+## 2️⃣ Install dependencies
+
+On the plugin page:
+
+Click **(Re)install dependencies**
+
+The plugin uses an internal Python module to communicate with iCloud.
+Jeedom automatically installs what is needed.
+
+Wait until the status changes to **OK**.
+
+---
+
+<span id="authentication-procedure" />
+
+# Complete authentication procedure (IMPORTANT)
+
+Connecting to iCloud requires **two-factor authentication (2FA)**.
+
+Apple sends a **temporary security code** to your Apple devices.
+
+---
+
+## Step 1 — Configure the iCloud account
+
+Create a device of type **iCloud Account (cloud)**.
+
+In its configuration:
+
+- iCloud address (Apple email)
+- iCloud password
+
+Save.
+
+---
+
+## Step 2 — Start authentication
+
+In the device:
+
+Click **Authentication**
+
+The plugin attempts to connect.
+
+---
+
+## Step 3 — Receive the Apple code
+
+If Apple requests a code:
+
+- You receive a code on your iPhone / iPad
+- A "code" field appears in the plugin
+
+Enter the received code.
+
+Click **Send code**
+
+---
+
+## Step 4 — Validation
+
+The plugin displays the progress:
+
+- Connecting
+- Code requested
+- Code sent
+- Code validated
+- Synchronizing devices
+
+When validation is complete:
+
+✅ Devices are automatically retrieved
+✅ "Device" equipment is created or updated
+
+---
+
+## Re-authentication
+
+- After a reboot
+- If the password is incorrect → connection refused
+
+> Avoid running authentication too frequently.
+
+---
+
+<span id="device-types" />
+
+# Device types
+
+The plugin creates several device types:
+
+---
+
+## ☁️ iCloud Account (cloud)
+
+Main device.
+
+Contains:
+
+- iCloud credentials
+- Authentication button
+- Refresh management
+- Cron settings
+
+---
+
+## 📱 iCloud Device (devices)
+
+One device per Apple device.
+
+Available commands:
+
+- Location
+- Battery
+- Timestamp
+- State
+- Play sound
+- Message
+
+---
+
+## 📍 Fixed position (fixed)
+
+Lets you define a manual GPS point (e.g. Home).
+
+Required format:
+
+latitude,longitude
+
+---
+
+## 📏 Distance / Presence (geofence_dist)
+
+Calculates:
+
+- Distance between a fixed point and a device
+- Presence (0 or 1) based on a defined radius
+
+Settings:
+
+- Reference position
+- Radius (e.g. 300 meters)
+- Monitored devices
+
+---
+
+<span id="important-settings" />
+
+# Important settings
+
+## Refresh rate
+
+Do not set a frequency that is too short.
+Recommended: every 5 minutes.
+
+---
+
+## State delay
+
+Time before the state returns to 0 if no update is received.
+Default: 1 hour.
+
+---
+
+## Presence radius
+
+- 100 m → very strict
+- 300 m → good compromise
+- 500 m → more stable
+
+---
+
+<span id="using-in-scenarios" />
+
+# Using in scenarios
+
+## Example — Arriving home
+
+Condition:
+
+`#[iOSCloud][Home - Presence][Presence]# == 1`
+
+Possible actions:
+
+- Turn on lights
+- Deactivate alarm
+- Send notification
+
+---
+
+## Example — Leaving home
+
+`#[iOSCloud][Home - Presence][Presence]# == 0`
+
+---
+
+## Play a sound on an iPhone
+
+`#[iOSCloud][iPhone][Play sound]#`
+
+---
+
+## Send a message
+
+`#[iOSCloud][iPhone][Message]#`
+
+---
+
+<span id="practical-tips" />
+
+# Practical tips
+
+1. Do not refresh too frequently
+2. Adjust the radius if presence varies too much
+3. Re-run authentication if Apple requests a new code
+4. To avoid false departures, create a scenario:
+   - Presence = 0
+   - For more than X minutes
+   → Activate away mode
+
+---

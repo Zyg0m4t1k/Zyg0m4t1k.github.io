@@ -1,0 +1,335 @@
+---
+title: SwitchBot
+description: Control your SwitchBot devices from Jeedom, locally via Bluetooth or via the Cloud API, without requiring a Hub.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="switchbot"
+  title="SwitchBot"
+  description="Control your SwitchBot devices from Jeedom, locally via Bluetooth or via the Cloud API."
+  icon="/img/plugins/switchbot_icon.png"
+/>
+
+---
+
+:::caution Important notes before updating to version 2
+
+- 🔄 **Perform a synchronization after the update**
+  - Ensures proper device detection
+  - Recreates commands based on the actual type (API / BLE)
+
+- 🔵 **MAC addresses are automatically migrated**
+
+:::
+
+:::caution Important notes before getting started
+
+**📡 Bluetooth range**
+
+Bluetooth range depends on distance, walls and radio interference. An external Bluetooth antenna can improve reception if your devices are far from your Jeedom box.
+
+**🔵 Conflict with other Bluetooth plugins**
+
+If you use other plugins that use Bluetooth (such as BLEA), conflicts may occur during a scan. It is recommended to temporarily stop the daemon of these plugins during the scan, then restart it afterward.
+
+**🔁 State synchronization from the SwitchBot app**
+
+If you operate a device directly from the SwitchBot app (not from Jeedom), the state in Jeedom will be updated at the next automatic refresh (every 5 minutes in API mode).
+
+:::
+
+---
+
+## Overview
+
+The **SwitchBot** plugin integrates SwitchBot devices into Jeedom. It lets you control your switches, curtains, locks, temperature sensors, motion detectors, bulbs and smart plugs directly from your home automation system.
+
+It works in **three different ways** depending on your setup:
+
+- ☁️ **Cloud API** — via the Internet with a SwitchBot Hub
+- 📡 **Local Bluetooth** — directly from your Jeedom box, without a Hub
+- 🔄 **Auto mode** — both combined to get the best of each device
+
+---
+
+## Supported devices
+
+| Device | Cloud API | Bluetooth |
+|---|:---:|:---:|
+| Bot (physical switch) | ✅ | ✅ |
+| Curtain | ✅ | ✅ |
+| Curtain 3 | ✅ | ✅ |
+| Lock | ✅ | ✅ |
+| Meter (thermometer + hygrometer) | ✅ | ✅ |
+| Meter Plus | ✅ | ✅ |
+| Outdoor Meter | ✅ | ✅ |
+| Meter Pro CO2 | ✅ | — |
+| Motion Sensor | ✅ | ✅ |
+| Contact Sensor (door/window) | ✅ | ✅ |
+| Presence Sensor | ✅ | — |
+| Water Leak Detector | ✅ | — |
+| Color Bulb | ✅ | ✅ |
+| LED Strip Light | ✅ | ✅ |
+| Plug Mini EU (smart plug) | ✅ | ✅ |
+| Humidifier | ✅ | — |
+
+---
+
+## Prerequisites
+
+**For Cloud API mode:**
+- A SwitchBot Hub (Hub Mini, Hub 2 or Hub Plus) connected to your Wi-Fi network
+- A SwitchBot account with a Token and Secret (obtained from the official app)
+
+**For Bluetooth mode:**
+- A Jeedom box with a Bluetooth adapter (built-in or USB Bluetooth dongle)
+- SwitchBot devices within Bluetooth range of the box (approximately 10 meters depending on obstacles)
+- Plugin dependencies installed (button available on the plugin management page)
+
+---
+
+## Installation
+
+1. Install the plugin from the Jeedom Market
+2. **Activate** the plugin
+3. Go to **Plugins → Plugin Management → SwitchBot → Configuration**
+4. Click **Install dependencies** and wait for completion (a few minutes)
+5. Choose your operating mode then follow the corresponding configuration below
+
+---
+
+## The three operating modes
+
+### Cloud API mode ☁️
+
+The plugin communicates with your devices **via the Internet**, through the SwitchBot servers. Your devices must be paired with a **SwitchBot Hub**.
+
+**✔ Advantages**
+- Compatible with all devices (including those without direct Bluetooth)
+- No conflict with other Bluetooth plugins
+- Stable and reliable
+
+**✘ Disadvantages**
+- Requires a SwitchBot Hub and an Internet connection
+- State updates occur every 5 minutes (not real-time)
+
+---
+
+### Local Bluetooth mode 📡
+
+The plugin communicates directly with your devices **via Bluetooth**, without going through the Internet. Ideal without a SwitchBot Hub or for a 100% local setup.
+
+**✔ Advantages**
+- Works without Internet, without a Hub, without a SwitchBot account
+- Sensors send their data in real-time (as soon as a value changes)
+- Total privacy, nothing leaves your network
+
+**✘ Disadvantages**
+- Devices within Bluetooth range only
+- Risk of conflict if other plugins use Bluetooth at the same time
+
+---
+
+### Auto mode (combined) 🔄
+
+The plugin uses both methods simultaneously, depending on what is most suitable.
+
+---
+
+:::important How the combined Bluetooth + API mode works
+
+In **Auto** mode, the plugin intelligently leverages both channels:
+
+**Sensors** (temperature, humidity, motion, door opening…) use **real-time Bluetooth**: as soon as a device detects a change, the information reaches Jeedom in less than a second, automatically.
+
+**Commands** (turn on, turn off, open/close curtains, lock…) go through the **Internet API** if a Hub is available, or directly via Bluetooth if the device is within range.
+
+**State updates** are also performed every 5 minutes via the API, complementing the instant Bluetooth notifications.
+
+**In practice:** your temperature sensor transmits its value as soon as it changes, your Bot switch responds immediately to a command — without any special configuration needed. You get the best of both methods.
+
+:::
+
+---
+
+## Cloud API configuration
+
+To use the SwitchBot API, you need a **Token** and a **Secret** from your SwitchBot account.
+
+### Obtain API keys from the SwitchBot app
+
+1. Open the **SwitchBot** app on your phone
+2. Go to **Profile** (icon at the bottom right)
+3. Tap **Preferences**
+4. Scroll to the bottom and **tap 10 times quickly on "App Version"**
+5. A new **Developer Options** section appears
+6. Copy the **Token** and **Secret**
+
+### Enter keys in Jeedom
+
+1. In the plugin configuration, paste your **Token** in the dedicated field
+2. Paste your **Secret**
+3. Click **Save Token / Secret**
+
+:::tip
+API keys are linked to your SwitchBot account. If you change your password or revoke the keys from the app, remember to update the configuration in Jeedom.
+:::
+
+---
+
+## Bluetooth configuration
+
+1. Select the **Local BLE Bluetooth** (or **Auto**) mode in the configuration
+2. Choose your **Bluetooth adapter** from the list (usually `hci0`)
+3. Adjust the **scan duration** if needed (10 seconds by default)
+
+---
+
+## Synchronization and device setup
+
+### From the Cloud API
+
+After configuring your API credentials, click **Synchronize API devices**. All your devices paired with the SwitchBot Hub appear automatically in Jeedom with their commands ready to use.
+
+{/* Image to add: /img/plugins/switchbot/sync_api.png — API synchronization button and result display area */}
+
+### From Bluetooth
+
+Click **Scan BLE devices**. The scan takes about 10 seconds. All SwitchBot devices detected within range are created automatically.
+
+:::tip
+If your device is not detected, move it closer to your Jeedom box or make sure it is in active mode (press the physical button on the device once to "wake it up").
+:::
+
+{/* Image to add: /img/plugins/switchbot/scan_ble.png — BLE scan button and result with the list of detected devices */}
+
+### Manually
+
+From **Plugins → Connected Objects → SwitchBot**, click **Add**. Enter the device type and its identifier (visible in the SwitchBot app or in a scan result).
+
+{/* Image to add: /img/plugins/switchbot/ajout_manuel.png — manual device creation form */}
+
+---
+
+## Available commands
+
+Commands are created automatically based on the device type. Here are the most common ones:
+
+| Command | Type | Description |
+|---|---|---|
+| Refresh | Action | Forces a device state update |
+| State | Info | On (1) or off (0) |
+| On | Action | Turns on / activates the device |
+| Off | Action | Turns off / deactivates the device |
+| Temperature | Info | Temperature in °C |
+| Humidity | Info | Humidity in % |
+| Battery | Info | Battery level in % |
+| Brightness | Info | Current brightness level (%) |
+| Set brightness | Action | Sets brightness (1–100) |
+| Color | Info | Current color (HEX format `#RRGGBB`) |
+| Set color | Action | Sets the color (RGB / HEX) |
+| Color temperature | Info | Current temperature (Kelvin) |
+| Set temperature | Action | Sets the color temperature |
+| Color mode | Info | Active mode (color or white) |
+| Effect | Info | Active light effect |
+| Set effect | Action | Activates a preset effect |
+| Position | Info | Curtain position (0 = open, 100 = closed) |
+| Go to position | Action | Moves the curtain to the desired position (0–100) |
+| Motion detected | Info | Motion in progress (1) or not (0) |
+| Opening | Info | Door open or closed |
+| Lock | Action | Locks the smart lock |
+| Unlock | Action | Unlocks the smart lock |
+
+---
+
+## The Bluetooth daemon
+
+:::important The plugin manages the daemon automatically
+
+In Bluetooth or Auto mode, the plugin launches a **background service** (the daemon) that continuously listens for Bluetooth signals from your SwitchBot devices.
+
+**You don't need to do anything.** The plugin:
+- Starts the daemon automatically when Jeedom launches
+- Monitors it continuously and restarts it if needed
+- Stops it cleanly when you change modes or deactivate the plugin
+
+**When to restart the daemon manually?**
+
+Only if your Bluetooth devices stop responding or no longer update. In that case:
+
+1. Go to **Plugins → Plugin Management → SwitchBot**
+2. Click **Restart daemon** in the plugin banner
+
+If the daemon fails to start, check:
+- That **dependencies** are properly installed
+- That your **Bluetooth adapter** is recognized by the system (visible on the Health page)
+- That no other Bluetooth plugin is monopolizing the adapter at the same time
+
+:::
+
+---
+
+## Health page
+
+The Health page provides an at-a-glance overview of your entire setup:
+
+- **API connection** — Token and Secret valid and functional (actual connection test)
+- **Python** — engine required for Bluetooth present and operational
+- **Daemon** — active or stopped
+
+Access: from the SwitchBot device list, click the **Health** icon at the top of the page.
+
+---
+
+## Using in Jeedom
+
+Once devices are created, they appear in **Plugins → Connected Objects → SwitchBot**.
+
+Their commands can be used directly in:
+- Jeedom **scenarios**
+- dashboard **widgets**
+- voice **interactions**
+- **alerts** and notifications
+
+Commands are automatically generated from the device profiles built into the plugin — no manual command configuration is needed.
+
+---
+
+## Troubleshooting
+
+### Bluetooth scan finds no devices
+
+- Check that your Bluetooth adapter is properly selected in the configuration
+- Move your SwitchBot devices closer to the Jeedom box during the scan
+- Press the physical button on the device once to make it visible
+- If another plugin uses Bluetooth (BLEA, etc.), stop its daemon during the scan
+- Check the daemon and dependency status on the Health page
+
+### The API is not working
+
+- Check that your Token and Secret are correct and up to date
+- Use the Health page to test the connection in real-time
+- Check your Internet connection and the status of your SwitchBot Hub in the official app
+- If you recently changed your SwitchBot password, regenerate your keys in the app
+
+### Sensor values are no longer updating
+
+- In Bluetooth mode: restart the daemon from the plugin management page
+- In API mode: check the status of your SwitchBot Hub and your Internet connection
+- Check the plugin logs (Analysis → Logs → switchbot) to identify any errors
+
+### The "Go to position" command does not send the correct value
+
+- Check that the command is of **Slider** type in the device configuration
+- The value must be a number between 0 (open) and 100 (closed)
+- If the value is empty or missing, the plugin now reports an explicit error in the logs
+
+### The state in Jeedom does not match the actual device state
+
+- In API mode, the state is automatically refreshed every 5 minutes. Click **Refresh** for an immediate update
+- In Bluetooth mode, the daemon updates the state as soon as the device sends a signal. If nothing happens, restart the daemon
+
+---
