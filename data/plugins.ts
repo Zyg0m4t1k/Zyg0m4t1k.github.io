@@ -261,6 +261,21 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "speedtest",
+    "name": "Speedtest",
+    "description": "Mesurez et surveillez les performances de votre connexion internet depuis Jeedom : download, upload, ping, jitter, perte de paquets et score global.",
+    "icon": "speedtest_icon.png",
+    "ribbon": "Màj",
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x", "python"],
+    "routes": {
+      "page": "/docs/plugins/speedtest/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/speedtest",
+      "market": null
+    }
+  },
+  {
     "id": "icon",
     "name": "Plugin Icônes",
     "description": "Ajoutez, installez, désinstallez et prévisualisez des packs d’icônes personnalisés dans Jeedom.",

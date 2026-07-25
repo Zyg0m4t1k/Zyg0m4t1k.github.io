@@ -1,0 +1,42 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-07-25
+
+### Complete rewrite
+
+- **Python venv**: dependencies installed in a virtual environment (no more global `sudo pip install`)
+- **JSON parsing**: replaced fragile text parsing with structured JSON output from speedtest-cli
+- **New commands**: jitter, packet loss, overall score, server, ISP, usage rating
+- **Custom SVG widget**: animated download gauge, upload bar, score circle, ping/jitter/loss tiles
+- **Server selection**: manual selection by ID or automatic
+- **Overall score**: weighted score out of 10 (DL 40%, UL 20%, Ping 20%, Jitter 10%, Loss 10%)
+- **Usage rating**: web, streaming, gaming, video calls assessment
+- **Configurable scales**: adjustable max download and upload for the widget
+- **jQuery removed**: migrated to native JavaScript APIs (Core 4.4+)
+- **Jeedom 4.4 minimum** required
+
+### Fixes
+
+- Fixed log referencing `switchbot` instead of `speedtest` in `dependancy_info()`
+- Fixed undefined `$img` variable on test failure
+- Fixed `getIp()` declared as instance method but called statically
+- Removed hardcoded version in dependency check
+- Removed dead code (commented `preSave`, alternative/beta widget options)
+
+---
+
+## Previous versions
+
+### 2021-xx-xx
+- Various bug fixes
+- Added alternative widget with speedtest.net image
+
+### 2020-xx-xx
+- Initial release
+- Download, upload, ping measurement
+- Cron scheduling
+- Public IP monitoring

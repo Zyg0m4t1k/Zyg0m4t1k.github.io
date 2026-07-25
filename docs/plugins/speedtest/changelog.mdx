@@ -1,0 +1,42 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-07-25
+
+### Refonte complete
+
+- **Venv Python** : installation des dependances dans un environnement virtuel (plus de `sudo pip install` global)
+- **Parsing JSON** : remplacement du parsing texte fragile par la sortie JSON structuree de speedtest-cli
+- **Nouvelles commandes** : jitter, perte de paquets, score global, serveur, FAI, notation d'usage
+- **Widget custom SVG** : jauge download animee, barre upload, cercle de score, tuiles ping/jitter/perte
+- **Choix du serveur** : selection manuelle par ID ou automatique
+- **Score global** : note sur 10 ponderee (DL 40%, UL 20%, Ping 20%, Jitter 10%, Perte 10%)
+- **Notation par usage** : evaluation web, streaming, gaming, visio
+- **Echelles configurables** : max download et upload ajustables pour le widget
+- **Suppression de jQuery** : migration vers les APIs JavaScript natives du Core 4.4+
+- **Jeedom 4.4 minimum** requis
+
+### Corrections
+
+- Correction du log qui referençait `switchbot` au lieu de `speedtest` dans `dependancy_info()`
+- Correction de la variable `$img` non definie en cas d'echec du test
+- Correction de `getIp()` declare en methode d'instance mais appelee statiquement
+- Suppression de la version hardcodee dans la verification des dependances
+- Suppression du code mort (`preSave` commente, options widget alternatif/beta)
+
+---
+
+## Versions precedentes
+
+### 2021-xx-xx
+- Correction de bugs divers
+- Ajout du widget alternatif avec image speedtest.net
+
+### 2020-xx-xx
+- Version initiale
+- Mesure download, upload, ping
+- Planification via cron
+- Surveillance IP publique
