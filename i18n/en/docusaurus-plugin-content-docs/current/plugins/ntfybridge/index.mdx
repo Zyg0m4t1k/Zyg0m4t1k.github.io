@@ -27,7 +27,7 @@ Communication is **two-way**:
 
 ---
 
-## Why ntfybridge?
+### Why ntfybridge?
 
 Most home-automation notification solutions are one-way: the controller sends an alert, end of story. To take action, you have to open the app, navigate menus, find the right button.
 
@@ -41,7 +41,7 @@ Everything stays **on your premises**: ntfy is embedded, no cloud required, no q
 
 ---
 
-## Quick Start — 9 Steps
+### Quick Start — 9 Steps
 
 Minimal walkthrough to make Jeedom reachable by notification from your phone, without creating any equipment.
 
@@ -49,13 +49,13 @@ Minimal walkthrough to make Jeedom reachable by notification from your phone, wi
 |---|---|---|
 | 1 | **Install the plugin** | Jeedom Market or GitHub → activate the plugin |
 | 2 | **Install dependencies** | Click *Relaunch* — installs Node.js ≥ 22 and the ntfy binary automatically |
-| 3 | **Configure the ntfy server** | Embedded mode: set the admin username and password → [see details ↓](#-configure-the-ntfy-server) |
+| 3 | **Configure the ntfy server** | Embedded mode: set the admin username and password → [see details ↓](#configure-the-ntfy-server) |
 | 4 | **Start the daemon** | Click *Relaunch* — the ntfy server starts with the daemon |
 | 5 | **Open ports on your internet router** | Forward ports **80** (HTTP) and **443** (HTTPS) to your Jeedom IP address |
 | 6 | **Test the reverse proxy** | Run the built-in wizard, follow the 5 steps → [see reverse proxy ↓](#reverse-proxy) |
-| 7 | **Create an ntfy user** | User panel: add an account with permissions on the rescue topic → [see panel ↓](#-manage-users-panel) |
-| 8 | **Install the ntfy app** | Download on [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), add the server, authenticate → [see app ↓](#-install-and-configure-the-ntfy-app) |
-| 9 | **Configure rescue topics and test ping** | Rescue modal: enter the action and response topics, enable `ping`, send `ping` from the app → [see rescue ↓](#-rescue-mode) |
+| 7 | **Create an ntfy user** | User panel: add an account with permissions on the rescue topic → [see panel ↓](#manage-users-panel) |
+| 8 | **Install the ntfy app** | Download on [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), add the server, authenticate → [see app ↓](#install-and-configure-the-ntfy-app) |
+| 9 | **Configure rescue topics and test ping** | Rescue modal: enter the action and response topics, enable `ping`, send `ping` from the app → [see rescue ↓](#rescue-mode) |
 
 :::tip Result
 In 9 steps, your Jeedom is reachable from anywhere by notification — even if the web interface is down.
@@ -63,7 +63,7 @@ In 9 steps, your Jeedom is reachable from anywhere by notification — even if t
 
 ---
 
-# Configure the ntfy Server
+## Configure the ntfy Server {#configure-the-ntfy-server}
 
 ```text
 Plugins → Plugin Management → ntfybridge → Configuration
@@ -111,7 +111,7 @@ In external mode, user and permission management is not available in Jeedom. You
 
 ---
 
-# Manage Users (Panel)
+## Manage Users (Panel) {#manage-users-panel}
 
 ```text
 Plugins → ntfybridge → Panel
@@ -123,13 +123,13 @@ The user management panel is only available in embedded mode. In external mode, 
 
 The panel displays a **Topics × Users cross-table** for fine-grained access control.
 
-### Add a User
+#### Add a User
 
 1. Click **Add User**
 2. Enter a username and password (minimum 8 characters)
 3. Click **Create**
 
-### Manage Permissions
+#### Manage Permissions
 
 For each user/topic combination, choose the access level:
 
@@ -141,15 +141,15 @@ For each user/topic combination, choose the access level:
 
 Each change is **applied immediately** on the ntfy server.
 
-### Delete a User
+#### Delete a User
 
 Click the delete icon in the user's column. Deletion is permanent.
 
 ---
 
-# Install and Configure the ntfy App
+## Install and Configure the ntfy App {#install-and-configure-the-ntfy-app}
 
-### Download the App
+#### Download the App
 
 | Platform | Link |
 |---|---|
@@ -157,7 +157,7 @@ Click the delete icon in the user's column. Deletion is permanent.
 | **Android** | [Google Play](https://play.google.com/store/apps/details?id=io.heckel.ntfy) or [F-Droid](https://f-droid.org/packages/io.heckel.ntfy/) |
 | **Web** | Access your ntfy server URL in a browser |
 
-### Subscribe to a Topic
+#### Subscribe to a Topic
 
 1. Open the ntfy app
 2. Tap **+** (add a subscription)
@@ -168,7 +168,7 @@ Click the delete icon in the user's column. Deletion is permanent.
 
 - **With subdomain**: enter the full URL `https://ntfy.yourdomain.com/your_topic`
 - **Local / VPN**: enter `http://JEEDOM_IP:NTFY_PORT/your_topic`
-- If authentication is enabled: enter the username and password created in the [panel](#-manage-users-panel)
+- If authentication is enabled: enter the username and password created in the [panel](#manage-users-panel)
 
 </TabItem>
 <TabItem value="external" label="External Mode">
@@ -186,7 +186,7 @@ The subscription URL is displayed in the **Subscription** section of each ntfybr
 
 ---
 
-# What You Can Do
+## What You Can Do
 
 <Tabs>
 <TabItem value="jeedom-to-phone" label="🏠 Jeedom → Phone" default>
@@ -217,7 +217,7 @@ The subscription URL is displayed in the **Subscription** section of each ntfybr
 
 ---
 
-# Configuration Modes
+## Configuration Modes
 
 :::tip Recommended Setup
 **Embedded mode + HTTPS subdomain** — all-in-one installation, data stays on your premises, all features available (native iOS push, confirmation buttons, icons, file attachments).
@@ -274,9 +274,9 @@ The plugin connects to your own ntfy server (VPS, NAS, etc.).
 
 ---
 
-# Installation
+## Installation
 
-## 1. Install the Plugin
+### 1. Install the Plugin
 
 ```text
 Plugins → Plugin Management → Market → ntfybridge → Install
@@ -290,7 +290,7 @@ Node.js (≥ 22) and the ntfy binary are installed automatically. No manual inte
 
 ---
 
-## 2. Create an Equipment
+### 2. Create an Equipment
 
 1. **Plugins → ntfybridge → Add**
 2. Name it, enable it
@@ -307,13 +307,13 @@ Subscribe in the ntfy app by copying the URL shown in the **Subscription** secti
 
 ---
 
-# Equipment Configuration
+## Equipment Configuration
 
 Each ntfybridge equipment has four tabs.
 
-## Equipment Tab
+### Equipment Tab
 
-### Topics
+#### Topics
 
 | Field | Role |
 |---|---|
@@ -324,7 +324,7 @@ Each ntfybridge equipment has four tabs.
 Both topics can be the same if you only have one topic for everything. However, separating topics lets you subscribe only to responses without receiving your own commands echoed back.
 :::
 
-### Default Values
+#### Default Values
 
 These values apply to each send unless overridden by a cache command or inline parameter.
 
@@ -338,7 +338,7 @@ These values apply to each send unless overridden by a cache command or inline p
 | **ntfy Cache** | Server-side ntfy caching (`yes`/`no`). Empty = server default |
 | **Firebase** | Firebase push activation (`yes`/`no`). Empty = server default |
 
-### Security
+#### Security
 
 | Setting | Description |
 |---|---|
@@ -346,7 +346,7 @@ These values apply to each send unless overridden by a cache command or inline p
 | **Blacklisted Words** | Words whose presence in a message blocks all processing (e.g. `delete,rm,sudo`) |
 | **Confirmation Timeout** | Expiration delay for a Yes/No confirmation request, in seconds (default: 60 s) |
 
-### Silent Mode
+#### Silent Mode
 
 | Option | Description |
 |---|---|
@@ -362,11 +362,11 @@ Disabling outgoing sends is useful for example for an equipment dedicated solely
 
 ---
 
-## Responses Tab
+### Responses Tab
 
 Defines what Jeedom replies when it receives a message matching keywords.
 
-### Rule Columns
+#### Rule Columns
 
 | Field | Description |
 |---|---|
@@ -379,7 +379,7 @@ Defines what Jeedom replies when it receives a message matching keywords.
 | **Tags** | ntfy emojis for the response |
 | **Image URL** | URL of an image attached to the response |
 
-### Command References in Responses
+#### Command References in Responses
 
 Click **+** to open the Jeedom command selector and insert `{#id#}` at the cursor position.
 
@@ -395,11 +395,11 @@ Each rule can send the response to a different topic than the equipment's defaul
 
 ---
 
-## Actions Tab
+### Actions Tab
 
 Defines what Jeedom **executes** when it receives a message matching keywords.
 
-### Rule Fields
+#### Rule Fields
 
 | Field | Description |
 |---|---|
@@ -413,7 +413,7 @@ Defines what Jeedom **executes** when it receives a message matching keywords.
 | **Cancel Text** | Message sent if the user clicks No |
 | **Priority / Tags** | ntfy settings for the confirmation notification |
 
-### Yes / No Confirmation
+#### Yes / No Confirmation
 
 When confirmation is enabled, Jeedom generates a **secure token** (128-bit, single-use) and sends an ntfy notification with two HTTP buttons.
 
@@ -432,11 +432,11 @@ If you do not want to receive confirmation/success/cancel messages on the respon
 
 ---
 
-## Commands Tab
+### Commands Tab
 
 Commands are created **automatically** when saving the equipment. No manual action required.
 
-### Send Commands
+#### Send Commands
 
 | Command | Type | Role |
 |---|---|---|
@@ -453,7 +453,7 @@ Commands are created **automatically** when saving the equipment. No manual acti
 | **ntfy Cache** | Action / string | ntfy cache override (`yes`/`no`) |
 | **Firebase** | Action / string | Firebase override (`yes`/`no`) |
 
-### Trigger Commands
+#### Trigger Commands
 
 | Command | Type | Role |
 |---|---|---|
@@ -475,9 +475,9 @@ Action block:
 
 ---
 
-# Sending Notifications
+## Sending Notifications
 
-## The send_message Command
+### The send_message Command
 
 In a Jeedom scenario:
 
@@ -487,7 +487,7 @@ Title  : Alarm
 Message : Motion detected zone A
 ```
 
-## Send Options
+### Send Options
 
 Call cache commands **before** `send_message`, or use **inline** parameters directly in the message:
 
@@ -520,11 +520,11 @@ Full inline example:
 
 ---
 
-# Send Profiles
+## Send Profiles
 
 Group your recurring settings into named profiles. Open from **Plugins → ntfybridge → Profiles**.
 
-## Priority Levels
+### Priority Levels
 
 | Level | Value | Behavior |
 |---|---|---|
@@ -534,7 +534,7 @@ Group your recurring settings into named profiles. Open from **Plugins → ntfyb
 | high | `4` | Sound + vibration, even in Do Not Disturb mode |
 | urgent | `5` | Loud sound + vibration + overrides silent mode |
 
-## Common Tags
+### Common Tags
 
 Tags correspond to ntfy emoji names, comma-separated.
 
@@ -555,7 +555,7 @@ Tags correspond to ntfy emoji names, comma-separated.
 | `camera` | 📷 | Camera, detection |
 | `zzz` | 💤 | Night mode, silence |
 
-## Create a Profile
+### Create a Profile
 
 | Field | Example |
 |---|---|
@@ -565,7 +565,7 @@ Tags correspond to ntfy emoji names, comma-separated.
 | Icon | `https://...` |
 | Markdown | ✅ |
 
-## Use a Profile
+### Use a Profile
 
 ```text
 [profile=alert] Intrusion detected
@@ -575,7 +575,7 @@ Tags correspond to ntfy emoji names, comma-separated.
 
 ---
 
-# Response Rules
+## Response Rules
 
 When an incoming message matches keywords, Jeedom reads an info command and replies.
 
@@ -587,7 +587,7 @@ Click **+** in the response field to insert a `{#id#}` reference via the Jeedom 
 
 ---
 
-# Action Rules
+## Action Rules
 
 When a message matches, Jeedom executes an action.
 
@@ -601,7 +601,7 @@ ntfy buttons are displayed in the **message detail** (long press or tap on the n
 
 ---
 
-# Silent Mode
+## Silent Mode
 
 Per equipment:
 
@@ -613,7 +613,7 @@ Per equipment:
 
 ---
 
-# Rescue Mode
+## Rescue Mode {#rescue-mode}
 
 Rescue Mode lets you query and troubleshoot Jeedom **from the ntfy app**, even when the web interface is unreachable (Apache or PHP down, Jeedom not responding).
 
@@ -621,7 +621,7 @@ The ntfybridge daemon runs **independently** from Jeedom. It can keep responding
 
 ---
 
-## Configure Rescue Mode
+### Configure Rescue Mode
 
 Open the plugin configuration:
 
@@ -629,7 +629,7 @@ Open the plugin configuration:
 Plugins → ntfybridge → (rescue icon)
 ```
 
-### Rescue Topics
+#### Rescue Topics
 
 | Field | Description |
 |---|---|
@@ -642,7 +642,7 @@ Separating the rescue topic from your regular topics lets you subscribe to it on
 
 ---
 
-## Built-in Commands
+### Built-in Commands
 
 These commands are available **without any additional configuration**, even if PHP is unreachable.
 
@@ -659,7 +659,7 @@ Send the keyword in ntfy → Jeedom responds automatically.
 
 Check the commands you want to enable in the Rescue modal. It is recommended to enable at least `ping` and `emergency`.
 
-### The `emergency` Command in Detail
+#### The `emergency` Command in Detail
 
 When you send `emergency`:
 
@@ -675,11 +675,11 @@ For service restart to work, sudo rights must be granted to the `www-data` user.
 
 ---
 
-## Custom Commands
+### Custom Commands
 
 You can add your own commands: send a keyword in ntfy to trigger script execution on the server, and the result is sent back to you.
 
-### Add a Command
+#### Add a Command
 
 1. Open the Rescue modal
 2. Click **Add Command**
@@ -695,7 +695,7 @@ You can add your own commands: send a keyword in ntfy to trigger script executio
 
 4. Click **Save**
 
-### Deploy a Script
+#### Deploy a Script
 
 Scripts must be placed in:
 
@@ -719,9 +719,9 @@ The folder already contains four test scripts (`test_hello.sh`, `test_hello.php`
 
 ---
 
-# Phone Control
+## Phone Control
 
-## iOS — Native Shortcuts
+### iOS — Native Shortcuts
 
 1. **Shortcuts** app → New Shortcut
 2. Add the **Ask for Input** action *(optional prompt)*
@@ -739,7 +739,7 @@ Do not enter a question in the "Ask for Input" action. Depending on the iOS vers
 ntfybridge was born from this concept: an iOS shortcut sends a POST → Jeedom receives and acts.
 :::
 
-## Android
+### Android
 
 | App | Highlights |
 |---|---|
@@ -749,7 +749,7 @@ ntfybridge was born from this concept: an iOS shortcut sends a POST → Jeedom r
 
 ---
 
-# Logs
+## Logs
 
 | Log | Description |
 |---|---|
@@ -759,9 +759,7 @@ Enable **Debug** only for troubleshooting.
 
 ---
 
-<span id="reverse-proxy" />
-
-# Configure the Reverse Proxy (Embedded Mode + Subdomain)
+## Configure the Reverse Proxy (Embedded Mode + Subdomain) {#reverse-proxy}
 
 The built-in wizard generates the Apache configuration in 5 steps.
 
@@ -799,15 +797,15 @@ sudo certbot renew --dry-run
 
 ---
 
-# Troubleshooting
+## Troubleshooting
 
-## The Daemon Won't Start
+### The Daemon Won't Start
 
 - Check Node.js ≥ 22: `node --version`
 - ntfy port free: **Reset Port** button in configuration
 - Check logs: **Plugins → ntfybridge → Logs**
 
-## Yes/No Buttons Don't Work
+### Yes/No Buttons Don't Work
 
 The Jeedom external URL must be reachable from the internet:
 
@@ -815,12 +813,12 @@ The Jeedom external URL must be reachable from the internet:
 Settings → System → Configuration → Networks → External Access → URL
 ```
 
-## No Notification Received
+### No Notification Received
 
 - Same topic in the equipment and the ntfy app
 - User authorized (`allowedUsers`)
 - No blacklisted word triggered (`blacklistWords`)
 
-## iOS Push Not Working
+### iOS Push Not Working
 
 Requires an HTTPS subdomain in embedded mode, or ntfy.sh in external mode.

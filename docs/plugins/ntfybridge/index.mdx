@@ -27,7 +27,7 @@ La communication est **bidirectionnelle** :
 
 ---
 
-## Pourquoi ntfybridge ?
+### Pourquoi ntfybridge ?
 
 La plupart des solutions de notification domotique sont à sens unique : la box envoie une alerte, point final. Pour agir, il faut ouvrir l'app, naviguer, chercher le bon bouton.
 
@@ -41,7 +41,7 @@ Tout reste **chez vous** : ntfy est embarqué, aucun cloud obligatoire, aucun qu
 
 ---
 
-## 🚀 Démarrage rapide — 9 étapes
+### 🚀 Démarrage rapide — 9 étapes
 
 Parcours minimal pour avoir un Jeedom joignable par notification depuis votre téléphone, sans créer d'équipement.
 
@@ -49,13 +49,13 @@ Parcours minimal pour avoir un Jeedom joignable par notification depuis votre t�
 |---|---|---|
 | 1 | **Installer le plugin** | Market Jeedom ou GitHub → activer le plugin |
 | 2 | **Installer les dépendances** | Bouton *Relancer* — installe Node.js ≥ 22 et le binaire ntfy automatiquement |
-| 3 | **Configurer le serveur ntfy** | Mode embarqué : définir l'identifiant admin et le mot de passe → [voir détails ↓](#-configurer-le-serveur-ntfy) |
+| 3 | **Configurer le serveur ntfy** | Mode embarqué : définir l'identifiant admin et le mot de passe → [voir détails ↓](#configurer-le-serveur-ntfy) |
 | 4 | **Démarrer le démon** | Bouton *Relancer* — le serveur ntfy démarre avec le démon |
 | 5 | **Ouvrir les ports sur la box Internet** | Rediriger les ports **80** (HTTP) et **443** (HTTPS) vers l'IP de votre Jeedom |
 | 6 | **Tester le reverse proxy** | Lancer l'assistant intégré, suivre les 5 étapes → [voir reverse proxy ↓](#reverse-proxy) |
-| 7 | **Créer un utilisateur ntfy** | Panel utilisateurs : ajouter un compte avec droits sur le topic secours → [voir panel ↓](#-gérer-les-utilisateurs-panel) |
-| 8 | **Installer l'app ntfy** | Télécharger sur [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), ajouter le serveur, s'authentifier → [voir app ↓](#-installer-et-configurer-lapp-ntfy) |
-| 9 | **Configurer les topics secours et tester le ping** | Modale Secours : renseigner le topic action et réponse, activer `ping`, envoyer `ping` depuis l'app → [voir secours ↓](#-mode-secours) |
+| 7 | **Créer un utilisateur ntfy** | Panel utilisateurs : ajouter un compte avec droits sur le topic secours → [voir panel ↓](#gérer-les-utilisateurs-panel) |
+| 8 | **Installer l'app ntfy** | Télécharger sur [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), ajouter le serveur, s'authentifier → [voir app ↓](#installer-et-configurer-lapp-ntfy) |
+| 9 | **Configurer les topics secours et tester le ping** | Modale Secours : renseigner le topic action et réponse, activer `ping`, envoyer `ping` depuis l'app → [voir secours ↓](#mode-secours) |
 
 :::tip Résultat
 En 9 étapes, votre Jeedom est joignable de n'importe où par notification — même si l'interface web est en panne.
@@ -63,7 +63,7 @@ En 9 étapes, votre Jeedom est joignable de n'importe où par notification — m
 
 ---
 
-# 🖥️ Configurer le serveur ntfy
+## 🖥️ Configurer le serveur ntfy {#configurer-le-serveur-ntfy}
 
 ```text
 Plugins → Gestion des plugins → ntfybridge → Configuration
@@ -111,7 +111,7 @@ En mode externe, la gestion des utilisateurs et des permissions n'est pas dispon
 
 ---
 
-# 👥 Gérer les utilisateurs (panel)
+## 👥 Gérer les utilisateurs (panel) {#gérer-les-utilisateurs-panel}
 
 ```text
 Plugins → ntfybridge → Panel
@@ -123,13 +123,13 @@ Le panel de gestion des utilisateurs est disponible uniquement en mode embarqué
 
 Le panel affiche un **tableau croisé Topics x Utilisateurs** permettant de gérer finement les droits d'accès.
 
-### Ajouter un utilisateur
+#### Ajouter un utilisateur
 
 1. Cliquer sur **Ajouter un utilisateur**
 2. Saisir un nom d'utilisateur et un mot de passe (minimum 8 caractères)
 3. Cliquer sur **Créer**
 
-### Gérer les permissions
+#### Gérer les permissions
 
 Pour chaque combinaison utilisateur/topic, choisir le niveau d'accès :
 
@@ -141,15 +141,15 @@ Pour chaque combinaison utilisateur/topic, choisir le niveau d'accès :
 
 Chaque modification est **appliquée immédiatement** sur le serveur ntfy.
 
-### Supprimer un utilisateur
+#### Supprimer un utilisateur
 
 Cliquer sur l'icône de suppression dans la colonne de l'utilisateur. La suppression est définitive.
 
 ---
 
-# 📱 Installer et configurer l'app ntfy
+## 📱 Installer et configurer l'app ntfy {#installer-et-configurer-lapp-ntfy}
 
-### Télécharger l'app
+#### Télécharger l'app
 
 | Plateforme | Lien |
 |---|---|
@@ -157,7 +157,7 @@ Cliquer sur l'icône de suppression dans la colonne de l'utilisateur. La suppres
 | **Android** | [Google Play](https://play.google.com/store/apps/details?id=io.heckel.ntfy) ou [F-Droid](https://f-droid.org/packages/io.heckel.ntfy/) |
 | **Web** | Accéder à l'URL de votre serveur ntfy dans un navigateur |
 
-### S'abonner à un topic
+#### S'abonner à un topic
 
 1. Ouvrir l'app ntfy
 2. Appuyer sur **+** (ajouter un abonnement)
@@ -168,7 +168,7 @@ Cliquer sur l'icône de suppression dans la colonne de l'utilisateur. La suppres
 
 - **Avec sous-domaine** : saisir l'URL complète `https://ntfy.votredomaine.fr/votre_topic`
 - **En local / VPN** : saisir `http://IP_JEEDOM:PORT_NTFY/votre_topic`
-- Si authentification : renseigner le nom d'utilisateur et le mot de passe créés dans le [panel](#-gérer-les-utilisateurs-panel)
+- Si authentification : renseigner le nom d'utilisateur et le mot de passe créés dans le [panel](#gérer-les-utilisateurs-panel)
 
 </TabItem>
 <TabItem value="external" label="Mode externe">
@@ -186,7 +186,7 @@ L'URL d'abonnement est affichée dans la section **Abonnement** de chaque équip
 
 ---
 
-# ✨ Ce que vous pouvez faire
+## ✨ Ce que vous pouvez faire
 
 <Tabs>
 <TabItem value="jeedom-to-phone" label="🏠 Jeedom → Téléphone" default>
@@ -217,7 +217,7 @@ L'URL d'abonnement est affichée dans la section **Abonnement** de chaque équip
 
 ---
 
-# 🔀 Modes de configuration
+## 🔀 Modes de configuration
 
 :::tip Configuration recommandée
 **Mode embarqué + sous-domaine HTTPS** — installation all-in-one, données chez vous, toutes les fonctionnalités (push iOS natif, boutons de confirmation, icônes, fichiers joints).
@@ -274,9 +274,9 @@ Le plugin se connecte à votre propre serveur ntfy (VPS, NAS…).
 
 ---
 
-# 📦 Installation
+## 📦 Installation
 
-## 1️⃣ Installer le plugin
+### 1️⃣ Installer le plugin
 
 ```text
 Plugins → Gestion des plugins → Market → ntfybridge → Installer
@@ -290,7 +290,7 @@ Node.js (≥ 22) et le binaire ntfy sont installés automatiquement. Aucune inte
 
 ---
 
-## 2️⃣ Créer un équipement
+### 2️⃣ Créer un équipement
 
 1. **Plugins → ntfybridge → Ajouter**
 2. Nommer, activer
@@ -307,13 +307,13 @@ S'abonner dans l'app ntfy en copiant l'URL affichée dans la section **Abonnemen
 
 ---
 
-# 🗂️ Configuration de l'équipement
+## 🗂️ Configuration de l'équipement
 
 Chaque équipement ntfybridge dispose de quatre onglets.
 
-## ⚙️ Onglet Équipement
+### ⚙️ Onglet Équipement
 
-### 📡 Topics
+#### 📡 Topics
 
 | Champ | Rôle |
 |---|---|
@@ -324,7 +324,7 @@ Chaque équipement ntfybridge dispose de quatre onglets.
 Les deux topics peuvent être identiques si vous n'avez qu'un seul topic pour tout. Séparer les topics permet cependant de s'abonner uniquement aux réponses sans recevoir ses propres commandes en écho.
 :::
 
-### 🔧 Valeurs par défaut
+#### 🔧 Valeurs par défaut
 
 Ces valeurs s'appliquent à chaque envoi si aucune surcharge n'est définie par commande cache ou paramètre inline.
 
@@ -338,7 +338,7 @@ Ces valeurs s'appliquent à chaque envoi si aucune surcharge n'est définie par 
 | **Cache ntfy** | Mise en cache côté serveur ntfy (`yes`/`no`). Vide = comportement serveur |
 | **Firebase** | Activation du push Firebase (`yes`/`no`). Vide = comportement serveur |
 
-### 🔒 Sécurité
+#### 🔒 Sécurité
 
 | Paramètre | Description |
 |---|---|
@@ -346,7 +346,7 @@ Ces valeurs s'appliquent à chaque envoi si aucune surcharge n'est définie par 
 | **Mots interdits** | Mots dont la présence dans le message bloque tout traitement (ex: `delete,rm,sudo`) |
 | **Timeout confirmation** | Délai d'expiration d'une demande de confirmation Oui/Non, en secondes (défaut : 60 s) |
 
-### 🔕 Mode silencieux
+#### 🔕 Mode silencieux
 
 | Option | Description |
 |---|---|
@@ -362,11 +362,11 @@ Désactiver les envois sortants est utile par exemple pour un équipement dédi�
 
 ---
 
-## 💬 Onglet Réponses
+### 💬 Onglet Réponses
 
 Définit ce que Jeedom répond quand il reçoit un message correspondant à des mots-clés.
 
-### 📋 Colonnes de la règle
+#### 📋 Colonnes de la règle
 
 | Champ | Description |
 |---|---|
@@ -379,7 +379,7 @@ Définit ce que Jeedom répond quand il reçoit un message correspondant à des 
 | **Tags** | Emojis ntfy pour la réponse |
 | **Image URL** | URL d'une image attachée à la réponse |
 
-### 🔗 Références de commandes dans la réponse
+#### 🔗 Références de commandes dans la réponse
 
 Cliquer sur **+** pour ouvrir le sélecteur de commandes Jeedom et insérer `{#id#}` à la position du curseur.
 
@@ -395,11 +395,11 @@ Chaque règle peut envoyer la réponse sur un topic différent du topic de répo
 
 ---
 
-## ⚡ Onglet Actions
+### ⚡ Onglet Actions
 
 Définit ce que Jeedom **exécute** quand il reçoit un message correspondant à des mots-clés.
 
-### 📋 Champs de la règle
+#### 📋 Champs de la règle
 
 | Champ | Description |
 |---|---|
@@ -413,7 +413,7 @@ Définit ce que Jeedom **exécute** quand il reçoit un message correspondant à
 | **Texte annulation** | Message envoyé si l'utilisateur clique Non |
 | **Priorité / Tags** | Paramètres ntfy de la notification de confirmation |
 
-### ✅ Confirmation Oui / Non
+#### ✅ Confirmation Oui / Non
 
 Quand la confirmation est activée, Jeedom génère un **token sécurisé** (128 bits, usage unique) et envoie une notification ntfy avec deux boutons HTTP.
 
@@ -432,11 +432,11 @@ Si vous ne souhaitez pas recevoir les messages de confirmation/succès/annulatio
 
 ---
 
-## 🎛️ Onglet Commandes
+### 🎛️ Onglet Commandes
 
 Les commandes sont créées **automatiquement** à la sauvegarde de l'équipement. Aucune action manuelle requise.
 
-### 📤 Commandes d'envoi
+#### 📤 Commandes d'envoi
 
 | Commande | Type | Rôle |
 |---|---|---|
@@ -453,7 +453,7 @@ Les commandes sont créées **automatiquement** à la sauvegarde de l'équipemen
 | **Cache ntfy** | Action / string | Surcharge du cache ntfy (`yes`/`no`) |
 | **Firebase** | Action / string | Surcharge Firebase (`yes`/`no`) |
 
-### 🔁 Commandes de déclenchement
+#### 🔁 Commandes de déclenchement
 
 | Commande | Type | Rôle |
 |---|---|---|
@@ -475,9 +475,9 @@ Bloc action :
 
 ---
 
-# 📤 Envoyer des notifications
+## 📤 Envoyer des notifications
 
-## La commande send_message
+### La commande send_message
 
 Dans un scénario Jeedom :
 
@@ -487,7 +487,7 @@ Titre  : Alarme
 Message : Mouvement détecté zone A
 ```
 
-## ⚙️ Options d'envoi
+### ⚙️ Options d'envoi
 
 Appeler les commandes de cache **avant** `send_message`, ou utiliser les paramètres **inline** directement dans le message :
 
@@ -520,11 +520,11 @@ Exemple complet avec inline :
 
 ---
 
-# 🗂️ Profils d'envoi
+## 🗂️ Profils d'envoi
 
 Groupez vos paramètres récurrents en profils nommés. Ouvrir depuis **Plugins → ntfybridge → Profils**.
 
-## 📊 Niveaux de priorité
+### 📊 Niveaux de priorité
 
 | Niveau | Valeur | Comportement |
 |---|---|---|
@@ -534,7 +534,7 @@ Groupez vos paramètres récurrents en profils nommés. Ouvrir depuis **Plugins 
 | high | `4` | Son + vibration, même en mode ne pas déranger |
 | urgent | `5` | Son fort + vibration + contourne le mode silencieux |
 
-## 🏷️ Tags courants
+### 🏷️ Tags courants
 
 Les tags correspondent aux noms d'emojis ntfy, séparés par virgule.
 
@@ -555,7 +555,7 @@ Les tags correspondent aux noms d'emojis ntfy, séparés par virgule.
 | `camera` | 📷 | Caméra, détection |
 | `zzz` | 💤 | Mode nuit, silence |
 
-## ➕ Créer un profil
+### ➕ Créer un profil
 
 | Champ | Exemple |
 |---|---|
@@ -565,7 +565,7 @@ Les tags correspondent aux noms d'emojis ntfy, séparés par virgule.
 | Icône | `https://...` |
 | Markdown | ✅ |
 
-## 🚀 Utiliser un profil
+### 🚀 Utiliser un profil
 
 ```text
 [profile=alerte] Intrusion détectée
@@ -575,7 +575,7 @@ Les tags correspondent aux noms d'emojis ntfy, séparés par virgule.
 
 ---
 
-# 💬 Règles de réponse
+## 💬 Règles de réponse
 
 Quand un message entrant correspond à des mots-clés, Jeedom lit une commande info et répond.
 
@@ -587,7 +587,7 @@ Cliquer sur **+** dans le champ réponse pour insérer une référence `{#id#}` 
 
 ---
 
-# ⚡ Règles d'action
+## ⚡ Règles d'action
 
 Quand un message correspond, Jeedom exécute une action.
 
@@ -601,7 +601,7 @@ Les boutons ntfy s'affichent dans le **détail du message** (appui long ou tap s
 
 ---
 
-# 🔕 Mode silencieux
+## 🔕 Mode silencieux
 
 Par équipement :
 
@@ -613,7 +613,7 @@ Par équipement :
 
 ---
 
-# 🚨 Mode Secours
+## 🚨 Mode Secours {#mode-secours}
 
 Le Mode Secours permet d'interroger et de dépanner Jeedom **depuis l'application ntfy**, même quand l'interface web est inaccessible (Apache ou PHP en panne, Jeedom qui ne répond plus).
 
@@ -621,7 +621,7 @@ Le démon ntfybridge tourne **indépendamment** de Jeedom. Il peut donc continue
 
 ---
 
-## ⚙️ Configurer le Mode Secours
+### ⚙️ Configurer le Mode Secours
 
 Ouvrir la configuration du plugin :
 
@@ -629,7 +629,7 @@ Ouvrir la configuration du plugin :
 Plugins → ntfybridge → (icône secours)
 ```
 
-### 📡 Topics secours
+#### 📡 Topics secours
 
 | Champ | Description |
 |---|---|
@@ -642,7 +642,7 @@ Séparer le topic secours de vos topics habituels permet de s'y abonner uniqueme
 
 ---
 
-## 🛠️ Commandes natives
+### 🛠️ Commandes natives
 
 Ces commandes sont disponibles **sans aucune configuration supplémentaire**, même si PHP est inaccessible.
 
@@ -659,7 +659,7 @@ Envoyez le mot-clé dans ntfy → Jeedom répond automatiquement.
 
 Cocher les commandes à activer dans la modale Secours. Il est recommandé d'activer au minimum `ping` et `emergency`.
 
-### 🔴 La commande `emergency` en détail
+#### 🔴 La commande `emergency` en détail
 
 Quand vous envoyez `emergency` :
 
@@ -675,11 +675,11 @@ Pour que le redémarrage des services fonctionne, les droits sudo doivent être 
 
 ---
 
-## ✏️ Commandes personnalisées
+### ✏️ Commandes personnalisées
 
 Vous pouvez ajouter vos propres commandes : envoyer un mot-clé dans ntfy déclenche l'exécution d'un script sur le serveur, et le résultat vous est renvoyé.
 
-### ➕ Ajouter une commande
+#### ➕ Ajouter une commande
 
 1. Ouvrir la modale Secours
 2. Cliquer **Ajouter une commande**
@@ -695,7 +695,7 @@ Vous pouvez ajouter vos propres commandes : envoyer un mot-clé dans ntfy décle
 
 4. Cliquer **Sauvegarder**
 
-### 📁 Déposer un script
+#### 📁 Déposer un script
 
 Les scripts doivent être placés dans :
 
@@ -719,9 +719,9 @@ Le dossier contient déjà quatre scripts de test (`test_hello.sh`, `test_hello.
 
 ---
 
-# 📱 Pilotage depuis le téléphone
+## 📱 Pilotage depuis le téléphone
 
-## 🍎 iOS — Raccourcis natifs
+### 🍎 iOS — Raccourcis natifs
 
 1. App **Raccourcis** → Nouveau raccourci
 2. Ajouter l'action **Demander du texte** *(invite facultative)*
@@ -739,7 +739,7 @@ Ne pas renseigner de question dans l'action "Demander du texte". Selon la versio
 ntfybridge est né de ce concept : un raccourci iOS envoie un POST → Jeedom reçoit et agit.
 :::
 
-## 🤖 Android
+### 🤖 Android
 
 | Application | Points forts |
 |---|---|
@@ -749,7 +749,7 @@ ntfybridge est né de ce concept : un raccourci iOS envoie un POST → Jeedom re
 
 ---
 
-# 📄 Logs
+## 📄 Logs
 
 | Log | Description |
 |---|---|
@@ -759,9 +759,7 @@ Activer **Debug** uniquement pour le diagnostic.
 
 ---
 
-<span id="reverse-proxy" />
-
-# 🌐 Configurer le reverse proxy (mode embarqué + sous-domaine)
+## 🌐 Configurer le reverse proxy (mode embarqué + sous-domaine) {#reverse-proxy}
 
 L'assistant intégré génère la configuration Apache en 5 étapes.
 
@@ -799,15 +797,15 @@ sudo certbot renew --dry-run
 
 ---
 
-# 🔍 Dépannage
+## 🔍 Dépannage
 
-## ❌ Le démon ne démarre pas
+### ❌ Le démon ne démarre pas
 
 - Vérifier Node.js ≥ 22 : `node --version`
 - Port ntfy libre : bouton **Reset port** dans la configuration
 - Consulter les logs : **Plugins → ntfybridge → Logs**
 
-## ❌ Les boutons Oui/Non ne fonctionnent pas
+### ❌ Les boutons Oui/Non ne fonctionnent pas
 
 L'URL externe Jeedom doit être accessible depuis Internet :
 
@@ -815,12 +813,12 @@ L'URL externe Jeedom doit être accessible depuis Internet :
 Configuration → Général → URL d'accès externe
 ```
 
-## 🔕 Aucune notification reçue
+### 🔕 Aucune notification reçue
 
 - Topic identique dans l'équipement et l'app ntfy
 - Utilisateur autorisé (`allowedUsers`)
 - Pas de mot interdit déclenché (`blacklistWords`)
 
-## 🍎 Push iOS absent
+### 🍎 Push iOS absent
 
 Nécessite un sous-domaine HTTPS en mode embarqué, ou ntfy.sh en mode externe.

@@ -29,9 +29,7 @@ This document describes the **iOSCloud** plugin: configuration, authentication, 
 
 ---
 
-<span id="overview" />
-
-# Overview
+## Overview {#overview}
 
 The **iOSCloud** plugin allows Jeedom to connect to your **iCloud** account in order to:
 
@@ -43,11 +41,9 @@ The **iOSCloud** plugin allows Jeedom to connect to your **iCloud** account in o
 
 ---
 
-<span id="prerequisites" />
+## Prerequisites {#prerequisites}
 
-# Prerequisites
-
-## Minimum requirements
+### Minimum requirements
 
 - Jeedom **4.4 minimum**
 - Debian **11 minimum** (Debian 11 recommended)
@@ -57,11 +53,9 @@ The **iOSCloud** plugin allows Jeedom to connect to your **iCloud** account in o
 
 ---
 
-<span id="installation" />
+## Installation {#installation}
 
-# Installation
-
-## 1️⃣ Install the plugin
+### 1️⃣ Install the plugin
 
 1. Jeedom → **Plugins**
 2. **Market**
@@ -70,7 +64,7 @@ The **iOSCloud** plugin allows Jeedom to connect to your **iCloud** account in o
 
 ---
 
-## 2️⃣ Install dependencies
+### 2️⃣ Install dependencies
 
 On the plugin page:
 
@@ -83,9 +77,7 @@ Wait until the status changes to **OK**.
 
 ---
 
-<span id="authentication-procedure" />
-
-# Complete authentication procedure (IMPORTANT)
+## Complete authentication procedure (IMPORTANT) {#authentication-procedure}
 
 Connecting to iCloud requires **two-factor authentication (2FA)**.
 
@@ -93,7 +85,7 @@ Apple sends a **temporary security code** to your Apple devices.
 
 ---
 
-## Step 1 — Configure the iCloud account
+### Step 1 — Configure the iCloud account
 
 Create a device of type **iCloud Account (cloud)**.
 
@@ -106,7 +98,7 @@ Save.
 
 ---
 
-## Step 2 — Start authentication
+### Step 2 — Start authentication
 
 In the device:
 
@@ -116,7 +108,7 @@ The plugin attempts to connect.
 
 ---
 
-## Step 3 — Receive the Apple code
+### Step 3 — Receive the Apple code
 
 If Apple requests a code:
 
@@ -129,7 +121,7 @@ Click **Send code**
 
 ---
 
-## Step 4 — Validation
+### Step 4 — Validation
 
 The plugin displays the progress:
 
@@ -146,7 +138,7 @@ When validation is complete:
 
 ---
 
-## Re-authentication
+### Re-authentication
 
 - After a reboot
 - If the password is incorrect → connection refused
@@ -155,15 +147,13 @@ When validation is complete:
 
 ---
 
-<span id="device-types" />
-
-# Device types
+## Device types {#device-types}
 
 The plugin creates several device types:
 
 ---
 
-## ☁️ iCloud Account (cloud)
+### ☁️ iCloud Account (cloud)
 
 Main device.
 
@@ -176,7 +166,7 @@ Contains:
 
 ---
 
-## 📱 iCloud Device (devices)
+### 📱 iCloud Device (devices)
 
 One device per Apple device.
 
@@ -191,7 +181,7 @@ Available commands:
 
 ---
 
-## 📍 Fixed position (fixed)
+### 📍 Fixed position (fixed)
 
 Lets you define a manual GPS point (e.g. Home).
 
@@ -201,7 +191,7 @@ latitude,longitude
 
 ---
 
-## 📏 Distance / Presence (geofence_dist)
+### 📏 Distance / Presence (geofence_dist)
 
 Calculates:
 
@@ -216,25 +206,23 @@ Settings:
 
 ---
 
-<span id="important-settings" />
+## Important settings {#important-settings}
 
-# Important settings
-
-## Refresh rate
+### Refresh rate
 
 Do not set a frequency that is too short.
 Recommended: every 5 minutes.
 
 ---
 
-## State delay
+### State delay
 
 Time before the state returns to 0 if no update is received.
 Default: 1 hour.
 
 ---
 
-## Presence radius
+### Presence radius
 
 - 100 m → very strict
 - 300 m → good compromise
@@ -242,11 +230,9 @@ Default: 1 hour.
 
 ---
 
-<span id="using-in-scenarios" />
+## Using in scenarios {#using-in-scenarios}
 
-# Using in scenarios
-
-## Example — Arriving home
+### Example — Arriving home
 
 Condition:
 
@@ -260,27 +246,25 @@ Possible actions:
 
 ---
 
-## Example — Leaving home
+### Example — Leaving home
 
 `#[iOSCloud][Home - Presence][Presence]# == 0`
 
 ---
 
-## Play a sound on an iPhone
+### Play a sound on an iPhone
 
 `#[iOSCloud][iPhone][Play sound]#`
 
 ---
 
-## Send a message
+### Send a message
 
 `#[iOSCloud][iPhone][Message]#`
 
 ---
 
-<span id="practical-tips" />
-
-# Practical tips
+## Practical tips {#practical-tips}
 
 1. Do not refresh too frequently
 2. Adjust the radius if presence varies too much

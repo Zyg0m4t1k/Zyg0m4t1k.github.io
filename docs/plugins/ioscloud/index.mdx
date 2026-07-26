@@ -30,9 +30,7 @@ Ce document décrit le plugin **iOSCloud** : configuration, authentification, é
 
 ---
 
-<span id="presentation" />
-
-# Présentation
+## Présentation {#presentation}
 
 Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud** afin de :
 
@@ -46,11 +44,9 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 
 ---
 
-<span id="prerequis" />
+## Prérequis {#prerequis}
 
-# Prérequis
-
-## Configuration minimum
+### Configuration minimum
 
 - Jeedom **4.4 minimum**
 - Debian **11 minimum** (Debian 11
@@ -61,11 +57,9 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 
 ---
 
-<span id="installation" />
+## Installation {#installation}
 
-# Installation
-
-## 1️⃣ Installer le plugin
+### 1️⃣ Installer le plugin
 
 1. Jeedom → **Plugins**
 2. **Market**
@@ -74,7 +68,7 @@ Le plugin **iOSCloud** permet à Jeedom de se connecter à votre compte **iCloud
 
 ---
 
-## 2️⃣ Installer les dépendances
+### 2️⃣ Installer les dépendances
 
 Dans la page du plugin :
 
@@ -89,9 +83,7 @@ Attendez que l’état passe à **OK**.
 
 ---
 
-<span id="procedure-authentification" />
-
-# Procédure complète d’authentification (IMPORTANT)
+## Procédure complète d’authentification (IMPORTANT) {#procedure-authentification}
 
 La connexion à iCloud nécessite une **double authentification (2FA)**.
 
@@ -99,7 +91,7 @@ Apple envoie un **code de sécurité temporaire** sur vos appareils Apple.
 
 ---
 
-## Étape 1 — Configurer le compte iCloud
+### Étape 1 — Configurer le compte iCloud
 
 Créer un équipement de type **Compte iCloud (cloud)**.
 
@@ -112,7 +104,7 @@ Sauvegarder.
 
 ---
 
-## Étape 2 — Lancer l’authentification
+### Étape 2 — Lancer l’authentification
 
 Dans l’équipement :
 
@@ -122,7 +114,7 @@ Le plugin tente la connexion.
 
 ---
 
-## Étape 3 — Réception du code Apple
+### Étape 3 — Réception du code Apple
 
 Si Apple demande un code :
 
@@ -135,7 +127,7 @@ Cliquer sur **Envoyer code**
 
 ---
 
-## Étape 4 — Validation
+### Étape 4 — Validation
 
 Le plugin affiche la progression :
 
@@ -152,7 +144,7 @@ Quand la validation est terminée :
 
 ---
 
-## Nouvelle identification 
+### Nouvelle identification
 
 - lors d'un reboot chez moi
 - Si mot de passe incorrect → connexion refusée
@@ -163,15 +155,13 @@ Quand la validation est terminée :
 
 ---
 
-<span id="types-equipements" />
-
-# Types d’équipements
+## Types d’équipements {#types-equipements}
 
 Le plugin crée plusieurs types d’équipements :
 
 ---
 
-## ☁️ Compte iCloud (cloud)
+### ☁️ Compte iCloud (cloud)
 
 Équipement principal.
 
@@ -184,7 +174,7 @@ Contient :
 
 ---
 
-## 📱 Appareil iCloud (devices)
+### 📱 Appareil iCloud (devices)
 
 Un équipement par appareil Apple.
 
@@ -201,7 +191,7 @@ Commandes disponibles :
 
 ---
 
-## 📍 Position fixe (fixed)
+### 📍 Position fixe (fixed)
 
 Permet de définir un point GPS manuel (ex : Maison).
 
@@ -211,7 +201,7 @@ latitude,longitude
 
 ---
 
-## 📏 Distance / Présence (geofence_dist)
+### 📏 Distance / Présence (geofence_dist)
 
 Calcule :
 
@@ -226,25 +216,23 @@ Paramètres :
 
 ---
 
-<span id="parametres-importants" />
+## Paramètres importants {#parametres-importants}
 
-# Paramètres importants
-
-## Rafraîchissement
+### Rafraîchissement
 
 Ne pas mettre une fréquence trop courte.  
 Recommandé : toutes les 5 minutes.
 
 ---
 
-## Délai état
+### Délai état
 
 Temps avant que l’état repasse à 0 si aucune mise à jour.  
 Défaut : 1 heure.
 
 ---
 
-## Rayon de présence
+### Rayon de présence
 
 - 100 m → très strict
 - 300 m → bon compromis
@@ -252,11 +240,9 @@ Défaut : 1 heure.
 
 ---
 
-<span id="utilisation-scenario" />
+## Utilisation en scénario {#utilisation-scenario}
 
-# Utilisation en scénario
-
-## Exemple — Retour à la maison
+### Exemple — Retour à la maison
 
 Condition :
 
@@ -270,27 +256,25 @@ Actions possibles :
 
 ---
 
-## Exemple — Départ
+### Exemple — Départ
 
 `#[iOSCloud][Maison - Présence][Presence]# == 0`
 
 ---
 
-## Faire sonner un iPhone
+### Faire sonner un iPhone
 
 `#[iOSCloud][iPhone][Play sound]#`
 
 ---
 
-## Envoyer un message
+### Envoyer un message
 
 `#[iOSCloud][iPhone][Message]#`
 
 ---
 
-<span id="conseils-pratiques" />
-
-# Conseils pratiques
+## Conseils pratiques {#conseils-pratiques}
 
 1. Ne pas rafraîchir trop souvent
 2. Ajuster le rayon si la présence varie trop
