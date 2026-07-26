@@ -1,0 +1,21 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 0.1.0 — 2026-07-26
+
+* Installation automatique de Tailscale via le script officiel
+* Authentification interactive (flux web) et par cle (`tskey-auth-*`, `tskey-client-*`)
+* Synchronisation : un equipement Jeedom par noeud du tailnet
+* Commandes info : online, IP, IPv6, hostname, OS, derniere activite, connexion directe, DERP, latence, Rx/Tx, LAN, exit node, tags
+* Commandes action : Ping Tailscale, Rafraichir
+* Auto-actualisation par equipement avec expression cron personnalisable
+* Panel Appareils : lister, autoriser/desactiver, tags, routes, expiration cle, details, supprimer
+* Tailscale SSH : activer/desactiver depuis le panel
+* API OAuth : token cache ~55 min, invalidation automatique au changement de credentials
+* Diagnostic complet : service, reseau, UDP, UPnP, DERP, routage, IP forwarding, sante
+* Gestion des erreurs CLI : exception sur code retour non nul (sauf commandes de lecture)
+* Securite : secrets jamais en argument de processus, audit, double confirmation, chiffrement OAuth
+* Nettoyage a la desinstallation : revocation operator, suppression sudoers
