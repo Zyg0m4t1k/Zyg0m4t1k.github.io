@@ -276,6 +276,20 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "simulation",
+    "name": "Simulation",
+    "description": "Simulation de présence intelligente : apprentissage automatique de vos habitudes et replay statistique réaliste pour protéger votre domicile.",
+    "icon": "simulation_icon.png",
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x", "Node.js", "daemon"],
+    "routes": {
+      "page": "/docs/plugins/simulation/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3583"
+    }
+  },
+  {
     "id": "icon",
     "name": "Plugin Icônes",
     "description": "Ajoutez, installez, désinstallez et prévisualisez des packs d’icônes personnalisés dans Jeedom.",

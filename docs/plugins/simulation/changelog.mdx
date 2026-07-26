@@ -1,0 +1,30 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-07-25
+
+- Migration de la documentation vers Docusaurus
+
+## 2026-06-23
+
+- Suppression du code legacy : `simulationScheduler`, methodes `removeCronAuto`, `checkIfCronExistForCmd`, `scheduleAutoSimulation`, `launchAutoSimulation`, `autoActionCron`
+- Suppression du job `schedule_device_command` dans le daemon Node.js
+- Suppression du cas `execute_device_command` dans le callback PHP
+- Nettoyage des requires obsoletes (`simulationScheduler`)
+
+## 2026-06-13
+
+- Refactorisation complete du moteur de simulation : remplacement du replay heure-par-heure par des **profils statistiques probabilistes**
+- Nouvelle classe `simulationProfile` : lissage gaussien, poids temporels exponentiels, confiance bayesienne
+- Migration de la base de donnees : `simulation_jeedom` remplacee par `simulation_event` + `simulation_run`
+- Suppression des modes `hour` (horaire) et `trigger` (declencheur) : un seul mode **Auto (apprentissage)**
+- Familles de groupes : `binary`, `position`, `level`, `color`
+- Detection automatique des roles via generic_types Jeedom (`buildAutoGroups`)
+- Runtime de simulation persiste en configuration eqLogic
+- Daemon migre de **Python** vers **Node.js** ESM (`simulationd.js`)
+- Ajout de la page **Sante** avec verification BDD, daemon, Node.js et equipements
+- Ajout du mode **dry run** (simulation seule, log uniquement)
+- Widget refactorise : journal temps reel avec indicateur d'etat

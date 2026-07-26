@@ -1,0 +1,8 @@
+{
+  "label": "Simulation",
+  "position": 1,
+  "link": {
+    "type": "doc",
+    "id": "plugins/simulation/index"
+  }
+}

@@ -1,0 +1,418 @@
+---
+title: Plugin Simulation
+description: Simulation de presence intelligente pour Jeedom - apprentissage automatique et replay statistique des habitudes
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="simulation"
+  id="simulation"
+  title="Plugin Simulation"
+  description="Simulation de presence intelligente pour Jeedom - apprentissage automatique et replay statistique des habitudes."
+  icon="/img/plugins/simulation_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+Le plugin **Simulation** permet de simuler une presence dans votre habitation lorsque vous etes absent. Il **apprend automatiquement** vos habitudes (allumage/extinction de lumieres, ouverture/fermeture de volets, etc.) puis les **rejoue de maniere realiste** grace a un moteur statistique.
+
+Il est concu pour :
+
+- **enregistrer** en continu les changements d'etat de vos equipements
+- **construire un profil journalier** a partir de l'historique
+- **rejouer les actions** de facon probabiliste, en respectant vos rythmes habituels
+- supporter les **lumieres** (on/off, couleur, niveau), les **volets** (position) et tout equipement binaire
+
+Le plugin ne necessite aucune programmation manuelle : il observe et reproduit.
+
+---
+
+## ⚙️ Principe de fonctionnement
+
+Le plugin fonctionne en **3 phases** :
+
+### 1. Phase d'apprentissage (enregistrement)
+
+Des que vous ajoutez des equipements a une simulation, le plugin **observe en permanence** les changements d'etat via des listeners Jeedom. Chaque evenement (allumage, extinction, changement de position...) est enregistre en base de donnees avec :
+
+- la commande source
+- la date, l'heure et le jour de la semaine
+- le type d'evenement (binary_on, binary_off, level_change, color_change...)
+- la valeur associee (position, couleur, niveau)
+
+:::info Pas besoin d'attendre
+L'enregistrement commence immediatement apres la sauvegarde de l'equipement. Plus la periode d'apprentissage est longue, plus la simulation sera realiste. Un minimum de **24 heures** de donnees est requis pour lancer une simulation.
+:::
+
+### 2. Phase de construction du profil
+
+A partir des evenements enregistres, le plugin construit un **profil statistique** :
+
+- La journee est decoupee en **creneaux** (par defaut 15 minutes)
+- Pour chaque creneau, un **ratio d'activite** est calcule (ex: lumiere allumee 80% du temps entre 19h00 et 19h15)
+- Les donnees recentes ont **plus de poids** que les anciennes (decroissance exponentielle)
+- Un **lissage gaussien** evite les variations brusques entre creneaux adjacents
+- La **confiance** du profil augmente avec le nombre d'echantillons
+
+Le profil peut etre separe en **semaine/weekend** ou **par jour de la semaine**.
+
+### 3. Phase de replay (simulation active)
+
+Lorsque la simulation est lancee, **chaque minute** le plugin :
+
+1. Determine le creneau horaire actuel
+2. Consulte le ratio du profil pour chaque equipement
+3. Prend une **decision probabiliste** (ou deterministe) : ON ou OFF
+4. Verifie l'**anti-oscillation** (delai minimum entre deux changements)
+5. Execute la commande si necessaire
+
+Le resultat est un comportement **naturel et variable** : la lumiere ne s'allume pas exactement a la meme heure chaque jour, mais dans une plage coherente avec vos habitudes.
+
+---
+
+## 📋 Prerequis
+
+- Jeedom **4.4** minimum
+- **Node.js** installe (le plugin gere l'installation automatique des dependances)
+- Au moins un equipement avec des commandes info/action (lumiere, volet, prise...)
+
+---
+
+## 📥 Installation
+
+### 1. Installation depuis le Market
+
+1. Allez dans **Plugins > Gestion des plugins > Market**
+2. Recherchez **Simulation**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+### 2. Configuration du plugin
+
+Apres l'installation, allez dans la **configuration du plugin** :
+
+- **Activer le demon** : active le daemon Node.js pour une planification precise des actions
+- **Port socket** : port TCP du daemon (defaut : 55130)
+- **Tables BDD** : le plugin cree automatiquement ses tables. Si le message indique que les tables n'existent pas, cliquez sur **Creer les tables du plugin**
+
+### 3. Installation des dependances
+
+Si Node.js n'est pas installe, cliquez sur **Installer les dependances** dans la page de configuration du plugin. Le plugin installera Node.js automatiquement.
+
+---
+
+## ➕ Creer un equipement Simulation
+
+Depuis **Plugins > Automatisation > Simulation**, cliquez sur **Ajouter**.
+
+Chaque equipement Simulation correspond a un **ensemble d'equipements a simuler ensemble** (ex: "Simulation Maison", "Simulation RDC").
+
+---
+
+## 🔧 Configuration
+
+L'equipement est organise en **3 onglets** :
+
+| Onglet | Role |
+|---|---|
+| **Equipement** | Parametres generaux (nom, objet parent, activer/visible) |
+| **Configuration** | Parametres de simulation, equipements a surveiller, profil statistique |
+| **Commandes** | Commandes generees automatiquement (lancer, arreter, etat) |
+
+---
+
+## 🎛️ Onglet Configuration
+
+Cet onglet est divise en deux colonnes.
+
+### Colonne gauche : Parametres de simulation
+
+#### Mode
+
+Le mode **Auto (apprentissage)** est le seul mode disponible. Le plugin apprend automatiquement vos habitudes et les rejoue.
+
+#### Activer
+
+Case a cocher pour activer l'enregistrement et la possibilite de lancer la simulation.
+
+#### Actionneurs
+
+Permet d'ajouter des **commandes binaires** qui servent de declencheurs externes. Ces actionneurs peuvent conditionner le demarrage ou l'arret de la simulation.
+
+#### Horaire
+
+Plage horaire pendant laquelle la simulation est autorisee a fonctionner.
+
+- **De / A** : heures de debut et de fin (format HH:MM)
+- **Traverse minuit** : cocher si la plage franchit minuit (ex: 22:00 a 06:00)
+
+Si la plage est vide, la simulation fonctionne **24h/24**.
+
+#### Jours
+
+Cases a cocher pour selectionner les jours de la semaine ou la simulation est autorisee.
+
+#### Condition
+
+Expression Jeedom optionnelle qui doit etre vraie pour que la simulation puisse se lancer. Permet de conditionner la simulation a l'etat d'un capteur (ex: alarme activee, absence detectee).
+
+```
+#[Securite][Alarme][Etat]# == 1
+```
+
+### Colonne droite : Donnees et profil
+
+#### Gestion des donnees
+
+| Bouton | Action |
+|---|---|
+| **Donnees** | Ouvre la fenetre de visualisation des evenements enregistres |
+| **Update Donnees** | Force la reconstruction du profil statistique |
+| **Reset** | Supprime toutes les donnees enregistrees (irreversible) |
+
+![Configuration mode auto avec equipements](/img/plugins/simulation/config_auto.png)
+
+#### Historique
+
+Nombre de jours de conservation des donnees (defaut : 15). Au-dela, les evenements sont automatiquement supprimes par le cron quotidien.
+
+Cochez **Conserver indefiniment** pour desactiver le nettoyage automatique.
+
+#### Mode d'execution
+
+| Mode | Description |
+|---|---|
+| **Reel** | Les commandes sont effectivement executees sur les equipements |
+| **Simulation seule (dry run)** | Les actions sont uniquement loguees (widget + logs debug) sans executer les commandes reelles |
+
+Le mode **dry run** est ideal pour valider le comportement avant de partir en vacances.
+
+#### Profil statistique
+
+| Parametre | Defaut | Description |
+|---|---|---|
+| **Fenetre historique** | 30 jours | Nombre de jours d'historique utilises pour construire le profil |
+| **Duree slot** | 15 min | Granularite des creneaux horaires (minimum 5 min) |
+| **Echantillons minimum** | 5 | Nombre minimum de jours avec donnees pour qu'un creneau soit fiable |
+| **Intervalle min. entre actions** | 20 min | Delai anti-oscillation entre deux changements d'etat d'un meme groupe |
+| **Mode profil** | Semaine/Weekend | Separe le profil en jours de semaine et weekend, ou par jour individuel |
+| **Strategie de decision** | Probabiliste | Mode de prise de decision |
+
+#### Strategies de decision
+
+- **Probabiliste** : la decision ON/OFF est aleatoire, ponderee par le ratio du profil. Si la lumiere est allumee 70% du temps a 20h, il y a 70% de chances qu'elle s'allume. Cela cree une variation naturelle.
+- **Deterministe** : la lumiere s'allume si le ratio depasse un seuil fixe (defaut 0.60). Plus previsible, mais moins naturel.
+
+---
+
+## 🏠 Section Equipements
+
+La partie basse de l'onglet Configuration liste les **equipements a simuler**.
+
+![Equipements configures avec leurs commandes](/img/plugins/simulation/config_equipements.png)
+
+Cliquez sur le bouton **+** pour ajouter un equipement. Pour chaque equipement ajoute, le plugin detecte automatiquement les commandes disponibles et leur attribue un **role** :
+
+### Familles de groupes
+
+| Famille | Usage | Info source | Actions |
+|---|---|---|---|
+| **binary** | Lumieres, prises on/off | Commande info binaire (etat) | ON + OFF |
+| **position** | Volets, stores | Commande info numerique (0-100%) | Slider position et/ou open/close/stop |
+| **level** | Variateurs, dimmers | Commande info numerique | Slider niveau + optionnel pre-allumage |
+| **color** | Ampoules couleur RGB | Commande info string | Couleur + optionnel temperature + pre-allumage |
+
+Le plugin **deduit automatiquement** la famille et les roles a partir des generic_types Jeedom et des noms de commandes. Vous pouvez modifier les associations manuellement si necessaire.
+
+Pour chaque equipement, une **carte** affiche :
+
+- Le **nom** de l'equipement
+- Les commandes detectees avec leur role (ETAT, ON, OFF, Couleur, Valeur...)
+- Les options de chaque commande (couleur hexa, valeur slider...)
+- Un bouton **Modifier** pour ajuster les commandes
+
+---
+
+## 📊 Donnees enregistrees
+
+Le bouton **Donnees** ouvre une fenetre affichant tous les evenements enregistres :
+
+![Fenetre des donnees enregistrees](/img/plugins/simulation/donnees.png)
+
+Pour chaque evenement :
+
+| Colonne | Description |
+|---|---|
+| **Id** | Identifiant unique |
+| **Nom** | Nom de l'equipement source |
+| **CollecTime** | Date et heure de l'evenement |
+| **Duree** | Duree de l'etat en secondes |
+| **Statut** | Termine ou En cours |
+| **Erreurs** | OK ou detail de l'erreur |
+| **Action** | Bouton pour supprimer l'evenement |
+
+---
+
+## 📡 Commandes
+
+Le plugin genere automatiquement 3 commandes :
+
+| Commande | Type | Description |
+|---|---|---|
+| **launch** | action | Lance la simulation |
+| **cancel** | action | Arrete la simulation |
+| **etat** | info binaire | Etat courant (1 = simulation active, 0 = inactive) |
+
+Ces commandes sont utilisables dans les **scenarios**, les **virtuels** et tout autre plugin Jeedom.
+
+---
+
+## 🖥️ Widget Dashboard et Mobile
+
+Le widget affiche un **journal en temps reel** des actions executees pendant la simulation :
+
+- **Indicateur d'etat** : icone verte (active) ou grise (inactive) en haut a droite
+- **Journal** : liste scrollable des actions executees avec horodatage
+- **Bouton reset** : vide le journal du widget
+
+En mode **dry run**, le journal affiche les actions qui auraient ete executees sans les appliquer reellement.
+
+---
+
+## 🩺 Page Sante
+
+Accessible depuis la page du plugin via le bouton **Sante**, cette page verifie l'etat global :
+
+![Page sante du plugin](/img/plugins/simulation/sante.png)
+
+| Element | Verification |
+|---|---|
+| **Base de donnees** | Tables presentes, nombre d'evenements, taille |
+| **Configuration MySQL** | Parametres cles (buffer pool, cache, etc.) |
+| **Espace disque** | Espace libre suffisant |
+| **Demon** | Status et port du daemon Node.js |
+| **Node.js** | Version et chemin |
+| **Equipements** | Etat, nombre de commandes et groupes configures |
+
+---
+
+## 🔄 Daemon Node.js
+
+Le plugin utilise un **daemon Node.js** pour planifier les actions avec precision.
+
+- Le daemon recoit des **jobs** via un socket TCP local (port 55130)
+- Il execute les actions au moment prevu et rappelle le plugin PHP via callback HTTP
+- Si le daemon tombe, le **cron minute** le relance automatiquement (watchdog)
+- Si le daemon est desactive, le plugin utilise le **systeme de crons Jeedom** en fallback
+
+Le daemon est entierement transparent : vous n'avez pas a interagir avec lui.
+
+---
+
+## 📝 Utilisation dans les scenarios
+
+### Lancer la simulation au depart
+
+```
+// Condition : alarme activee (vous etes parti)
+SI #[Securite][Alarme][Etat]# == 1
+ALORS
+  #[Maison][Simulation][launch]#
+FIN SI
+```
+
+### Arreter la simulation au retour
+
+```
+SI #[Securite][Alarme][Etat]# == 0
+ALORS
+  #[Maison][Simulation][cancel]#
+FIN SI
+```
+
+### Verifier l'etat de la simulation
+
+```
+SI #[Maison][Simulation][etat]# == 1
+ALORS
+  // La simulation est en cours
+FIN SI
+```
+
+---
+
+## 💡 Exemples d'usage concrets
+
+### Vacances classiques
+
+- **Equipements** : lumieres salon, cuisine, chambre + volets
+- **Horaire** : 07:00 a 23:00
+- **Condition** : `#[Securite][Alarme][Etat]# == 1`
+- **Historique** : 30 jours
+- **Resultat** : les lumieres s'allument et s'eteignent selon vos habitudes reelles, les volets bougent naturellement
+
+### Weekend prolonge
+
+- **Equipements** : lumieres + TV (prise connectee)
+- **Horaire** : vide (24h/24)
+- **Jours** : tous
+- **Mode** : dry run d'abord pour valider, puis reel
+- **Resultat** : presence simulee y compris la nuit (veilleuse, passage aux toilettes)
+
+### Simulation avec couleurs
+
+- **Equipements** : ampoules Hue/Matter avec couleur et niveau
+- Le plugin enregistre les changements de couleur et de luminosite
+- Au replay, il reproduit les ambiances exactes (couleur chaude le soir, froide le matin)
+
+---
+
+## ✅ Bonnes pratiques
+
+- **Laissez tourner l'apprentissage au moins une semaine** avant la premiere simulation pour un profil representatif
+- Utilisez le **mode dry run** pour valider le comportement avant un vrai depart
+- Commencez avec **quelques equipements** avant d'en ajouter d'autres
+- Verifiez que les commandes auto-detectees sont correctes (ON/OFF, pas inversees)
+- Le **mode Semaine/Weekend** est recommande : vos habitudes different generalement entre les deux
+- Si la simulation vous parait trop repetitive, reduisez la **duree des slots** (10 ou 5 min) pour plus de granularite
+- Consultez la **page Sante** en cas de doute sur le fonctionnement
+
+---
+
+## 🛠️ Depannage
+
+### La simulation ne se lance pas
+
+- Verifiez que l'equipement est **active** (case cochee)
+- Verifiez que la **condition** est remplie (si configuree)
+- Verifiez que le **jour** actuel est autorise
+- Verifiez que l'**horaire** actuel est dans la plage configuree
+- Verifiez qu'il y a au moins **24 heures de donnees** enregistrees
+- Consultez les logs du plugin (niveau debug)
+
+### Les equipements ne s'enregistrent pas
+
+- Verifiez que les equipements sont ajoutes dans la section **Equipements**
+- Sauvegardez l'equipement simulation (les listeners sont crees a la sauvegarde)
+- Verifiez que les commandes info source sont bien des **commandes info** (pas action)
+
+### Le daemon ne demarre pas
+
+- Verifiez que **Node.js** est installe (page configuration du plugin)
+- Verifiez que le **port 55130** n'est pas utilise par un autre service
+- Relancez les dependances si necessaire
+- Consultez les logs `simulation_daemon`
+
+### La simulation est trop repetitive
+
+- Augmentez la **fenetre historique** (30-60 jours) pour plus de variete
+- Reduisez la **duree des slots** (10 ou 5 min)
+- Verifiez que la strategie est bien **Probabiliste** (pas Deterministe)
+- Reduisez l'**intervalle min. entre actions** (10 min au lieu de 20)
+
+### Les volets ne bougent pas
+
+- Verifiez que la commande info source est bien une **commande numerique** (0-100)
+- Verifiez que la commande action slider est bien configuree
+- Verifiez que le role **position** est correctement attribue
