@@ -104,6 +104,22 @@ const plugins: PluginItem[] = [
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=1415"
     }
   },
+  {
+    "id": "tailscale",
+    "name": "Tailscale",
+    "description": "Accès distant sécurisé à Jeedom via Tailscale — VPN mesh WireGuard zero-config, supervision des noeuds et gestion complète du tailnet.",
+    "icon": "tailscale_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/tailscale/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
   // --- Reste du catalogue ---
   {
     "id": "jeeloc",
