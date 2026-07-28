@@ -14,21 +14,118 @@ import TabItem from '@theme/TabItem';
   icon="/img/plugins/tailscale_icon.png"
 />
 
-# Manuel d'utilisation — Plugin Tailscale
+# Plugin Tailscale pour Jeedom
 
-Le plugin **tailscale** connecte Jeedom au réseau [Tailscale](https://tailscale.com), un VPN mesh basé sur WireGuard. Accédez à Jeedom depuis n'importe quel appareil de votre tailnet, sans ouvrir de port ni configurer de routeur.
+Le plugin **Tailscale** transforme Jeedom en passerelle VPN securisee pour toute votre infrastructure. Plus besoin d'ouvrir de port, de configurer un NAT ou de maintenir un VPN — [Tailscale](https://tailscale.com) etablit un tunnel WireGuard chiffre entre vos appareils, automatiquement.
 
 ---
 
-# Ce que vous pouvez faire
+## Pourquoi utiliser ce plugin ?
+
+### Acces distant securise — sans rien ouvrir
+
+Plus besoin de port 443, de NAT, de redirection de ports, de VPN OpenVPN ou de WireGuard manuel. Chaque appareil rejoint le tailnet et Jeedom devient directement accessible.
+
+### Acces de secours — quand tout le reste tombe
+
+Si votre DNS tombe, que Cloudflare est HS, que votre reverse proxy est casse, que votre box redemarrer ou qu'un certificat SSL expire : **activez simplement Tailscale sur votre telephone et accedez immediatement a Jeedom**. C'est probablement l'un des plus gros avantages du plugin.
+
+### Securisation totale
+
+Aucune exposition publique. Jeedom n'est plus visible sur Internet. Seuls les appareils de votre tailnet peuvent communiquer.
+
+### Passerelle vers tout votre reseau local {#subnet-router}
+
+C'est la fonctionnalite la plus puissante. Grace au **Subnet Router**, au lieu d'acceder uniquement a Jeedom, vous accedez a **tout votre reseau local** :
+
+```text
+Telephone / PC portable (4G, Wi-Fi exterieur...)
+        |
+     Tailnet (chiffre WireGuard)
+        |
+   Jeedom (Subnet Router)
+        |
+  Reseau local 192.168.1.0/24
+   ├── Cameras IP
+   ├── NAS Synology
+   ├── Imprimantes
+   ├── Routeur / Switch
+   ├── Home Assistant
+   ├── Proxmox
+   ├── Raspberry Pi
+   └── Tout autre equipement IP
+```
+
+Depuis votre telephone en 4G, vous pouvez ouvrir l'interface d'une imprimante, acceder a un NAS, consulter une camera IP, administrer Proxmox, se connecter en SSH a un Raspberry — **sans VPN supplementaire, sans port ouvert**.
+
+:::tip Ce que cela change par rapport a un VPN classique
+- Installation en quelques minutes
+- Aucune ouverture de port
+- Traversee automatique du NAT
+- Chiffrement WireGuard
+- Fonctionne depuis smartphone, tablette ou PC
+- Gestion centralisee directement dans Jeedom
+:::
+
+### Administration complete depuis Jeedom
+
+Depuis l'interface du plugin, vous pouvez :
+- Installer et connecter Tailscale
+- Surveiller l'etat de tous les appareils du tailnet
+- Activer Tailscale SSH, gerer les routes, les tags
+- Consulter un diagnostic reseau complet
+- Autoriser ou supprimer un appareil
+
+---
+
+## En resume
+
+| Pour Jeedom | Pour toute l'infrastructure |
+|---|---|
+| Acces distant securise | Passerelle vers le reseau local ([Subnet Router](#subnet-router)) |
+| Acces de secours (DNS, reverse proxy...) | Acces a tous les equipements (NAS, cameras, Proxmox...) |
+| Administration Tailscale | Sans ouvrir le moindre port |
+| Diagnostic reseau | Chiffrement WireGuard de bout en bout |
+| Gestion des appareils, tags, routes, SSH | Depuis n'importe quel appareil du tailnet |
+
+---
+
+## Prerequis {#prerequis}
+
+### Obligatoires
+
+- **Jeedom 4.4** minimum
+- **Debian 11 a 13**
+- Acces **root** (sudo) pour installer et administrer Tailscale
+- **Connexion Internet** lors de l'installation
+- Un **compte Tailscale** ([gratuit ou payant](https://tailscale.com))
+
+### Pour les fonctions avancees (API OAuth)
+
+Un **OAuth Client ID / Secret** ([console Tailscale](https://login.tailscale.com/admin/settings/oauth)) est necessaire pour :
+- Gestion des appareils (autoriser, supprimer)
+- Tags et expiration des cles
+- Routes et Subnet Router
+- Tailscale SSH
+- Informations detaillees
+
+### Pour le Subnet Router
+
+- Activer l'**IP Forwarding** sur la machine Jeedom
+- **Autoriser les routes** dans la console Tailscale
+- Les reseaux a annoncer doivent etre connus (ex: `192.168.1.0/24`)
+
+---
+
+## Ce que vous pouvez faire
 
 <Tabs>
-<TabItem value="access" label="Accès distant" default>
+<TabItem value="access" label="Acces distant" default>
 
-**Accédez à Jeedom depuis n'importe où, en toute sécurité.**
+**Accedez a Jeedom depuis n'importe ou, en toute securite.**
 
-- Accès HTTPS à Jeedom via le tailnet, sans port ouvert
-- MagicDNS : accédez via `http://jeedom.tail1234.ts.net`
+- Acces HTTPS a Jeedom via le tailnet, sans port ouvert
+- MagicDNS : accedez via `http://jeedom.tail1234.ts.net`
 - Fonctionne depuis iOS, Android, Windows, macOS, Linux
 - Chiffrement WireGuard de bout en bout
 
@@ -162,10 +259,8 @@ Les commandes sont creees automatiquement a la synchronisation. Leurs types tech
 | **OS** | string | Systeme d'exploitation du noeud |
 | **Derniere activite** | string | Date/heure du dernier contact |
 | **Connexion directe** | binary | 1 si le trafic passe en peer-to-peer (pas via DERP) |
-| **DERP** | string | Relais DERP utilise (vide si connexion directe) |
+| **DERP** | string | Relais DERP utilise avec son nom humain (ex: Paris). Vide si connexion directe |
 | **Latence (ms)** | numeric | Latence du dernier ping Tailscale |
-| **Rx (Mo)** | numeric | Donnees recues (Mo) |
-| **Tx (Mo)** | numeric | Donnees envoyees (Mo) |
 | **Exit Node** | binary | 1 si le noeud est un exit node |
 | **Tags** | string | Tags Tailscale du noeud (separes par virgule) |
 | **Autorise** | binary | 1 si l'appareil est autorise sur le tailnet |

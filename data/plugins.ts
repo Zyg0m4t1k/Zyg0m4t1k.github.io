@@ -41,7 +41,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4672"
     }
   },
   {
@@ -65,7 +65,6 @@ const plugins: PluginItem[] = [
     "name": "ICS",
     "description": "Transformez votre agenda Google, iCloud ou CalDAV en moteur domotique pour Jeedom : déclenchez automatiquement des actions et des scénarios à partir de vos événements de calendrier.",
     "icon": "ics_icon.png",
-    "featured": true,
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/ics/"
@@ -117,7 +116,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4681"
     }
   },
   // --- Reste du catalogue ---
