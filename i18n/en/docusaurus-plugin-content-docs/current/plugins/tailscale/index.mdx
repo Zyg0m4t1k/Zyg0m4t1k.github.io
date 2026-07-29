@@ -14,27 +14,27 @@ import TabItem from '@theme/TabItem';
   icon="/img/plugins/tailscale_icon.png"
 />
 
-# Tailscale Plugin for Jeedom
+## 🔐 Tailscale Plugin for Jeedom
 
 The **Tailscale** plugin turns Jeedom into a secure VPN gateway for your entire infrastructure. No need to open ports, configure NAT or maintain a VPN — [Tailscale](https://tailscale.com) establishes an encrypted WireGuard tunnel between your devices, automatically.
 
 ---
 
-## Why use this plugin?
+### 💡 Why use this plugin?
 
-### Secure remote access — without opening anything
+#### Secure remote access — without opening anything
 
 No more port 443, NAT, port forwarding, OpenVPN or manual WireGuard setup. Each device joins the tailnet and Jeedom becomes directly accessible.
 
-### Backup access — when everything else fails
+#### Backup access — when everything else fails
 
 If your DNS goes down, Cloudflare is offline, your reverse proxy is broken, your router reboots or an SSL certificate expires: **simply enable Tailscale on your phone and access Jeedom immediately**. This is probably one of the biggest advantages of the plugin.
 
-### Complete security
+#### Complete security
 
 No public exposure. Jeedom is no longer visible on the Internet. Only devices on your tailnet can communicate.
 
-### Gateway to your entire local network {#subnet-router}
+#### Gateway to your entire local network {#subnet-router}
 
 This is the most powerful feature. Thanks to the **Subnet Router**, instead of accessing only Jeedom, you access **your entire local network**:
 
@@ -67,7 +67,7 @@ From your phone on 4G, you can open a printer interface, access a NAS, view an I
 - Centralized management directly in Jeedom
 :::
 
-### Full administration from Jeedom
+#### Full administration from Jeedom
 
 From the plugin interface, you can:
 - Install and connect Tailscale
@@ -78,7 +78,7 @@ From the plugin interface, you can:
 
 ---
 
-## Summary
+### 📊 Summary
 
 | For Jeedom | For your infrastructure |
 |---|---|
@@ -90,9 +90,9 @@ From the plugin interface, you can:
 
 ---
 
-## Prerequisites {#prerequisites}
+### ⚙️ Prerequisites {#prerequisites}
 
-### Required
+#### Required
 
 - **Jeedom 4.4** minimum
 - **Debian 11 to 13**
@@ -100,7 +100,7 @@ From the plugin interface, you can:
 - **Internet connection** during installation
 - A **Tailscale account** ([free or paid](https://tailscale.com))
 
-### For advanced features (OAuth API)
+#### For advanced features (OAuth API)
 
 An **OAuth Client ID / Secret** ([Tailscale console](https://login.tailscale.com/admin/settings/oauth)) is required for:
 - Device management (authorize, remove)
@@ -109,7 +109,7 @@ An **OAuth Client ID / Secret** ([Tailscale console](https://login.tailscale.com
 - Tailscale SSH
 - Detailed information
 
-### For Subnet Router
+#### For Subnet Router
 
 - Enable **IP Forwarding** on the Jeedom machine
 - **Approve routes** in the Tailscale console
@@ -117,7 +117,7 @@ An **OAuth Client ID / Secret** ([Tailscale console](https://login.tailscale.com
 
 ---
 
-## What you can do
+### ✨ What you can do
 
 <Tabs>
 <TabItem value="access" label="Remote access" default>
@@ -154,9 +154,9 @@ An **OAuth Client ID / Secret** ([Tailscale console](https://login.tailscale.com
 
 ---
 
-# Installation
+## 📥 Installation
 
-## 1 — Install the plugin
+### 1️⃣ Install the plugin
 
 ```text
 Plugins > Plugin Management > Market > Tailscale > Install stable
@@ -168,7 +168,7 @@ Activate the plugin after installation.
 Tailscale is installed automatically via the official script. `www-data` permissions are configured (operator + targeted sudoers). No manual intervention needed.
 :::
 
-## 2 — Authenticate Jeedom on the tailnet
+### 2️⃣ Authenticate Jeedom on the tailnet
 
 From the **Plugin Configuration** page:
 
@@ -194,7 +194,7 @@ You can also use an OAuth secret `tskey-client-...` with the `auth_keys` scope. 
 </TabItem>
 </Tabs>
 
-## 3 — Synchronize devices
+### 3️⃣ Synchronize devices
 
 1. Plugin page > click **Synchronize**
 2. One device is created per tailnet node
@@ -206,7 +206,7 @@ Synchronization only creates devices. It never deletes an existing device, but d
 
 ---
 
-# Plugin page
+## 🖥️ Plugin page
 
 The main page displays four management buttons:
 
@@ -219,11 +219,11 @@ The main page displays four management buttons:
 
 ---
 
-# Device configuration
+## ⚙️ Device configuration
 
 Each device represents a node on your tailnet.
 
-## General settings
+### 📝 General settings
 
 | Field | Description |
 |---|---|
@@ -232,7 +232,7 @@ Each device represents a node on your tailnet.
 | **Category** | Jeedom category |
 | **Enable / Visible** | Activation and visibility |
 
-## Specific settings
+### 🎯 Specific settings
 
 | Field | Description |
 |---|---|
@@ -244,11 +244,11 @@ For a rarely used device, refreshing every 5 minutes (`*/5 * * * *`) is sufficie
 
 ---
 
-# Commands
+## 📡 Commands
 
 Commands are created automatically during synchronization. Their technical types (`type`, `subType`) are updated at each synchronization to benefit from future fixes.
 
-## Info commands
+### 📊 Info commands
 
 | Command | Type | Description |
 |---|---|---|
@@ -265,7 +265,7 @@ Commands are created automatically during synchronization. Their technical types
 | **Tags** | string | Tailscale tags of the node (comma separated) |
 | **Authorized** | binary | 1 if the device is authorized on the tailnet |
 
-## Action commands
+### ⚡ Action commands
 
 | Command | Description |
 |---|---|
@@ -289,7 +289,7 @@ Authorize/deauthorize a device:
 
 ---
 
-# Administration panel
+## 🎛️ Administration panel
 
 The administration panel (**Devices** button on the main page) is organized in two tabs: **Devices** and **Subnet Router**.
 
@@ -297,7 +297,7 @@ The administration panel (**Devices** button on the main page) is organized in t
 Configure an **OAuth Client** in the Plugin Configuration page. Create it at [console.tailscale.com/admin/settings/trust-credentials](https://console.tailscale.com/admin/settings/trust-credentials) with the required scopes.
 :::
 
-## Required OAuth scopes
+### 🔑 Required OAuth scopes
 
 | Feature | Minimum scope |
 |---|---|
@@ -307,9 +307,9 @@ Configure an **OAuth Client** in the Plugin Configuration page. Create it at [co
 | Manage routes / Subnet Router | `devices:routes` (read + write) |
 | Delete a device | `devices:core` (write) |
 
-## Devices tab
+### 📱 Devices tab
 
-### Available actions
+#### Available actions
 
 | Button | Action | Confirmation |
 |---|---|---|
@@ -320,15 +320,15 @@ Configure an **OAuth Client** in the Plugin Configuration page. Create it at [co
 | **Details** | Shows all raw device properties | No |
 | **Delete** | Permanently deletes the device from the tailnet | Yes |
 
-### Tailscale SSH
+#### Tailscale SSH
 
 At the bottom of the tab, the **Local Jeedom** section allows enabling or disabling Tailscale SSH on the Jeedom machine.
 
-## Subnet Router tab
+### 🌐 Subnet Router tab
 
 The **Subnet Router** tab manages sharing the Jeedom local network with the tailnet.
 
-### Displayed information
+#### Displayed information
 
 | Field | Description |
 |---|---|
@@ -338,7 +338,7 @@ The **Subnet Router** tab manages sharing the Jeedom local network with the tail
 | **Advertised routes** | Routes currently advertised by Jeedom to the tailnet |
 | **Approved routes** | Whether advertised routes are approved (requires OAuth API) |
 
-### Actions
+#### Actions
 
 | Button | Action | Confirmation |
 |---|---|---|
@@ -368,20 +368,20 @@ Tailscale SSH allows SSH access to Jeedom from any authorized tailnet device. Ac
 
 ---
 
-# Diagnostic
+## 🩺 Diagnostic
 
 The **Health / Diagnostic** button opens a complete dashboard.
 
-## Diagnostic sections
+### 📋 Diagnostic sections
 
-### Service
+#### Service
 
 | Element | Checks |
 |---|---|
 | **tailscaled** | The systemd service is active |
 | **Socket** | The communication socket with the daemon is accessible |
 
-### Network
+#### Network
 
 | Element | Checks |
 |---|---|
@@ -391,7 +391,7 @@ The **Health / Diagnostic** button opens a complete dashboard.
 | **UDP** | UDP capability available |
 | **UPnP** | UPnP presence (informational, absence is not a problem) |
 
-### Connectivity
+#### Connectivity
 
 | Element | Checks |
 |---|---|
@@ -403,7 +403,7 @@ The **Health / Diagnostic** button opens a complete dashboard.
 Peer-to-peer capability indicates whether the machine *can* establish direct connections. It does not mean a direct connection is currently active with a specific peer.
 :::
 
-### Routing
+#### Routing
 
 | Element | Checks |
 |---|---|
@@ -411,7 +411,7 @@ Peer-to-peer capability indicates whether the machine *can* establish direct con
 | **Subnet router** | Routes advertised by this machine |
 | **Exit node** | Exit node mode enabled/disabled |
 
-### Health
+#### Health
 
 Global summary: installation, service, authentication, IP, tailnet, API, MagicDNS, forwarding.
 
@@ -419,9 +419,9 @@ The OAuth API test is run separately to avoid blocking the diagnostic if the Tai
 
 ---
 
-# Plugin configuration
+## 🔧 Plugin configuration
 
-## Connection status
+### 🔌 Connection status
 
 Displays the current Tailscale status:
 
@@ -433,7 +433,7 @@ Displays the current Tailscale status:
 | **Awaiting validation** | The node is waiting for approval in the admin console |
 | **Not installed** | Tailscale is not installed, reinstall dependencies |
 
-## Actions
+### ⚡ Actions
 
 | Button | Action |
 |---|---|
@@ -446,14 +446,14 @@ Displays the current Tailscale status:
 **Disconnect** and **Leave tailnet** are destructive actions. If you access Jeedom via the tailnet, you will lose that access.
 :::
 
-## Key authentication
+### 🔐 Key authentication
 
 | Field | Description |
 |---|---|
 | **Authentication key** | `tskey-auth-...` or `tskey-client-...` (used once, never stored) |
 | **OAuth tag** | Tag for OAuth secret authentication (default: `tag:jeedom`) |
 
-## OAuth API
+### 🔑 OAuth API
 
 | Field | Description |
 |---|---|
@@ -464,7 +464,7 @@ Displays the current Tailscale status:
 The access token is cached for ~55 minutes. If you change OAuth credentials, the cache is automatically invalidated.
 :::
 
-## Options
+### ⚙️ Options
 
 | Field | Description |
 |---|---|
@@ -472,9 +472,9 @@ The access token is cached for ~55 minutes. If you change OAuth credentials, the
 
 ---
 
-# Subnet router and exit node
+## 🌐 Subnet router and exit node
 
-## Subnet router
+### 🌐 Subnet router
 
 Exposes a local network to the tailnet. From the diagnostic or the Tailscale console:
 
@@ -490,7 +490,7 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
 
 3. Approve routes in the [Tailscale admin console](https://login.tailscale.com/admin/machines).
 
-## Exit node
+### 🚪 Exit node
 
 Routes all client Internet traffic through Jeedom. Enable in the plugin configuration.
 
@@ -500,9 +500,9 @@ All client Internet traffic will go through the Jeedom Internet connection. This
 
 ---
 
-# Usage examples
+## 💡 Usage examples
 
-## Backup access to Jeedom
+### 🆘 Backup access to Jeedom
 
 Your DNS or Internet access goes down — you can no longer reach Jeedom via your usual domain name. Simply enable Tailscale on your phone (iPhone, Android) and open:
 
@@ -516,7 +516,7 @@ You regain access to Jeedom immediately, on 4G, without depending on DNS, port f
 This is also useful if your router reboots or your dynamic DNS provider is down. Tailscale works independently of all that.
 :::
 
-## Access local network devices remotely
+### 🏠 Access local network devices remotely
 
 At home, you have an IP camera at `192.168.1.50` and a printer at `192.168.1.30`. These devices don't have Tailscale.
 
@@ -531,7 +531,7 @@ The entire local network is accessible via the tailnet, without exposing anythin
 To expose only one device, use a `/32` mask: for example `192.168.1.10/32` for only the Z-Wave box. This is more secure than exposing the entire network.
 :::
 
-## Enable or disable a device from a scenario
+### 🔄 Enable or disable a device from a scenario
 
 A child exceeds their screen time — a Jeedom scenario deauthorizes their PC from the tailnet:
 
@@ -545,7 +545,7 @@ In the evening, it is automatically re-authorized:
 [Child-PC][Tailscale] Authorize
 ```
 
-## Latency monitoring between sites
+### 📈 Latency monitoring between sites
 
 You have two Jeedom instances (home and office) on the same tailnet. You monitor connection quality:
 
@@ -558,7 +558,7 @@ Every 5 minutes:
 
 Latency is historized — you can create a graph in Jeedom to track changes over time.
 
-## Alert if a remote Jeedom goes offline
+### 🚨 Alert if a remote Jeedom goes offline
 
 ```text
 IF [Jeedom-home2][Tailscale][Online] == 0
@@ -567,16 +567,16 @@ IF [Jeedom-home2][Tailscale][Online] == 0
 
 ---
 
-# Security
+## 🛡️ Security
 
-## www-data permissions
+### 🔒 www-data permissions
 
 The plugin automatically configures two mechanisms for `www-data` to control Tailscale:
 
 1. **Tailscale operator**: `tailscale set --operator=www-data`
 2. **Targeted sudoers**: `/etc/sudoers.d/tailscale-jeedom` authorizes only `/usr/bin/tailscale`
 
-## Uninstallation
+### 🗑️ Uninstallation
 
 When removing the plugin:
 
@@ -591,7 +591,7 @@ sudo tailscale logout
 sudo apt-get remove tailscale
 ```
 
-## Secret protection
+### 🛡️ Secret protection
 
 | Secret | Protection |
 |---|---|
@@ -603,7 +603,7 @@ sudo apt-get remove tailscale
 
 ---
 
-# Auto-refresh
+## 🔄 Auto-refresh
 
 The plugin runs a cron every minute. For each active device:
 
@@ -617,7 +617,7 @@ Leaving the field empty = refresh every minute (default behavior).
 
 ---
 
-# Logs
+## 📋 Logs
 
 | Log | Description |
 |---|---|
@@ -628,9 +628,23 @@ Enable **Debug** to see executed CLI commands and their output.
 
 ---
 
-# Troubleshooting
+## 📱 Mobile panel
 
-## Dependencies NOK
+The plugin includes a **mobile panel** accessible from the Jeedom app on smartphones and tablets.
+
+- View all tailnet devices with their status (online / offline)
+- Quick filter: all, online, offline
+- Automatic refresh every 30 seconds
+- Device details: hostname, OS, latency, DERP relay, tags, authorization
+- Direct actions: ping, refresh, authorize, deauthorize
+
+Accessible via **Plugins > Tailscale** in the Jeedom mobile app.
+
+---
+
+## 🛠️ Troubleshooting
+
+### ❌ Dependencies NOK
 
 Check that Tailscale is installed:
 
@@ -650,7 +664,7 @@ sudo systemctl enable tailscaled
 A stopped service no longer shows "dependencies NOK". The plugin considers dependencies as OK as soon as binaries exist and the systemd unit is enabled (`is-enabled`).
 :::
 
-## Permission denied
+### 🚫 Permission denied
 
 ```bash
 # Check permissions
@@ -661,20 +675,20 @@ echo 'www-data ALL=(root) NOPASSWD: /usr/bin/tailscale' | sudo tee /etc/sudoers.
 sudo chmod 440 /etc/sudoers.d/tailscale-jeedom
 ```
 
-## Authentication URL not appearing
+### 🔗 Authentication URL not appearing
 
 - Check network access to `login.tailscale.com` and `controlplane.tailscale.com`
 - Check the `tailscale` log in Debug mode
 - The `tailscale up` process has a 180-second timeout
 
-## OAuth API — errors
+### ⚠️ OAuth API — errors
 
 - Check credentials in the plugin configuration
 - Check OAuth client scopes in the Tailscale admin console
 - The token cache is automatically invalidated when credentials change
 - On 401, the cache is purged and a new token is requested on the next call
 
-## Device always "online" when the device is off
+### 🟢 Device always "online" when the device is off
 
 The Tailscale control plane `Online` status may have a delay. The plugin considers a peer online if:
 

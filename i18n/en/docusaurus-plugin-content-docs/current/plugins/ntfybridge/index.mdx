@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
 
-# User Manual — ntfybridge Plugin
+# 📡 User Manual — ntfybridge Plugin
 
 The **ntfybridge** plugin connects Jeedom to [ntfy](https://ntfy.sh), an open-source notification service available on iOS, Android and Web.
 
@@ -63,7 +63,7 @@ In 9 steps, your Jeedom is reachable from anywhere by notification — even if t
 
 ---
 
-## Configure the ntfy Server {#configure-the-ntfy-server}
+## 🖥️ Configure the ntfy Server {#configure-the-ntfy-server}
 
 ```text
 Plugins → Plugin Management → ntfybridge → Configuration
@@ -111,7 +111,7 @@ In external mode, user and permission management is not available in Jeedom. You
 
 ---
 
-## Manage Users (Panel) {#manage-users-panel}
+## 👥 Manage Users (Panel) {#manage-users-panel}
 
 ```text
 Plugins → ntfybridge → Panel
@@ -147,7 +147,7 @@ Click the delete icon in the user's column. Deletion is permanent.
 
 ---
 
-## Install and Configure the ntfy App {#install-and-configure-the-ntfy-app}
+## 📱 Install and Configure the ntfy App {#install-and-configure-the-ntfy-app}
 
 #### Download the App
 
@@ -186,7 +186,7 @@ The subscription URL is displayed in the **Subscription** section of each ntfybr
 
 ---
 
-## What You Can Do
+## ✨ What You Can Do
 
 <Tabs>
 <TabItem value="jeedom-to-phone" label="🏠 Jeedom → Phone" default>
@@ -217,7 +217,7 @@ The subscription URL is displayed in the **Subscription** section of each ntfybr
 
 ---
 
-## Configuration Modes
+## 🔀 Configuration Modes
 
 :::tip Recommended Setup
 **Embedded mode + HTTPS subdomain** — all-in-one installation, data stays on your premises, all features available (native iOS push, confirmation buttons, icons, file attachments).
@@ -274,7 +274,7 @@ The plugin connects to your own ntfy server (VPS, NAS, etc.).
 
 ---
 
-## Installation
+## 📦 Installation
 
 ### 1. Install the Plugin
 
@@ -307,7 +307,7 @@ Subscribe in the ntfy app by copying the URL shown in the **Subscription** secti
 
 ---
 
-## Equipment Configuration
+## 🗂️ Equipment Configuration
 
 Each ntfybridge equipment has four tabs.
 
@@ -475,7 +475,7 @@ Action block:
 
 ---
 
-## Sending Notifications
+## 📤 Sending Notifications
 
 ### The send_message Command
 
@@ -520,7 +520,7 @@ Full inline example:
 
 ---
 
-## Send Profiles
+## 🗂️ Send Profiles
 
 Group your recurring settings into named profiles. Open from **Plugins → ntfybridge → Profiles**.
 
@@ -575,7 +575,7 @@ Tags correspond to ntfy emoji names, comma-separated.
 
 ---
 
-## Response Rules
+## 💬 Response Rules
 
 When an incoming message matches keywords, Jeedom reads an info command and replies.
 
@@ -587,7 +587,7 @@ Click **+** in the response field to insert a `{#id#}` reference via the Jeedom 
 
 ---
 
-## Action Rules
+## ⚡ Action Rules
 
 When a message matches, Jeedom executes an action.
 
@@ -601,7 +601,7 @@ ntfy buttons are displayed in the **message detail** (long press or tap on the n
 
 ---
 
-## Silent Mode
+## 🔕 Silent Mode
 
 Per equipment:
 
@@ -613,7 +613,7 @@ Per equipment:
 
 ---
 
-## Rescue Mode {#rescue-mode}
+## 🚨 Rescue Mode {#rescue-mode}
 
 Rescue Mode lets you query and troubleshoot Jeedom **from the ntfy app**, even when the web interface is unreachable (Apache or PHP down, Jeedom not responding).
 
@@ -719,7 +719,7 @@ The folder already contains four test scripts (`test_hello.sh`, `test_hello.php`
 
 ---
 
-## Phone Control
+## 📱 Phone Control
 
 ### iOS — Native Shortcuts
 
@@ -749,7 +749,7 @@ ntfybridge was born from this concept: an iOS shortcut sends a POST → Jeedom r
 
 ---
 
-## Logs
+## 📄 Logs
 
 | Log | Description |
 |---|---|
@@ -759,7 +759,7 @@ Enable **Debug** only for troubleshooting.
 
 ---
 
-## Configure the Reverse Proxy (Embedded Mode + Subdomain) {#reverse-proxy}
+## 🌐 Configure the Reverse Proxy (Embedded Mode + Subdomain) {#reverse-proxy}
 
 The built-in wizard generates the Apache configuration in 5 steps.
 
@@ -797,7 +797,7 @@ sudo certbot renew --dry-run
 
 ---
 
-## Troubleshooting
+## 🔍 Troubleshooting
 
 ### The Daemon Won't Start
 
