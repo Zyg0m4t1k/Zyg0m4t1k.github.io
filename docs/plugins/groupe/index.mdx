@@ -36,21 +36,30 @@ Comme n’importe quel plugin Jeedom :
 
 ### 1) Créer un équipement
 
-Créer un nouvel équipement en cliquant sur **+**.
+Créer un nouvel équipement en cliquant sur **Ajouter**.
 
 ![Création équipement](/img/plugins/groupe/groupe5.png)
 
 ### 2) Paramètres de l’équipement
 
-- **Ajouter un équipement** : sélectionne un équipement et ses commandes d’état, et (optionnellement) des commandes actions si
-  **Activer les actions** est coché.
-- **Inverser** : si coché, l’état (et donc l’icône/image) passe sur **actif** seulement si **tous** les équipements sont actifs.
-- **Icône ON** : icône du widget quand au moins 1 commande est active.
-- **Icône OFF** : icône du widget quand toutes les commandes sont inactives.
-- **Image ON** : image du widget quand au moins 1 commande est active.
-- **Image OFF** : image du widget quand toutes les commandes sont inactives.
+#### Ajout des équipements
 
-> Astuce : tu peux choisir **icône** (FontAwesome) ou **image** selon ton rendu préféré.
+Deux méthodes sont disponibles pour ajouter des équipements au groupe :
+
+- **Ajout manuel** : cliquer sur le bouton **+** pour ajouter un équipement un par un, puis sélectionner la commande d’état et (optionnellement) les commandes ON/OFF.
+- **Ajout automatique par famille** : sélectionner un objet parent (ou « Tous les objets »), choisir une famille d’équipements parmi :
+  - Éclairage, Prises et relais, Volets et stores BSO, Thermostats, Serrures, Portails et garages, Détecteurs d’ouverture, Détecteurs de sécurité, Batteries, Commandes génériques
+
+  Puis cliquer sur **Ajouter la famille**. Le plugin détecte automatiquement les équipements correspondants via leurs types génériques et ajoute les commandes d’état et d’action associées. Les doublons sont ignorés.
+
+#### Options
+
+- **Activer les actions** : cocher pour pouvoir piloter les équipements (ON/OFF) depuis le widget.
+- **Inverser** : si coché, l’état est inversé (actif quand la commande est à 0).
+- **Icône ON / OFF** : icône du widget (FontAwesome) selon l’état du groupe.
+- **Image ON / OFF** : image du widget selon l’état du groupe.
+
+> Astuce : vous pouvez choisir **icône** (FontAwesome) ou **image** selon votre rendu préféré.
 
 ---
 
@@ -58,10 +67,12 @@ Créer un nouvel équipement en cliquant sur **+**.
 
 ![Commandes](/img/plugins/groupe/groupe6.png)
 
-Le plugin expose notamment un comportement simple côté widget :
+Le plugin crée automatiquement les commandes suivantes :
 
-- Si **aucun** équipement n’est actif → clic = **All ON** (tout activer)
-- Si **au moins un** équipement est actif → clic = **All OFF** (tout désactiver)
+- **status** : état global du groupe (1 = au moins un actif, 0 = tous inactifs)
+- **statuson / statusoff** : nombre d’équipements actifs / inactifs
+- **last** : nom du dernier équipement ayant changé d’état
+- **allon / alloff** : actions pour tout allumer / tout éteindre (si les actions sont activées)
 
 ---
 
@@ -75,11 +86,16 @@ Exemples de rendu :
 
 ![Widget - alerte](/img/plugins/groupe/alerte.png)
 
-> NOTE
->
-> Le widget se met à jour dès qu'il y a un changement d'état.
->
-> - Un clic sur les infos permet de changer l'état (All ON / All OFF)
-> - Un clic sur l'icône ouvre une fenêtre (modale)
+Le widget se met à jour en temps réel dès qu'un équipement change d'état.
+
+- Le compteur **X / Y** indique le nombre d'équipements actifs sur le total.
+- Le bouton **Tout ON / Tout OFF** permet de piloter l'ensemble du groupe (si les actions sont activées).
+- Un clic sur l'icône ou l'image ouvre une modale de détail avec l'état individuel de chaque équipement et la possibilité de les piloter un par un.
 
 ![Modale](/img/plugins/groupe/groupe8.png)
+
+---
+
+## 💬 Support Forum
+
+Un bouton **Support Forum** est disponible sur la page principale du plugin. Il permet de créer automatiquement un post sur le forum Community Jeedom avec les informations de diagnostic du plugin (nombre de groupes, types de widgets utilisés).

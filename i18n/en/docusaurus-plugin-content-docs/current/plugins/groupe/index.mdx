@@ -36,19 +36,28 @@ Like any Jeedom plugin:
 
 ### 1) Create a device
 
-Create a new device by clicking **+**.
+Create a new device by clicking **Add**.
 
 ![Create device](/img/plugins/groupe/groupe5.png)
 
 ### 2) Device settings
 
-- **Add a device**: select a device and its status commands, and (optionally) action commands if
-  **Enable actions** is checked.
-- **Invert**: if checked, the state (and therefore the icon/image) switches to **active** only if **all** devices are active.
-- **Icon ON**: widget icon when at least 1 command is active.
-- **Icon OFF**: widget icon when all commands are inactive.
-- **Image ON**: widget image when at least 1 command is active.
-- **Image OFF**: widget image when all commands are inactive.
+#### Adding devices
+
+Two methods are available to add devices to the group:
+
+- **Manual add**: click the **+** button to add devices one by one, then select the state command and (optionally) the ON/OFF action commands.
+- **Automatic add by family**: select a parent object (or "All objects"), choose a device family from:
+  - Lighting, Switches and relays, Shutters and blinds, Thermostats, Locks, Gates and garages, Opening detectors, Security detectors, Batteries, Generic commands
+
+  Then click **Add family**. The plugin automatically detects matching devices via their generic types and adds the associated state and action commands. Duplicates are ignored.
+
+#### Options
+
+- **Enable actions**: check to control devices (ON/OFF) from the widget.
+- **Invert**: if checked, the state is inverted (active when the command is 0).
+- **Icon ON / OFF**: widget icon (FontAwesome) depending on the group state.
+- **Image ON / OFF**: widget image depending on the group state.
 
 > Tip: you can choose between **icon** (FontAwesome) or **image** depending on your preferred look.
 
@@ -58,10 +67,12 @@ Create a new device by clicking **+**.
 
 ![Commands](/img/plugins/groupe/groupe6.png)
 
-The plugin exposes a simple widget behavior:
+The plugin automatically creates the following commands:
 
-- If **no** device is active → click = **All ON** (activate all)
-- If **at least one** device is active → click = **All OFF** (deactivate all)
+- **status**: global group state (1 = at least one active, 0 = all inactive)
+- **statuson / statusoff**: number of active / inactive devices
+- **last**: name of the last device that changed state
+- **allon / alloff**: actions to turn all on / all off (if actions are enabled)
 
 ---
 
@@ -75,11 +86,16 @@ Rendering examples:
 
 ![Widget - alert](/img/plugins/groupe/alerte.png)
 
-> NOTE
->
-> The widget updates as soon as a state changes.
->
-> - Clicking on the info toggles the state (All ON / All OFF)
-> - Clicking on the icon opens a window (modal)
+The widget updates in real time as soon as a device changes state.
+
+- The **X / Y** counter shows the number of active devices out of the total.
+- The **All ON / All OFF** button controls the entire group (if actions are enabled).
+- Clicking on the icon or image opens a detail modal showing the individual state of each device with the ability to control them one by one.
 
 ![Modal](/img/plugins/groupe/groupe8.png)
+
+---
+
+## 💬 Forum Support
+
+A **Support Forum** button is available on the plugin's main page. It automatically creates a post on the Jeedom Community forum with the plugin's diagnostic information (number of groups, widget types used).
