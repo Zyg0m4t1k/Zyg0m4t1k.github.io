@@ -4,14 +4,19 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## 2026-08-08 (beta)
+## 2026-08-09 
+
+- Correction du profil BooleanState (contact, fuite d'eau, etc.) non résolu pour les capteurs utilisant le cluster 69 : le format objet retourné par matter-server n'était pas pris en charge, causant un logicalId générique au lieu du profil correct.
+- Ajout d'un re-sync automatique côté PHP lorsqu'une commande est introuvable lors d'un push temps réel.
+
+## 2026-08-08 
 
 - **Matter Server mis à jour vers la version 1.4.0**
 - Ajout de la topologie réseau Matter interactive Thread et Wi-Fi
 - Ajout du bouton **Support Forum** : permet de créer un post Community avec les informations de diagnostic du plugin (nombre d'équipements, santé avancée)
 
 
-## 2026-08-05 (beta)
+## 2026-08-05
 
 - **Bluetooth optionnel** : le serveur Matter démarre même sans adaptateur Bluetooth. Les appareils déjà commissionnés continuent de fonctionner via Thread/Wi-Fi. Nouvelle option « Aucun (Bluetooth désactivé) » dans la configuration, utile si un autre plugin monopolise la clé BT.
 - Correction de la clé de configuration de l'adaptateur Bluetooth (non lue auparavant).
