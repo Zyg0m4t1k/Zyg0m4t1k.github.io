@@ -4,6 +4,24 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-08-15
+
+* Refonte complète de la page principale : suppression des 5 onglets, page standard plugin avec équipements groupés par accordéon
+* Ajout d'un panneau Administration séparé (Personnalisation, Logs, Droits, Listeners, Plugins)
+* Nouvel onglet Plugins : vue transversale des plugins actifs avec gestion des équipements et commandes
+* Sélecteurs card-based pour équipements et commandes (remplacement de getSelectModal)
+* Sélecteur d'équipement source pour les templates avec prévisualisation multi-commandes
+* Système de backup/restore des templates et images utilisateur lors des mises à jour
+* Sécurisation des actions AJAX : validation des entrées, protection contre les injections, vérification des droits
+* Optimisation du scan des logs (lecture tail + cache 30s)
+* Suppression de l'API inutilisée et du mécanisme de backup legacy
+* Ajout du bouton Community pour créer un post de support pré-rempli
+* Avertissement dans l'éditeur CodeMirror pour les problèmes d'affichage
+* Bandeau d'avertissement dans le panneau Administration
+* Désactivation temporaire de l'import de template (en cours de validation)
+* Suppression du code mort et des fichiers obsolètes
+* Réécriture complète de la documentation
+
 ## 2026-06-05
 
 * Génération de la documentation MDX Tools depuis `tools_export.zip`

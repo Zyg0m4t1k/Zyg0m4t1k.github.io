@@ -1,47 +1,241 @@
 ---
 title: Tools
-description: "Documentation du plugin Tools pour Jeedom : MyHome, cards, widgets, thèmes et templates."
+description: "Documentation du plugin Tools pour Jeedom : widgets, templates de commandes, administration et maintenance."
 ---
 
-# 🛠️ Plugin Tools
+# Tools
 
-Le plugin **Tools** regroupe plusieurs outils de création d'interface pour Jeedom.
+Le plugin **Tools** fournit des outils avancés pour créer et personnaliser des widgets et des templates de commandes Jeedom. Il propose également un panneau d'administration pour contrôler les équipements, les commandes, les logs, les listeners et certains éléments techniques des plugins installés.
 
-La partie principale documentée ici est **MyHome**, un constructeur d'interfaces basé sur les plans Jeedom. MyHome permet de créer une interface moderne avec des pages, un menu, des thèmes, une palette d'ajout rapide, des cards d'équipements et des widgets spécialisés.
-
-## 📚 Contenu de cette documentation
-
-- [MyHome](./myhome/)
-- [Créer un projet MyHome](./myhome/creation-projet)
-- [Thèmes MyHome](./myhome/themes)
-- [Menus MyHome](./myhome/menus)
-- [Palette MyHome](./myhome/palette)
-- [Pages et sous-plans](./myhome/pages-sousplans)
-- [Cards équipement](./cards/)
-- [Widgets MyHome](./widgets/)
-- [Templates builtin](./templates/builtin)
-
-:::info Documentation orientée utilisateur
-Cette documentation explique quoi faire et dans quel ordre. Elle évite volontairement les détails sauf quand une information est nécessaire pour comprendre le fonctionnement.
+:::info
+La création à partir des modèles fournis ne demande pas de connaissances particulières. En revanche, l'édition du HTML, du CSS ou du JavaScript ainsi que les fonctions d'administration sont destinées aux utilisateurs confirmés.
 :::
 
-## 🔄 Flux général recommandé
+## Comprendre la différence entre un template et un widget
 
-```text
-1. Créer ou préparer les widgets/cards nécessaires
-2. Créer le projet MyHome
-3. Choisir le thème
-4. Configurer le menu
-5. Créer les pages
-6. Utiliser la palette pour ajouter rapidement les éléments
-7. Ouvrir les sous-plans Jeedom
-8. Positionner, redimensionner et finaliser le design
+- Un **template de commande** modifie l'affichage d'une commande Jeedom (`cmd`). Il est associé à un type et à un sous-type, par exemple `info.numeric` ou `action.slider`.
+- Un **widget Tools** est un équipement Jeedom (`eqLogic`) autonome. Il peut réunir plusieurs informations, plusieurs commandes ou du contenu personnalisé dans une seule tuile.
+
+## Accéder au plugin
+
+Après installation et activation, ouvrez **Plugins > Programmation > Tools**.
+
+La page principale contient trois actions :
+
+- **Widgets** : créer un équipement libre, un template de commande ou un widget fourni par Tools ;
+- **Configuration** : ouvrir la configuration générale et importer un template ;
+- **Administration** : accéder aux outils de personnalisation et de maintenance.
+
+{/* ![Page principale de Tools](/img/plugins/tools/tools-page-principale.png) */}
+
+Les équipements sont affichés sous deux listes repliables :
+
+- les **Templates**, regroupés par type et sous-type de commande ;
+- les **Widgets**, regroupés par usage : résumé, tuiles, monitoring ou autres.
+
+Le champ de recherche filtre la liste des équipements. Un équipement désactivé apparaît grisé.
+
+## Créer un élément
+
+Cliquez sur **Widgets** depuis la page principale. La fenêtre de création présente quatre familles.
+
+{/* ![Fenêtre de création des widgets et templates](/img/plugins/tools/tools-creation.png) */}
+
+### Équipement libre
+
+Crée un widget `eqLogic` entièrement personnalisable. Après avoir saisi son nom, vous pouvez éditer son rendu Dashboard et Mobile en HTML, CSS et JavaScript.
+
+### Template Core
+
+Crée une copie personnalisable d'un template de commande fourni par le core Jeedom :
+
+1. sélectionnez le template source dans la liste, classée par type de commande ;
+2. cliquez sur **Créer** ;
+3. donnez un nom au nouveau template ;
+4. modifiez sa version Dashboard ou Mobile ;
+5. affectez-le aux commandes souhaitées.
+
+Le nom saisi est utilisé dans le nom technique du template. Utilisez de préférence un nom court et explicite.
+
+:::caution
+Un template Tools ne doit pas porter le même nom qu'un template natif du core. En cas de conflit ou de problème d'affichage, retirez l'affectation puis supprimez le template personnalisé afin que Jeedom utilise de nouveau celui du core.
+:::
+
+### Templates Tools
+
+Le plugin fournit actuellement les modèles suivants :
+
+| Modèle | Type de commande | Fonction |
+|---|---|---|
+| `battery_img` | `info.numeric` | Affichage illustré du niveau de batterie |
+| `history_card` | `info.numeric` | Carte d'historique sous forme de barres ou de courbe |
+| `Sapin_Anime` | `action.other` | Sapin animé avec vitesse paramétrable |
+| `bulb_color` | `action.color` | Sélecteur de couleur pour une ampoule |
+
+Cliquez sur **Ajouter**, saisissez le nom de l'équipement, puis ouvrez l'élément créé pour le configurer et l'affecter à une ou plusieurs commandes.
+
+### Widgets Tools
+
+Les widgets proposés dépendent de la version installée du plugin. Cette version contient :
+
+| Widget | Disponibilité | Fonction principale |
+|---|---|---|
+| `battery` | Dashboard et Mobile | Vue d'ensemble des équipements dont Jeedom surveille la batterie |
+| `log_monitor` | Dashboard | Surveillance des erreurs, avertissements, tailles et nombres de lignes des logs |
+| `notif_card` | Dashboard | État de Jeedom : messages, démons, mises à jour, sauvegarde, alertes et commandes orphelines |
+| `light_card` | Dashboard | Commandes d'une lumière : marche, arrêt, luminosité, couleur et température de couleur |
+| `shutter_card` | Dashboard | Commandes d'un volet ou BSO : montée, arrêt, descente et position |
+| `weather_clock_card` | Dashboard et Mobile | Horloge et prévisions issues d'un équipement Weather ou SwissMeteo |
+| `room_summary` | Dashboard | Résumé par pièce : température, lumières, prises, volets, ouvrants, humidité ou puissance |
+| `timeline_tools` | Dashboard et Mobile | Événements de la timeline, filtrage par dossier et statistiques |
+
+Sélectionnez **Ajouter**, donnez un nom au widget, puis renseignez ses paramètres dans sa fiche.
+
+## Configurer un widget ou un template
+
+Ouvrez une tuile depuis la page principale. Selon son type, la fiche permet notamment de :
+
+- modifier les informations habituelles de l'équipement : nom, objet, catégorie, activation et visibilité ;
+- éditer le code Dashboard et, lorsque disponible, le code Mobile ;
+- ajouter des paramètres optionnels ;
+- sélectionner un équipement source pour les tuiles qui en ont besoin ;
+- ajouter ou associer des commandes ;
+- prévisualiser le résultat ;
+- définir la largeur et la hauteur ;
+- sauvegarder, dupliquer ou supprimer l'élément.
+
+La prévisualisation Dashboard correspond au rendu du Dashboard et des designs. Pour valider le rendu Mobile, ouvrez également l'interface mobile de Jeedom.
+
+{/* ![Configuration d'un widget](/img/plugins/tools/tools-configuration-widget.png) */}
+
+### Paramètres des widgets fournis
+
+Les paramètres sont proposés directement dans la fiche du widget. Parmi les principaux réglages :
+
+- **Log Monitor** : logs surveillés, taille maximale, nombre maximal de lignes et affichage de la taille ;
+- **Notification Card** : rubriques à afficher (`messages`, `demons`, `updates`, `backup`, `alerts`, `cmds_orphan`, `cmds_scenario`) ;
+- **Light Card** : équipement lumière source, icône, couleur allumée, couleurs rapides et plage de température de couleur ;
+- **Shutter Card** : équipement volet source, icône et couleur d'ouverture ;
+- **Weather Clock Card** : source météo, format 12/24 heures, nombre de jours, humidité, heures solaires, thème et échelle ;
+- **Room Summary** : objets et informations affichés, pièces vides, statut et couleur des icônes ;
+- **Timeline Tools** : dossier de timeline, limite d'événements et options d'affichage.
+
+### Ajouter des commandes à un équipement libre
+
+Dans la fiche d'un widget libre, ajoutez une commande existante puis donnez-lui un nom unique. Ce nom devient une balise utilisable dans le code du widget.
+
+Par exemple, une commande nommée `temperature` peut être affichée avec :
+
+```html
+<span>#temperature#</span>
 ```
 
-## 📦 Éléments disponibles actuellement
+Vous pouvez associer autant de commandes que nécessaire. L'équipement doit être activé et visible pour être correctement prévisualisé.
 
-- **8 thèmes MyHome intégrés**
-- **6 cards équipement dashboard**
-- **13 widgets compatibles MyHome**
-- **43 templates builtin dashboard**
-- **43 templates builtin mobile**
+## Importer un template
+
+Ouvrez **Configuration**, puis utilisez **Importer un template**.
+
+:::info
+Cette fonctionnalité est temporairement désactivée. Elle sera disponible dans une prochaine version après validation.
+:::
+
+L'archive doit être au format ZIP et contenir à sa racine les dossiers correspondant aux versions prises en charge, généralement :
+
+```text
+dashboard/
+mobile/
+```
+
+Avant l'import, vérifiez le nom des fichiers, leur type de commande et les chemins des images. Pour un ancien template tiers, les ressources placées historiquement sous `data/customTemplates/` doivent généralement être adaptées au stockage utilisé par Tools.
+
+## Administration
+
+Le bouton **Administration** ouvre une page séparée. Elle regroupe les fonctions qui ne concernent pas directement l'édition d'un widget.
+
+{/* ![Panneau d'administration](/img/plugins/tools/tools-administration.png) */}
+
+:::danger
+Section réservée aux utilisateurs avertis. Les actions proposées ici sont sensibles (suppression d'équipements, commandes, listeners, modification des droits). À utiliser en toute connaissance de cause. L'auteur du plugin ne pourra être tenu responsable en cas de mauvaise manipulation.
+
+Effectuez une sauvegarde avant toute opération de maintenance importante.
+:::
+
+### Personnalisation
+
+Cet onglet permet :
+
+- de choisir un équipement et de mettre à jour sa largeur ou sa hauteur ;
+- de choisir un widget source ;
+- de recopier sa largeur, sa hauteur ou les deux vers plusieurs widgets cibles.
+
+Cette fonction est utile pour homogénéiser rapidement un ensemble de tuiles.
+
+### Logs
+
+Cet onglet permet de sélectionner les logs à surveiller et de configurer :
+
+- l'envoi d'un message Jeedom lorsqu'un seuil est dépassé ;
+- une taille maximale en kilo-octets ;
+- un nombre maximal de lignes ;
+- le niveau de chaque log sélectionné ;
+- le vidage des logs sélectionnés.
+
+Les cases à cocher déterminent les logs pris en compte par la surveillance. Chaque tuile affiche aussi la taille du fichier, son nombre de lignes et son niveau actuel ; elle permet d'ouvrir ou de vider directement le log concerné.
+
+### Droits
+
+Deux opérations sont disponibles :
+
+- **Remettre à plat les droits** : réapplique les droits attendus par Jeedom ;
+- **Droits en écriture (dev)** : rend les dossiers et fichiers modifiables pour le développement.
+
+N'utilisez le mode développement que si vous comprenez ses conséquences sur les permissions du système de fichiers.
+
+### Listeners
+
+L'onglet affiche tous les listeners Jeedom avec leur identifiant, leurs événements, leur classe et leur fonction.
+
+Les anomalies sont signalées en rouge, notamment lorsque :
+
+- une commande écoutée n'existe plus ;
+- l'équipement de la commande est absent ou désactivé ;
+- la classe ou la méthode appelée n'existe plus.
+
+Vous pouvez consulter un listener ou le supprimer. Une suppression peut empêcher un plugin ou un scénario de réagir aux événements concernés ; vérifiez son origine avant de confirmer.
+
+### Plugins
+
+Cet onglet offre une vue transversale des plugins actifs. La liste peut être filtrée par nom ou identifiant et indique le nombre d'équipements de chaque plugin.
+
+La fiche d'un plugin présente, lorsque les informations existent :
+
+- l'état de son démon ;
+- l'état de ses dépendances ;
+- ses crons, leur planification, leur activation et leur dernier lancement ;
+- ses équipements, leur objet, leur état et leur nombre de commandes.
+
+Depuis cette fiche, vous pouvez :
+
+- ouvrir la page de configuration d'un équipement ;
+- afficher ses commandes avec leur identifiant, `logicalId`, type, sous-type et visibilité ;
+- activer ou désactiver un équipement ;
+- supprimer un équipement ;
+- supprimer individuellement une commande.
+
+:::warning Suppression définitive
+La suppression d'un équipement ou d'une commande depuis cet onglet utilise les mécanismes du core Jeedom. Elle peut casser des scénarios, designs, interactions ou listeners qui utilisent son identifiant. Contrôlez les dépendances avant de confirmer.
+:::
+
+## Conseils et dépannage
+
+- Sauvegardez toujours avant une modification importante du code ou une suppression.
+- Utilisez des noms de templates uniques et évitez les espaces dans leurs noms techniques.
+- Vérifiez séparément les rendus Dashboard et Mobile.
+- Si un template personnalisé ne s'affiche plus, contrôlez son type, son sous-type, son affectation à la commande et les chemins de ses ressources.
+- Si un widget reste vide, vérifiez qu'il est activé et visible, que son équipement source existe et que ses commandes sont accessibles.
+- Si un listener apparaît en rouge, survolez l'élément concerné pour identifier la commande ou l'équipement manquant avant de le supprimer.
+
+## Support
+
+Les échanges et exemples communautaires sont disponibles sur le [sujet Tools du forum Jeedom](https://community.jeedom.com/t/tools-generateur-de-templates-et-widgets-v4/12840).
