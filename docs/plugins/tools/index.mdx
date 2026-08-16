@@ -7,14 +7,28 @@ description: "Documentation du plugin Tools pour Jeedom : widgets, templates de 
 
 Le plugin **Tools** fournit des outils avancés pour créer et personnaliser des widgets et des templates de commandes Jeedom. Il propose également un panneau d'administration pour contrôler les équipements, les commandes, les logs, les listeners et certains éléments techniques des plugins installés.
 
+:::danger Widgets supprimés dans cette version
+Les widgets suivants ont été retirés et ne sont plus disponibles :
+- **overview_tools** (vue d'ensemble)
+- **sonde_tools** (sonde température/humidité)
+- **weather_clock** (horloge météo)
+- **squeeze** (Squeezebox)
+- **battery_jeedom** (batterie)
+- **anemo_tools** (anémomètre)
+
+Si vos équipements utilisent l'un de ces widgets, un message d'avertissement apparaîtra après la mise à jour. Vous devrez reconfigurer ces équipements avec un autre widget ou un équipement libre.
+
+Si vous souhaitez qu'un de ces widgets soit réintégré, créez un post sur le [Community Jeedom](https://community.jeedom.com/) avec le tag **plugin-tools**.
+:::
+
 :::info
 La création à partir des modèles fournis ne demande pas de connaissances particulières. En revanche, l'édition du HTML, du CSS ou du JavaScript ainsi que les fonctions d'administration sont destinées aux utilisateurs confirmés.
 :::
 
-## Comprendre la différence entre un template et un widget
+## Deux types de widgets
 
-- Un **template de commande** modifie l'affichage d'une commande Jeedom (`cmd`). Il est associé à un type et à un sous-type, par exemple `info.numeric` ou `action.slider`.
-- Un **widget Tools** est un équipement Jeedom (`eqLogic`) autonome. Il peut réunir plusieurs informations, plusieurs commandes ou du contenu personnalisé dans une seule tuile.
+- Un **widget de commande** modifie l'affichage d'une commande Jeedom (`cmd`). Il est associé à un type et à un sous-type, par exemple `info.numeric` ou `action.slider`. Dans le plugin, ces widgets sont créés à partir de templates HTML personnalisables.
+- Un **widget équipement** est un équipement Jeedom (`eqLogic`) autonome. Il peut réunir plusieurs informations, plusieurs commandes ou du contenu personnalisé dans une seule tuile.
 
 ## Accéder au plugin
 
@@ -22,16 +36,17 @@ Après installation et activation, ouvrez **Plugins > Programmation > Tools**.
 
 La page principale contient trois actions :
 
-- **Widgets** : créer un équipement libre, un template de commande ou un widget fourni par Tools ;
-- **Configuration** : ouvrir la configuration générale et importer un template ;
-- **Administration** : accéder aux outils de personnalisation et de maintenance.
+- **Widgets** : créer un équipement libre, un widget de commande ou un widget fourni par Tools ;
+- **Configuration** : ouvrir la configuration générale, importer un template et restaurer depuis un backup ;
+- **Administration** : accéder aux outils de personnalisation et de maintenance ;
+- **Community** : créer un post de support pré-rempli sur le forum Jeedom Community.
 
 {/* ![Page principale de Tools](/img/plugins/tools/tools-page-principale.png) */}
 
 Les équipements sont affichés sous deux listes repliables :
 
-- les **Templates**, regroupés par type et sous-type de commande ;
-- les **Widgets**, regroupés par usage : résumé, tuiles, monitoring ou autres.
+- les **Widgets de commande**, regroupés par type et sous-type de commande ;
+- les **Widgets équipement**, regroupés par usage : résumé, tuiles, monitoring ou autres.
 
 Le champ de recherche filtre la liste des équipements. Un équipement désactivé apparaît grisé.
 
@@ -45,23 +60,23 @@ Cliquez sur **Widgets** depuis la page principale. La fenêtre de création pré
 
 Crée un widget `eqLogic` entièrement personnalisable. Après avoir saisi son nom, vous pouvez éditer son rendu Dashboard et Mobile en HTML, CSS et JavaScript.
 
-### Template Core
+### Widget de commande Core
 
-Crée une copie personnalisable d'un template de commande fourni par le core Jeedom :
+Crée une copie personnalisable d'un widget de commande fourni par le core Jeedom :
 
-1. sélectionnez le template source dans la liste, classée par type de commande ;
+1. sélectionnez le widget source dans la liste, classée par type de commande ;
 2. cliquez sur **Créer** ;
-3. donnez un nom au nouveau template ;
+3. donnez un nom au nouveau widget ;
 4. modifiez sa version Dashboard ou Mobile ;
 5. affectez-le aux commandes souhaitées.
 
-Le nom saisi est utilisé dans le nom technique du template. Utilisez de préférence un nom court et explicite.
+Le nom saisi est utilisé dans le nom technique du widget. Utilisez de préférence un nom court et explicite.
 
 :::caution
-Un template Tools ne doit pas porter le même nom qu'un template natif du core. En cas de conflit ou de problème d'affichage, retirez l'affectation puis supprimez le template personnalisé afin que Jeedom utilise de nouveau celui du core.
+Un widget de commande Tools ne doit pas porter le même nom qu'un widget natif du core. En cas de conflit ou de problème d'affichage, retirez l'affectation puis supprimez le widget personnalisé afin que Jeedom utilise de nouveau celui du core.
 :::
 
-### Templates Tools
+### Widgets de commande Tools
 
 Le plugin fournit actuellement les modèles suivants :
 
@@ -72,7 +87,7 @@ Le plugin fournit actuellement les modèles suivants :
 | `Sapin_Anime` | `action.other` | Sapin animé avec vitesse paramétrable |
 | `bulb_color` | `action.color` | Sélecteur de couleur pour une ampoule |
 
-Cliquez sur **Ajouter**, saisissez le nom de l'équipement, puis ouvrez l'élément créé pour le configurer et l'affecter à une ou plusieurs commandes.
+Cliquez sur **Ajouter**, saisissez le nom, puis ouvrez l'élément créé pour le configurer et l'affecter à une ou plusieurs commandes.
 
 ### Widgets Tools
 
@@ -91,7 +106,7 @@ Les widgets proposés dépendent de la version installée du plugin. Cette versi
 
 Sélectionnez **Ajouter**, donnez un nom au widget, puis renseignez ses paramètres dans sa fiche.
 
-## Configurer un widget ou un template
+## Configurer un widget
 
 Ouvrez une tuile depuis la page principale. Selon son type, la fiche permet notamment de :
 
@@ -132,22 +147,38 @@ Par exemple, une commande nommée `temperature` peut être affichée avec :
 
 Vous pouvez associer autant de commandes que nécessaire. L'équipement doit être activé et visible pour être correctement prévisualisé.
 
-## Importer un template
+## Exporter un widget
 
-Ouvrez **Configuration**, puis utilisez **Importer un template**.
+Depuis la fiche d'un template, cliquez sur le bouton **Exporter**. Le plugin génère une archive ZIP contenant les fichiers HTML (dashboard et mobile) ainsi que les éventuels dossiers d'assets (images, CSS, fonts).
 
-:::info
-Cette fonctionnalité est temporairement désactivée. Elle sera disponible dans une prochaine version après validation.
-:::
+Le fichier téléchargé est directement réimportable sur une autre installation Jeedom via la page Configuration.
 
-L'archive doit être au format ZIP et contenir à sa racine les dossiers correspondant aux versions prises en charge, généralement :
+## Importer un widget
+
+Ouvrez **Configuration**, puis utilisez **Importer un template (.zip)**.
+
+L'archive doit être au format ZIP et respecter le nommage `cmd.type.subtype.nom.zip`. Elle doit contenir à sa racine :
 
 ```text
-dashboard/
-mobile/
+dashboard/cmd.type.subtype.nom.html
+dashboard/cmd.type.subtype.nom/        ← dossier d'assets (optionnel)
+mobile/cmd.type.subtype.nom.html       ← optionnel, copié depuis dashboard si absent
+mobile/cmd.type.subtype.nom/           ← dossier d'assets (optionnel)
 ```
 
+L'import crée automatiquement l'équipement template correspondant si aucun template avec le même nom n'existe déjà. En cas de doublon, l'import est refusé.
+
 Avant l'import, vérifiez le nom des fichiers, leur type de commande et les chemins des images. Pour un ancien template tiers, les ressources placées historiquement sous `data/customTemplates/` doivent généralement être adaptées au stockage utilisé par Tools.
+
+## Restauration depuis un backup Jeedom
+
+Depuis **Configuration**, le bouton **Restaurer depuis le backup** permet de restaurer les templates et images utilisateur depuis le dernier backup Jeedom.
+
+:::danger Opération irréversible
+Cette action **écrase les fichiers actuels** (templates HTML, dossiers d'assets et images) par ceux contenus dans le backup. Les modifications effectuées depuis le dernier backup seront perdues.
+
+Utilisez cette fonction uniquement après une mise à jour du plugin ayant entraîné la perte de vos fichiers personnalisés, ou lors d'une migration.
+:::
 
 ## Administration
 

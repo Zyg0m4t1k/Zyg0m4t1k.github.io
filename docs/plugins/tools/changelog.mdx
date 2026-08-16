@@ -4,6 +4,13 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-08-16
+
+* Correction migration master → beta : utilisation du logicalId pour les références de templates
+* Génération automatique du logicalId s'il est absent (compatibilité master)
+* Migration des références `tools::nom` → `tools::logicalId` lors de la mise à jour
+* Avertissement pour les widgets obsolètes supprimés (overview_tools, sonde_tools, weather_clock, squeeze, battery_jeedom, anemo_tools)
+
 ## 2026-08-15
 
 * Refonte complète de la page principale : suppression des 5 onglets, page standard plugin avec équipements groupés par accordéon
