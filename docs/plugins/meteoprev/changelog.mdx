@@ -1,0 +1,58 @@
+---
+title: Changelog
+description: Historique des versions du plugin Prévision Météo
+hide_title: true
+sidebar_position: 99
+---
+
+## 2026-08-22
+
+- Un seul appel au site météo par actualisation au lieu de deux
+- Les icônes météo sont téléchargées et stockées localement — le widget s'affiche plus vite et sans dépendance réseau
+- En cas de perte de connexion, les dernières données valides sont conservées
+- Protection contre les rafraîchissements trop rapprochés (cooldown 60s)
+- Timeout réseau pour éviter les blocages
+- Amélioration du tableau des commandes (Id, état, options min/max/unité)
+- Suppression de jQuery, migration vers vanilla JS
+- Migration de la documentation vers Docusaurus
+
+## 2020-12-10
+
+- Transparence widget
+- Fix tooltip
+
+## 2020-10-18
+
+- Ajout d'un cron qui se crée automatiquement lors de la mise à jour
+
+## 2019-11-03
+
+- Changement pour la v4 de Jeedom seulement
+- Mise à jour widget
+- Suppression de la température ressentie sur les équipements personnalisés. Sinon lorsque la température est inférieure ou égale à 10 °C le windchill est indiqué, au-dessus de 20 °C l'humidex est indiqué
+
+## 2019-09-01
+
+- Fix modal
+
+## 2019-08
+
+- Bugfix
+- Fix widgets
+- Fix PHP 7.3
+- Changement `fa` vers `fas`
+
+## 2018-03-02
+
+- Ajout d'une commande qui renvoie le cumul de pluie sur une journée
+- Ajout d'un widget personnalisé qui permet de donner les valeurs selon une commande existante (type sonde Netatmo)
+
+## 2018-01-28
+
+- Ajout d'icônes dans la fenêtre modale du widget
+
+## 2018-01-22
+
+- Mise à jour de la doc selon le nouveau système
+- Nom de la ville dans la modale
+- Mise à disposition du plugin sur le Market

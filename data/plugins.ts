@@ -119,6 +119,20 @@ const plugins: PluginItem[] = [
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4681"
     }
   },
+  {
+    "id": "meteoprev",
+    "name": "Prévision Météo",
+    "description": "Prévisions météo sur 5 jours dans Jeedom avec widget graphique, données horaires et icônes locales via prevision-meteo.ch.",
+    "icon": "meteoprev_icon.png",
+    "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/meteoprev/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
   // --- Reste du catalogue ---
   {
     "id": "jeeloc",
@@ -139,7 +153,6 @@ const plugins: PluginItem[] = [
     "name": "Smart Home",
     "description": "Intégration complète des équipements myStrom et Dingz dans Jeedom — pilotage local, sans cloud obligatoire.",
     "icon": "mystr0m_icon.png",
-    "ribbon": "Nouveau",
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/mystr0m/"
@@ -302,6 +315,22 @@ const plugins: PluginItem[] = [
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
       "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3583"
+    }
+  },
+  {
+    "id": "uptimekuma",
+    "name": "Uptime Kuma",
+    "description": "Intégrez Uptime Kuma dans Jeedom : surveillance temps réel de vos services, webhooks instantanés, panel de synthèse et scénarios d'alerte.",
+    "icon": "uptimekuma_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x", "python"],
+    "routes": {
+      "page": "/docs/plugins/uptimekuma/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
     }
   },
   {

@@ -1,0 +1,8 @@
+{
+  "label": "Uptime Kuma",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "plugins/uptimekuma/index"
+  }
+}

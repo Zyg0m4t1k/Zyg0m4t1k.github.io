@@ -1,0 +1,421 @@
+---
+title: Uptime Kuma
+description: Integrate Uptime Kuma into Jeedom — monitor your services, websites and servers with real-time status, webhooks and synthesis panel.
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="uptimekuma"
+  title="Uptime Kuma"
+  description="Monitor all your services, websites and servers from Jeedom with Uptime Kuma. Real-time status, webhooks, synthesis panel."
+  icon="/img/plugins/uptimekuma_icon.png"
+/>
+
+## 🔎 Uptime Kuma Plugin for Jeedom
+
+The **Uptime Kuma** plugin connects [Uptime Kuma](https://github.com/louislam/uptime-kuma) to Jeedom. It provides real-time status of all your monitors (websites, APIs, servers, TCP ports, DNS, ping...) and lets you use this information in your scenarios.
+
+---
+
+### 💡 Why use this plugin?
+
+#### Centralized monitoring in Jeedom
+
+No more switching between the Uptime Kuma interface and Jeedom. All the monitors/probes you want are visible directly on the dashboard, with dedicated widgets and a synthesis panel.
+
+#### Real-time notifications via webhooks
+
+In addition to periodic polling, the plugin installs webhooks in Uptime Kuma to receive instant status changes. A service goes down? Jeedom knows immediately.
+
+#### Multi-source
+
+You have multiple Uptime Kuma instances (production, lab, clients)? The plugin manages them all. Each instance is a **Source**, each check is a **Monitor**.
+
+#### Usable in scenarios
+
+Each monitor exposes info commands (status, ping, message) directly usable in Jeedom scenarios to trigger alerts, corrective actions or logs.
+
+---
+
+### 📊 Overview
+
+| Feature | Description |
+|---|---|
+| Monitoring | UP/DOWN/PENDING/MAINTENANCE status for each monitor |
+| Response time | Ping in milliseconds (historized) |
+| Webhooks | Instant notifications from Uptime Kuma |
+| Multi-source | Multiple Uptime Kuma instances |
+| Panel | Filterable global view with synthesis |
+| Scenarios | Info commands usable in scenarios |
+| Widgets | Dedicated templates for sources and monitors |
+
+---
+
+## ⚙️ Prerequisites {#prerequisites}
+
+- **Jeedom 4.4** minimum
+- **Debian 11 to 13**
+- An **Uptime Kuma** instance accessible from Jeedom (HTTP or HTTPS)
+- An **Uptime Kuma account** with API access (username / password)
+
+---
+
+## 📥 Installation
+
+### 1️⃣ Install the plugin
+
+```text
+Plugins > Plugin Management > Market > Uptime Kuma > Install stable
+```
+
+Activate the plugin after installation.
+
+{/* ![Plugin installation from Market](/img/plugins/uptimekuma/install_market.png) */}
+{/* Screenshot: Market page with the Uptime Kuma plugin visible, "Install stable" button */}
+
+### 2️⃣ Install dependencies
+
+Dependencies install automatically on activation. They include:
+- A Python virtual environment (venv)
+- The `uptime-kuma-api2` library for communicating with the Uptime Kuma API
+
+Check for **OK** status on the plugin configuration page.
+
+{/* ![Dependencies OK](/img/plugins/uptimekuma/dependances_ok.png) */}
+{/* Screenshot: plugin configuration page, dependencies section with green OK status */}
+
+### 3️⃣ Configure and start the daemon
+
+On the **Plugin Configuration** page:
+
+| Parameter | Description | Default |
+|---|---|---|
+| **Internal socket port** | Communication port between Jeedom and the daemon | 55210 |
+| **Polling frequency** | Interval in seconds between each Uptime Kuma poll | 60 |
+
+Start the daemon and verify **OK** status.
+
+{/* ![Daemon configuration](/img/plugins/uptimekuma/config_demon.png) */}
+{/* Screenshot: plugin configuration page, daemon section with socket port, cycle, and OK status */}
+
+:::info
+The daemon periodically polls all configured sources. Webhooks complement this mechanism for instant notifications.
+:::
+
+---
+
+## 🔌 Adding an Uptime Kuma source
+
+A **Source** represents an Uptime Kuma instance.
+
+### Create the source equipment
+
+1. Go to **Plugins > Monitoring > Uptime Kuma**
+2. Click **Add**
+3. Name the source (e.g., "Uptime Kuma Prod")
+4. In the **Equipment** tab, fill in:
+
+| Field | Description |
+|---|---|
+| **URL** | Uptime Kuma instance address (e.g., `https://status.mydomain.com`) |
+| **Username** | Uptime Kuma username (optional) |
+| **Password** | Password (encrypted in database, never displayed) |
+
+{/* ![Source configuration](/img/plugins/uptimekuma/config_source.png) */}
+{/* Screenshot: equipment tab of a source, with URL, username, password fields filled in */}
+
+5. Click **Test connection** to validate
+
+{/* ![Connection test OK](/img/plugins/uptimekuma/test_connexion.png) */}
+{/* Screenshot: success message after connection test, showing the number of detected monitors */}
+
+6. **Save** the equipment
+
+### Synchronize monitors
+
+After saving the source:
+
+1. Click **Discover monitors** to see the list of available monitors
+2. Select the ones you want to create in Jeedom
+3. Confirm to create the corresponding equipment
+
+{/* ![Monitor discovery](/img/plugins/uptimekuma/decouverte_moniteurs.png) */}
+{/* Screenshot: discovery modal with the list of detected monitors (name, type, URL/hostname) */}
+
+{/* ![Synchronization complete](/img/plugins/uptimekuma/sync_terminee.png) */}
+{/* Screenshot: success message after synchronization, with the number of monitors created/updated */}
+
+:::info
+Synchronization creates missing monitors and updates existing ones (name, type, hostname, tags). It never deletes a monitor — monitors that have disappeared from Uptime Kuma are marked as **orphaned** and disabled.
+:::
+
+---
+
+## 📡 Commands
+
+### Source commands
+
+| Command | Type | Description |
+|---|---|---|
+| **connection** | info binary | 1 = connected to Uptime Kuma, 0 = disconnected |
+| **monitor_count** | info numeric | Total number of monitors |
+| **monitors_up** | info numeric | Monitors in UP state |
+| **monitors_down** | info numeric | Monitors in DOWN state |
+| **monitors_pending** | info numeric | Monitors in PENDING state |
+| **monitors_maintenance** | info numeric | Monitors in MAINTENANCE state |
+| **monitors_unavailable** | info numeric | UNAVAILABLE monitors (Jeedom can't reach Uptime Kuma) |
+| **last_sync** | info string | Date/time of last synchronization |
+
+### Monitor commands
+
+#### Info commands
+
+| Command | Type | Description |
+|---|---|---|
+| **status** | binary | 1 = UP, 0 = DOWN |
+| **status_code** | numeric | Raw code: 0=DOWN, 1=UP, 2=PENDING, 3=MAINTENANCE, 4=UNAVAILABLE |
+| **status_text** | string | Human-readable status label |
+| **ping** | numeric | Response time in ms (historized) |
+| **message** | string | Last status message |
+| **last_check** | string | Date/time of last check |
+
+#### Action commands
+
+| Command | Description |
+|---|---|
+| **refresh** | Force an immediate refresh via the daemon |
+| **toggle_webhook** | Enable or disable the webhook for this monitor |
+
+---
+
+## 🎨 Widgets
+
+### Monitor widget
+
+The monitor widget displays:
+
+- **Status indicator** with color (green = UP, red = DOWN, orange = PENDING, blue = MAINTENANCE, gray = UNAVAILABLE)
+- **Message** from the last check (truncated with tooltip)
+- **Ping** in milliseconds
+- **Last check** (date/time)
+- **Monitor type** (HTTP, Ping, TCP, DNS...)
+- **Webhook** with toggle button to enable/disable
+
+{/* ![Monitor widget UP](/img/plugins/uptimekuma/widget_monitor_up.png) */}
+{/* Screenshot: monitor widget in UP state — green background, ping displayed, webhook button visible */}
+
+{/* ![Monitor widget DOWN](/img/plugins/uptimekuma/widget_monitor_down.png) */}
+{/* Screenshot: monitor widget in DOWN state — red background, error message displayed */}
+
+### Source widget
+
+The source widget displays:
+
+- **Connection status** (colored plug icon)
+- **Total number** of monitors (prominent number)
+- **Distribution** by status: UP, DOWN, MAINTENANCE, PENDING, UNAVAILABLE with colored dots
+- **Last synchronization** (date/time)
+
+{/* ![Source widget](/img/plugins/uptimekuma/widget_source.png) */}
+{/* Screenshot: source widget with green connection icon, monitor total, and 5 status distribution rows */}
+
+---
+
+## 🎛️ Synthesis panel
+
+The panel provides a global view of all monitors across all sources.
+
+{/* ![Panel global view](/img/plugins/uptimekuma/panel_global.png) */}
+{/* Screenshot: full panel with summary cards at top, problems section in middle, and monitor table at bottom */}
+
+### Summary cards
+
+At the top of the panel, colored cards display global counters:
+
+| Card | Color | Content |
+|---|---|---|
+| **Total** | — | Total number of monitors |
+| **UP** | Green | Online monitors |
+| **DOWN** | Red | Failed monitors |
+| **PENDING** | Orange | Pending monitors |
+| **MAINTENANCE** | Blue | Monitors in maintenance |
+| **UNAVAILABLE** | Gray | Unreachable monitors |
+| **Connection** | — | Connected sources / total |
+
+{/* ![Summary cards](/img/plugins/uptimekuma/panel_cartes.png) */}
+{/* Screenshot: summary card bar at the top of the panel, with colored counters */}
+
+### Problems section
+
+Below the cards, a section displays all **non-UP** monitors with their status and details. This section disappears when everything is UP.
+
+{/* ![Problems section](/img/plugins/uptimekuma/panel_problemes.png) */}
+{/* Screenshot: "Problems" section showing 2-3 DOWN or UNAVAILABLE monitors with their details */}
+
+### Filters
+
+The panel offers multiple combinable filtering criteria:
+
+| Filter | Description |
+|---|---|
+| **Status buttons** | ALL, DOWN, N/A, PENDING, MAINT., UP |
+| **Source** | Filter by Uptime Kuma instance |
+| **Tag** | Filter by monitor tag |
+| **Search** | Real-time search on monitor name |
+
+{/* ![Panel filters](/img/plugins/uptimekuma/panel_filtres.png) */}
+{/* Screenshot: filter bar with active status buttons, source dropdown, tag dropdown, and search field */}
+
+### Monitor table
+
+Each monitor is displayed on a row with:
+- Name and link to the Jeedom equipment
+- Monitor type
+- Tags (colored badges)
+- Ping
+- Last check
+- Webhook status (green badge = Jeedom, orange = other, red = none)
+
+{/* ![Monitor table](/img/plugins/uptimekuma/panel_tableau.png) */}
+{/* Screenshot: table with 5-10 monitors showing all columns, some UP, some DOWN */}
+
+---
+
+## 🔔 Webhooks
+
+Webhooks allow Uptime Kuma to notify Jeedom instantly when a status changes, without waiting for the next polling cycle.
+
+### How it works
+
+1. The plugin creates a **webhook notification** in Uptime Kuma pointing to Jeedom
+2. The notification is attached to the relevant monitor
+3. When the monitor status changes, Uptime Kuma sends a POST to Jeedom
+4. Jeedom updates the monitor commands in real time
+
+### Enable / disable a webhook
+
+- From the **monitor widget**: click the webhook toggle button
+- From the **panel**: the webhook badge shows the current state
+
+:::tip
+Webhooks require Jeedom to be accessible from the Uptime Kuma instance (local network or public URL). Check connectivity if webhooks are not working.
+:::
+
+### Webhook security
+
+Each source has an automatically generated **dedicated webhook token**. This token is independent from the Jeedom API key and authenticates incoming requests to prevent unauthorized calls.
+
+---
+
+## 💡 Scenario examples
+
+### Alert when a service goes down
+
+```text
+Trigger: #[Monitoring][My Website][status]# == 0
+  → Notification "My Website is DOWN!"
+  → Send SMS
+```
+
+### Alert on high ping
+
+```text
+IF #[Monitoring][Production API][ping]# > 2000
+  Then → log "Production API: high latency (#[Monitoring][Production API][ping]# ms)"
+  Then → Notification "Slow API"
+```
+
+### Daily summary
+
+```text
+Schedule: every day at 8am
+  → Message "DOWN monitors: #[Monitoring][Prod Source][monitors_down]# / #[Monitoring][Prod Source][monitor_count]#"
+```
+
+### Automatically restart a service
+
+```text
+Trigger: #[Monitoring][Docker Portainer][status]# == 0
+  → SSH Command: "docker restart portainer"
+  → Wait 30s
+  → IF #[Monitoring][Docker Portainer][status]# == 0
+       → Notification "Portainer did not restart — manual intervention needed"
+```
+
+---
+
+## 📱 Mobile panel
+
+The plugin has a mobile panel accessible from the Jeedom mobile app. Enable it if needed in the plugin's general configuration.
+
+{/* ![Mobile panel](/img/plugins/uptimekuma/panel_mobile.png) */}
+{/* Screenshot: mobile panel on smartphone with the list of monitors and their colored statuses */}
+
+---
+
+## 📋 Logs
+
+| Log | Description |
+|---|---|
+| `uptimekuma` | Main log (polling, webhooks, synchronization) |
+| `uptimekuma_update` | Dependency installation |
+
+Enable **Debug** mode to see detailed exchanges with the Uptime Kuma API and daemon.
+
+---
+
+## 🆘 Support
+
+If you encounter any issue, use the **Support Forum** button on the plugin's main page. It automatically generates a pre-filled post for the Jeedom Community forum with your configuration details (number of sources, monitors, daemon settings).
+
+{/* ![Support Forum button](/img/plugins/uptimekuma/bouton_support.png) */}
+{/* Screenshot: button bar at the top of the plugin page, with the "Support Forum" button (blue lifebuoy icon) visible */}
+
+---
+
+## 🛠️ Troubleshooting
+
+### Daemon won't start
+
+- Check dependencies (OK status)
+- Check that the socket port is not already in use:
+
+```bash
+ss -tlnp | grep 55210
+```
+
+- Check the `uptimekuma` log in Debug mode
+
+### Source disconnected
+
+- Check the Uptime Kuma instance URL
+- Test the connection from the source equipment page
+- Check that the instance is accessible from Jeedom:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" https://your-uptime-kuma.com
+```
+
+### Webhooks not working
+
+- Check that Jeedom is accessible from the Uptime Kuma instance
+- Check the webhook token in the logs
+- The callback URL uses Jeedom's internal address — if Uptime Kuma is on a different network, configure Jeedom's external URL in the general configuration
+
+### Orphaned monitors
+
+If a monitor is deleted in Uptime Kuma, it will be marked **orphaned** at the next synchronization and disabled. You can manually delete it in Jeedom or re-enable it if the monitor is recreated in Uptime Kuma.
+
+### Dependency errors
+
+```bash
+# Check the venv
+ls -la /var/www/html/plugins/uptimekuma/resources/venv/
+
+# Reinstall manually
+cd /var/www/html/plugins/uptimekuma/resources
+python3 -m venv venv
+./venv/bin/pip install -r requirements.txt
+```

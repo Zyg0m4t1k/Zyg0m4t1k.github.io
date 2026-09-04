@@ -1,0 +1,246 @@
+---
+title: Plugin Prévision Météo
+description: Prévisions météo sur 5 jours dans Jeedom avec widget graphique et données horaires
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="meteoprev"
+  title="Plugin Prévision Météo"
+  description="Récupérez les **prévisions météo sur 5 jours** dans Jeedom avec widget graphique, données horaires et icônes locales."
+  icon="/img/plugins/meteoprev_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+/>
+
+Le plugin **Prévision Météo** récupère les données météorologiques via le site [prevision-meteo.ch](https://www.prevision-meteo.ch) et les affiche dans Jeedom avec un widget complet incluant graphique horaire.
+
+Il fournit :
+- la **météo actuelle** (température, vent, humidité, pression, condition)
+- les **prévisions sur 5 jours** (min/max, condition, icône, cumul de pluie)
+- les **données horaires** détaillées (température, précipitations, vent, pression, etc.)
+- un **graphique Highcharts** interactif avec courbes de température, précipitations et flèches de vent
+
+---
+
+## ✨ Principe de fonctionnement
+
+1. Un **cron** déclenche périodiquement l'actualisation (par défaut toutes les heures)
+2. **Un seul appel API** est effectué vers `prevision-meteo.ch`
+3. Les données sont **mises en cache localement** (JSON + icônes PNG)
+4. Les commandes Jeedom sont mises à jour et le widget est rafraîchi
+5. Aucun appel réseau ne se fait lors de l'affichage du widget
+
+Le plugin ne possède **pas de démon** et ne nécessite **aucune dépendance** à installer.
+
+---
+
+## 🔧 Prérequis
+
+### Identifier votre station
+
+1. Rendez-vous sur [prevision-meteo.ch](https://www.prevision-meteo.ch)
+2. Recherchez votre ville via la barre de recherche
+3. Vous arrivez sur une URL de la forme : `https://www.prevision-meteo.ch/meteo/localite/paris`
+4. Le nom de station à renseigner est la dernière partie de l'URL : **paris**
+
+:::tip Stations multiples
+Vous pouvez créer plusieurs équipements pour différentes villes. Chaque équipement a sa propre station et son propre cron de rafraîchissement.
+:::
+
+---
+
+## 🚀 Installation
+
+### Étape 1 — Installer le plugin
+
+1. Allez dans **Plugins → Gestion des plugins → Market**
+2. Recherchez **Prévision Météo**
+3. Cliquez sur **Installer**
+4. Activez le plugin
+
+### Étape 2 — Créer un équipement
+
+1. Allez dans **Plugins → Météo → Prévision Météo**
+2. Cliquez sur **Ajouter**
+3. Donnez un nom à l'équipement
+4. Renseignez le nom de la **station** (ex : `paris`, `lyon`, `st-maurice-vs`)
+5. Sauvegardez
+
+Le plugin effectue alors un appel API, crée toutes les commandes et télécharge les icônes localement.
+
+---
+
+## ⚙️ Configuration de l'équipement
+
+### Paramètres principaux
+
+| Champ | Description |
+|-------|-------------|
+| **Station** | Nom de la localité sur prevision-meteo.ch (ex : `paris`) |
+| **Cron de rafraîchissement** | Expression cron pour l'actualisation automatique (par défaut : toutes les heures à une minute aléatoire) |
+| **Widget personnalisé** | Cocher pour utiliser le widget enrichi avec sources de données personnalisables |
+| **Widget par défaut** | Cocher pour utiliser le widget Jeedom standard |
+
+### Widget personnalisé
+
+En cochant **Widget personnalisé**, vous pouvez remplacer les sources de données par des commandes externes (par exemple une sonde Netatmo) :
+
+- Température
+- Humidité
+- Pression
+- Vent
+- Pluie instantanée
+- Pluie totale
+
+![Configuration widget personnalisé](/img/plugins/meteoprev/meteoprev4.png)
+
+---
+
+## 📊 Données récupérées
+
+### Météo actuelle
+
+- Température (`current_condition_tmp`)
+- Vitesse du vent et rafales
+- Humidité
+- Pression
+- Icône et condition météo
+
+### Prévisions jour 0 à jour 4
+
+Pour chaque jour :
+- Température min / max
+- Condition météo et icône
+- Cumul de pluie journalier (`rain_0` à `rain_4`)
+
+### Données horaires (jour 0)
+
+Pour chaque heure du jour en cours :
+- Température (`TMP2m`)
+- Point de rosée (`DPT2m`)
+- Température ressentie au vent (`WNDCHILL2m`)
+- Humidité (`RH2m`)
+- Pression (`PRMSL`)
+- Précipitations (`APCPsfc`)
+- Vitesse du vent (`WNDSPD10m`) et rafales (`WNDGUST10m`)
+- Direction du vent (`WNDDIR10m`, `WNDDIRCARD10`)
+- Isotherme 0°C (`HGT0C`)
+- Couverture nuageuse haute/moyenne/basse (`HCDC`, `MCDC`, `LCDC`)
+- Indice K (`KINDEX`)
+
+:::info Documentation complète des commandes
+La liste complète des paramètres retournés par le flux JSON est disponible dans la [documentation officielle de prevision-meteo.ch (PDF)](https://www.prevision-meteo.ch/uploads/pdf/recuperation-donnees-meteo.pdf).
+:::
+
+---
+
+## 🖥️ Widgets
+
+### Widget standard
+
+Le widget affiche :
+- l'icône météo du jour (servie localement)
+- la température actuelle
+- les conditions et températures min/max
+- l'humidité, la pression, le vent, l'indice orage
+- les prévisions J+1 à J+4 avec icônes
+- l'isotherme et le point de rosée
+- la température ressentie (windchill sous 10°C, humidex au-dessus de 20°C)
+
+![Widget standard](/img/plugins/meteoprev/meteoprev1.png)
+
+![Widget avec humidex](/img/plugins/meteoprev/meteoprev2.png)
+
+### Graphique horaire
+
+Un clic sur l'icône graphique bascule l'affichage vers un graphique Highcharts interactif. Des boutons permettent de sélectionner le jour (J0 à J4).
+
+Le graphique affiche :
+- courbe de température et température ressentie
+- barres de précipitations
+- icônes météo toutes les 2 heures
+- flèches de direction du vent avec intensité Beaufort
+
+![Graphique horaire](/img/plugins/meteoprev/meteoprev3.png)
+
+### Widget personnalisé
+
+En activant le widget personnalisé, les données affichées peuvent provenir de commandes externes (sondes Netatmo, stations météo, etc.).
+
+![Widget personnalisé](/img/plugins/meteoprev/meteoprev5.png)
+
+---
+
+## 🔄 Rafraîchissement des données
+
+### Automatique
+
+Le plugin utilise le cron Jeedom (méthode `cron()` appelée chaque minute). Chaque équipement a sa propre expression cron configurable.
+
+Par défaut : une fois par heure (minute aléatoire entre 1 et 9).
+
+### Manuel
+
+Une commande **Rafraîchir** (action) est disponible sur chaque équipement. Un clic sur l'icône de synchronisation du widget déclenche l'actualisation.
+
+### Protection anti-spam
+
+Un **cooldown de 60 secondes** empêche les appels API trop rapprochés. Si un rafraîchissement a eu lieu il y a moins de 60s, la demande est ignorée.
+
+### Résilience
+
+En cas d'échec de l'appel API (timeout, erreur réseau, JSON invalide), le plugin **conserve les dernières données valides** en cache et met à jour les commandes à partir de celles-ci.
+
+---
+
+## 📁 Cache et fichiers locaux
+
+Le plugin stocke ses données dans le dossier `data/` :
+
+| Fichier | Contenu |
+|---------|---------|
+| `{station}.json` | Réponse brute de l'API |
+| `{station}_days.json` | Données traitées pour les graphiques (5 jours avec timestamps) |
+| `{station}.lock` | Fichier verrou anti-spam (contient le timestamp du dernier appel) |
+| `icons/{condition}.png` | Icônes météo téléchargées localement |
+| `icons/{condition}-big.png` | Icônes météo grande taille |
+
+Les icônes sont téléchargées une seule fois puis servies localement. Aucun appel au site distant n'est fait lors de l'affichage des widgets.
+
+---
+
+## 🛠️ Dépannage
+
+### Aucune donnée météo
+
+- Vérifiez que le nom de **station** est correct (dernière partie de l'URL prevision-meteo.ch)
+- Vérifiez que la machine Jeedom a accès à Internet
+- Consultez les logs du plugin (`meteoprev`)
+
+### Les icônes ne s'affichent pas
+
+- Vérifiez que le dossier `plugins/meteoprev/data/icons/` existe et contient des fichiers PNG
+- Lancez un rafraîchissement manuel pour déclencher le téléchargement des icônes
+
+### Le graphique est vide
+
+- Vérifiez que le fichier `{station}_days.json` existe dans `plugins/meteoprev/data/`
+- Lancez un rafraîchissement pour regénérer ce fichier
+
+### "Cooldown actif" dans les logs
+
+C'est normal : cela signifie qu'un rafraîchissement a été demandé moins de 60 secondes après le précédent. Le plugin protège l'API contre les appels trop fréquents.
+
+---
+
+## ✅ Résumé
+
+Le plugin **Prévision Météo** permet d'intégrer dans Jeedom :
+- les prévisions météo sur 5 jours via prevision-meteo.ch
+- un widget complet avec graphique horaire interactif
+- des données horaires détaillées (température, vent, pression, précipitations)
+- un cache local des icônes et des données pour un affichage rapide et sans dépendance réseau
+
+C'est une solution légère, sans démon ni dépendance, avec un seul appel API par actualisation.
