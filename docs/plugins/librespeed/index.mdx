@@ -195,8 +195,33 @@ Le fichier est automatiquement nomme `servers_{id}.json` et stocke dans le reper
 ```
 
 :::important
-Cette option necessite un **serveur LibreSpeed** installe et fonctionnel sur votre reseau. Le fichier JSON seul ne suffit pas. Consultez la documentation [LibreSpeed Server](https://github.com/librespeed/speedtest) pour l'installation.
+Cette option necessite un **serveur LibreSpeed** installe et fonctionnel sur votre reseau. Le fichier JSON seul ne suffit pas.
 :::
+
+#### Exemple : deployer un serveur LibreSpeed avec Docker
+
+```bash
+docker run -d \
+  --name librespeed \
+  --restart unless-stopped \
+  -p 8088:8080 \
+  ghcr.io/librespeed/speedtest:latest
+```
+
+Le serveur sera accessible sur `http://<IP_DE_LA_MACHINE>:8088/`. Adaptez le fichier JSON en consequence :
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Mon serveur LAN",
+    "server": "http://192.168.1.100:8088/",
+    "dlURL": "backend/garbage.php",
+    "ulURL": "backend/empty.php",
+    "pingURL": "backend/empty.php"
+  }
+]
+```
 
 #### Affichage
 
