@@ -72,8 +72,6 @@ Plugins > Gestion des plugins > Market > Uptime Kuma > Installer stable
 
 Activer le plugin apres installation.
 
-{/* ![Installation du plugin depuis le Market](/img/plugins/uptimekuma/install_market.png) */}
-{/* Screenshot : page Market avec le plugin Uptime Kuma visible, bouton "Installer stable" */}
 
 ### 2️⃣ Installer les dependances
 
@@ -82,9 +80,6 @@ Les dependances s'installent automatiquement a l'activation. Elles comprennent :
 - La librairie `uptime-kuma-api2` pour communiquer avec l'API d'Uptime Kuma
 
 Verifier le statut **OK** dans la page de configuration du plugin.
-
-{/* ![Dependances OK](/img/plugins/uptimekuma/dependances_ok.png) */}
-{/* Screenshot : page configuration du plugin, section dependances avec statut OK en vert */}
 
 ### 3️⃣ Configurer et demarrer le demon
 
@@ -97,8 +92,6 @@ Dans la page **Configuration du plugin** :
 
 Demarrer le demon et verifier le statut **OK**.
 
-{/* ![Configuration demon](/img/plugins/uptimekuma/config_demon.png) */}
-{/* Screenshot : page configuration du plugin, section demon avec port socket, cycle, et statut OK */}
 
 :::info
 Le demon interroge periodiquement toutes les sources configurees. Les webhooks completent ce mecanisme pour les notifications instantanees.
@@ -123,13 +116,8 @@ Une **Source** represente une instance Uptime Kuma.
 | **Identifiant** | Nom d'utilisateur Uptime Kuma (optionnel) |
 | **Mot de passe** | Mot de passe (chiffre en base, jamais affiche) |
 
-{/* ![Configuration source](/img/plugins/uptimekuma/config_source.png) */}
-{/* Screenshot : onglet equipement d'une source, avec les champs URL, identifiant, mot de passe remplis */}
 
 5. Cliquer **Tester la connexion** pour valider
-
-{/* ![Test connexion OK](/img/plugins/uptimekuma/test_connexion.png) */}
-{/* Screenshot : message de succes apres test de connexion, avec le nombre de moniteurs detectes */}
 
 6. **Sauvegarder** l'equipement
 
@@ -139,13 +127,11 @@ Apres avoir sauvegarde la source :
 
 1. Cliquer **Decouvrir les moniteurs** pour voir la liste des moniteurs disponibles
 2. Selectionner ceux que vous souhaitez creer dans Jeedom
+
+![Selection moniteur](/img/plugins/uptimekuma/select_monitor.png) 
+
 3. Valider pour creer les equipements correspondants
 
-{/* ![Decouverte moniteurs](/img/plugins/uptimekuma/decouverte_moniteurs.png) */}
-{/* Screenshot : modal de decouverte avec la liste des moniteurs detectes (nom, type, URL/hostname) */}
-
-{/* ![Synchronisation terminee](/img/plugins/uptimekuma/sync_terminee.png) */}
-{/* Screenshot : message de succes apres synchronisation, avec le nombre de moniteurs crees/mis a jour */}
 
 :::info
 La synchronisation cree les moniteurs manquants et met a jour les existants (nom, type, hostname, tags). Elle ne supprime jamais un moniteur — les moniteurs disparus d'Uptime Kuma sont marques comme **orphelins** et desactives.
@@ -203,11 +189,9 @@ Le widget moniteur affiche :
 - **Type** de moniteur (HTTP, Ping, TCP, DNS...)
 - **Webhook** avec bouton toggle pour activer/desactiver
 
-{/* ![Widget moniteur UP](/img/plugins/uptimekuma/widget_monitor_up.png) */}
-{/* Screenshot : widget d'un moniteur en etat UP — fond vert, ping affiche, bouton webhook visible */}
+![Widget moniteur UP](/img/plugins/uptimekuma/widget_monitor_up.png) 
 
-{/* ![Widget moniteur DOWN](/img/plugins/uptimekuma/widget_monitor_down.png) */}
-{/* Screenshot : widget d'un moniteur en etat DOWN — fond rouge, message d'erreur affiche */}
+![Widget moniteur DOWN](/img/plugins/uptimekuma/widget_monitor_down.png) 
 
 ### Widget Source
 
@@ -218,8 +202,7 @@ Le widget source affiche :
 - **Repartition** par statut : UP, DOWN, MAINTENANCE, PENDING, UNAVAILABLE avec pastilles colorees
 - **Derniere synchronisation** (date/heure)
 
-{/* ![Widget source](/img/plugins/uptimekuma/widget_source.png) */}
-{/* Screenshot : widget source avec l'icone connexion verte, le total de moniteurs, et les 5 lignes de repartition par statut */}
+![Widget source](/img/plugins/uptimekuma/widget_source.png) 
 
 ---
 
@@ -227,8 +210,7 @@ Le widget source affiche :
 
 Le panel offre une vue globale de tous les moniteurs, toutes sources confondues.
 
-{/* ![Panel vue globale](/img/plugins/uptimekuma/panel_global.png) */}
-{/* Screenshot : panel complet avec cartes de synthese en haut, section problemes au milieu, et tableau des moniteurs en bas */}
+![Panel vue globale](/img/plugins/uptimekuma/panel_global.png)
 
 ### Cartes de synthese
 
@@ -251,9 +233,6 @@ En haut du panel, des cartes colorees affichent les compteurs globaux :
 
 Sous les cartes, une section affiche tous les moniteurs **non UP** avec leur statut et leurs details. Cette section disparait si tout est UP.
 
-{/* ![Section problemes](/img/plugins/uptimekuma/panel_problemes.png) */}
-{/* Screenshot : section "Problemes" affichant 2-3 moniteurs DOWN ou UNAVAILABLE avec leurs details */}
-
 ### Filtres
 
 Le panel propose plusieurs criteres de filtrage combinables :
@@ -265,8 +244,6 @@ Le panel propose plusieurs criteres de filtrage combinables :
 | **Tag** | Filtrer par tag de moniteur |
 | **Recherche** | Recherche en temps reel sur le nom du moniteur |
 
-{/* ![Filtres panel](/img/plugins/uptimekuma/panel_filtres.png) */}
-{/* Screenshot : barre de filtres avec boutons de statut actifs, dropdown source, dropdown tag, et champ de recherche */}
 
 ### Tableau des moniteurs
 
@@ -278,8 +255,6 @@ Chaque moniteur est affiche sur une ligne avec :
 - Dernier check
 - Statut webhook (badge vert = Jeedom, orange = autre, rouge = aucun)
 
-{/* ![Tableau moniteurs](/img/plugins/uptimekuma/panel_tableau.png) */}
-{/* Screenshot : tableau avec 5-10 moniteurs affichant toutes les colonnes, certains UP, certains DOWN */}
 
 ---
 
@@ -350,8 +325,7 @@ Declencheur : #[Monitoring][Docker Portainer][status]# == 0
 
 Le plugin dispose d'un panel mobile accessible depuis l'application Jeedom. L'activer si besoin dans la configuration generale du plugin.
 
-{/* ![Panel mobile](/img/plugins/uptimekuma/panel_mobile.png) */}
-{/* Screenshot : panel mobile sur smartphone avec la liste des moniteurs et leurs statuts colores */}
+![Panel mobile](/img/plugins/uptimekuma/panel_mobile.png)
 
 ---
 
@@ -370,8 +344,6 @@ Activer le mode **Debug** pour voir les echanges detailles avec l'API Uptime Kum
 
 En cas de probleme, utilisez le bouton **Support Forum** sur la page principale du plugin. Il genere automatiquement un post pre-rempli pour le forum Community Jeedom avec les informations de votre configuration (nombre de sources, moniteurs, parametres du demon).
 
-{/* ![Bouton Support Forum](/img/plugins/uptimekuma/bouton_support.png) */}
-{/* Screenshot : barre de boutons en haut de la page plugin, avec le bouton "Support Forum" (icone bouee bleue) visible */}
 
 ---
 
