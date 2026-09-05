@@ -1,0 +1,399 @@
+---
+title: LibreSpeed
+description: "Mesurez et surveillez les performances de votre connexion internet depuis Jeedom : download, upload, ping, jitter, perte de paquets et score global. Moteur LibreSpeed CLI open source."
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="librespeed"
+  title="LibreSpeed — Mesure et suivi des performances réseau"
+  description="Mesurez et surveillez les performances de votre connexion internet directement depuis Jeedom."
+  icon="/img/plugins/librespeed_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
+/>
+
+---
+
+## 📋 Presentation
+
+Le plugin **LibreSpeed** permet de mesurer et surveiller les performances reseau directement depuis Jeedom en s'appuyant sur le client officiel [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli).
+
+Il permet de mesurer :
+
+- le debit descendant
+- le debit montant
+- le ping
+- le jitter
+- la perte de paquets
+- le serveur utilise
+- le fournisseur d'acces
+- l'adresse IP utilisee
+- un score global de qualite de connexion
+
+Le plugin fonctionne sans Python, sans `venv` et sans `pip` : il utilise directement le binaire Go de LibreSpeed adapte a l'architecture de la machine.
+
+Il prend en charge :
+
+- les serveurs publics LibreSpeed
+- les listes de serveurs personnalisees
+- les serveurs LibreSpeed auto-heberges
+- IPv4 et IPv6
+- le choix de l'interface reseau
+- les tests manuels ou planifies par cron
+- l'historisation des mesures dans Jeedom
+- l'utilisation des resultats dans les scenarios
+
+Chaque equipement peut representer une cible de test differente, par exemple :
+
+- connexion Internet principale
+- connexion IPv6
+- interface Ethernet ou Wi-Fi
+- serveur LibreSpeed local pour tester le LAN
+- serveur distant prive ou VPN
+
+Le plugin integre egalement un calcul de score permettant d'obtenir rapidement une indication globale sur la qualite de la connexion a partir du debit, de la latence, du jitter et de la perte de paquets.
+
+L'objectif est de disposer dans Jeedom d'un outil simple de **mesure, suivi et diagnostic reseau**, aussi bien pour Internet que pour le reseau local.
+
+---
+
+## ✨ Fonctionnalites
+
+- Mesure du **download** et de l'**upload** en Mbit/s
+- Mesure du **ping** (latence) et du **jitter** (variation de latence) en ms
+- Mesure de la **perte de paquets** via ICMP en %
+- **Score global** sur 10, pondere (download 40%, upload 20%, ping 20%, jitter 10%, perte 10%)
+- **Notation par usage** : web, streaming (SD/HD/4K), gaming, visioconference
+- Identification du **serveur** de test et du **FAI**
+- **Widget custom** avec jauge SVG animee, barre d'upload, cercle de score et tuiles de metriques
+- **Planification** via cron configurable
+- **Choix du serveur** de test (automatique ou manuel par ID)
+- **Forcage IPv4 / IPv6** et **choix de l'interface reseau**
+- **Liste de serveurs personnalisee** (distante ou locale) pour les tests LAN/VPN
+- **Page Sante** avec diagnostic complet et test de debit a la demande
+- **Bouton Support Forum** pour creer un post Community pre-rempli
+
+---
+
+## ⚙️ Prerequis
+
+- Jeedom **4.4** minimum
+- Une connexion internet fonctionnelle
+- Architecture supportee : **amd64**, **arm64**, **armv7**, **armv6**, **i386**
+
+---
+
+## 📥 Installation
+
+1. Installez le plugin depuis le Market Jeedom ou via GitHub
+2. **Activez** le plugin
+3. Allez dans **Plugins > Gestion des plugins > LibreSpeed**
+4. Cliquez sur **Installer les dependances** et attendez la fin
+5. Verifiez que le statut des dependances passe a **OK**
+
+<!-- ![Installation des dependances](/img/plugins/librespeed/install_deps.png) -->
+
+:::note
+Les dependances installent le binaire [LibreSpeed CLI v1.0.14](https://github.com/librespeed/speedtest-cli) ainsi que les paquets systeme necessaires (`ca-certificates`, `iputils-ping`). Aucun environnement Python n'est requis.
+:::
+
+---
+
+## 🔧 Configuration du plugin
+
+Dans la page de configuration du plugin (**Plugins > Gestion des plugins > LibreSpeed > Configuration**) :
+
+<!-- ![Configuration du plugin](/img/plugins/librespeed/config_plugin.png) -->
+
+| Information | Description |
+|---|---|
+| **Moteur** | LibreSpeed CLI (toujours affiche) |
+| **Version** | Version du binaire installe |
+| **Architecture** | Architecture detectee du systeme |
+| **Ping systeme** | Disponibilite de la commande `ping` |
+
+:::tip
+Si la version affichee ne correspond pas a la version attendue, reinstallez les dependances.
+:::
+
+---
+
+## 🖥️ Configuration d'un equipement
+
+Depuis **Plugins > Monitoring > LibreSpeed**, cliquez sur **Ajouter** pour creer un equipement.
+
+<!-- ![Page principale](/img/plugins/librespeed/main_page.png) -->
+
+### Onglet Equipement
+
+Options standard Jeedom : nom, objet parent, categorie, activer, visible.
+
+<!-- ![Onglet equipement](/img/plugins/librespeed/tab_equipment.png) -->
+
+### Onglet Configuration
+
+<!-- ![Onglet configuration](/img/plugins/librespeed/tab_config.png) -->
+
+#### Planification
+
+| Option | Description |
+|---|---|
+| **Activer Cron** | Active la planification automatique des tests |
+| **Frequence** | Expression cron pour la frequence (ex: `0 */4 * * *` pour toutes les 4 heures). Cliquez sur **?** pour utiliser l'assistant cron |
+
+:::warning
+Evitez de planifier des tests trop frequents (moins de 30 minutes). Chaque test consomme de la bande passante et peut impacter les autres usages du reseau.
+:::
+
+#### Test
+
+| Option | Description |
+|---|---|
+| **Serveur** | Identifiant du serveur de test. Laisser vide pour une selection automatique. Cliquez sur l'icone liste pour parcourir les serveurs disponibles |
+| **Protocole reseau** | Automatique, IPv4 ou IPv6 |
+| **Interface reseau** | Automatique ou interface specifique (ex: `ens18`, `eth0`) |
+
+<!-- ![Liste des serveurs](/img/plugins/librespeed/server_list.png) -->
+
+:::tip
+Forcez **IPv4** ou **IPv6** pour tester specifiquement l'un ou l'autre. En mode automatique, LibreSpeed choisit selon la disponibilite.
+:::
+
+#### Options avancees
+
+| Option | Description |
+|---|---|
+| **Source des serveurs** | **LibreSpeed par defaut** : liste publique officielle. **Liste personnalisee distante** : URL d'un fichier JSON. **Liste personnalisee locale** : fichier JSON uploade |
+| **Partager le resultat** | Genere une URL de partage du resultat (si le serveur le supporte) |
+
+#### Liste de serveurs personnalisee locale
+
+Pour utiliser un serveur LibreSpeed heberge sur votre reseau local (LAN/VPN) :
+
+1. Selectionnez **Liste personnalisee locale** dans la source des serveurs
+2. Cliquez sur le bouton **upload** a cote du champ fichier
+3. Importez un fichier JSON au format LibreSpeed CLI
+
+<!-- ![Upload serveur local](/img/plugins/librespeed/upload_local.png) -->
+
+Le fichier est automatiquement nomme `servers_{id}.json` et stocke dans le repertoire du plugin. Exemple de format :
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Mon serveur LAN",
+    "server": "http://192.168.1.100:8080/",
+    "dlURL": "garbage.php",
+    "ulURL": "empty.php",
+    "pingURL": "empty.php"
+  }
+]
+```
+
+:::important
+Cette option necessite un **serveur LibreSpeed** installe et fonctionnel sur votre reseau. Le fichier JSON seul ne suffit pas. Consultez la documentation [LibreSpeed Server](https://github.com/librespeed/speedtest) pour l'installation.
+:::
+
+#### Affichage
+
+| Option | Description |
+|---|---|
+| **Echelle max Download (Mbit/s)** | Valeur maximale de la jauge download sur le widget (defaut : 1000) |
+| **Echelle max Upload (Mbit/s)** | Valeur maximale de la barre upload sur le widget (defaut : 500) |
+
+:::tip
+Adaptez les echelles a votre abonnement internet pour que les jauges du widget soient lisibles. Par exemple, pour une connexion fibre 1 Gbit/s, laissez 1000. Pour une connexion ADSL, mettez 30.
+:::
+
+---
+
+## 📡 Les commandes
+
+Les commandes sont creees automatiquement lors de la sauvegarde de l'equipement.
+
+### Commandes info numeriques
+
+| Commande | Unite | Description |
+|---|---|---|
+| **Download** | Mbit/s | Debit descendant |
+| **Upload** | Mbit/s | Debit montant |
+| **Ping** | ms | Latence reseau |
+| **Jitter** | ms | Variation de la latence (stabilite) |
+| **Perte de paquets** | % | Pourcentage de paquets perdus via ICMP. Affiche **N/A** si la mesure est impossible |
+| **Score** | /10 | Note globale ponderee de la connexion |
+
+### Commandes info texte
+
+| Commande | Description |
+|---|---|
+| **Serveur** | Nom du serveur de test utilise |
+| **Adresse IP** | Adresse IP publique vue par le serveur |
+| **FAI** | Fournisseur d'acces internet detecte |
+| **Notation usage** | Evaluation par type d'usage (web, streaming, gaming, visio) |
+
+### Commande info binaire
+
+| Commande | Description |
+|---|---|
+| **Etat** | 1 = test reussi, 0 = test en echec |
+
+### Commande action
+
+| Commande | Description |
+|---|---|
+| **Rafraichir** | Lance un test de debit manuellement |
+
+:::info
+Toutes les commandes numeriques peuvent etre **historisees** pour suivre l'evolution de votre connexion dans le temps. Activez l'historisation dans l'onglet Commandes de l'equipement.
+:::
+
+---
+
+## 🎨 Le widget
+
+<!-- ![Widget LibreSpeed](/img/plugins/librespeed/widget.png) -->
+
+Le plugin dispose d'un **widget custom** avec :
+
+- Une **jauge demi-cercle** animee pour le download (bleue)
+- Une **barre de progression** pour l'upload (verte)
+- Un **cercle de score** /10 (vert)
+- Un **badge d'etat** (OK / Erreur)
+- Trois **tuiles** pour le ping, le jitter et la perte de paquets
+- Un **bouton rafraichir** pour lancer un test a la demande
+- La **date du dernier test** en pied de widget
+
+Les echelles des jauges (download et upload) sont configurables dans l'onglet Configuration de l'equipement pour s'adapter a votre type de connexion.
+
+---
+
+## 🏆 Comprendre le score
+
+Le score global est calcule sur 10 en ponderant les metriques :
+
+| Metrique | Poids | Excellent | Bon | Moyen |
+|---|---|---|---|---|
+| Download | 40% | > 100 Mbit/s | > 25 Mbit/s | > 10 Mbit/s |
+| Upload | 20% | > 50 Mbit/s | > 20 Mbit/s | > 10 Mbit/s |
+| Ping | 20% | < 10 ms | < 20 ms | < 50 ms |
+| Jitter | 10% | < 2 ms | < 5 ms | < 10 ms |
+| Perte paquets | 10% | 0% | < 1% | < 3% |
+
+:::note
+Si la mesure de perte de paquets est indisponible (ICMP bloque), le score est recalcule sur les 4 autres metriques (renormalisation a 90%). Le score reste donc representatif.
+:::
+
+---
+
+## 📊 Comprendre la notation d'usage
+
+La commande **Notation usage** evalue votre connexion pour differents cas d'utilisation :
+
+| Usage | Excellent | Bon | Insuffisant |
+|---|---|---|---|
+| **Web** | DL > 5 Mbit/s + Ping < 100 ms | DL > 1 Mbit/s | DL < 1 Mbit/s |
+| **Streaming** | DL > 25 Mbit/s (4K) | DL > 10 Mbit/s (HD) | DL < 3 Mbit/s |
+| **Gaming** | DL > 10 + Ping < 20 ms | DL > 5 + Ping < 50 ms | Ping > 100 ms |
+| **Visio** | UL > 3 + DL > 5 + Ping < 50 ms | UL > 1 + DL > 2 | Sinon |
+
+---
+
+## 🏥 Page Sante
+
+La page Sante est accessible depuis le bouton **Sante** sur la page principale du plugin.
+
+<!-- ![Bouton Sante](/img/plugins/librespeed/btn_health.png) -->
+
+### Diagnostic rapide
+
+Lance automatiquement a l'ouverture de la page. Verifie :
+
+<!-- ![Diagnostic rapide](/img/plugins/librespeed/health_diag.png) -->
+
+| Verification | Description |
+|---|---|
+| **LibreSpeed CLI** | Presence du binaire et version installee |
+| **Version attendue** | Correspondance avec la version prevue par le plugin |
+| **Architecture** | Architecture systeme detectee |
+| **Ping systeme** | Disponibilite de la commande `ping` pour la mesure de perte de paquets |
+| **Interfaces reseau actives** | Liste des interfaces reseaux actives (hors `lo` et `veth*`) |
+| **IPv4 systeme** | Adresse IPv4 globale detectee |
+| **IPv6 systeme** | Adresse IPv6 globale detectee |
+| **Serveurs LibreSpeed** | Nombre de serveurs publics accessibles |
+| **Equipements** | Nombre d'equipements configures et actifs |
+
+### Test de debit
+
+Permet de lancer un test de debit complet depuis la page Sante, avec choix du protocole et de l'interface reseau.
+
+<!-- ![Test de debit](/img/plugins/librespeed/health_test.png) -->
+
+| Parametre | Description |
+|---|---|
+| **Protocole** | Automatique, IPv4 ou IPv6 |
+| **Interface** | Automatique ou interface specifique |
+
+Le resultat affiche : serveur utilise, adresse IP, download, upload, ping, jitter et duree du test.
+
+:::tip
+Ce test est independant des equipements. Il est utile pour diagnostiquer un probleme de connectivite ou verifier le fonctionnement du plugin avant de configurer un equipement.
+:::
+
+### Copier le diagnostic
+
+Le bouton **Copier le diagnostic** copie l'ensemble des resultats (diagnostic rapide + test de debit si lance) dans le presse-papier, dans un format texte directement publiable sur le forum Community.
+
+---
+
+## 💡 Utilisation dans Jeedom
+
+Les commandes du plugin peuvent etre utilisees dans :
+
+- Les **scenarios** : declencher des actions si le debit descend sous un seuil, ou si le score passe sous 5/10
+- Le **dashboard** : affichage du widget avec toutes les metriques
+- Les **alertes** : notification en cas de degradation de la connexion
+- L'**historique** : suivi de l'evolution des performances dans le temps
+
+### Exemple de scenario
+
+> Si la commande **Score** < 3, alors envoyer un message "Connexion internet degradee (score: #[Salon][LibreSpeed][Score]#/10)"
+
+---
+
+## 🛠️ Resolution des problemes
+
+### Les dependances ne s'installent pas
+
+- Verifiez que votre box Jeedom a acces a internet
+- Consultez le log `librespeed_update` dans **Analyse > Logs**
+- Verifiez que votre architecture est supportee (amd64, arm64, armv7, armv6, i386)
+
+### Le test echoue (etat = 0)
+
+- Verifiez votre connexion internet
+- Consultez le log `librespeed` en mode debug pour voir les details de l'erreur
+- Si vous avez specifie un ID serveur, essayez en le laissant vide (selection automatique)
+- Utilisez la **page Sante** pour diagnostiquer le probleme
+
+### La perte de paquets affiche N/A
+
+- La mesure de perte de paquets utilise le **ping ICMP** vers le serveur de test
+- Certains serveurs ou pare-feu bloquent le protocole ICMP
+- Cela n'affecte pas les autres mesures (download, upload, ping, jitter)
+- Le score est automatiquement recalcule sans cette metrique
+
+### Le widget ne s'affiche pas correctement
+
+- Verifiez que votre Jeedom est en version **4.4** minimum
+- Videz le cache du navigateur (Ctrl+Shift+R)
+- Sauvegardez l'equipement pour recreer les commandes
+
+### Un test est deja en cours
+
+Le plugin utilise un **verrou global** : un seul test de debit peut s'executer a la fois sur la machine. Si un test est deja en cours (cron ou equipement), le test suivant est ignore avec un avertissement dans les logs. Attendez la fin du test en cours.
+
+---

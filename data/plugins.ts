@@ -304,6 +304,21 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "librespeed",
+    "name": "LibreSpeed",
+    "description": "Mesurez et surveillez les performances de votre connexion internet depuis Jeedom avec LibreSpeed CLI : download, upload, ping, jitter, perte de paquets, score global et page santé.",
+    "icon": "librespeed_icon.png",
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 11+", "php 7.4/8.x"],
+    "routes": {
+      "page": "/docs/plugins/librespeed/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/",
+      "market": null
+    }
+  },
+  {
     "id": "simulation",
     "name": "Simulation",
     "description": "Simulation de présence intelligente : apprentissage automatique de vos habitudes et replay statistique réaliste pour protéger votre domicile.",

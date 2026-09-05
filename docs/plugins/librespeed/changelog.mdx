@@ -1,0 +1,29 @@
+---
+title: Changelog
+hide_title: true
+sidebar_position: 99
+---
+
+## 1.0 — 2026-09-05
+
+### Version initiale
+
+- **Moteur LibreSpeed CLI** v1.0.14 : binaire Go natif, aucune dependance Python
+- **Architectures** : amd64, arm64, armv7, armv6, i386
+- **Mesures** : download, upload, ping, jitter, perte de paquets (ICMP)
+- **Score global** sur 10 pondere (DL 40%, UL 20%, Ping 20%, Jitter 10%, Perte 10%)
+- **Notation par usage** : web, streaming (SD/HD/4K), gaming, visioconference
+- **Widget custom SVG** : jauge download animee, barre upload, cercle de score, tuiles metriques, date du dernier test
+- **IPv4 / IPv6** : forcage du protocole reseau
+- **Interface reseau** : choix de l'interface de sortie (ens18, eth0, etc.)
+- **Serveurs personnalises** : liste distante (URL) ou locale (upload JSON) pour les tests LAN/VPN
+- **Page Sante** : diagnostic rapide automatique + test de debit a la demande avec choix protocole/interface + copie presse-papier
+- **Verrou global** : un seul test a la fois sur la machine (flock)
+- **Bouton Support Forum** : creation de post Community pre-rempli
+- **Bouton Dupliquer** : duplication d'equipement
+- **Planification** : cron configurable par equipement
+- **Securite** : validation server_id, protocole, URL (pas de credentials), fichier local (realpath dans data/)
+- **Zero jQuery** : JavaScript natif CoreJS 4.4+
+- **Jeedom 4.4 minimum** requis
+
+---
