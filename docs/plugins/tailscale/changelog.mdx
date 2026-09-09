@@ -4,6 +4,35 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 0.3.0 — 2026-09-05
+
+### Nouveautés
+
+* **Serve / Funnel** : exposez Jeedom en HTTPS sur votre tailnet (Serve) ou sur internet (Funnel) en un clic
+* **Équipement Self** : commandes dédiées au nœud Jeedom (connecter/déconnecter, état, peers en ligne, exit node, subnet router)
+* **Mise à jour Tailscale** : mettez à jour Tailscale directement depuis l'interface
+* **Notifications** : alertes avant expiration des clés (J-14 et J-3), détection des nouveaux appareils
+* **Création automatique** : option pour créer automatiquement les équipements des nouveaux appareils détectés
+* **Santé** : intégration dans la page Santé de Jeedom et dans les posts Community
+
+### Améliorations
+
+* Performances : mise en cache des appels CLI et API, réduction des requêtes réseau
+* Panel mobile accessible aux utilisateurs non-admin
+* Sauvegarde et restauration automatique des préférences Tailscale lors de la reconnexion
+* Ajout du type générique ONLINE, unité ms pour la latence, expiration des clés en jours
+* Remplacement de jQuery par du JavaScript natif sur le panel
+
+### Corrections
+
+* Meilleure détection de l'état du service Tailscale
+* Rafraîchissement du widget uniquement quand un statut change
+
+### Maintenance
+
+* Migration automatique : création des nouvelles commandes, suppression des anciennes (same_lan, wol, rx, tx)
+* Traductions des descriptions du plugin (ES, DE, IT, PT)
+
 ## 0.2.0 — 2026-07-28
 
 * Panel mobile

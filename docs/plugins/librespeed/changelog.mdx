@@ -4,6 +4,34 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 1.1 — 2026-09-09
+
+### Nouveau type d'equipement : Liaison reseau (network_link)
+
+- **Liaison reseau point a point** : mesurez les performances entre deux machines de votre reseau (LAN, VLAN, VPN, inter-sites...)
+- **Deux cibles configurables** (A et B) avec mode local (Jeedom) ou distant (SSH)
+- **Gestion SSH integree** : test de connexion, verification des capacites (CLI, IPv4, IPv6)
+- **Deploiement automatique** du wrapper `jeedom-librespeed` sur les cibles distantes via SSH
+- **Installation/desinstallation du serveur speedtest-go** sur les cibles (locales ou distantes via SSH)
+- **Demarrage/arret du serveur** speedtest-go depuis l'interface
+- **Commande manuelle** : affichage de la commande d'installation pour execution manuelle sur la cible
+- **Verification de l'etat du serveur** depuis Jeedom (disponible, injoignable, non configure)
+- **Tests bidirectionnels** : A vers B et B vers A, en IPv4 et/ou IPv6
+- **16 commandes info** : download, upload, ping, jitter pour chaque direction et protocole
+- **5 commandes action** : test A→B IPv4, B→A IPv4, A→B IPv6, B→A IPv6, test complet
+- **Widget custom** avec grille des metriques par direction/protocole, boutons de test et etat des serveurs en temps reel
+- **Nettoyage a la suppression** : option pour desinstaller automatiquement le wrapper et le serveur des cibles lors de la suppression de l'equipement
+
+### Ameliorations generales
+
+- **Planification unifiee** : la section cron est desormais partagee entre les types d'equipement (speedtest et liaison reseau)
+- **Migration vers cron global** : remplacement des crons individuels par equipement par la methode `cron()` du core Jeedom avec `CronExpression::isDue()`. Plus propre, plus fiable, plus de crons fantomes possibles
+- **Validation de l'expression cron** a la sauvegarde de l'equipement
+- **Gestion des erreurs** : chaque equipement est isole dans le cron global, une erreur sur un equipement n'impacte pas les autres
+- **Correction** : les champs `autCron` / `refreshCron` dupliques dans le formulaire causaient une corruption des donnees (tableau au lieu de valeur simple) et une erreur JS `TypeError: Cannot read properties of undefined` a l'ouverture de l'equipement
+
+---
+
 ## 1.0 — 2026-09-05
 
 ### Version initiale

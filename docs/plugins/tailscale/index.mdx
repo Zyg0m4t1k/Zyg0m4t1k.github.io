@@ -67,14 +67,20 @@ Depuis votre telephone en 4G, vous pouvez ouvrir l'interface d'une imprimante, a
 - Gestion centralisee directement dans Jeedom
 :::
 
+#### HTTPS automatique et acces public
+
+Avec **Tailscale Serve**, Jeedom est accessible en HTTPS sur votre tailnet avec un certificat automatique — pas besoin de configurer un reverse proxy ou un certificat Let's Encrypt. Pour aller plus loin, **Funnel** peut rendre Jeedom accessible depuis Internet, toujours en HTTPS, avec double confirmation de securite.
+
 #### Administration complete depuis Jeedom
 
 Depuis l'interface du plugin, vous pouvez :
 - Installer et connecter Tailscale
 - Surveiller l'etat de tous les appareils du tailnet
-- Activer Tailscale SSH, gerer les routes, les tags
+- Activer Serve / Funnel, Tailscale SSH, gerer les routes, les tags
+- Recevoir des notifications (expiration des cles, nouveaux appareils, problemes)
 - Consulter un diagnostic reseau complet
 - Autoriser ou supprimer un appareil
+- Mettre a jour Tailscale depuis l'interface
 
 ---
 
@@ -84,8 +90,8 @@ Depuis l'interface du plugin, vous pouvez :
 |---|---|
 | Acces distant securise | Passerelle vers le reseau local ([Subnet Router](#subnet-router)) |
 | Acces de secours (DNS, reverse proxy...) | Acces a tous les equipements (NAS, cameras, Proxmox...) |
-| Administration Tailscale | Sans ouvrir le moindre port |
-| Diagnostic reseau | Chiffrement WireGuard de bout en bout |
+| HTTPS automatique (Serve) et acces public (Funnel) | Sans ouvrir le moindre port |
+| Notifications proactives (cles, nouveaux appareils) | Chiffrement WireGuard de bout en bout |
 | Gestion des appareils, tags, routes, SSH | Depuis n'importe quel appareil du tailnet |
 
 ---
@@ -107,6 +113,7 @@ Un **OAuth Client ID / Secret** ([console Tailscale](https://login.tailscale.com
 - Tags et expiration des cles
 - Routes et Subnet Router
 - Tailscale SSH
+- Notifications d'expiration des cles
 - Informations detaillees
 
 #### Pour le Subnet Router
@@ -124,8 +131,9 @@ Un **OAuth Client ID / Secret** ([console Tailscale](https://login.tailscale.com
 
 **Accedez a Jeedom depuis n'importe ou, en toute securite.**
 
-- Acces HTTPS a Jeedom via le tailnet, sans port ouvert
-- MagicDNS : accedez via `http://jeedom.tail1234.ts.net`
+- Acces HTTPS a Jeedom via le tailnet avec certificat automatique (Serve)
+- MagicDNS : accedez via `https://jeedom.tail1234.ts.net`
+- Acces public optionnel via Funnel (avec double confirmation)
 - Fonctionne depuis iOS, Android, Windows, macOS, Linux
 - Chiffrement WireGuard de bout en bout
 
@@ -135,9 +143,11 @@ Un **OAuth Client ID / Secret** ([console Tailscale](https://login.tailscale.com
 **Surveillez tous les appareils de votre tailnet depuis Jeedom.**
 
 - Un equipement Jeedom par noeud du tailnet
-- Statut en ligne/hors ligne, latence, connexion directe/DERP
+- Equipement **Self** avec commandes dediees (connecter/deconnecter, peers en ligne, mise a jour)
+- Statut en ligne/hors ligne, latence, connexion directe/DERP, expiration des cles
+- Notifications automatiques : expiration cles (J-14, J-3), nouveaux appareils, problemes de connexion
 - Historisation des etats pour graphiques et alertes
-- Ping Tailscale depuis un scenario Jeedom
+- Integration dans la page Sante de Jeedom
 
 </TabItem>
 <TabItem value="admin" label="Administration">
@@ -146,7 +156,9 @@ Un **OAuth Client ID / Secret** ([console Tailscale](https://login.tailscale.com
 
 - Autoriser / desactiver des appareils
 - Gerer les tags, les routes, l'expiration des cles
-- Activer/desactiver Tailscale SSH sur Jeedom
+- Activer/desactiver Serve (HTTPS), Funnel (acces public), Tailscale SSH
+- Creation automatique des equipements pour les nouveaux appareils
+- Mettre a jour Tailscale depuis l'interface
 - Diagnostic complet (service, reseau, NAT, DERP, routage)
 
 </TabItem>
@@ -260,10 +272,11 @@ Les commandes sont creees automatiquement a la synchronisation. Leurs types tech
 | **Derniere activite** | string | Date/heure du dernier contact |
 | **Connexion directe** | binary | 1 si le trafic passe en peer-to-peer (pas via DERP) |
 | **DERP** | string | Relais DERP utilise avec son nom humain (ex: Paris). Vide si connexion directe |
-| **Latence (ms)** | numeric | Latence du dernier ping Tailscale |
+| **Latence** | numeric | Latence du dernier ping Tailscale (en ms) |
 | **Exit Node** | binary | 1 si le noeud est un exit node |
 | **Tags** | string | Tags Tailscale du noeud (separes par virgule) |
 | **Autorise** | binary | 1 si l'appareil est autorise sur le tailnet |
+| **Expiration cle (jours)** | numeric | Nombre de jours avant expiration de la cle. 0 si pas d'expiration |
 
 ### ⚡ Commandes action
 
@@ -273,6 +286,21 @@ Les commandes sont creees automatiquement a la synchronisation. Leurs types tech
 | **Rafraichir** | Met a jour toutes les commandes info depuis le statut du tailnet |
 | **Activer** | Autorise l'appareil sur le tailnet (liee a la commande info **Autorise**) |
 | **Desactiver** | Desautorise l'appareil sur le tailnet (liee a la commande info **Autorise**) |
+
+### 🏠 Commandes supplementaires de l'equipement Self
+
+L'equipement representant Jeedom lui-meme dispose de commandes supplementaires :
+
+| Commande | Type | Description |
+|---|---|---|
+| **Etat** | string (info) | Etat de la connexion Tailscale (Running, Stopped, NeedsLogin...) |
+| **Peers en ligne** | numeric (info) | Nombre d'appareils actuellement en ligne sur le tailnet |
+| **Exit node actif** | binary (info) | 1 si Jeedom est configure comme exit node |
+| **Subnet router actif** | binary (info) | 1 si Jeedom annonce des routes au tailnet |
+| **Mise a jour disponible** | binary (info) | 1 si une nouvelle version de Tailscale est disponible |
+| **Connecter** | action | Reactive la connexion Tailscale |
+| **Deconnecter** | action | Coupe la connexion Tailscale |
+| **Mettre a jour** | action | Met a jour Tailscale a la derniere version |
 
 :::info Utilisation dans un scenario
 ```text
@@ -291,7 +319,7 @@ Activer/desactiver un appareil :
 
 ## 🎛️ Panel d'administration
 
-Le panel d'administration (bouton **Appareils** sur la page principale) est organise en deux onglets : **Appareils** et **Subnet Router**.
+Le panel d'administration (bouton **Appareils** sur la page principale) est organise en trois onglets : **Appareils**, **Subnet Router** et **Serve / Funnel**.
 
 :::warning Prerequis
 Configurez un **OAuth Client** dans la page Configuration du plugin. Creez-le sur [console.tailscale.com/admin/settings/trust-credentials](https://console.tailscale.com/admin/settings/trust-credentials) avec les scopes necessaires.
@@ -366,6 +394,38 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
 Tailscale SSH permet l'acces SSH a Jeedom depuis n'importe quel appareil autorise du tailnet. L'acces reste soumis aux ACL SSH configurees dans la console admin Tailscale.
 :::
 
+### 🌐 Onglet Serve / Funnel
+
+L'onglet **Serve / Funnel** permet d'exposer Jeedom en HTTPS sans configuration manuelle de certificat ou de reverse proxy.
+
+#### Informations affichees
+
+| Champ | Description |
+|---|---|
+| **Serve HTTPS** | Active ou desactive |
+| **URL HTTPS** | Adresse HTTPS de Jeedom sur le tailnet (ex: `https://jeedom.tail1234.ts.net`) |
+| **Funnel (public)** | Active ou desactive — quand actif, Jeedom est accessible depuis Internet |
+| **Details** | Configuration actuelle de Serve (backends, ports) |
+
+#### Actions
+
+| Bouton | Action | Confirmation |
+|---|---|---|
+| **Activer Serve** | Expose Jeedom en HTTPS sur le tailnet (port 443 → port 80 local) | Oui |
+| **Desactiver Serve** | Arrete l'exposition HTTPS | Oui |
+| **Activer Funnel** | Rend Jeedom accessible depuis Internet via Tailscale | Double confirmation |
+| **Desactiver Funnel** | Coupe l'acces public, Serve reste actif | Oui |
+
+:::info Comment ca marche
+**Serve** utilise MagicDNS et un certificat TLS automatique pour exposer Jeedom en HTTPS aux appareils du tailnet. C'est une alternative simple au reverse proxy + Let's Encrypt.
+
+**Funnel** va plus loin en rendant cette URL accessible depuis n'importe quel navigateur, meme sans Tailscale installe. Seul le trafic HTTPS sur le port 443 est expose.
+:::
+
+:::warning Usage avance
+Ces fonctionnalites s'adressent a des utilisateurs avertis. Activer Funnel rend Jeedom accessible depuis Internet. Assurez-vous de comprendre les implications et que l'authentification Jeedom est correctement configuree (mot de passe fort, pas de compte par defaut). Une double confirmation est demandee pour cette raison.
+:::
+
 ---
 
 ## 🩺 Diagnostic
@@ -416,6 +476,20 @@ La capacite peer-to-peer indique si la machine *peut* etablir des connexions dir
 Resume global : installation, service, authentification, IP, tailnet, API, MagicDNS, forwarding.
 
 Le test API OAuth est execute separement pour ne pas bloquer le diagnostic si l'API Tailscale est lente ou inaccessible.
+
+### 📊 Integration page Sante Jeedom
+
+Le plugin s'integre dans **Analyse > Sante** de Jeedom et affiche :
+
+| Test | Description |
+|---|---|
+| **Tailscale installe** | Verifie que les binaires sont presents |
+| **Service tailscaled** | Verifie que le service est actif |
+| **Authentification** | Verifie que Tailscale est connecte au tailnet |
+| **IP Tailscale** | Affiche l'adresse IP attribuee |
+| **API OAuth** | Indique si l'API est configuree (informatif) |
+
+Le plugin fournit aussi des informations detaillees pour les posts Community (bouton **Creer un post Community**) : version Tailscale, etat, nombre d'equipements, configuration API.
 
 ---
 
@@ -469,6 +543,7 @@ Le token d'acces est mis en cache ~55 minutes. Si vous changez les credentials O
 | Champ | Description |
 |---|---|
 | **Nom de la machine** | Nom sous lequel Jeedom apparait dans le tailnet (defaut : `jeedom`) |
+| **Creation automatique des equipements** | Si active, les nouveaux appareils detectes sur le tailnet sont automatiquement crees comme equipements Jeedom. Sinon, une notification est envoyee et vous devez cliquer sur **Synchroniser** |
 
 ---
 
@@ -507,10 +582,10 @@ Tout le trafic Internet des appareils clients transitera par la connexion Intern
 Votre DNS ou votre acces internet tombe — vous ne pouvez plus joindre Jeedom via votre nom de domaine habituel. Il suffit d'activer Tailscale sur votre telephone (iPhone, Android) et d'ouvrir :
 
 ```text
-http://jeedom.tailnet-name.ts.net
+https://jeedom.tailnet-name.ts.net
 ```
 
-Vous retrouvez l'acces a Jeedom immediatement, en 4G, sans dependre du DNS, du port forwarding ou d'un service tiers. Tailscale etablit un tunnel direct entre votre telephone et Jeedom.
+Avec **Serve** active, l'acces se fait en HTTPS avec un certificat valide. Vous retrouvez l'acces a Jeedom immediatement, en 4G, sans dependre du DNS, du port forwarding ou d'un service tiers. Tailscale etablit un tunnel direct entre votre telephone et Jeedom.
 
 :::tip
 C'est aussi utile si votre box internet redemarrer ou si votre fournisseur de DNS dynamique est en panne. Tailscale fonctionne independamment de tout ca.
@@ -565,6 +640,22 @@ SI [Jeedom-maison2][Tailscale][Online] == 0
   Alors → notification "Jeedom maison 2 hors ligne !"
 ```
 
+### 🔄 Connecter/deconnecter Tailscale depuis un scenario
+
+L'equipement Self dispose de commandes pour piloter la connexion Tailscale :
+
+```text
+[Jeedom][Tailscale] Connecter       → reactive la connexion
+[Jeedom][Tailscale] Deconnecter     → coupe la connexion
+```
+
+### 🆕 Mise a jour automatique de Tailscale
+
+```text
+SI [Jeedom][Tailscale][Mise a jour disponible] == 1
+  Alors → [Jeedom][Tailscale] Mettre a jour
+```
+
 ---
 
 ## 🛡️ Securite
@@ -598,8 +689,27 @@ sudo apt-get remove tailscale
 | Cles d'auth (`tskey-*`) | Jamais en argument de processus (fichier temporaire 0600), jamais stockees |
 | Secret OAuth | Chiffre en base par Jeedom (`$_encryptConfigKey`) |
 | Token API | En cache memoire, jamais logue |
-| Actions sensibles | Double confirmation : UI (bootbox) + serveur (`confirm=1`) |
+| Actions sensibles | Double confirmation : UI (jeeDialog) + serveur (`confirm=1`) |
 | Journal d'audit | Toutes les actions sensibles tracees avec utilisateur et IP |
+
+---
+
+## 🔔 Notifications
+
+Le plugin envoie des notifications dans le centre de messages de Jeedom dans les situations suivantes :
+
+| Situation | Frequence |
+|---|---|
+| **Expiration de cle dans 14 jours** | Une fois par jour |
+| **Expiration de cle dans 3 jours** | Une fois par jour |
+| **Connexion perdue (NeedsLogin)** | Une fois par heure |
+| **Appareil en attente de validation** | Une fois par heure |
+| **Nouveau peer detecte sur le tailnet** | A chaque detection |
+| **Alerte sante Tailscale** | A chaque changement |
+
+:::tip
+Si la **creation automatique** est activee dans les options, les nouveaux peers sont automatiquement synchronises au lieu de generer une notification.
+:::
 
 ---
 
