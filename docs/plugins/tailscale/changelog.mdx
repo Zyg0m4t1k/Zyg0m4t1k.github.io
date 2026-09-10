@@ -4,34 +4,46 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## 0.3.0 — 2026-09-05
+## 0.3.0 — 2026-09-10
 
 ### Nouveautés
 
-* **Serve / Funnel** : exposez Jeedom en HTTPS sur votre tailnet (Serve) ou sur internet (Funnel) en un clic
+* **Serve / Funnel** : adresse HTTPS privée sur le tailnet (Serve) ou accessible depuis Internet (Funnel), avec les autorisations nécessaires côté Tailscale
 * **Équipement Self** : commandes dédiées au nœud Jeedom (connecter/déconnecter, état, peers en ligne, exit node, subnet router)
 * **Mise à jour Tailscale** : mettez à jour Tailscale directement depuis l'interface
-* **Notifications** : alertes avant expiration des clés (J-14 et J-3), détection des nouveaux appareils
-* **Création automatique** : option pour créer automatiquement les équipements des nouveaux appareils détectés
-* **Santé** : intégration dans la page Santé de Jeedom et dans les posts Community
+* **Notifications** : messages Jeedom avant expiration des clés (J-14 et J-3) et détection des nouveaux appareils
+* **Création automatique** : si l'option est activée, les nouveaux appareils détectés sont créés automatiquement, même sans équipement existant
+* **Santé** : bilan du service, du réseau et du routage dans la page Santé de Jeedom et dans les posts Community
 
 ### Améliorations
 
-* Performances : mise en cache des appels CLI et API, réduction des requêtes réseau
+* Meilleures performances et réactivité de l'interface
 * Panel mobile accessible aux utilisateurs non-admin
-* Sauvegarde et restauration automatique des préférences Tailscale lors de la reconnexion
-* Ajout du type générique ONLINE, unité ms pour la latence, expiration des clés en jours
-* Remplacement de jQuery par du JavaScript natif sur le panel
+* Restauration automatique des préférences Tailscale lors de la reconnexion
+* L'approbation de routes préserve les routes déjà approuvées (exit node, sous-réseaux existants)
+* L'état en ligne des appareils est plus fiable
+* Le diagnostic reste disponible même quand Tailscale a un problème
+* Serve et Funnel affichent le bon état même si d'autres services tournent sur la machine
+* La saisie d'un sous-réseau corrige automatiquement l'adresse réseau (ex : `192.168.1.156/24` → `192.168.1.0/24`)
 
 ### Corrections
 
-* Meilleure détection de l'état du service Tailscale
 * Rafraîchissement du widget uniquement quand un statut change
+* L'approbation de routes est refusée si la liste existante n'a pas pu être lue, pour éviter une perte accidentelle
+* Les vérifications de permissions fonctionnent quelle que soit la langue du système
+
+### Documentation
+
+* Présentation des cas d'usage : accès distant, HTTPS privé, accès public, réseau local, supervision
+* Section diagnostic : signification de chaque indicateur
+* Commandes de l'équipement Self documentées
+* Procédure de contournement si le Subnet Router est indisponible
+* Notifications et historisation détaillées
 
 ### Maintenance
 
-* Migration automatique : création des nouvelles commandes, suppression des anciennes (same_lan, wol, rx, tx)
-* Traductions des descriptions du plugin (ES, DE, IT, PT)
+* Migration automatique des commandes depuis les versions précédentes
+* Traductions (ES, DE, IT, PT)
 
 ## 0.2.0 — 2026-07-28
 
