@@ -152,6 +152,8 @@ Le champ **Nom de la machine sur le tailnet** est utilisé lors de l'authentific
 Le centre de messages Jeedom peut signaler :
 
 - une authentification à renouveler ou un appareil en attente d'approbation ;
+- un nœud supprimé du tailnet (ré-authentification nécessaire) ;
+- un problème de connexion au serveur de coordination Tailscale ;
 - l'apparition de nouveaux appareils sur le tailnet ;
 - des alertes remontées par Tailscale ;
 - l'expiration prochaine de la clé d'un équipement : un rappel à **14 jours**, une alerte à **3 jours**, puis à l'expiration.
@@ -199,7 +201,7 @@ Une coche verte indique un état nominal. Une croix rouge signale un problème �
 
 **UDP** et **UPnP** aident Tailscale à établir des connexions directes entre appareils. Si l'un est absent, le trafic passe par un relais DERP : tout fonctionne, mais avec une latence plus élevée. Il n'est généralement pas nécessaire de modifier votre réseau pour cela.
 
-Le plugin fournit aussi un résumé dans **Analyse → Santé** de Jeedom.
+Le plugin fournit aussi un résumé dans **Analyse → Santé** de Jeedom, qui inclut l'état d'accès au journal système Tailscale. Si l'accès est insuffisant, la page Santé l'indique avec des instructions. Vous pouvez corriger les permissions depuis la configuration du plugin, section **Diagnostic avancé**.
 
 ## En cas de problème
 
@@ -215,6 +217,9 @@ Le plugin fournit aussi un résumé dans **Analyse → Santé** de Jeedom.
 | **API non configurée** | C'est normal si vous n'utilisez pas la gestion des appareils par OAuth. L'accès distant reste possible. |
 | **Relais DERP ou UPnP absent** | Ce n'est pas nécessairement une erreur. Testez l'accès réel avant de modifier votre réseau. |
 | **Routage IP désactivé** | Ce réglage concerne les fonctions de passerelle. Il n'est pas nécessaire pour accéder uniquement à Jeedom. |
+| **Nœud supprimé du tailnet** | Si Jeedom a été retiré du tailnet (depuis la console Tailscale ou par expiration), le plugin vous invite à vous ré-authentifier. Cliquez sur **Se connecter à Tailscale** dans la configuration. |
+| **Serveur de coordination injoignable** | Vérifiez la connexion Internet de Jeedom. Si le réseau fonctionne, le problème peut être temporaire côté Tailscale. |
+| **Accès au journal insuffisant** | La page Santé vous indique si le plugin peut lire le journal Tailscale. Si l'accès est refusé, utilisez la section **Diagnostic avancé** dans la configuration du plugin pour corriger les permissions. |
 | **Permission refusée** | Relancez les dépendances pour rétablir les droits prévus par le plugin, puis consultez `tailscale` si l'erreur persiste. |
 
 Les journaux sont accessibles depuis Jeedom. Pour une demande d'aide, indiquez le statut, le message exact et la version du plugin. Ne joignez pas vos clés ni votre secret OAuth.

@@ -4,6 +4,27 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 0.4.0 — 2026-09-20
+
+### Nouveautés
+
+* **Détection « nœud supprimé »** : si Jeedom est retiré du tailnet (depuis la console Tailscale ou par expiration), le plugin le détecte et vous invite à vous ré-authentifier, au lieu d'afficher une alerte réseau générique
+* **Diagnostic réseau affiné** : le plugin distingue un nœud supprimé (ré-authentification nécessaire) d'un problème de connexion au serveur Tailscale (vérifiez votre réseau)
+* **Accès au journal système** : la page Santé indique si le plugin peut lire le journal Tailscale, avec des conseils si l'accès est insuffisant
+* **Correction des permissions** : depuis la configuration du plugin, vous pouvez corriger l'accès au journal et redémarrer le service web en quelques clics
+
+### Améliorations
+
+* L'état de l'équipement Jeedom (Self) reste cohérent après détection d'un problème : pas de retour intempestif à « en ligne » avant la ré-authentification
+* Les notifications ne sont envoyées qu'une seule fois par événement
+* Le retour à la normale après ré-authentification est immédiat
+* La détection fonctionne quelle que soit la langue du système
+
+### Corrections
+
+* Un ping sur l'équipement Self ne masque plus un problème de coordination détecté
+* Les alertes réseau sont correctement nettoyées quand la connexion revient
+
 ## 0.3.0 — 2026-09-10
 
 ### Nouveautés
