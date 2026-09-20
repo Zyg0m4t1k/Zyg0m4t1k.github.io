@@ -152,7 +152,7 @@ La synchronisation cree les moniteurs manquants et met a jour les existants (nom
 | **monitors_pending** | info numerique | Moniteurs en etat PENDING |
 | **monitors_maintenance** | info numerique | Moniteurs en MAINTENANCE |
 | **monitors_unavailable** | info numerique | Moniteurs UNAVAILABLE (Jeedom ne peut joindre Uptime Kuma) |
-| **last_sync** | info string | Date/heure de la derniere synchronisation |
+| **last_state_change** | info string | Date/heure du dernier changement d'etat d'un moniteur |
 
 ### Commandes d'un Moniteur
 
@@ -200,7 +200,7 @@ Le widget source affiche :
 - **Etat de connexion** (icone prise coloree)
 - **Nombre total** de moniteurs (chiffre prominent)
 - **Repartition** par statut : UP, DOWN, MAINTENANCE, PENDING, UNAVAILABLE avec pastilles colorees
-- **Derniere synchronisation** (date/heure)
+- **Dernier changement d'etat** (date/heure du dernier moniteur ayant change de statut)
 
 ![Widget source](/img/plugins/uptimekuma/widget_source.png) 
 
