@@ -232,8 +232,10 @@ Quand les deux voyants Démon et Serveur Matter sont verts, le plugin est opéra
 | Port serveur | `5580` | Port TCP du Matter Server (WebSocket) |
 | URL serveur Matter | `http://127.0.0.1:5580/ws` | URL WebSocket (mode externe uniquement) |
 | Token Matter | *(vide)* | Token d'authentification (si requis) |
+| Fabric Label | *(vide)* | Nom du fabric Matter (max 32 caractères). S'applique à l'ensemble du fabric. |
 | Port démon | `55123` | Port RPC HTTP du démon Jeedom (Node.js) |
 | Adaptateur Bluetooth | `auto` | Sélection de l'adaptateur BT pour le jumelage |
+| Test DCL | désactivé | Accepte les certificats de test/développement (ex : Matterbridge). Nécessite un redémarrage du démon. |
 
 > En mode externe, renseignez l'URL WebSocket de votre serveur Matter (ex. `ws://192.168.1.50:5580/ws`).
 

@@ -4,6 +4,33 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-10-02 (Beta)
+
+### Nouveautés
+- **Mesures électriques complètes** : les appareils de mesure de puissance et d'énergie (prises connectées, compteurs, etc.) remontent désormais toutes les informations disponibles :
+  - Tension, courant, puissance (active, réactive, apparente), fréquence, facteur de puissance
+  - Énergie consommée et exportée (cumulative et par période)
+- Seules les mesures réellement disponibles sur l'appareil sont affichées — pas de commandes vides.
+- **Correction Shelly** : les prises Shelly et autres appareils en courant alternatif remontent désormais correctement la puissance.
+
+### Améliorations
+- **Matter Server mis à jour vers la version 1.4.1-alpha.7**
+- **Node.js 24** : suppression de la limite haute de version.
+
+## 2026-09-29 (Beta)
+
+### Nouveautés
+- **Gestion des serrures connectées** : nouvelle modale dédiée accessible depuis la page de l'équipement, permettant de gérer les utilisateurs, les plannings hebdomadaires, les accès par date et les jours fériés.
+- **Déverrouillage temporisé** : commande slider (1 à 300 secondes) pour déverrouiller la serrure avec re-verrouillage automatique. Affiché uniquement si la serrure le supporte.
+- **Certificats de test (Test DCL)** : nouvelle option dans la configuration pour accepter les certificats de développement (ex : Matterbridge). Désactivée par défaut, nécessite un redémarrage du démon.
+
+### Améliorations
+- **Fabric Label** : nouveau champ dans la configuration pour lire et modifier le nom du fabric Matter (max 32 caractères).
+- **Node.js 24 accepté sur Debian 12+** : la contrainte de version Node.js a été assouplie. Debian 11 reste limité à Node.js 22.
+- **Diagnostic IPv6 amélioré** : le diagnostic affiche désormais les commandes à exécuter en SSH pour corriger le forwarding IPv6 (correction temporaire et permanente).
+- **Statut OTBR enrichi** : distinction claire entre conteneur démarré, arrêté et absent dans les diagnostics.
+- **Matter Server mis à jour vers la version 1.4.1**
+
 ## 2026-08-14 (Beta)
 
 - Amélioration du diagnostic des routes IPv6 Thread.
