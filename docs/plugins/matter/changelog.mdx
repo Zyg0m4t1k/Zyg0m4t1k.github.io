@@ -4,6 +4,26 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-10-10 — v2.0 (Beta)
+
+### Nouveautés
+- **Nouvelle image OTBR** : migration vers l'image officielle `openthread/border-router`. La mise à jour est automatique.
+- **Configuration UART simplifiée** : le champ texte libre est remplacé par un menu de préréglage matériel et un champ baudrate séparé. Vos anciens réglages sont migrés automatiquement.
+- **Arrêt immédiat OTBR** : désactiver l'OTBR dans la configuration arrête immédiatement le conteneur, sans attendre le prochain cycle.
+
+### Améliorations
+- **Matter Server mis à jour** vers la dernière version de développement.
+- **Watchdog OTBR plus fiable** : meilleure détection des pannes, diagnostic automatique avant chaque relance, et moins de redémarrages inutiles.
+- **Démarrage du daemon plus rapide** : le plugin répond aux commandes même pendant l'initialisation du serveur Matter.
+
+### Corrections
+- Correction d'un cas où la restauration du réseau Thread pouvait échouer silencieusement au démarrage.
+- Correction d'un cas où le watchdog pouvait considérer le réseau Thread comme fonctionnel alors qu'il ne l'était pas.
+- Plusieurs corrections de robustesse sur la gestion du conteneur OTBR.
+
+### Suppressions
+- Les options Web GUI, Firewall, NAT64 et DNS64 ont été retirées de l'interface : la nouvelle image OTBR les gère automatiquement.
+
 ## 2026-10-04 (Beta)
 
 ### Nouveautés
