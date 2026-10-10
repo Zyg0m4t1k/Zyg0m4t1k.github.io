@@ -19,6 +19,10 @@ sidebar_position: 99
 ### Corrections
 - Correction d'un cas où la restauration du réseau Thread pouvait échouer silencieusement au démarrage.
 - Correction d'un cas où le watchdog pouvait considérer le réseau Thread comme fonctionnel alors qu'il ne l'était pas.
+- Correction du backup dataset Thread qui conservait l'ancien canal après un changement — provoquait un retour à l'ancien canal au redémarrage OTBR.
+- Le bouton « Sauvegarder le dataset » lit et sauvegarde désormais le dataset actif depuis OTBR (au lieu d'ouvrir la modale de commissionnement).
+- Le champ canal Thread n'est plus écrasé par le polling pendant la saisie.
+- La page santé affiche l'image Docker du conteneur OTBR et avertit si l'ancienne image est encore présente.
 - Plusieurs corrections de robustesse sur la gestion du conteneur OTBR.
 
 ### Suppressions
