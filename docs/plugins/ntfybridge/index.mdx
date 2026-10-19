@@ -35,9 +35,9 @@ La plupart des solutions de notification domotique sont à sens unique : la box 
 
 En mode embarqué, ntfy devient aussi une **messagerie privée** entre les membres du foyer. Chaque utilisateur dispose de son propre accès contrôlé par le panel intégré — pas besoin de WhatsApp, Telegram ou autre service tiers pour se prévenir que le portail est ouvert ou que le dîner est prêt.
 
-Et quand tout plante — Apache en panne, Jeedom inaccessible — le **mode secours** prend le relais. Le démon tourne indépendamment : un `ping` ou `emergency` depuis ntfy suffit pour diagnostiquer et relancer les services, sans SSH ni accès web.
+Et quand tout plante — Apache en panne, Jeedom inaccessible — le **mode secours** peut prendre le relais. Le démon tourne indépendamment de PHP et de l'interface web : si l'accès distant à ntfy ne passe pas par Apache (Tailscale, port direct…), un `ping` ou `emergency` suffit pour diagnostiquer et relancer les services sans SSH.
 
-Tout reste **chez vous** : ntfy est embarqué, aucun cloud obligatoire, aucun quota, vos données ne transitent par aucun serveur tiers.
+Tout reste **chez vous** : en mode embarqué, ntfy tourne sur votre serveur, aucun intermédiaire pour vos messages. Les notifications Web Push transitent cependant par les services de votre navigateur (APNs pour iOS, FCM pour Android via Firebase) — c'est inhérent au standard Web Push, indépendamment du plugin.
 
 ---
 
@@ -79,9 +79,11 @@ Le serveur ntfy est intégré au plugin — tout est automatique.
 | **Port ntfy** | Auto-détecté au premier démarrage. Boutons **Tester** et **Auto-détecter** disponibles |
 | **Identifiant admin** | Compte administrateur ntfy, généré à l'installation (défaut : `ntfyadmin`) |
 | **Interface d'écoute** | **Localhost** (recommandé, derrière reverse proxy) ou **LAN** (toutes les interfaces) |
-| **URL publique** | À renseigner uniquement pour un accès depuis Internet (ex: `https://ntfy.mondomaine.fr`) |
+| **URL publique** | URL HTTPS depuis laquelle ntfy est joignable — Internet public (ex: `https://ntfy.mondomaine.fr`) ou réseau privé (ex: Tailscale `https://jeedom.mondomaine.ts.net:8443`) |
 
 **Pour exposer ntfy sur Internet** : renseigner l'URL publique puis cliquer sur **Assistant reverse proxy**. L'assistant génère la configuration en 5 étapes pour Apache, Nginx, NPM, Traefik ou Cloudflare.
+
+**Via Tailscale** : si votre Jeedom est accessible sur un réseau Tailscale, renseigner l'URL Tailscale (ex: `https://jeedom.mondomaine.ts.net:8443`). Aucune ouverture de port Internet n'est nécessaire — le Chat Famille, le push et les boutons de confirmation fonctionnent sur tous vos appareils Tailscale.
 
 :::tip Première mise en route
 1. Sauvegarder la configuration → le port est auto-détecté
@@ -531,8 +533,8 @@ Groupez vos paramètres récurrents en profils nommés. Ouvrir depuis **Plugins 
 | min | `1` | Silencieux, sans son ni vibration — rapports passifs |
 | low | `2` | Discret — bannière silencieuse |
 | default | `3` | Comportement standard de l'appareil |
-| high | `4` | Son + vibration, même en mode ne pas déranger |
-| urgent | `5` | Son fort + vibration + contourne le mode silencieux |
+| high | `4` | Son + vibration prioritaire — comportement exact dépendant de l'application ntfy et des autorisations système |
+| urgent | `5` | Son fort + vibration maximale — peut être limité par le mode « Ne pas déranger » selon l'OS et les permissions accordées à l'app |
 
 ### 🏷️ Tags courants
 
@@ -617,7 +619,13 @@ Par équipement :
 
 Le Mode Secours permet d'interroger et de dépanner Jeedom **depuis l'application ntfy**, même quand l'interface web est inaccessible (Apache ou PHP en panne, Jeedom qui ne répond plus).
 
-Le démon ntfybridge tourne **indépendamment** de Jeedom. Il peut donc continuer à répondre à vos messages même quand tout le reste est KO.
+Le démon ntfybridge tourne indépendamment de PHP et de l'interface web Jeedom. Les commandes texte (`ping`, `log`…) fonctionnent tant que le démon est en vie et que la connexion ntfy est accessible.
+
+:::warning Limite du mode secours
+Si l'accès distant à ntfy passe par le même Apache que Jeedom (reverse proxy sur la même machine), une panne Apache coupe aussi la connexion ntfy distante. Le mode secours est pleinement efficace quand ntfy est joignable par un chemin indépendant (port direct, Tailscale, autre machine).
+
+Les boutons HTTP de confirmation (Oui/Non) font appel à PHP via `ntfybridge.inc.php` — ils nécessitent donc que PHP soit opérationnel. Les commandes texte simples (`ping`, `health`, `log`…) n'ont pas cette dépendance.
+:::
 
 ---
 
@@ -794,6 +802,163 @@ Retourner dans le wizard → **Suivant** → validation finale.
 sudo certbot renew --dry-run
 ```
 :::
+
+---
+
+## 💬 Chat Famille {#chat-famille}
+
+Le Chat Famille est une **messagerie privée PWA** incluse dans le plugin, construite sur ntfy. Elle permet aux membres du foyer de s'envoyer des messages et des fichiers depuis n'importe quel appareil — sans WhatsApp, Telegram ou autre service tiers.
+
+```text
+https://ntfy.votredomaine.fr/chat/
+```
+
+:::info Prérequis serveur
+Le Chat Famille est hébergé par Jeedom et se connecte à un serveur ntfy en HTTPS. Il fonctionne avec le serveur embarqué (sous-domaine, Tailscale…) ou avec un serveur ntfy externe auto-hébergé. Le push et l'authentification doivent être configurés sur le serveur ntfy utilisé.
+:::
+
+---
+
+### 📋 Prérequis
+
+| Condition | Détail |
+|---|---|
+| **HTTPS obligatoire** | Le Service Worker (PWA, push) ne fonctionne qu'en HTTPS |
+| **Web Push activé** | Activé par défaut dans le binaire ntfy embarqué (`enable_web_push: true`) |
+| **URL externe ntfy configurée** | Dans la configuration du plugin — pré-remplit le champ serveur à la connexion |
+| **Compte utilisateur ntfy** | Créer un compte dans le [panel utilisateurs](#gérer-les-utilisateurs-panel) avec droits read-write sur le topic du salon |
+| **iOS : PWA installée** | Sur iPhone, les notifications push ne fonctionnent qu'en mode PWA — ajouter le chat à l'écran d'accueil |
+
+:::tip CSP Apache
+Si Jeedom applique une CSP stricte (`security.conf`), ajouter les directives `Header` dans le `.htaccess` du chat pour autoriser les connexions vers le serveur ntfy externe. L'assistant reverse proxy génère la configuration complète.
+:::
+
+---
+
+### 📱 Installer l'app (PWA)
+
+<Tabs>
+<TabItem value="ios" label="🍎 iOS" default>
+
+1. Ouvrir `https://ntfy.votredomaine.fr/chat/` dans **Safari**
+2. Appuyer sur **Partager** → **Sur l'écran d'accueil**
+3. Nommer l'app (ex: *Famille*) → **Ajouter**
+4. Ouvrir depuis l'icône sur l'écran d'accueil
+
+:::warning iOS — Push uniquement en PWA
+Les notifications push ne fonctionnent **que** depuis l'icône de l'écran d'accueil, pas depuis Safari directement.
+:::
+
+</TabItem>
+<TabItem value="android" label="🤖 Android">
+
+1. Ouvrir `https://ntfy.votredomaine.fr/chat/` dans **Chrome**
+2. Menu ⋮ → **Installer l'application** (ou bannière automatique)
+3. L'app apparaît dans le tiroir d'applications
+
+</TabItem>
+<TabItem value="web" label="🌐 Web">
+
+Ouvrir `https://ntfy.votredomaine.fr/chat/` dans n'importe quel navigateur. Toutes les fonctionnalités sont disponibles sauf le push sur iOS non-PWA.
+
+</TabItem>
+</Tabs>
+
+---
+
+### 🔑 Connexion
+
+Au premier lancement, renseigner :
+
+| Champ | Valeur |
+|---|---|
+| **Serveur** | Pré-rempli automatiquement depuis la config Jeedom (ex: `https://ntfy.votredomaine.fr`) |
+| **Utilisateur** | Compte ntfy créé dans le panel |
+| **Mot de passe ou token** | Mot de passe du compte, ou token ntfy (`tk_…`) |
+
+Les identifiants sont conservés localement pour la reconnexion automatique. Pour les modifier, ouvrir **Réglages → Serveur / Utilisateur / Mot de passe**.
+
+---
+
+### 🏠 Salons
+
+Chaque salon correspond à un **topic ntfy**. L'utilisateur doit avoir les droits **read-write** sur ce topic.
+
+#### Ajouter un salon
+
+1. Appuyer sur **+** dans la barre de salons
+2. Saisir un nom affiché et un topic ntfy (lettres, chiffres, `-` et `_`, 1–64 caractères)
+3. Valider — le salon apparaît dans la liste
+
+#### Options d'un salon (menu ⋯)
+
+| Option | Description |
+|---|---|
+| **Renommer** | Modifier le nom affiché (le topic ntfy ne change pas) |
+| **Notifications** | Activer ou désactiver les notifications push pour ce salon |
+| **Effacer mes messages** | Efface l'historique local (ne supprime pas les messages du serveur) |
+| **Retirer ce salon** | Supprime le salon localement et désabonne du push |
+
+---
+
+### 💬 Messagerie
+
+- **Envoi texte** : Enter pour envoyer, Shift+Enter pour un saut de ligne
+- **Envoi de fichiers** : bouton trombone, coller depuis le presse-papier (Ctrl+V / ⌘V), ou glisser-déposer dans la zone de messages
+- **Temps réel** : WebSocket multi-salons avec reconnexion automatique
+- **Historique** : 500 messages conservés localement par salon
+- **Brouillons** : le brouillon de chaque salon est conservé si vous changez de salon
+
+#### Affichage des messages
+
+- Messages **Moi** (bulles à droite) vs **autres** (bulles à gauche) vs **système** (alertes Jeedom, notifications)
+- **Avatars colorés** avec initiales — couleur déterministe par nom d'expéditeur
+- **Emojis seuls** affichés en grand
+- **Images** cliquables → visionneuse plein écran (swipe bas pour fermer sur mobile)
+- **Fichiers** non-image → lien de téléchargement
+- **Boutons d'action ntfy** : jusqu'à 3 boutons par message (`view`, `http`) — les boutons de confirmation Jeedom (Oui ✓ / Non ✗) apparaissent ici
+
+---
+
+### 🔔 Notifications push
+
+Le push repose sur les **clés VAPID** générées par le plugin (`ntfy webpush keys`) et la configuration du serveur ntfy. Il doit être activé côté serveur (`enable_web_push: true`, visible dans `/config.js` du serveur ntfy).
+
+1. Ouvrir **Réglages** (icône ⚙) → activer **Notifications** (global d'abord)
+2. Autoriser les notifications dans le navigateur
+3. Activer/désactiver par salon depuis le menu ⋯ de chaque salon
+4. Les notifications arrivent même application fermée
+
+| Comportement | Détail |
+|---|---|
+| **Vos propres messages** | Jamais notifiés |
+| **Salon muet** | Pas de push pour ce salon (icône cloche barrée dans la liste) |
+| **Clic sur notification** | Ouvre directement le bon salon, même si l'app est fermée |
+| **Expiration d'abonnement** | Notification de rappel après ~7 jours d'inactivité (ntfy 2.11.0) — ouvrir l'app pour renouveler. La valeur exacte dépend de la version du serveur ntfy embarqué. |
+
+---
+
+### ⚙️ Réglages
+
+Appuyer sur l'icône ⚙ pour accéder aux réglages :
+
+| Option | Description |
+|---|---|
+| **Serveur** | URL du serveur ntfy — modifiable si vous changez de serveur |
+| **Utilisateur** | Nom d'utilisateur ntfy |
+| **Mot de passe ou token** | Laisser vide pour ne pas modifier ; changer pour mettre à jour les identifiants |
+| **Notifications** | Activer/désactiver le push global |
+| **Se déconnecter** | Purge les données locales et désabonne du push |
+
+---
+
+### ⚠️ Limites connues
+
+- **Historique non persistant sur le serveur** : le cache ntfy embarqué expire après 12 h par défaut — un message non récupéré avant expiration est perdu
+- **Salons locaux uniquement** : les salons ajoutés et renommés ne se synchronisent pas entre appareils
+- **Identité non vérifiée** : le nom affiché correspond au champ `title` des messages ntfy — tout utilisateur autorisé sur le topic peut publier sous n'importe quel nom
+- **Pas d'édition/suppression** : ntfy ne supporte pas la modification d'un message envoyé
+- **Messages système non filtrables** : les alertes Jeedom reçues sur un topic de salon s'affichent comme messages système
 
 ---
 
