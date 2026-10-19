@@ -6,44 +6,43 @@ sidebar_position: 99
 
 ## 2026-10-19
 
-* Chat Famille — PWA de messagerie privée sur ntfy, incluse dans le plugin
-* Chat : notifications push par salon (toggle individuel, icône cloche barrée)
-* Chat : envoi de fichiers et images (bouton, coller, glisser-déposer), visionneuse plein écran
-* Chat : boutons d'action ntfy dans les messages (`view`, `http`)
-* Chat : modification du serveur/utilisateur/mot de passe depuis les Réglages
-* Chat : correction dialog — annulation native (Échap) ne valide plus accidentellement
-* Chat : correction messages reçus en arrière-plan affichés immédiatement au retour au premier plan
-* Chat : correction Service Worker — cache limité aux fichiers statiques, écriture garantie
+* **Chat Famille** — messagerie privée entre membres du foyer, accessible depuis le navigateur ou installable sur l'écran d'accueil (PWA)
+* Chat : notifications push par salon — muet par salon, icône cloche barrée dans la liste
+* Chat : envoi de photos et fichiers — bouton trombone, coller depuis le presse-papier, glisser-déposer
+* Chat : visionneuse d'images plein écran (swipe bas pour fermer sur mobile)
+* Chat : boutons d'action ntfy affichés dans les messages (liens, confirmations Jeedom…)
+* Chat : modification du serveur, de l'utilisateur et du mot de passe depuis les Réglages
+* Chat : corrections de stabilité (annulation de dialogue, messages manqués en arrière-plan)
 
 ## 2026-07-24
 
-* Audit sécurité — 14 corrections : HTTP catch-all, sanitize CRLF, centralisation rescue via RPC, identité /health, ports bornés, debounce reload, validation URL, mot de passe min 8 chars
-* Interface d'écoute ntfy configurable (localhost / LAN)
-* Interpréteur des scripts rescue déduit automatiquement de l'extension du fichier
-* Node.js ≥ 22 requis, SHA256 checksum pour le binaire ntfy
-* Commande `ping` secours : ajout résolution DNS Jeedom (détection coupure tunnel VPN)
-* Suppression templates vides et variable morte JS
+* Corrections de sécurité et de robustesse (14 points)
+* Interface d'écoute ntfy configurable : localhost uniquement ou réseau local
+* Les scripts du mode secours sont reconnus automatiquement selon leur extension
+* Node.js 22 requis ; vérification de l'intégrité du binaire ntfy à l'installation
+* Commande `ping` secours : détecte aussi une coupure DNS ou VPN
+* Nettoyage de l'interface
 
 ## 2026-06-20
 
-* Profils d'envoi nommés — modale dédiée, usage via `[profile=nom]` dans le message
-* Envoi de fichiers locaux via PUT binaire ntfy — commande `send_file` et inline `[file=/chemin]`
-* Multi-commandes dans les templates de réponse — syntaxe `{#id#}`, bouton d'insertion au curseur
-* Commandes `exec_reply` et `exec_action` — déclenchement depuis un scénario Jeedom via select uid
-* Options de publication étendues — markdown, icône, délai, cache ntfy, firebase par équipement et inline
-* Mode silencieux — plages horaires, priorité faible, désactivation envois sortants / réponses auto
+* **Profils d'envoi nommés** — regroupez priorité, tags, icône et topic dans un profil réutilisable (`[profile=alerte]`)
+* **Envoi de fichiers locaux** depuis un scénario Jeedom (commande `send_file`)
+* **Réponses multi-valeurs** — insérez plusieurs commandes Jeedom dans le même message de réponse (`{#id#}`)
+* Commandes `Déclencher réponse` et `Déclencher action` — déclenchement depuis un scénario
+* Options d'envoi étendues : markdown, icône, délai, cache, firebase
+* Mode silencieux par plages horaires, avec passage en priorité minimale plutôt que blocage total
 
 ## 2026-06-19
 
-* Assistant reverse proxy — wizard 5 étapes (Nginx, Apache, NPM, Traefik, Cloudflare)
-* Mode embarqué / externe — ntfy intégré ou serveur ntfy distant
-* Panel gestion utilisateurs ntfy — droits par topic (read-write, read-only, deny-all)
-* Auto-détection du port ntfy avec bouton reset
+* **Assistant reverse proxy** — génère la configuration en 5 étapes guidées (Apache, Nginx, NPM, Traefik, Cloudflare)
+* **Mode externe** — connexion à un serveur ntfy existant (ntfy.sh, auto-hébergé…)
+* **Panel utilisateurs** — gestion des droits par topic depuis Jeedom (lecture/écriture, lecture seule, accès interdit)
+* Détection automatique du port ntfy avec bouton de réinitialisation
 
 ## 2026-06-01
 
-* Règles d'action avec confirmation — boutons Oui ✓ / Non ✗ via token sécurisé 128 bits
-* Règles de réponse — lecture de commandes info Jeedom et réponse automatique
+* **Confirmation Oui / Non** — avant d'exécuter une action, Jeedom envoie une notification avec deux boutons
+* **Règles de réponse** — Jeedom répond automatiquement quand il reçoit un mot-clé
 * Mode silencieux global par équipement
-* Matching mot exact (word boundary) pour éviter les faux positifs
-* Mise à disposition du plugin
+* Détection de mots-clés plus précise (évite les faux positifs)
+* Première mise à disposition du plugin
