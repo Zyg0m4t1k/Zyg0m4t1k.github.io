@@ -385,6 +385,7 @@ Toutes les commandes dimmables, plus :
 |----------|------|-------------|
 | `lock` | Action | Verrouiller |
 | `unlock` | Action | Déverrouiller |
+| `unlock_with_timeout` | Action (slider) | Déverrouiller avec re-verrouillage automatique (1–300 s) — si supporté |
 | `is_locked` | Info binaire | Verrouillée (1) / Déverrouillée (0) |
 | `lock_state_text` | Info texte | État lisible (Verrouillé / Déverrouillé / Bloqué) |
 | `lock_state_raw` | Info numérique | Valeur brute Matter (0/1/2/3) |
@@ -400,6 +401,36 @@ Toutes les commandes dimmables, plus :
 - `Vacation` — verrouillage renforcé
 - `Privacy` — ne pas déranger
 - `NoRemoteLockUnlock` — blocage des commandes distantes
+
+### Gestion avancée des serrures
+
+Un bouton **Gérer la serrure** est disponible sur la page de chaque équipement serrure. Il ouvre une interface dédiée permettant de configurer :
+
+#### Utilisateurs
+
+Créez et gérez les utilisateurs autorisés à déverrouiller la serrure.
+
+| Champ | Description |
+|-------|-------------|
+| Nom | Identifiant de l'utilisateur |
+| Code PIN | Code numérique associé |
+| Statut | Actif / Désactivé |
+
+#### Plannings hebdomadaires
+
+Définissez des plages horaires par jour de la semaine pendant lesquelles un utilisateur peut accéder.
+
+#### Accès par date
+
+Limitez l'accès d'un utilisateur à une période précise (date de début / date de fin).
+
+#### Jours fériés
+
+Configurez des périodes de restriction ou d'accès spéciales sur des plages de dates définies.
+
+:::note
+Les fonctionnalités disponibles dépendent de ce que supporte votre serrure. Les onglets non supportés sont automatiquement masqués.
+:::
 
 ### Capteurs d'environnement
 
@@ -439,16 +470,26 @@ Les boutons génèrent des commandes événementielles selon les pressions déte
 | `open` | Action | Ouvrir |
 | `close` | Action | Fermer |
 | `stop` | Action | Arrêter |
+| `setPosition` | Action (slider) | Régler la position (0–100 %) |
 | `position` | Info | Position actuelle (%) |
+| `setTilt` | Action (slider) | Régler l'inclinaison (0–100 %) — si supporté |
+| `tilt` | Info | Inclinaison actuelle (%) — si supporté |
 
 ### Capteurs d'énergie
+
+Toutes les mesures disponibles sur l'appareil sont créées automatiquement — aucune commande vide n'est ajoutée.
 
 | Commande | Description |
 |----------|-------------|
 | `activePower` | Puissance active (W) |
+| `reactivePower` | Puissance réactive (VAR) |
+| `apparentPower` | Puissance apparente (VA) |
 | `voltage` | Tension (V) |
 | `current` | Courant (A) |
+| `frequency` | Fréquence réseau (Hz) |
+| `powerFactor` | Facteur de puissance |
 | `energy` | Énergie consommée (kWh) |
+| `energyExported` | Énergie exportée (kWh) |
 
 ### Batterie
 
