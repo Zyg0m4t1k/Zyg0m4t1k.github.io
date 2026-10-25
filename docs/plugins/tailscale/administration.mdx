@@ -6,13 +6,14 @@ description: Comprendre et utiliser OAuth, le partage de sous-réseaux, Serve HT
 
 ## Choisir la fonction adaptée
 
-Depuis la page du plugin, ouvrez **Administration**. Cette page est réservée aux administrateurs Jeedom et comporte trois onglets : **Appareils**, **Subnet Router** et **Serve / Funnel**.
+Depuis la page du plugin, ouvrez **Administration**. Cette page est réservée aux administrateurs Jeedom et comporte quatre onglets : **Appareils**, **Subnet Router**, **Serve / Funnel** et **DNS**.
 
 | Fonction | Ce qu'elle permet | Qui peut y accéder ? |
 | --- | --- | --- |
 | **Serve** | Donner à Jeedom une adresse HTTPS avec certificat automatique. | Les appareils autorisés de votre réseau Tailscale. |
 | **Subnet Router** | Utiliser Jeedom comme passage vers des appareils de votre réseau local. | Les appareils Tailscale auxquels vos règles donnent accès aux destinations choisies. |
 | **Funnel** | Rendre l'adresse web de Jeedom accessible publiquement. | Un navigateur sur Internet, même sans Tailscale ; l'identification Jeedom protège ensuite l'application. |
+| **DNS** | Consulter le nom DNS du tailnet et activer/désactiver MagicDNS. | Administrateurs Jeedom (scope OAuth `dns` requis). |
 
 Pour une première installation et un simple accès à Jeedom, commencez par le [guide utilisateur](/docs/plugins/tailscale/).
 
@@ -238,6 +239,22 @@ Pour retrouver un accès HTTPS privé, contrôlez ensuite l'état de **Serve** e
 ### Si Funnel ne fonctionne pas
 
 Vérifiez d'abord que Serve fonctionne en privé, puis l'autorisation Funnel dans la console. Une modification DNS publique peut demander quelques minutes. Si l'état est **Inconnu**, consultez **Détails** et le diagnostic avant de conclure que l'exposition est arrêtée.
+
+## DNS : nom du tailnet et MagicDNS {#dns}
+
+L'onglet **DNS** permet de consulter et de gérer les réglages DNS globaux de votre tailnet sans passer par la console Tailscale.
+
+:::note Scope OAuth requis
+Cet onglet nécessite le scope OAuth `dns` sur votre application OAuth Tailscale, en plus des scopes déjà utilisés pour la gestion des appareils.
+:::
+
+| Information / Action | Description |
+| --- | --- |
+| **Nom DNS du tailnet** | Nom de domaine de votre réseau Tailscale, par exemple `tail1234.ts.net`. Utilisé dans les adresses MagicDNS et les certificats HTTPS. |
+| **MagicDNS** | État actuel (activé ou désactivé) avec un bouton pour basculer directement. MagicDNS permet d'utiliser des noms comme `jeedom.tail1234.ts.net` au lieu d'adresses IP. |
+| **Certificats HTTPS** | Cette option n'est pas accessible via l'API Tailscale. Un lien direct vers la console Tailscale → DNS est proposé pour la gérer. |
+
+Cliquez sur **Rafraîchir** pour recharger les informations depuis l'API Tailscale.
 
 ## Tailscale SSH
 

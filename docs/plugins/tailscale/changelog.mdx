@@ -4,6 +4,26 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 0.5 — 2026-10-25
+
+### Nouveautés
+
+* **Onglet DNS dans la console d'administration** : consultez le nom DNS de votre tailnet et activez ou désactivez MagicDNS directement depuis Jeedom, sans passer par la console Tailscale
+
+### Améliorations
+
+* Le bouton « Équipements » est désormais affiché au-dessus des onglets dans la console d'administration, visible quel que soit l'onglet ouvert
+* L'avertissement `accept-routes` dans le diagnostic de santé est affiché comme informatif et non comme une erreur
+
+### Corrections
+
+* Erreur fatale PHP `Undefined constant "SIGTERM"` lors de l'authentification en contexte web (Apache/PHP-FPM)
+* Faux négatif sur le statut des dépendances après installation sur Debian 13
+
+### Notes
+
+* L'onglet DNS nécessite le scope OAuth `dns` sur votre application OAuth Tailscale
+
 ## 0.4.2 — 2026-10-21
 
 ### Corrections
