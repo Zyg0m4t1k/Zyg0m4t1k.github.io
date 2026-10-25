@@ -18,12 +18,26 @@ import TabItem from '@theme/TabItem';
 
 # 📡 Manuel d'utilisation — Plugin ntfybridge
 
+:::note Première installation ?
+Suivez le **[guide de mise en route →](setup.mdx)** : serveur ntfy, exposition HTTPS (sous-domaine ou Tailscale), Chat Famille PWA et premier test en 6 étapes.
+:::
+
+:::tip Vous cherchez de l'inspiration ?
+Découvrez un exemple concret avec trois utilisateurs et trois salons : domotique, alertes et messagerie familiale → **[Voir les exemples →](examples.mdx)**
+:::
+
 Le plugin **ntfybridge** connecte Jeedom à [ntfy](https://ntfy.sh), une application de notifications open-source disponible sur iOS, Android et Web.
 
 La communication est **bidirectionnelle** :
 
 - **Jeedom → Téléphone** : alertes, rapports, photos, fichiers
 - **Téléphone → Jeedom** : questions, commandes, confirmations
+
+:::tip Deux façons de recevoir vos messages
+**App ntfy officielle** (iOS / Android) — idéale pour les notifications domotiques : alertes, rapports, boutons de confirmation. Légère, sobre, centrée sur le push.
+
+**Chat Famille** (PWA intégrée au plugin) — messagerie temps réel pour tous les membres du foyer, installable sur l'écran d'accueil comme une vraie app. Salons, fichiers, photos, boutons d'action Jeedom. Aucun compte externe, données chez vous. → [voir Chat Famille ↓](#chat-famille)
+:::
 
 ---
 
@@ -51,8 +65,8 @@ Parcours minimal pour avoir un Jeedom joignable par notification depuis votre t�
 | 2 | **Installer les dépendances** | Bouton *Relancer* — installe Node.js ≥ 22 et le binaire ntfy automatiquement |
 | 3 | **Configurer le serveur ntfy** | Mode embarqué : définir l'identifiant admin et le mot de passe → [voir détails ↓](#configurer-le-serveur-ntfy) |
 | 4 | **Démarrer le démon** | Bouton *Relancer* — le serveur ntfy démarre avec le démon |
-| 5 | **Ouvrir les ports sur la box Internet** | Rediriger les ports **80** (HTTP) et **443** (HTTPS) vers l'IP de votre Jeedom |
-| 6 | **Tester le reverse proxy** | Lancer l'assistant intégré, suivre les 5 étapes → [voir reverse proxy ↓](#reverse-proxy) |
+| 5 | **Exposer ntfy** | **Option A — sous-domaine** : ouvrir les ports 80/443 sur la box + assistant reverse proxy → [voir ↓](#reverse-proxy) · **Option B — Tailscale** : assistant Tailscale intégré, aucun port à ouvrir → [voir ↓](#modes-de-configuration) |
+| 6 | **Tester l'accès** | Vérifier que ntfy est joignable depuis l'extérieur (curl ou bouton Tester dans le wizard) |
 | 7 | **Créer un utilisateur ntfy** | Panel utilisateurs : ajouter un compte avec droits sur le topic secours → [voir panel ↓](#gérer-les-utilisateurs-panel) |
 | 8 | **Installer l'app ntfy** | Télécharger sur [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), ajouter le serveur, s'authentifier → [voir app ↓](#installer-et-configurer-lapp-ntfy) |
 | 9 | **Configurer les topics secours et tester le ping** | Modale Secours : renseigner le topic action et réponse, activer `ping`, envoyer `ping` depuis l'app → [voir secours ↓](#mode-secours) |
@@ -215,6 +229,23 @@ L'URL d'abonnement est affichée dans la section **Abonnement** de chaque équip
 - 🩺 `ping` → Jeedom répond avec son état de santé
 
 </TabItem>
+<TabItem value="chat" label="💬 Chat Famille">
+
+**Messagerie privée entre membres du foyer — sans app tierce.**
+
+Le plugin inclut une application de chat complète, installable sur l'écran d'accueil (PWA). Elle fonctionne sur ntfy embarqué, données 100 % chez vous.
+
+- 🏠 Salons par thème (Famille, Maison, Alertes…)
+- 📎 Envoi de photos et fichiers — glisser-déposer, coller depuis le presse-papier
+- 🖼️ Visionneuse plein écran pour les images
+- 🔔 Notifications push par salon — muet par salon
+- 🔴 Pastille de messages non lus sur l'icône de l'écran d'accueil
+- 🤖 Les boutons de confirmation Jeedom (Oui ✓ / Non ✗) s'affichent directement dans le chat
+- 🚫 Aucun compte WhatsApp, Telegram ou autre service externe
+
+> Accessible sur `https://jeedom.votredomaine.fr/plugins/ntfybridge/chat/` → [documentation complète ↓](#chat-famille)
+
+</TabItem>
 </Tabs>
 
 ---
@@ -222,7 +253,9 @@ L'URL d'abonnement est affichée dans la section **Abonnement** de chaque équip
 ## 🔀 Modes de configuration
 
 :::tip Configuration recommandée
-**Mode embarqué + sous-domaine HTTPS** — installation all-in-one, données chez vous, toutes les fonctionnalités (push iOS natif, boutons de confirmation, icônes, fichiers joints).
+**Mode embarqué + sous-domaine HTTPS ou Tailscale** — installation all-in-one, données chez vous, toutes les fonctionnalités : push iOS natif, boutons de confirmation, icônes, fichiers joints, **Chat Famille PWA**.
+- Sous-domaine : accès depuis n'importe quel appareil, même hors Tailscale
+- Tailscale : aucun port à ouvrir, HTTPS automatique, idéal si pas d'IPv4 fixe
 :::
 
 <Tabs groupId="ntfy-mode">
@@ -241,13 +274,35 @@ ntfy est inclus dans le plugin et exposé via reverse proxy sur un sous-domaine.
 - Nécessite un reverse proxy (Apache, Nginx, NPM, Traefik, Cloudflare…) — [voir configuration →](#reverse-proxy)
 
 </TabItem>
-<TabItem value="embedded-local" label="Embarqué local / VPN">
+<TabItem value="embedded-tailscale" label="⭐ Embarqué + Tailscale">
 
-ntfy est inclus, accessible uniquement sur le réseau local ou via VPN.
+ntfy est inclus et exposé uniquement sur votre réseau **Tailscale** (VPN mesh P2P). Pas de sous-domaine, pas de port ouvert, HTTPS automatique.
+
+**Atouts :**
+- **Zéro port ouvert sur Internet** — seuls les appareils dans votre réseau Tailscale ont accès
+- **HTTPS automatique** via les certificats Tailscale (`tailscale serve`) — pas de Let's Encrypt, pas de reverse proxy à configurer
+- **Pas de domaine** à acheter ni de DNS externe à gérer
+- **Fonctionne même sans IPv4 fixe ou sans ports entrants** (box 4G, CGNAT, FAI qui bloque les ports)
+- Toutes les fonctionnalités : push iOS, boutons Oui/Non, Chat Famille — sur tous vos appareils Tailscale
+
+**Contraintes :**
+- Les notifications n'arrivent **que sur les appareils avec Tailscale installé** (iOS, Android, ordinateurs)
+- Si vous souhaitez partager ntfy avec quelqu'un hors de votre réseau Tailscale → préférer le sous-domaine
+
+:::tip Quand choisir Tailscale ?
+Usage **100 % familial/personnel** sur appareils maîtrisés, pas d'IPv4 fixe, ou FAI qui bloque les ports entrants. C'est la configuration la plus simple et la plus sûre dans ces cas.
+:::
+
+Lancer l'**Assistant Tailscale** depuis la configuration du plugin pour configurer `tailscale serve` et mettre à jour l'URL en 3 étapes guidées.
+
+</TabItem>
+<TabItem value="embedded-local" label="Embarqué local">
+
+ntfy est inclus, accessible uniquement sur le réseau local.
 
 **Atouts :**
 - Zéro configuration réseau externe
-- Aucun port ouvert sur Internet — très sécurisé
+- Aucun port ouvert sur Internet
 
 **Contraintes :**
 - Boutons Oui/Non non fonctionnels hors réseau local

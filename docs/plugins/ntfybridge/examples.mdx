@@ -1,0 +1,143 @@
+---
+title: Exemples
+sidebar_position: 3
+description: Exemples concrets d'utilisation du Chat Famille ntfybridge — trois salons, trois usages, une seule PWA.
+---
+
+# Chat PWA — Une maison, trois salons
+
+Avec **ntfybridge**, transformez votre installation Jeedom en une messagerie privée accessible depuis votre téléphone, votre tablette ou votre ordinateur.
+
+Dans cet exemple, trois utilisateurs partagent la même interface :
+
+- **Dad** : administre Jeedom et surveille la maison.
+- **Mams** : utilise les commandes domotiques et le chat familial.
+- **Lea** : discute avec ses parents et consulte les informations autorisées.
+
+<img src="/img/plugins/ntfybridge/users.png" alt="Exemple utilisateurs" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+Ils disposent de trois salons : **🏠 Maison**, **🖥️ Jeedom** et **💬 Famille**.
+
+
+
+---
+
+## 🏠 Salon Maison — Dialoguer avec Jeedom
+
+Dans la configuration de l'équipement ntfybridge, deux topics sont définis : le **topic d'écoute** (sur lequel Jeedom reçoit vos commandes) et le **topic de réponse** (sur lequel Jeedom envoie ses réponses). Dans le Chat Famille, cela se traduit par deux salons distincts : vous envoyez vos messages dans le salon lié au topic d'écoute, et les réponses arrivent dans le salon lié au topic de réponse.
+
+:::tip Exemple de template de réponse avec mapping binaire
+```
+🏠 **État des lumières**
+
+💡 **Salon** : {#[Matter][Salon][Etat]#|0:⚫ Éteinte|1:🟡 Allumée#}
+
+💡 **Cuisine** : {#[Matter][Cuisine][Etat]#|0:⚫ Éteinte|1:🟡 Allumée#}
+
+💡 **Chambre** : {#[Matter][Chambre][Etat]#|0:⚫ Éteinte|1:🟡 Allumée#}
+
+──────────────
+
+🏡 *État transmis par Jeedom*
+```
+La syntaxe `{#[Objet][Équipement][Commande]#|0:texte|1:texte#}` permet d'insérer la valeur d'une commande Jeedom avec un libellé lisible selon son état binaire.
+:::
+
+### Exemple — Onglet Réponses
+
+<img src="/img/plugins/ntfybridge/config_reponses.png" alt="Exemple de configuration des règles de réponse ntfybridge" style={{maxWidth: '720px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+### Exemple — Onglet Actions
+
+<img src="/img/plugins/ntfybridge/config_actions.png" alt="Exemple de configuration des règles d'action ntfybridge" style={{maxWidth: '720px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+:::info Plusieurs mots-clés par règle
+Chaque règle accepte plusieurs mots-clés séparés par des virgules — Jeedom répond ou agit dès que l'un d'eux est reconnu dans le message.
+
+Exemple : `lumières, état lumières, !lumières` déclenche la même règle quelle que soit la formulation.
+:::
+
+:::info Bouton de confirmation
+Pour les actions sensibles (ouvrir le portail, désarmer l'alarme…), activez l'option **Confirmation** dans la règle. Jeedom envoie une notification avec deux boutons **Oui ✓ / Non ✗** avant d'exécuter quoi que ce soit. Le token expire après le délai configuré (défaut : 60 s).
+:::
+
+**Topic d'écoute** — vous envoyez vos commandes :
+
+<img src="/img/plugins/ntfybridge/chat_maison_demande.png" alt="Salon topic d'écoute — envoi de commandes à Jeedom" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+**Topic de réponse** — Jeedom vous répond :
+
+<img src="/img/plugins/ntfybridge/chat_maison_reponse.png" alt="Salon topic de réponse — réponses de Jeedom" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+:::info À retenir
+Les messages peuvent déclencher des actions Jeedom et les résultats sont renvoyés directement dans le salon. Les mots-clés et réponses présentés ici sont des exemples à configurer dans l'onglet **Réponses** et **Actions** de l'équipement ntfybridge.
+:::
+
+---
+
+## 🖥️ Salon Jeedom — Recevoir les alertes
+
+Ce salon centralise les notifications automatiques du système, sans mélanger les messages techniques avec les discussions familiales.
+
+**Topic d'écoute** — Demande d'alertes et rapports automatiques de Jeedom :
+
+<img src="/img/plugins/ntfybridge/chat_jeedom_alertes.png" alt="Salon Jeedom — alertes et notifications automatiques" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+**Topic de réponse** — Rapports:
+
+<img src="/img/plugins/ntfybridge/chat_jeedom_suivi.png" alt="Salon Jeedom — échanges entre membres du foyer" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+:::info À retenir
+Les alertes, résultats de scripts et informations de monitoring arrivent dans un salon dédié. Les utilisateurs autorisés peuvent également y échanger des messages.
+:::
+
+---
+
+## 💬 Salon Famille — Une vraie messagerie privée
+
+Ce salon fonctionne comme une conversation classique, sans aucune interaction avec Jeedom.
+
+---
+
+<img src="/img/plugins/ntfybridge/chat_famille.png" alt="Exemple de conversation dans le Chat Famille ntfybridge" style={{maxWidth: '380px', width: '100%', borderRadius: '12px', display: 'block', margin: '1rem auto'}} />
+
+---
+
+:::info À retenir
+Les membres de la famille peuvent discuter, partager des images et des fichiers, sans utiliser une messagerie externe.
+:::
+
+---
+
+## 📱 Une PWA installée sur le téléphone
+
+Le chat peut être ajouté à l'écran d'accueil d'un iPhone ou d'un appareil Android, comme une application native.
+
+Chaque membre de la famille retrouve :
+
+- Ses salons et ses conversations.
+- Les notifications push des salons auxquels il est abonné.
+- L'envoi de messages, images et fichiers.
+- Les salons accessibles selon ses autorisations ntfy.
+
+Les conversations restent hébergées sur votre propre serveur.
+
+---
+
+## 🔐 Un accès privé avec Tailscale
+
+Pour conserver un fonctionnement entièrement privé, le chat peut être accessible via **Tailscale** — sans exposer Jeedom sur Internet.
+
+L'HTTPS et les notifications Web Push sont assurés automatiquement par `tailscale serve`. Voir le [guide de mise en route →](setup.mdx) pour la configuration.
+
+---
+
+## Trois usages, une seule interface
+
+| Salon | Usage |
+|---|---|
+| 🏠 **Maison** | Interagir avec la domotique — commandes, questions, confirmations |
+| 🖥️ **Jeedom** | Recevoir les alertes et surveiller les services |
+| 💬 **Famille** | Discuter simplement, partager des photos et des fichiers |
+
+Avec ntfybridge, la même PWA devient à la fois une messagerie familiale et une interface de communication avec votre maison connectée.

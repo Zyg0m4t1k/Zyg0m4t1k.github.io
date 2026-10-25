@@ -1,0 +1,231 @@
+---
+title: Mise en route
+sidebar_position: 2
+description: Guide pas-à-pas pour installer et configurer ntfybridge — serveur ntfy embarqué, exposition HTTPS (sous-domaine ou Tailscale), Chat Famille PWA et premier test.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🚀 Mise en route
+
+Ce guide vous amène de zéro à un ntfybridge pleinement fonctionnel : serveur ntfy embarqué, accès externe, Chat Famille installé sur votre téléphone et premier test réussi.
+
+---
+
+## Étape 1 — Installer le plugin
+
+```text
+Plugins → Gestion des plugins → Market → ntfybridge → Installer
+```
+
+Activez le plugin après installation, puis cliquez sur **Relancer** dans la section *Dépendances* pour installer automatiquement Node.js ≥ 22 et le binaire ntfy.
+
+:::info
+L'installation des dépendances prend 2 à 5 minutes. Attendez que le statut passe à **OK** avant de continuer.
+:::
+
+---
+
+## Étape 2 — Configurer le serveur ntfy
+
+```text
+Plugins → Gestion des plugins → ntfybridge → Configuration
+```
+
+| Champ | Valeur |
+|---|---|
+| **Mode** | Embarqué |
+| **Identifiant admin** | Modifiable (défaut : `ntfyadmin`) — à changer **avant le premier démarrage uniquement** |
+| **Port ntfy** | Laisser vide — auto-détecté à la sauvegarde |
+
+:::info Mot de passe admin ntfy
+Le mot de passe du compte admin ntfy est **généré automatiquement à l'installation** (32 caractères aléatoires). Il n'est pas visible dans l'interface — c'est un compte interne utilisé par le plugin. Vous n'avez pas à le retenir. Pour créer des comptes utilisateurs accessibles depuis l'app ntfy ou le Chat Famille, utilisez le **Panel** (étape 4).
+:::
+
+Cliquez **Sauvegarder**, puis **Relancer** le démon. Le serveur ntfy démarre avec le démon.
+
+:::tip Vérification
+Le statut du démon doit passer à **OK**. Si ce n'est pas le cas, consultez les logs `ntfybridge` pour diagnostiquer.
+:::
+
+---
+
+## Étape 3 — Exposer ntfy
+
+Pour que l'app ntfy et le Chat Famille fonctionnent depuis l'extérieur (et pour le push iOS natif), ntfy doit être accessible en **HTTPS**.
+
+<Tabs groupId="expose-method">
+<TabItem value="tailscale" label="⭐ Via Tailscale (recommandé si pas d'IPv4 fixe)" default>
+
+**Aucun port à ouvrir, HTTPS automatique, zéro configuration DNS.**
+
+:::tip Plugin Tailscale pour Jeedom
+La façon la plus simple d'installer et gérer Tailscale sur votre serveur Jeedom est d'utiliser le **[plugin Tailscale](https://market.jeedom.com/index.php?v=d&p=market_display&id=4681)** — il installe Tailscale, gère l'authentification et configure `tailscale serve` depuis l'interface Jeedom, sans ligne de commande.
+:::
+
+Prérequis : Tailscale actif sur votre serveur Jeedom et l'app Tailscale installée sur vos appareils.
+
+1. Dans la configuration du plugin, cliquer sur **Assistant Tailscale**
+2. Suivre les 3 étapes :
+   - **Détection** — l'assistant vérifie que Tailscale est actif et lit votre nom de domaine Tailscale (ex: `jeedom.mondomaine.ts.net`)
+   - **Configuration** — configure `tailscale serve` pour exposer ntfy sur le port 8443
+   - **Validation** — teste l'URL HTTPS et met à jour automatiquement le champ *URL publique*
+3. Cliquer **Sauvegarder**
+
+L'URL publique est alors du type `https://jeedom.mondomaine.ts.net:8443`.
+
+:::info Appareils concernés
+Seuls les appareils **dans votre réseau Tailscale** pourront accéder à ntfy. C'est suffisant pour un usage familial sur appareils maîtrisés.
+:::
+
+</TabItem>
+<TabItem value="subdomain" label="Via sous-domaine (accès universel)">
+
+**Accessible depuis n'importe quel appareil et réseau, push iOS natif inclus.**
+
+Prérequis : un nom de domaine et les ports 80/443 ouverts sur votre box Internet.
+
+1. Ouvrir les ports **80** (HTTP) et **443** (HTTPS) vers l'IP de votre Jeedom sur votre box
+2. Dans la configuration du plugin, cliquer sur **Assistant reverse proxy**
+3. Suivre les 5 étapes — l'assistant génère la configuration pour Apache, Nginx, NPM, Traefik ou Cloudflare
+4. Appliquer la configuration dans le terminal selon les instructions affichées
+5. Renseigner l'**URL publique** (ex: `https://ntfy.mondomaine.fr`) et **Sauvegarder**
+
+:::tip Renouvellement SSL automatique (Certbot)
+```bash
+sudo certbot renew --dry-run
+```
+:::
+
+</TabItem>
+</Tabs>
+
+---
+
+## Étape 4 — Créer un utilisateur
+
+Sur la page principale du plugin.
+
+1. Cliquer **Ajouter un utilisateur**
+2. Saisir un nom d'utilisateur et un mot de passe (minimum 8 caractères)
+3. Cliquer **Créer**
+4. Dans le tableau des permissions, attribuer **read-write** sur les topics que cet utilisateur doit utiliser
+
+:::tip Un compte par personne
+Créez un compte distinct pour chaque membre du foyer — cela permet de contrôler les droits par topic et d'identifier l'expéditeur dans le Chat Famille.
+:::
+
+---
+
+## Étape 5 — Choisir votre client
+
+<Tabs groupId="client-choice">
+<TabItem value="chat" label="💬 Chat Famille (messagerie foyer)" default>
+
+Le Chat Famille est une PWA incluse dans le plugin — pas besoin de télécharger quoi que ce soit.
+
+### Installer sur l'écran d'accueil
+
+L'URL du chat dépend de comment vous avez exposé ntfy à l'étape 3 :
+
+| Méthode | URL du chat |
+|---|---|
+| **Tailscale** (chat exposé via le wizard) | `https://debian13.xxx.ts.net:8443/chat/` |
+| **Sous-domaine** | `https://jeedom.votredomaine.fr/plugins/ntfybridge/chat/` |
+
+L'URL exacte est affichée dans la configuration du plugin après avoir lancé l'assistant Tailscale ou le wizard reverse proxy.
+
+<Tabs>
+<TabItem value="ios-chat" label="🍎 iOS" default>
+
+1. Ouvrir **Safari** → URL du chat (voir tableau ci-dessus)
+2. Appuyer sur **Partager** → **Sur l'écran d'accueil**
+3. Nommer l'app (ex: *Famille*) → **Ajouter**
+4. Ouvrir depuis l'icône — les notifications push fonctionnent uniquement depuis l'écran d'accueil
+
+</TabItem>
+<TabItem value="android-chat" label="🤖 Android">
+
+1. Ouvrir **Chrome** → URL du chat (voir tableau ci-dessus)
+2. Menu ⋮ → **Installer l'application**
+
+</TabItem>
+</Tabs>
+
+### Se connecter
+
+Au premier lancement :
+
+| Champ | Valeur |
+|---|---|
+| **Serveur** | Pré-rempli automatiquement (URL publique configurée à l'étape 3) |
+| **Utilisateur** | Compte créé à l'étape 4 |
+| **Mot de passe** | Mot de passe du compte |
+
+### Ajouter un salon
+
+1. Appuyer sur **+** dans la barre de salons
+2. Saisir un nom affiché et un topic ntfy (ex: `famille`)
+3. S'assurer que l'utilisateur a les droits **read-write** sur ce topic dans le panel
+
+### Activer les notifications push
+
+1. Ouvrir **Réglages** (⚙) → activer **Notifications**
+2. Autoriser dans le navigateur
+3. Par salon : menu ⋯ → **Notifications** pour activer/désactiver salon par salon
+
+</TabItem>
+<TabItem value="ntfy-app" label="🔔 App ntfy officielle (notifications domotique)">
+
+L'app ntfy officielle est idéale pour recevoir les alertes Jeedom et répondre par message.
+
+### Télécharger
+
+| Plateforme | Lien |
+|---|---|
+| **iOS** | [App Store](https://apps.apple.com/app/ntfy/id1625396347) |
+| **Android** | [Google Play](https://play.google.com/store/apps/details?id=io.heckel.ntfy) ou [F-Droid](https://f-droid.org/packages/io.heckel.ntfy/) |
+
+### S'abonner à un topic
+
+1. Ouvrir l'app → **+**
+2. Saisir l'URL complète du topic : `https://ntfy.votredomaine.fr/mon_topic`
+3. Renseigner le nom d'utilisateur et le mot de passe créés à l'étape 4
+
+:::tip URL de l'abonnement
+L'URL exacte est affichée dans la section **Abonnement** de chaque équipement ntfybridge — vous pouvez la copier directement.
+:::
+
+</TabItem>
+</Tabs>
+
+---
+
+## Étape 6 — Premier test
+
+### Tester le ping (mode secours)
+
+Depuis l'app ntfy ou le Chat Famille, envoyez `ping` sur le topic secours configuré.
+
+Jeedom doit répondre avec l'heure du serveur, la charge CPU et l'uptime.
+
+### Tester une notification Jeedom
+
+Dans un scénario ou depuis la console Jeedom :
+
+```text
+Action → Message → [votre équipement ntfybridge] Envoyer message
+Titre   : Test
+Message : Bonjour depuis Jeedom !
+```
+
+La notification doit apparaître sur votre téléphone en quelques secondes.
+
+---
+
+:::tip Et maintenant ?
+- Créez vos **règles de réponse** — Jeedom répond automatiquement à vos questions → [voir Réponses](index.mdx#onglet-réponses)
+- Configurez le **mode secours** pour piloter Jeedom même si l'interface web est en panne → [voir Mode Secours](index.mdx#mode-secours)
+- Explorez les **profils d'envoi** pour grouper priorité, tags et icône → [voir Profils](index.mdx#profils-denvoi)
+:::

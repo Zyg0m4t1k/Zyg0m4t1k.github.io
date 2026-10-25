@@ -4,6 +4,18 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-10-25
+
+* **Dépendances** — compatibilité ntfy v2 : détection de version corrigée
+* **Assistant Tailscale** — résolution DNS non bloquante : l'assistant continue les vérifications HTTPS même si le DNS local ne répond pas
+* **Règles de réponse** — les mots-clés fonctionnent désormais sans tenir compte des accents (`etat` déclenche une règle avec le mot-clé `état`)
+* **Règles de réponse** — affichage lisible pour les commandes binaires : `{#id#|0:éteinte|1:allumée#}` dans le template de réponse
+* Correction d'un problème d'envoi de notifications en rafale
+
+## 2026-10-21
+
+* **Chat Famille** — pastille sur l'icône PWA (Badging API) : le nombre de messages non lus s'affiche sur l'icône de l'écran d'accueil
+
 ## 2026-10-20
 
 * **Assistant Tailscale** — configure `tailscale serve` et met à jour l'URL ntfy en 3 étapes guidées (détection, routes, validation)
