@@ -16,6 +16,14 @@ import TabItem from '@theme/TabItem';
   donateUrl="https://www.paypal.me/Zyg0m4t1k"
 />
 
+:::note First installation?
+Follow the **[getting started guide →](setup.mdx)**: ntfy server, HTTPS exposure (subdomain or Tailscale), Family Chat PWA and first test in 6 steps.
+:::
+
+:::tip Looking for inspiration?
+See a concrete example with three users and three rooms: home automation, alerts and family chat → **[View examples →](examples.mdx)**
+:::
+
 # 📡 User Manual — ntfybridge Plugin
 
 The **ntfybridge** plugin connects Jeedom to [ntfy](https://ntfy.sh), an open-source notification service available on iOS, Android and Web.
@@ -24,6 +32,12 @@ Communication is **two-way**:
 
 - **Jeedom → Phone**: alerts, reports, camera snapshots, file attachments
 - **Phone → Jeedom**: queries, commands, confirmations
+
+:::tip Two ways to receive your messages
+**Official ntfy app** (iOS / Android) — ideal for home automation notifications: alerts, reports, confirmation buttons. Lightweight, focused on push.
+
+**Family Chat** (PWA built into the plugin) — real-time messaging for all household members, installable on the home screen like a real app. Rooms, files, photos, Jeedom action buttons. No external account, data stays on your server. → [see Family Chat ↓](#family-chat)
+:::
 
 ---
 
@@ -35,13 +49,13 @@ Most home-automation notification solutions are one-way: the controller sends an
 
 In embedded mode, ntfy also becomes a **private messenger** between household members. Each user has their own access managed through the built-in panel — no need for WhatsApp, Telegram or any third-party service to let someone know the gate is open or dinner is ready.
 
-And when everything crashes — Apache down, Jeedom unreachable — **rescue mode** takes over. The daemon runs independently: a `ping` or `emergency` from ntfy is enough to diagnose and restart services, with no SSH or web access required.
+And when everything crashes — Apache down, Jeedom unreachable — **rescue mode** takes over. The daemon runs independently: if the ntfy connection is reachable through an independent path (direct port, Tailscale, other machine), a `ping` or `emergency` is enough to diagnose and restart services, with no SSH or web access required.
 
-Everything stays **on your premises**: ntfy is embedded, no cloud required, no quotas, your data never passes through any third-party server.
+Everything stays **on your premises**: in embedded mode, ntfy runs on your server, no intermediary for your messages. Web Push notifications do transit through your browser's services (APNs for iOS, FCM for Android via Firebase) — this is inherent to the Web Push standard, independent of the plugin.
 
 ---
 
-### Quick Start — 9 Steps
+### 🚀 Quick Start — 9 Steps
 
 Minimal walkthrough to make Jeedom reachable by notification from your phone, without creating any equipment.
 
@@ -51,8 +65,8 @@ Minimal walkthrough to make Jeedom reachable by notification from your phone, wi
 | 2 | **Install dependencies** | Click *Relaunch* — installs Node.js ≥ 22 and the ntfy binary automatically |
 | 3 | **Configure the ntfy server** | Embedded mode: set the admin username and password → [see details ↓](#configure-the-ntfy-server) |
 | 4 | **Start the daemon** | Click *Relaunch* — the ntfy server starts with the daemon |
-| 5 | **Open ports on your internet router** | Forward ports **80** (HTTP) and **443** (HTTPS) to your Jeedom IP address |
-| 6 | **Test the reverse proxy** | Run the built-in wizard, follow the 5 steps → [see reverse proxy ↓](#reverse-proxy) |
+| 5 | **Expose ntfy** | **Option A — subdomain**: open ports 80/443 on your router + reverse proxy wizard → [see ↓](#reverse-proxy) · **Option B — Tailscale**: built-in Tailscale wizard, no ports to open → [see ↓](#configuration-modes) |
+| 6 | **Test access** | Verify ntfy is reachable from outside (curl or Test button in the wizard) |
 | 7 | **Create an ntfy user** | User panel: add an account with permissions on the rescue topic → [see panel ↓](#manage-users-panel) |
 | 8 | **Install the ntfy app** | Download on [iOS](https://apps.apple.com/app/ntfy/id1625396347) / [Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy), add the server, authenticate → [see app ↓](#install-and-configure-the-ntfy-app) |
 | 9 | **Configure rescue topics and test ping** | Rescue modal: enter the action and response topics, enable `ping`, send `ping` from the app → [see rescue ↓](#rescue-mode) |
@@ -79,9 +93,11 @@ The ntfy server is built into the plugin — everything is automatic.
 | **ntfy Port** | Auto-detected on first start. **Test** and **Auto-detect** buttons available |
 | **Admin Username** | ntfy administrator account, generated at install (default: `ntfyadmin`) |
 | **Listen Interface** | **Localhost** (recommended, behind reverse proxy) or **LAN** (all interfaces) |
-| **Public URL** | Only needed for internet access (e.g. `https://ntfy.mydomain.com`) |
+| **Public URL** | HTTPS URL from which ntfy is reachable — public Internet (e.g. `https://ntfy.mydomain.com`) or private network (e.g. Tailscale `https://jeedom.mydomain.ts.net:8443`) |
 
 **To expose ntfy to the internet**: enter the Public URL then click **Reverse Proxy Wizard**. The wizard generates the configuration in 5 steps for Apache, Nginx, NPM, Traefik or Cloudflare.
+
+**Via Tailscale**: if your Jeedom is accessible on a Tailscale network, enter the Tailscale URL (e.g. `https://jeedom.mydomain.ts.net:8443`). No internet port forwarding required — Family Chat, push and confirmation buttons all work on your Tailscale devices.
 
 :::tip First-time Setup
 1. Save the configuration → the port is auto-detected
@@ -213,14 +229,33 @@ The subscription URL is displayed in the **Subscription** section of each ntfybr
 - 🩺 `ping` → Jeedom responds with its health status
 
 </TabItem>
+<TabItem value="chat" label="💬 Family Chat">
+
+**Private messaging between household members — no third-party app.**
+
+The plugin includes a full chat application, installable on the home screen (PWA). It runs on embedded ntfy, data 100% on your server.
+
+- 🏠 Topic-based rooms (Family, Home, Alerts…)
+- 📎 Send photos and files — drag-and-drop, paste from clipboard
+- 🖼️ Full-screen image viewer
+- 🔔 Push notifications per room — mute per room
+- 🔴 Unread badge on the home screen icon
+- 🤖 Jeedom confirmation buttons (Yes ✓ / No ✗) appear directly in the chat
+- 🚫 No WhatsApp, Telegram or any external service required
+
+> Accessible at `https://jeedom.yourdomain.com/plugins/ntfybridge/chat/` → [full documentation ↓](#family-chat)
+
+</TabItem>
 </Tabs>
 
 ---
 
-## 🔀 Configuration Modes
+## 🔀 Configuration Modes {#configuration-modes}
 
 :::tip Recommended Setup
-**Embedded mode + HTTPS subdomain** — all-in-one installation, data stays on your premises, all features available (native iOS push, confirmation buttons, icons, file attachments).
+**Embedded mode + HTTPS subdomain or Tailscale** — all-in-one installation, data stays on your premises, all features available: native iOS push, confirmation buttons, icons, file attachments, **Family Chat PWA**.
+- Subdomain: accessible from any device, even outside Tailscale
+- Tailscale: no ports to open, automatic HTTPS, ideal if no fixed IPv4
 :::
 
 <Tabs groupId="ntfy-mode">
@@ -237,6 +272,28 @@ ntfy is included in the plugin and exposed via reverse proxy on a subdomain.
 **Requirements:**
 - A domain name (e.g. `ntfy.mydomain.com`)
 - A reverse proxy (Apache, Nginx, NPM, Traefik, Cloudflare…) — [see configuration →](#reverse-proxy)
+
+</TabItem>
+<TabItem value="embedded-tailscale" label="⭐ Embedded + Tailscale">
+
+ntfy is included and exposed only on your **Tailscale** network (P2P mesh VPN). No subdomain, no open port, automatic HTTPS.
+
+**Strengths:**
+- **Zero ports open on the internet** — only devices in your Tailscale network have access
+- **Automatic HTTPS** via Tailscale certificates (`tailscale serve`) — no Let's Encrypt, no reverse proxy to configure
+- **No domain** to purchase or external DNS to manage
+- **Works even without a fixed IPv4 or without inbound ports** (4G router, CGNAT, ISP blocking ports)
+- All features: iOS push, Yes/No buttons, Family Chat — on all your Tailscale devices
+
+**Limitations:**
+- Notifications only arrive on **devices with Tailscale installed** (iOS, Android, computers)
+- To share ntfy with someone outside your Tailscale network → prefer the subdomain
+
+:::tip When to choose Tailscale?
+**100% family/personal** use on managed devices, no fixed IPv4, or ISP blocking inbound ports. This is the simplest and most secure setup in those cases.
+:::
+
+Launch the **Tailscale Wizard** from the plugin configuration to set up `tailscale serve` and update the URL in 3 guided steps.
 
 </TabItem>
 <TabItem value="embedded-local" label="Embedded Local / VPN">
@@ -531,8 +588,8 @@ Group your recurring settings into named profiles. Open from **Plugins → ntfyb
 | min | `1` | Silent, no sound or vibration — passive reports |
 | low | `2` | Discreet — silent banner |
 | default | `3` | Standard device behavior |
-| high | `4` | Sound + vibration, even in Do Not Disturb mode |
-| urgent | `5` | Loud sound + vibration + overrides silent mode |
+| high | `4` | Sound + vibration — exact behavior depends on the ntfy app and system permissions |
+| urgent | `5` | Loud sound + maximum vibration — may be limited by Do Not Disturb mode depending on OS and app permissions |
 
 ### Common Tags
 
@@ -617,7 +674,13 @@ Per equipment:
 
 Rescue Mode lets you query and troubleshoot Jeedom **from the ntfy app**, even when the web interface is unreachable (Apache or PHP down, Jeedom not responding).
 
-The ntfybridge daemon runs **independently** from Jeedom. It can keep responding to your messages even when everything else is down.
+The ntfybridge daemon runs **independently** from PHP and the Jeedom web interface. Text commands (`ping`, `log`…) work as long as the daemon is alive and the ntfy connection is reachable.
+
+:::warning Rescue mode limitation
+If the remote ntfy connection goes through the same Apache as Jeedom (reverse proxy on the same machine), an Apache outage also cuts the remote ntfy connection. Rescue mode is fully effective when ntfy is reachable through an independent path (direct port, Tailscale, other machine).
+
+HTTP confirmation buttons (Yes/No) call PHP via `ntfybridge.inc.php` — they therefore require PHP to be running. Simple text commands (`ping`, `health`, `log`…) do not have this dependency.
+:::
 
 ---
 
@@ -794,6 +857,163 @@ Return to the wizard → **Next** → final validation.
 sudo certbot renew --dry-run
 ```
 :::
+
+---
+
+## 💬 Family Chat {#family-chat}
+
+Family Chat is a **private PWA messaging app** built into the plugin, running on ntfy. It allows household members to send messages and files from any device — without WhatsApp, Telegram or any third-party service.
+
+```text
+https://jeedom.yourdomain.com/plugins/ntfybridge/chat/
+```
+
+:::info Server Requirements
+Family Chat is hosted by Jeedom and connects to an ntfy server over HTTPS. It works with the embedded server (subdomain, Tailscale…) or with an external self-hosted ntfy server. Push and authentication must be configured on the ntfy server used.
+:::
+
+---
+
+### Requirements
+
+| Condition | Detail |
+|---|---|
+| **HTTPS required** | The Service Worker (PWA, push) only works over HTTPS |
+| **Web Push enabled** | Enabled by default in the embedded ntfy binary (`enable_web_push: true`) |
+| **ntfy external URL configured** | In the plugin configuration — pre-fills the server field at login |
+| **ntfy user account** | Create an account in the [user panel](#manage-users-panel) with read-write rights on the room topic |
+| **iOS: PWA installed** | On iPhone, push notifications only work in PWA mode — add the chat to the home screen |
+
+:::tip Apache CSP
+If Jeedom enforces a strict CSP (`security.conf`), add `Header` directives in the chat's `.htaccess` to allow connections to the external ntfy server. The reverse proxy wizard generates the complete configuration.
+:::
+
+---
+
+### Install the App (PWA)
+
+<Tabs>
+<TabItem value="ios" label="🍎 iOS" default>
+
+1. Open `https://jeedom.yourdomain.com/plugins/ntfybridge/chat/` in **Safari**
+2. Tap **Share** → **Add to Home Screen**
+3. Name the app (e.g. *Family*) → **Add**
+4. Open from the home screen icon
+
+:::warning iOS — Push only in PWA
+Push notifications work **only** from the home screen icon, not directly from Safari.
+:::
+
+</TabItem>
+<TabItem value="android" label="🤖 Android">
+
+1. Open `https://jeedom.yourdomain.com/plugins/ntfybridge/chat/` in **Chrome**
+2. Menu ⋮ → **Install app** (or automatic banner)
+3. The app appears in the app drawer
+
+</TabItem>
+<TabItem value="web" label="🌐 Web">
+
+Open `https://jeedom.yourdomain.com/plugins/ntfybridge/chat/` in any browser. All features are available except push on non-PWA iOS.
+
+</TabItem>
+</Tabs>
+
+---
+
+### Login
+
+On first launch, enter:
+
+| Field | Value |
+|---|---|
+| **Server** | Pre-filled automatically from the Jeedom config (e.g. `https://ntfy.yourdomain.com`) |
+| **User** | ntfy account created in the panel |
+| **Password or token** | Account password, or ntfy token (`tk_…`) |
+
+Credentials are stored locally for automatic reconnection. To change them, open **Settings → Server / User / Password**.
+
+---
+
+### Rooms
+
+Each room corresponds to an **ntfy topic**. The user must have **read-write** rights on that topic.
+
+#### Add a Room
+
+1. Tap **+** in the room bar
+2. Enter a display name and an ntfy topic (letters, numbers, `-` and `_`, 1–64 characters)
+3. Confirm — the room appears in the list
+
+#### Room Options (⋯ menu)
+
+| Option | Description |
+|---|---|
+| **Rename** | Change the display name (the ntfy topic does not change) |
+| **Notifications** | Enable or disable push notifications for this room |
+| **Clear my messages** | Clears local history (does not delete messages from the server) |
+| **Remove room** | Removes the room locally and unsubscribes from push |
+
+---
+
+### Messaging
+
+- **Text send**: Enter to send, Shift+Enter for a new line
+- **File send**: paperclip button, paste from clipboard (Ctrl+V / ⌘V), or drag-and-drop into the message area
+- **Real-time**: multi-room WebSocket with automatic reconnection
+- **History**: 500 messages stored locally per room
+- **Drafts**: each room's draft is preserved when switching rooms
+
+#### Message Display
+
+- **Me** messages (right bubbles) vs **others** (left bubbles) vs **system** (Jeedom alerts, notifications)
+- **Colored avatars** with initials — deterministic color per sender name
+- **Emoji-only** messages displayed large
+- **Images** clickable → full-screen viewer (swipe down to close on mobile)
+- **Non-image files** → download link
+- **ntfy action buttons**: up to 3 buttons per message (`view`, `http`) — Jeedom confirmation buttons (Yes ✓ / No ✗) appear here
+
+---
+
+### Push Notifications
+
+Push relies on **VAPID keys** generated by the plugin (`ntfy webpush keys`) and the ntfy server configuration. It must be enabled server-side (`enable_web_push: true`, visible in `/config.js` of the ntfy server).
+
+1. Open **Settings** (⚙ icon) → enable **Notifications** (global first)
+2. Allow notifications in the browser
+3. Enable/disable per room from the ⋯ menu of each room
+4. Notifications arrive even when the app is closed
+
+| Behavior | Detail |
+|---|---|
+| **Your own messages** | Never notified |
+| **Muted room** | No push for this room (crossed-out bell icon in the list) |
+| **Tap on notification** | Opens the correct room directly, even if the app is closed |
+| **Subscription expiry** | Reminder notification after ~7 days of inactivity (ntfy 2.11.0) — open the app to renew. The exact value depends on the embedded ntfy server version. |
+
+---
+
+### Settings
+
+Tap the ⚙ icon to access settings:
+
+| Option | Description |
+|---|---|
+| **Server** | ntfy server URL — editable if you change server |
+| **User** | ntfy username |
+| **Password or token** | Leave empty to keep unchanged; change to update credentials |
+| **Notifications** | Enable/disable global push |
+| **Log out** | Clears local data and unsubscribes from push |
+
+---
+
+### Known Limitations
+
+- **History not persisted on the server**: the embedded ntfy cache expires after 12 h by default — a message not retrieved before expiry is lost
+- **Local rooms only**: rooms added and renamed do not sync between devices
+- **Identity not verified**: the displayed name corresponds to the `title` field of ntfy messages — any user authorized on the topic can publish under any name
+- **No edit/delete**: ntfy does not support modifying a sent message
+- **System messages not filterable**: Jeedom alerts received on a room topic appear as system messages
 
 ---
 

@@ -39,7 +39,7 @@ The plugin connects Jeedom to your **private Tailscale network**, called a *tail
 
 **Public access (Funnel)** — The same address made accessible from the Internet, even without Tailscale on the visitor's side. Useful for sharing Jeedom access with someone who doesn't have Tailscale, or for third-party services that need to reach Jeedom (webhooks, voice assistants). Activation and permissions are configured in the Tailscale console.
 
-**Local network access** — From a smartphone, tablet or PC connected to Tailscale, reach devices on your local network (NAS, camera, printer…) without installing Tailscale on each of them. [Subnet Router](administration.mdx#subnet-router) mode lets you share an entire subnet (`192.168.1.0/24`) or a single device (`192.168.1.40/32`). System routing and permissions must be configured.
+**Local network access** — From a smartphone, tablet or PC connected to Tailscale, reach devices on your local network (NAS, camera, printer…) without installing Tailscale on each of them. [Subnet Router](./administration#subnet-router) mode lets you share an entire subnet (`192.168.1.0/24`) or a single device (`192.168.1.40/32`). System routing and permissions must be configured.
 
 **Device monitoring** — Each device visible on the tailnet becomes a Jeedom equipment with its online status, address and alerts. Latency is measured during a ping, not continuously. Use this information in your scenarios and notifications.
 
@@ -87,7 +87,7 @@ If the status shows **Awaiting validation in admin console**, approve Jeedom in 
 
 Use the address actually shown by your plugin. If your Jeedom installation uses a specific port or path, keep it in the address.
 
-The **MagicDNS** name, when available, lets you replace the IP address with a more memorable name. For an HTTPS address with an automatic certificate, see [Enable Serve](administration.mdx#serve).
+The **MagicDNS** name, when available, lets you replace the IP address with a more memorable name. For an HTTPS address with an automatic certificate, see [Enable Serve](./administration#serve).
 
 ### 4. Create Jeedom equipment
 
@@ -193,11 +193,11 @@ A phone in sleep mode may not respond immediately. A ping with no response does 
 
 | Your need | Feature |
 | --- | --- |
-| Open Jeedom over HTTPS from your Tailscale devices | [Serve](administration.mdx#serve) |
-| Reach a NAS or camera without Tailscale installed on it | [Subnet Router: local network access](administration.mdx#subnet-router) |
-| Make Jeedom's address accessible without the Tailscale app | [Funnel: public access](administration.mdx#funnel) |
-| Authorize devices or manage their settings from Jeedom | [Administration with OAuth](administration.mdx#oauth) |
-| Look up the tailnet DNS name or enable MagicDNS | [DNS](administration.mdx#dns) |
+| Open Jeedom over HTTPS from your Tailscale devices | [Serve](./administration#serve) |
+| Reach a NAS or camera without Tailscale installed on it | [Subnet Router: local network access](./administration#subnet-router) |
+| Make Jeedom's address accessible without the Tailscale app | [Funnel: public access](./administration#funnel) |
+| Authorize devices or manage their settings from Jeedom | [Administration with OAuth](./administration#oauth) |
+| Look up the tailnet DNS name or enable MagicDNS | [DNS](./administration#dns) |
 
 ## Health / Diagnostic {#diagnostic}
 
@@ -244,4 +244,4 @@ Logs are accessible from Jeedom. For a support request, provide the status, the 
 
 Removing the plugin **does not uninstall the Tailscale software from the machine**. Its connection may therefore continue to work. To also remove that access, plan a system intervention with local access and check the uninstallation messages.
 
-See the [changelog](changelog.mdx) for the version history.
+See the [changelog](./changelog) for the version history.

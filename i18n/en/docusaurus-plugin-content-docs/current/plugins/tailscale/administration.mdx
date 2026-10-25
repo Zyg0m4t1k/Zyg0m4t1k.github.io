@@ -1,0 +1,269 @@
+---
+title: Advanced administration
+sidebar_position: 2
+description: Understand and use OAuth, subnet sharing, HTTPS Serve and Funnel with the Tailscale plugin for Jeedom.
+---
+
+## Choosing the right feature
+
+From the plugin page, open **Administration**. This page is reserved for Jeedom administrators and has four tabs: **Devices**, **Subnet Router**, **Serve / Funnel** and **DNS**.
+
+| Feature | What it does | Who can access it? |
+| --- | --- | --- |
+| **Serve** | Give Jeedom an HTTPS address with an automatic certificate. | Authorized devices on your Tailscale network. |
+| **Subnet Router** | Use Jeedom as a gateway to devices on your local network. | Tailscale devices that your rules grant access to the chosen destinations. |
+| **Funnel** | Make Jeedom's web address publicly accessible. | Any browser on the Internet, even without Tailscale; Jeedom authentication then protects the application. |
+| **DNS** | Look up the tailnet DNS name and enable/disable MagicDNS. | Jeedom administrators (OAuth `dns` scope required). |
+
+For a first installation and simple access to Jeedom, start with the [user guide](/en/docs/plugins/tailscale/).
+
+## Managing devices with OAuth {#oauth}
+
+**OAuth gives the plugin permission to view or modify devices in your Tailscale account.** This is an additional administrative access, separate from Jeedom's Tailscale connection.
+
+OAuth is optional for remote access, visible device synchronization, ping, Serve, Funnel and Tailscale SSH. Subnet announcements also work without OAuth; their approval can then be done in the Tailscale console.
+
+### Configuring this access
+
+1. In the [Tailscale console, trust credentials section](https://console.tailscale.com/admin/settings/trust-credentials), create an OAuth client.
+2. Choose the permissions you need from the table below.
+3. Copy its **Client ID** and **Client Secret** into the corresponding fields under **Configuration → Tailscale API - OAuth**.
+4. Save the Jeedom configuration.
+5. Open **Administration → Devices**, then click **Refresh**.
+6. Run **Synchronize** again to associate Jeedom equipment with manageable devices.
+
+The secret is an administrative password: keep it safe and do not include it in a screenshot.
+
+### Permissions to choose
+
+Permissions are called **scopes** in Tailscale.
+
+| Need | Permissions |
+| --- | --- |
+| List devices and view their details | `devices:core:read` |
+| Authorize, deauthorize, delete, manage tags or expiry | `devices:core` |
+| View route approvals from the plugin | `devices:core:read` and `devices:routes:read` |
+| Approve or remove route approvals from the plugin | `devices:core:read` and `devices:routes` |
+
+If you already have `devices:core`, it includes the corresponding read access. Also respect the tag restrictions suggested by Tailscale: having a scope does not necessarily grant the right to modify every device. See the [Tailscale permissions reference](https://tailscale.com/docs/reference/trust-credentials).
+
+### Understanding the Devices tab actions
+
+| Action | Effect |
+| --- | --- |
+| **Enable / Disable** | Authorize or deny the device in Tailscale. Its regular Internet access remains available. |
+| **Key** icon | Modify its connection key expiry. Without expiry, the periodic re-authentication tied to that deadline is no longer required. |
+| **Tags** | Assign labels used by access rules, for example `tag:server`. They may modify the device's rights. |
+| **Routes** | View advertised networks and enter the list of routes to approve. This list replaces the approvals for that device: keep the ones you want to maintain. |
+| **Details** | View technical information useful for troubleshooting. |
+| **Delete** | Remove the device from the tailnet. It must be re-enrolled to rejoin. This does not automatically delete its Jeedom equipment. |
+
+### Key-based authentication for Jeedom
+
+The plugin configuration also offers **Key authentication** to connect Jeedom without following the interactive flow. Enter a `tskey-auth-...` key, then click **Validate**. It is not stored in the plugin configuration.
+
+The field also accepts a `tskey-client-...` secret. In this case, the OAuth client must authorize `auth_keys` and the chosen **Tag for OAuth authentication**, which defaults to `tag:jeedom`. Save the tag and machine name before validating the key. This mode corresponds to a tag-managed device; interactive authentication remains the simplest path. See the [official OAuth explanations](https://tailscale.com/docs/features/oauth-clients).
+
+## Subnet Router: accessing the local network {#subnet-router}
+
+### Definition and example
+
+A **Subnet Router** is a Tailscale machine that acts as a gateway to a local network. Here, Jeedom plays that role: you can reach a NAS or camera that does not have Tailscale installed.
+
+```text
+Phone on 4G/5G with Tailscale
+              ↓
+       Jeedom at home
+              ↓
+     Camera: 192.168.1.50
+```
+
+You open the camera's usual address, for example `http://192.168.1.50`, and the traffic goes through Jeedom. Jeedom must therefore remain on, connected to Tailscale, and able to reach the camera locally.
+
+### Understanding the screen terms
+
+| Term | Definition |
+| --- | --- |
+| **Detected local network** | The networks Jeedom is connected to. Check them before sharing. |
+| **Advertised route** | The network Jeedom is proposing to make accessible. |
+| **Approved route** | The Tailscale console has authorized this proposal. |
+| **IP routing** | The permission given to the system to forward traffic between Tailscale and the local network. |
+| **Access rules** | The permissions specifying which users or devices can reach which destinations. They are defined in Tailscale, sometimes called ACLs or grants. |
+
+**Advertising, approving and granting user access are separate steps.** The **Enabled** status on the tab indicates that a subnet is advertised; it does not guarantee that access already works.
+
+### Choosing addresses to share
+
+The required notation is an **address followed by a mask**, called CIDR:
+
+| Example | Scope |
+| --- | --- |
+| `192.168.1.0/24` | The subnet ranging from `192.168.1.0` to `192.168.1.255`. |
+| `192.168.1.50/32` | Only the IPv4 device `192.168.1.50`. |
+
+These addresses are examples: use those of your installation. If your only need is a camera, choose its address in `/32` and make sure it stays fixed. Sharing a subnet preserves the protections and credentials specific to each device.
+
+### 1. Prepare IP routing on Jeedom
+
+In **Administration → Subnet Router**, look at **IP routing**. The plugin checks this setting but does not enable it automatically.
+
+If necessary, a system administrator can enable forwarding on the Jeedom machine. On Debian, edit with administrator rights the file `/etc/sysctl.d/99-tailscale.conf` and add or adjust the following two lines, without erasing its other settings:
+
+```ini
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+```
+
+Then apply the file:
+
+```bash
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+```
+
+The plugin displays **OK** when both settings are active. Special installations, particularly with IPv6 disabled or a specific firewall, require appropriate system verification. The [official Tailscale routing procedure](https://tailscale.com/docs/features/subnet-routers) details these prerequisites.
+
+### 2. Advertise destinations
+
+In the **Subnet Router** tab, choose one of two methods:
+
+- **Enable** proposes the detected local networks: review the list shown in the confirmation.
+- For a specific destination, enter its CIDR in the field, then click **Add** and confirm.
+
+### 3. Approve and grant access rights
+
+Click **Approve routes** if OAuth is configured with the necessary permissions. Otherwise, open the [Tailscale machines list](https://login.tailscale.com/admin/machines), select Jeedom and approve the subnets in its routing settings.
+
+Also verify that your tailnet's access rules allow the relevant devices to reach the destinations. The plugin does not create these rules for you.
+
+### 4. Test from outside
+
+Enable Tailscale on the phone, switch to 4G/5G and open the local address of the shared service. Start with the IP address, to avoid confusing a naming issue with a connectivity issue.
+
+On a **remote Linux computer**, accepting routes must be enabled if it is not already:
+
+```bash
+sudo tailscale set --accept-routes=true
+```
+
+This command runs on the Linux client computer. Windows, macOS, iOS and Android clients normally accept routes automatically. See [using routes on clients](https://tailscale.com/docs/features/subnet-routers#use-your-subnet-routes-from-other-devices).
+
+### Removing the share or troubleshooting
+
+Use the trash icon of a route to remove a destination, or **Disable** to stop the subnet sharing advertised by Jeedom. Local devices continue to work at home.
+
+If access fails, successively check local access to the service, IP routing, the advertisement, the approval and the access rules. A firewall on the NAS or camera may also refuse the connection. If the remote Wi-Fi uses the same addresses as your home network, redo the test on 4G/5G to rule out this conflict.
+
+:::warning Subnet Router unavailable
+
+If the machine used as a **Subnet Router** is off or unavailable, Tailscale may prevent access to your local network, even if your computer is directly connected to it.
+
+For example, you may no longer be able to access Jeedom, your router or other devices on your network.
+
+In that case, disable the use of Tailscale routes:
+
+```bash
+tailscale set --accept-routes=false
+```
+
+Tailscale remains active: only the routes advertised by Subnet Routers are disabled.
+
+To re-enable them when the Subnet Router is available again:
+
+```bash
+tailscale set --accept-routes=true
+```
+
+:::
+
+### What about an "exit node"?
+
+An **exit node** allows a device that selects it to route its Internet traffic through another machine. The Subnet Router described here is used to reach the local destinations you have chosen.
+
+The plugin displays information about exit nodes, but the current interface does not offer a dedicated button to configure Jeedom as an exit node. See the [Tailscale exit nodes documentation](https://tailscale.com/docs/features/exit-nodes) if you have this need.
+
+## Serve: a private HTTPS address for Jeedom {#serve}
+
+**Serve gives Jeedom an HTTPS address with an automatic certificate**, accessible from authorized devices on the tailnet. The name looks like `https://jeedom.tail1234.ts.net`. Serve does not require subnet sharing. See the [official Serve presentation](https://tailscale.com/docs/features/tailscale-serve).
+
+### Enabling in the plugin
+
+1. Verify that Jeedom is connected to Tailscale.
+2. Enable MagicDNS and HTTPS support in the Tailscale console if necessary.
+3. Open **Administration → Serve / Funnel**.
+4. Click **Enable Serve**, then confirm.
+5. From a device connected to Tailscale, open the **HTTPS URL** shown and sign in to Jeedom normally.
+
+:::info Jeedom installation supported by this button
+The button redirects HTTPS on port 443 to `http://127.0.0.1:80` on the Jeedom machine. If your Jeedom uses a different port or a particular container installation, manual configuration is required. The screen does not offer a field to change this destination.
+:::
+
+**Disable Serve** stops this HTTPS publication. This does not disconnect Tailscale.
+
+If activation fails, check the HTTPS authorizations in the console and the message displayed. If you are already using Serve for other applications on this machine, check the **Details** section: the screen indicators may also reflect these other services.
+
+## Funnel: making Jeedom publicly accessible {#funnel}
+
+**Funnel makes the HTTPS address accessible from the Internet, even without a Tailscale application or account on the visitor's side.** It is suited for an explicit need for public access; for your phone already connected to Tailscale, Serve is sufficient.
+
+```text
+Browser on the Internet, without Tailscale
+                 ↓
+       Public Funnel address
+                 ↓
+          Connection to Jeedom
+```
+
+:::warning What changes for your Jeedom
+With Funnel, the web page is reachable by the public. The HTTPS certificate encrypts the connection but does not identify the visitor. Jeedom authentication and rights must protect access: check them, as well as any anonymous access, before activation.
+:::
+
+Tailscale requires MagicDNS, HTTPS and permission to use Funnel for the machine. The rules that allow **enabling** Funnel do not restrict visitors to your private network. See the [Funnel usage conditions](https://tailscale.com/docs/features/tailscale-funnel).
+
+### Enabling public access
+
+1. First get **Serve** working, as described above.
+2. Authorize Funnel in the Tailscale console for Jeedom if necessary.
+3. In **Administration → Serve / Funnel**, click **Enable Funnel**.
+4. Read and confirm the two confirmation prompts.
+5. Verify that **Funnel (public)** shows **Active (public)**.
+6. Test the URL from an external device with Tailscale disabled, ideally in a private window to verify the Jeedom authentication prompt.
+
+The plugin publishes the local web service on HTTPS port 443. This does not automatically publish other devices on your local network.
+
+### Stopping public access
+
+Click **Disable Funnel**, confirm, then **Refresh**. Verify that public access has stopped.
+
+To restore private HTTPS access, then check the state of **Serve** and re-enable it if necessary. Disabling Funnel does not guarantee that Serve remains active. Test again with Tailscale enabled on your phone.
+
+### If Funnel is not working
+
+First verify that Serve works privately, then check the Funnel authorization in the console. A public DNS change may take a few minutes. If the status is **Unknown**, check **Details** and the diagnostic before concluding that the exposure has stopped.
+
+## DNS: tailnet name and MagicDNS {#dns}
+
+The **DNS** tab lets you view and manage the global DNS settings of your tailnet without going through the Tailscale console.
+
+:::note OAuth scope required
+This tab requires the OAuth `dns` scope on your Tailscale OAuth application, in addition to the scopes already used for device management.
+:::
+
+| Information / Action | Description |
+| --- | --- |
+| **Tailnet DNS name** | Domain name of your Tailscale network, for example `tail1234.ts.net`. Used in MagicDNS addresses and HTTPS certificates. |
+| **MagicDNS** | Current state (enabled or disabled) with a button to toggle directly. MagicDNS lets you use names like `jeedom.tail1234.ts.net` instead of IP addresses. |
+| **HTTPS certificates** | This option is not accessible via the Tailscale API. A direct link to the Tailscale console → DNS is provided to manage it. |
+
+Click **Refresh** to reload the information from the Tailscale API.
+
+## Tailscale SSH
+
+In **Administration → Devices → Local Jeedom**, the **Tailscale SSH** button lets you enable or disable terminal access to the Jeedom machine via Tailscale.
+
+This feature is for system administration. It is not required to open the Jeedom web page. Access depends on your tailnet's SSH rules; enabling the button does not automatically grant a terminal to all users.
+
+## Returning to simple use
+
+You can use private access to Jeedom without shared subnets, without Funnel and without OAuth. Removing the OAuth credentials from the configuration stops API management from the plugin; this does not disconnect Jeedom from Tailscale and does not remove existing publications or routes.
+
+To stop a share, use its dedicated button and verify its state before removing your administration means.

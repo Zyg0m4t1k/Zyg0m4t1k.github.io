@@ -1,0 +1,231 @@
+---
+title: Getting Started
+sidebar_position: 2
+description: Step-by-step guide to install and configure ntfybridge — embedded ntfy server, HTTPS exposure (subdomain or Tailscale), Family Chat PWA and first test.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🚀 Getting Started
+
+This guide takes you from zero to a fully working ntfybridge: embedded ntfy server, external access, Family Chat installed on your phone and first successful test.
+
+---
+
+## Step 1 — Install the Plugin
+
+```text
+Plugins → Plugin Management → Market → ntfybridge → Install
+```
+
+Activate the plugin after installation, then click **Relaunch** in the *Dependencies* section to automatically install Node.js ≥ 22 and the ntfy binary.
+
+:::info
+Dependency installation takes 2 to 5 minutes. Wait for the status to show **OK** before continuing.
+:::
+
+---
+
+## Step 2 — Configure the ntfy Server
+
+```text
+Plugins → Plugin Management → ntfybridge → Configuration
+```
+
+| Field | Value |
+|---|---|
+| **Mode** | Embedded |
+| **Admin Username** | Editable (default: `ntfyadmin`) — change **before the first start only** |
+| **ntfy Port** | Leave empty — auto-detected on save |
+
+:::info ntfy admin password
+The ntfy admin account password is **generated automatically at installation** (32 random characters). It is not visible in the interface — it is an internal account used by the plugin. You do not need to remember it. To create user accounts accessible from the ntfy app or Family Chat, use the **Panel** (step 4).
+:::
+
+Click **Save**, then **Relaunch** the daemon. The ntfy server starts with the daemon.
+
+:::tip Verification
+The daemon status should show **OK**. If not, check the `ntfybridge` logs to diagnose.
+:::
+
+---
+
+## Step 3 — Expose ntfy
+
+For the ntfy app and Family Chat to work from outside (and for native iOS push), ntfy must be accessible over **HTTPS**.
+
+<Tabs groupId="expose-method">
+<TabItem value="tailscale" label="⭐ Via Tailscale (recommended if no fixed IPv4)" default>
+
+**No ports to open, automatic HTTPS, zero DNS configuration.**
+
+:::tip Tailscale plugin for Jeedom
+The easiest way to install and manage Tailscale on your Jeedom server is to use the **[Tailscale plugin](https://market.jeedom.com/index.php?v=d&p=market_display&id=4681)** — it installs Tailscale, handles authentication and configures `tailscale serve` from the Jeedom interface, without any command line.
+:::
+
+Prerequisites: Tailscale active on your Jeedom server and the Tailscale app installed on your devices.
+
+1. In the plugin configuration, click **Tailscale Wizard**
+2. Follow the 3 steps:
+   - **Detection** — the wizard checks that Tailscale is active and reads your Tailscale domain name (e.g. `jeedom.mydomain.ts.net`)
+   - **Configuration** — configures `tailscale serve` to expose ntfy on port 8443
+   - **Validation** — tests the HTTPS URL and automatically updates the *Public URL* field
+3. Click **Save**
+
+The public URL will then be of the form `https://jeedom.mydomain.ts.net:8443`.
+
+:::info Devices covered
+Only devices **in your Tailscale network** can access ntfy. This is sufficient for family use on managed devices.
+:::
+
+</TabItem>
+<TabItem value="subdomain" label="Via subdomain (universal access)">
+
+**Accessible from any device and network, native iOS push included.**
+
+Prerequisites: a domain name and ports 80/443 open on your internet router.
+
+1. Open ports **80** (HTTP) and **443** (HTTPS) towards your Jeedom IP on your router
+2. In the plugin configuration, click **Reverse Proxy Wizard**
+3. Follow the 5 steps — the wizard generates the configuration for Apache, Nginx, NPM, Traefik or Cloudflare
+4. Apply the configuration in the terminal following the displayed instructions
+5. Enter the **Public URL** (e.g. `https://ntfy.mydomain.com`) and **Save**
+
+:::tip Automatic SSL Renewal (Certbot)
+```bash
+sudo certbot renew --dry-run
+```
+:::
+
+</TabItem>
+</Tabs>
+
+---
+
+## Step 4 — Create a User
+
+On the plugin main page.
+
+1. Click **Add User**
+2. Enter a username and password (minimum 8 characters)
+3. Click **Create**
+4. In the permissions table, assign **read-write** on the topics this user should access
+
+:::tip One account per person
+Create a separate account for each household member — this lets you control rights per topic and identify the sender in Family Chat.
+:::
+
+---
+
+## Step 5 — Choose Your Client
+
+<Tabs groupId="client-choice">
+<TabItem value="chat" label="💬 Family Chat (household messaging)" default>
+
+Family Chat is a PWA built into the plugin — no download required.
+
+### Install on the Home Screen
+
+The chat URL depends on how you exposed ntfy in step 3:
+
+| Method | Chat URL |
+|---|---|
+| **Tailscale** (chat exposed via the wizard) | `https://debian13.xxx.ts.net:8443/chat/` |
+| **Subdomain** | `https://jeedom.yourdomain.com/plugins/ntfybridge/chat/` |
+
+The exact URL is displayed in the plugin configuration after running the Tailscale wizard or the reverse proxy wizard.
+
+<Tabs>
+<TabItem value="ios-chat" label="🍎 iOS" default>
+
+1. Open **Safari** → chat URL (see table above)
+2. Tap **Share** → **Add to Home Screen**
+3. Name the app (e.g. *Family*) → **Add**
+4. Open from the icon — push notifications only work from the home screen
+
+</TabItem>
+<TabItem value="android-chat" label="🤖 Android">
+
+1. Open **Chrome** → chat URL (see table above)
+2. Menu ⋮ → **Install app**
+
+</TabItem>
+</Tabs>
+
+### Log In
+
+On first launch:
+
+| Field | Value |
+|---|---|
+| **Server** | Pre-filled automatically (public URL configured in step 3) |
+| **User** | Account created in step 4 |
+| **Password** | Account password |
+
+### Add a Room
+
+1. Tap **+** in the room bar
+2. Enter a display name and an ntfy topic (e.g. `family`)
+3. Make sure the user has **read-write** rights on this topic in the panel
+
+### Enable Push Notifications
+
+1. Open **Settings** (⚙) → enable **Notifications**
+2. Allow in the browser
+3. Per room: ⋯ menu → **Notifications** to enable/disable room by room
+
+</TabItem>
+<TabItem value="ntfy-app" label="🔔 Official ntfy app (home automation notifications)">
+
+The official ntfy app is ideal for receiving Jeedom alerts and replying by message.
+
+### Download
+
+| Platform | Link |
+|---|---|
+| **iOS** | [App Store](https://apps.apple.com/app/ntfy/id1625396347) |
+| **Android** | [Google Play](https://play.google.com/store/apps/details?id=io.heckel.ntfy) or [F-Droid](https://f-droid.org/packages/io.heckel.ntfy/) |
+
+### Subscribe to a Topic
+
+1. Open the app → **+**
+2. Enter the full topic URL: `https://ntfy.yourdomain.com/my_topic`
+3. Enter the username and password created in step 4
+
+:::tip Subscription URL
+The exact URL is displayed in the **Subscription** section of each ntfybridge equipment — you can copy it directly.
+:::
+
+</TabItem>
+</Tabs>
+
+---
+
+## Step 6 — First Test
+
+### Test Ping (rescue mode)
+
+From the ntfy app or Family Chat, send `ping` on the configured rescue topic.
+
+Jeedom should respond with the server time, CPU load and uptime.
+
+### Test a Jeedom Notification
+
+In a scenario or from the Jeedom console:
+
+```text
+Action → Message → [your ntfybridge equipment] Send Message
+Title   : Test
+Message : Hello from Jeedom!
+```
+
+The notification should appear on your phone within a few seconds.
+
+---
+
+:::tip What's next?
+- Create your **response rules** — Jeedom automatically answers your questions → [see Responses](index.mdx#responses-tab)
+- Configure **rescue mode** to control Jeedom even if the web interface is down → [see Rescue Mode](index.mdx#rescue-mode)
+- Explore **send profiles** to group priority, tags and icon → [see Profiles](index.mdx#send-profiles)
+:::

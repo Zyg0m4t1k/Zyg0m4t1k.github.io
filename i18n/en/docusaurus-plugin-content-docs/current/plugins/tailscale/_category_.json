@@ -1,0 +1,8 @@
+{
+  "label": "tailscale",
+  "collapsed": false,
+  "link": {
+    "type": "doc",
+    "id": "plugins/tailscale/index"
+  }
+}
