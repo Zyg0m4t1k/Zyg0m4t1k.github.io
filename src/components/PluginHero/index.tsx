@@ -175,9 +175,12 @@ export default function PluginHero({
             )}
           </div>
           {description ? (
-            <p style={{ margin: '.35rem 0 0 0', opacity: 0.9 }}>
-              {description}
-            </p>
+            <p
+              style={{ margin: '.35rem 0 0 0', opacity: 0.9 }}
+              dangerouslySetInnerHTML={{
+                __html: description.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'),
+              }}
+            />
           ) : null}
         </div>
       </div>

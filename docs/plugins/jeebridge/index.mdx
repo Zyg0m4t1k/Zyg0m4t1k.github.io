@@ -1,0 +1,129 @@
+---
+title: Plugin JeeBridge
+description: Exposez vos équipements Jeedom vers Alexa, Apple Home et Google Home via Matter et MatterBridge
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="jeebridge"
+  title="Plugin JeeBridge"
+  description="Exposez vos équipements Jeedom vers **Alexa**, **Apple Home** et **Google Home** via Matter et MatterBridge."
+  icon="/img/plugins/jeebridge_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
+/>
+
+---
+
+## Pré-requis
+
+- **Debian 12** minimum
+- **Docker** installé sur le système (le plugin [Docker Management](https://market.jeedom.com/index.php?v=d&p=market_display&id=4833) peut l'installer pour vous)
+
+:::note Docker en conteneur
+L'utilisation de Jeedom en conteneur Docker n'est pas supportée pour le moment, sauf si vous savez configurer Docker-in-Docker.
+:::
+
+---
+
+## Installation
+
+1. Installer le plugin via le Market
+2. Activer le plugin — les dépendances se lancent automatiquement
+3. Une fois les dépendances installées, vérifier la **page Santé** du plugin
+
+![Page Santé](/img/plugins/jeebridge/health.png)
+
+4. Si le check **Groupe Docker (www-data)** est en NOK, cliquer sur le bouton **Redémarrer Apache** dans la configuration du plugin (à faire une seule fois)
+5. Démarrer le démon
+
+---
+
+## Premier démarrage
+
+1. Aller dans la **Console** MatterBridge (bouton en haut de la page du plugin)
+
+![Console](/img/plugins/jeebridge/console.png)
+
+2. Cliquer sur **Démarrer** pour vérifier que tout fonctionne
+3. Cliquer sur **Installer plugin MB** puis **Redémarrer**
+4. Dans les logs, vous devez voir apparaître :
+
+```
+Loading plugin matterbridge-jeebridge type DynamicPlatform
+```
+
+---
+
+## Commissionnement
+
+Ajouter le pont à votre contrôleur (Alexa, Apple Home, Google Home) via la **page de commissionnement** du plugin, en scannant le QR code affiché.
+
+
+![commissioning](/img/plugins/jeebridge/commissioning.png)
+---
+
+## Ajout d'équipements
+
+Cliquer sur le bouton **Ajouter un équipement** — une fenêtre s'ouvre avec trois choix :
+
+![addequipment](/img/plugins/jeebridge/addequipment.png)
+
+- **Unitaire** — sélectionner un équipement existant
+- **Multiple** — sélectionner plusieurs équipements regroupés par plugin. Tous les équipements sont affichés, mais ceux réellement compatibles (avec des types génériques reconnus) sont distingués visuellement
+- **Custom** — créer une prise virtuelle ON/OFF et y associer une série d'actions paramétrables directement dans le plugin. Équivalent des actions d'entrée ou de sortie de mode du plugin Mode
+
+Par exemple, nommez un device custom "Télé" et dites :
+- *"Allume la Télé"* — déclenche les actions configurées sur **ON** (allumer la télé, lancer le mode ambiance lumières télé)
+- *"Éteins la Télé"* — déclenche les actions configurées sur **OFF** (éteindre la télé, remettre un mode lumière par défaut)
+
+---
+
+## Synchronisation
+
+Une fois les équipements ajoutés, cliquer sur **Synchroniser** puis patienter quelques instants. Retourner ensuite dans les applications Alexa, Apple Home ou Google Home pour configurer vos équipements.
+
+:::tip Astuce
+Renommez vos équipements **avant** la synchronisation comme vous souhaitez les voir apparaître dans les applications.
+:::
+
+---
+
+## Page Santé
+
+Accessible via **Analyse > Santé** ou depuis la page du plugin, la santé vérifie :
+
+- **Groupe Docker (www-data)** — le processus PHP a bien accès au socket Docker
+- **Docker** — Docker est installé et accessible
+- **Conteneur MatterBridge** — le conteneur est en cours d'exécution
+- **API MatterBridge** — l'API locale répond sur le port configuré
+- **Port Matter** — le port Matter (5540 par défaut) est en écoute
+- **Interfaces IPv4 / IPv6** — les interfaces réseau disponibles dans le conteneur
+- **MatterBridge vers Jeedom** — le conteneur peut rappeler Jeedom (callback authentifié)
+- **Fabrics Matter** — les contrôleurs appairés (Alexa, Apple Home, Google Home)
+- **Équipements synchronisés** — comparaison entre les équipements Jeedom et les devices MatterBridge
+- **Découverte Matter / mDNS** — rappel informatif, vérifiable uniquement côté contrôleur (IPv6 et multicast UDP 5353 doivent circuler sur le LAN)
+
+---
+
+## Console MatterBridge
+
+La console permet d'accéder directement à l'interface web de MatterBridge. Elle est accessible via le bouton **Console** en haut de la page du plugin.
+
+
+
+Depuis la console vous pouvez :
+
+- **Démarrer / Arrêter** MatterBridge
+- **Installer le plugin** matterbridge-jeebridge dans MatterBridge
+- **Redémarrer** MatterBridge après l'installation du plugin
+- **Consulter les logs** en temps réel pour diagnostiquer les problèmes
+
+---
+
+## Compatibilité testée
+
+- Apple Home
+- Alexa

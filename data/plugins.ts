@@ -45,6 +45,22 @@ const plugins: PluginItem[] = [
     }
   },
   {
+    "id": "jeebridge",
+    "name": "JeeBridge",
+    "description": "Exposez vos équipements Jeedom vers Alexa, Apple Home et Google Home via Matter et MatterBridge.",
+    "icon": "jeebridge_icon.png",
+    "featured": true,
+    "ribbon": "Nouveau",
+    "badges": ["Jeedom 4.4+", "beta", "os 12+", "php 7.4/8.x", "Docker"],
+    "routes": {
+      "page": "/docs/plugins/jeebridge/"
+    },
+    "links": {
+      "github": "https://github.com/Zyg0m4t1k/jeebridge",
+      "market": null
+    }
+  },
+  {
     "id": "matter",
     "name": "Pont Matter",
     "description": "plugin qui permet d’intégrer et de piloter des appareils compatibles avec le standard domotique universel Matter",
