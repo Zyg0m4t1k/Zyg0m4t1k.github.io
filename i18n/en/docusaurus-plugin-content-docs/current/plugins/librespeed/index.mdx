@@ -1,0 +1,709 @@
+---
+title: "LibreSpeed Jeedom — Test and monitor your internet speed"
+description: "Measure download, upload, ping and jitter from Jeedom with open source LibreSpeed CLI. Alerts on connection degradation, history graphs, overall score."
+keywords:
+  - LibreSpeed Jeedom
+  - internet speed test Jeedom
+  - speedtest Jeedom
+  - connection monitoring Jeedom
+  - ping jitter Jeedom
+  - internet speed plugin
+hide_title: true
+---
+
+import PluginHero from '@site/src/components/PluginHero';
+
+<PluginHero
+  pluginId="librespeed"
+  title="LibreSpeed — Network performance measurement and monitoring"
+  description="Measure and monitor your internet connection and network link performance directly from Jeedom."
+  icon="/img/plugins/librespeed_icon.png"
+  donateUrl="https://www.paypal.me/Zyg0m4t1k"
+  isNew
+/>
+
+:::info 📰 Dedicated article
+[LibreSpeed: much more than a speedtest in Jeedom](/blog/librespeed-monitoring-reseau-jeedom)
+:::
+
+---
+
+## 📡 Overview
+
+The **LibreSpeed** plugin measures and monitors network performance directly from Jeedom using the official [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli) client and the [speedtest-go](https://github.com/librespeed/speedtest-go) server.
+
+It offers two equipment types:
+
+- **Speed Test**: measures your internet connection performance towards public or private servers
+- **Network Link**: measures performance between two machines on your network (LAN, VLAN, VPN, multi-site...)
+
+The plugin requires no Python, no `venv` and no `pip`: it installs automatically and adapts to the machine architecture.
+
+### 📊 Available measurements
+
+- Download and upload throughput
+- Ping (latency) and jitter (latency variation)
+- Packet loss (ICMP, speed test only)
+- Overall connection quality score (speed test only)
+
+### ✨ Key features
+
+- Public LibreSpeed servers, custom lists, self-hosted servers
+- IPv4 and IPv6
+- Network interface selection
+- Manual or cron-scheduled tests
+- Measurement history in Jeedom
+- Use results in scenarios
+
+---
+
+## ✨ Features
+
+### 🌐 Speed Test (internet)
+
+- **Download** and **upload** measurement in Mbit/s
+- **Ping** and **jitter** measurement in ms
+- **Packet loss** measurement via ICMP in %
+- **Overall score** out of 10, weighted (download 40%, upload 20%, ping 20%, jitter 10%, loss 10%)
+- **Usage rating**: web, streaming (SD/HD/4K), gaming, video conferencing
+- **Test server** and **ISP** identification
+- **Custom widget** with animated SVG gauge, upload bar, score circle and metric tiles
+- **Server selection** (automatic or manual by ID)
+- **IPv4 / IPv6 forcing** and **network interface selection**
+- **Custom server list** (remote or local) for LAN/VPN tests
+
+### 🔗 Network Link
+
+- **Point-to-point** throughput test between two machines
+- **Two configurable targets**: local mode (Jeedom) or remote (SSH)
+- **Bidirectional tests**: A to B and B to A (remote Linux targets only)
+- **IPv4 and IPv6** (automatic IPv6 availability detection)
+- **Automatic deployment** of measurement tools and server via SSH
+- **Install/start/stop** server from the interface
+- **Real-time server status check** from Jeedom
+- **Custom widget** with metric grid per direction and protocol
+- **Cleanup on deletion**: optional automatic uninstall of tools and server
+
+### 🔧 Common
+
+- **Scheduling** via per-equipment configurable cron
+- **Health page** with full diagnostics and on-demand speed test
+- **Forum Support button** to create a pre-filled Community post
+
+---
+
+## ⚙️ Prerequisites
+
+- Jeedom **4.4** minimum
+- A working internet connection
+- Supported architecture: **amd64**, **arm64**, **armv7**, **armv6**, **i386**
+
+For network links:
+- Remote targets must be reachable via **SSH** from Jeedom
+- The SSH user must have **sudo** rights for server installation
+- Remote targets must run **Linux** (Debian, Ubuntu, Raspberry Pi OS...). Windows machines are not supported as remote targets
+
+---
+
+## 📥 Installation
+
+1. Install the plugin from the Jeedom Market or via GitHub
+2. **Enable** the plugin
+3. Go to **Plugins > Plugin Management > LibreSpeed**
+4. Click **Install dependencies** and wait for completion
+5. Verify that the dependency status changes to **OK**
+
+:::note
+Dependencies install the [LibreSpeed CLI v1.0.14](https://github.com/librespeed/speedtest-cli) binary and required system packages (`ca-certificates`, `iputils-ping`). No Python environment is required.
+:::
+
+---
+
+## 🔧 Plugin configuration
+
+In the plugin configuration page (**Plugins > Plugin Management > LibreSpeed > Configuration**):
+
+| Information | Description |
+|---|---|
+| **Engine** | LibreSpeed CLI (always shown) |
+| **Version** | Installed binary version |
+| **Architecture** | Detected system architecture |
+| **System ping** | Availability of the `ping` command |
+
+:::tip
+If the displayed version does not match the expected version, reinstall the dependencies.
+:::
+
+---
+
+## 🖥️ Equipment configuration
+
+From **Plugins > Monitoring > LibreSpeed**, click **Add** to create an equipment.
+
+### 📝 Equipment tab
+
+Standard Jeedom options: name, parent object, category, enable, visible.
+
+The **Equipment type** field lets you choose between:
+
+- **Speed Test**: classic internet measurement
+- **Network Link**: point-to-point measurement between two machines
+
+:::warning
+The equipment type cannot be changed after the first save. To change the type, delete the equipment and recreate it.
+:::
+
+### ⏱️ Scheduling
+
+The scheduling section is common to both equipment types.
+
+| Option | Description |
+|---|---|
+| **Enable Cron** | Enables automatic test scheduling |
+| **Frequency** | Cron expression for the frequency (e.g. `0 */4 * * *` for every 4 hours). Click **?** to use the cron assistant |
+
+:::warning
+Avoid scheduling tests too frequently (less than 30 minutes). Each test consumes bandwidth and may impact other network usage.
+:::
+
+---
+
+## 🌐 Speed Test — Configuration
+
+### 🎯 Test
+
+| Option | Description |
+|---|---|
+| **Server** | Test server ID. Leave empty for automatic selection. Click the list icon to browse available servers |
+| **Network protocol** | Automatic, IPv4 or IPv6 |
+| **Network interface** | Automatic or specific interface (e.g. `ens18`, `eth0`) |
+
+:::tip
+Force **IPv4** or **IPv6** to test specifically one or the other. In automatic mode, LibreSpeed chooses based on availability.
+:::
+
+### ⚡ Advanced options
+
+| Option | Description |
+|---|---|
+| **Server source** | **Default LibreSpeed**: official public list. **Remote custom list**: URL of a JSON file. **Local custom list**: uploaded JSON file |
+| **Share result** | Generates a result share URL (if supported by the server) |
+
+### 🌍 Remote custom server list
+
+To point to a server list hosted on a web server (NAS, internal server, GitHub...):
+
+1. Select **Remote custom list** in the server source
+2. Enter the **URL** of the JSON file (e.g. `http://nas.local/librespeed/servers.json`)
+
+The JSON file must follow the same format as the local list:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Office server",
+    "server": "http://192.168.10.50:8088/",
+    "dlURL": "backend/garbage.php",
+    "ulURL": "backend/empty.php",
+    "pingURL": "backend/empty.php"
+  },
+  {
+    "id": 2,
+    "name": "Datacenter server",
+    "server": "http://10.0.0.100:8088/",
+    "dlURL": "backend/garbage.php",
+    "ulURL": "backend/empty.php",
+    "pingURL": "backend/empty.php"
+  }
+]
+```
+
+:::tip
+This option is convenient if you have multiple Jeedom instances that need to share the same server list: put the JSON on a NAS or web server accessible by all, and each equipment will always use the up-to-date list.
+:::
+
+:::info Multiple servers in the list
+If the list contains multiple servers, LibreSpeed CLI **tests latency to each** and **automatically selects the fastest**. To force a specific server, enter its **ID** in the **Server** field of the equipment configuration.
+:::
+
+### 📋 Local custom server list
+
+To use a LibreSpeed server hosted on your local network (LAN/VPN):
+
+1. Select **Local custom list** in the server source
+2. Click the **upload** button next to the file field
+3. Import a JSON file in LibreSpeed CLI format
+
+The file is automatically named `servers_{id}.json` and stored in the plugin directory. Example format:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "My LAN server",
+    "server": "http://192.168.1.100:8080/",
+    "dlURL": "garbage.php",
+    "ulURL": "empty.php",
+    "pingURL": "empty.php"
+  }
+]
+```
+
+:::important
+This option requires a **LibreSpeed server** installed and running on your network. The JSON file alone is not sufficient.
+:::
+
+:::info
+As with the remote list, if the file contains multiple servers, the fastest is selected automatically. Use the **Server** field to force a specific ID.
+:::
+
+### 🐳 Example: deploy a LibreSpeed server with Docker
+
+```bash
+docker run -d \
+  --name librespeed \
+  --restart unless-stopped \
+  -p 8088:8080 \
+  ghcr.io/librespeed/speedtest:latest
+```
+
+The server will be accessible at `http://<MACHINE_IP>:8088/`. Adjust the JSON file accordingly:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "My LAN server",
+    "server": "http://192.168.1.100:8088/",
+    "dlURL": "backend/garbage.php",
+    "ulURL": "backend/empty.php",
+    "pingURL": "backend/empty.php"
+  }
+]
+```
+
+### 🎨 Display
+
+| Option | Description |
+|---|---|
+| **Max Download scale (Mbit/s)** | Maximum value of the download gauge on the widget (default: 1000) |
+| **Max Upload scale (Mbit/s)** | Maximum value of the upload bar on the widget (default: 500) |
+
+:::tip
+Adjust the scales to your internet plan so the widget gauges are readable. For example, for a 1 Gbit/s fibre connection, leave 1000. For an ADSL connection, set 30.
+:::
+
+---
+
+## 📡 Speed Test — Commands
+
+Commands are created automatically when the equipment is saved.
+
+### 📊 Numeric info commands
+
+| Command | Unit | Description |
+|---|---|---|
+| **Download** | Mbit/s | Download throughput |
+| **Upload** | Mbit/s | Upload throughput |
+| **Ping** | ms | Network latency |
+| **Jitter** | ms | Latency variation (stability) |
+| **Packet loss** | % | Percentage of packets lost via ICMP. Shows **N/A** if measurement is not possible |
+| **Score** | /10 | Weighted overall connection rating |
+
+### 📝 Text info commands
+
+| Command | Description |
+|---|---|
+| **Server** | Name of the test server used |
+| **IP address** | Public IP address seen by the server |
+| **ISP** | Detected internet service provider |
+| **Usage rating** | Evaluation by usage type (web, streaming, gaming, video) |
+
+### 🔘 Binary info command
+
+| Command | Description |
+|---|---|
+| **State** | 1 = test successful, 0 = test failed |
+
+### ⚡ Action command
+
+| Command | Description |
+|---|---|
+| **Refresh** | Manually runs a speed test |
+
+:::info
+All numeric commands can be **historized** to track your connection performance over time. Enable historization in the Commands tab of the equipment.
+:::
+
+---
+
+## 🎛️ Speed Test — Widget
+
+The speed test widget displays:
+
+- An animated **half-circle gauge** for download (blue)
+- A **progress bar** for upload (green)
+- A **score circle** /10 (green)
+- A **status badge** (OK / Error)
+- Three **tiles** for ping, jitter and packet loss
+- A **refresh button** to run a test on demand
+- The **last test date** at the bottom of the widget
+
+Gauge scales (download and upload) are configurable in the equipment Configuration tab.
+
+---
+
+## 🔗 Network Link — Configuration
+
+A **Network Link** equipment measures performance between two machines (target A and target B). Each target can be:
+
+- **Local** (Jeedom itself): check **Jeedom / Local**
+- **Remote**: accessible via SSH from Jeedom
+
+### 🎯 Target configuration
+
+| Option | Description |
+|---|---|
+| **Jeedom / Local** | If checked, the target is the Jeedom machine itself |
+| **Name** | Target name (shown in the widget) |
+| **Address** | IP address or hostname of the target (remote mode only) |
+| **SSH port** | SSH port (default: 22, remote mode only) |
+| **SSH user** | SSH user (default: `librespeed`, remote mode only) |
+| **LibreSpeed client** | The target can run tests as a client |
+| **LibreSpeed server** | The target hosts a speedtest-go server |
+| **Server port** | speedtest-go server port (default: 8089) |
+| **LibreSpeed server URL** | Full server URL (e.g. `http://192.168.1.100:8089/`) |
+
+:::tip
+For an A→B test to work, target A must be configured as **client** and target B as **server** (with the corresponding components installed). To test in **both directions**, each machine must have **both roles** (client + server).
+:::
+
+### ⚡ Available actions (remote mode)
+
+| Button | Description |
+|---|---|
+| **Test SSH** | Verifies the SSH connection to the target |
+| **Check** | Checks target capabilities: SSH, LibreSpeed CLI, IPv4, IPv6 |
+| **Check server** | Tests the test server accessibility **from Jeedom** (does not guarantee access from the other remote target) |
+| **Install wrapper** | Installs measurement tools on the target via SSH (also installs the test engine if absent) |
+| **Uninstall wrapper** | Removes measurement tools from the target |
+| **Install server** | Installs the test server on the target via SSH (requires sudo) |
+| **Uninstall server** | Removes the test server from the target |
+| **Start server** | Starts the test server on the target (the server is already started after installation, this button is used to restart it if it was stopped) |
+| **Stop server** | Stops the test server on the target |
+| **Manual command** | Displays the installation command to run manually on the target |
+
+### 🏠 Available actions (local mode)
+
+| Button | Description |
+|---|---|
+| **Install local server** | Installs the test server on the Jeedom machine |
+| **Uninstall local server** | Removes the test server from the Jeedom machine |
+| **Start server** | Starts the local test server (the server is already started after installation, this button is used to restart it if it was stopped) |
+| **Stop server** | Stops the local test server |
+
+### 🗑️ Cleanup on deletion
+
+| Option | Description |
+|---|---|
+| **Uninstall wrapper and server** | If checked, deleting the equipment will automatically uninstall the tools and test server from the targets |
+
+:::warning
+This option performs irreversible actions on remote targets. Only enable it if you want a complete cleanup.
+:::
+
+### 🛠️ Setting up a network link
+
+#### Step 1 — Generate the SSH key
+
+From **Plugin configuration > Generate SSH key**. The public key and installation command are then displayed in the plugin configuration.
+
+:::note
+This step is only needed once. The same key is used for all network links.
+:::
+
+#### Step 2 — Prepare remote targets
+
+On each remote machine, from an **administrator account**:
+
+**1. Create the user and configure sudo rights**
+
+```bash
+sudo adduser librespeed
+echo 'librespeed ALL=(ALL) NOPASSWD: /usr/bin/mv, /usr/bin/tee, /usr/bin/systemctl, /usr/bin/chmod, /usr/bin/rm' | sudo tee /etc/sudoers.d/librespeed
+sudo chmod 440 /etc/sudoers.d/librespeed
+```
+
+These rights allow the plugin to install and manage measurement tools and the test server via SSH.
+
+:::tip
+If you want to use an existing user, skip this step and enter it in the **SSH user** field of the target configuration. Make sure it has the necessary sudo rights.
+:::
+
+**2. Switch to the target account and install the public key**
+
+```bash
+sudo -iu librespeed
+```
+
+:::tip
+If you use another account, replace `librespeed` with the chosen username.
+:::
+
+Then paste the installation command displayed in **Plugin configuration**. It has the following form:
+
+```bash
+mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && grep -qxF 'ssh-ed25519 AAAA...' ~/.ssh/authorized_keys || echo 'ssh-ed25519 AAAA...' >> ~/.ssh/authorized_keys
+```
+
+#### Step 3 — Create and configure the equipment
+
+1. **Create an equipment** of type **Network Link**
+2. **Configure target A**: local or remote, SSH address if remote, roles (client and/or server)
+3. **Configure target B**: same
+
+:::tip Roles and directions
+- An **A→B** test requires A as **client** and B as **server**
+- A **B→A** test requires B as **client** and A as **server**
+- To test in **both directions**, each machine must have **both roles**
+:::
+
+#### Step 4 — Install components
+
+For each **remote** target:
+
+1. **Test SSH** to verify the connection
+2. **Install wrapper** on each target with the **client** role (also installs the test engine if absent)
+3. **Install server** on each target with the **server** role (server starts automatically)
+
+:::info Shared server between multiple equipments
+There is only **one test server per machine**. If multiple network link equipments use the same machine as a server, they share the same server. This is normal and there is no conflict. However, reinstalling the server from another equipment with a different port will overwrite the existing configuration, and uninstalling the server from one equipment will stop it for all others.
+:::
+
+For a **local** target (Jeedom) with the server role:
+
+1. **Install local server** (the service starts automatically)
+
+#### Step 5 — Verify and save
+
+1. **Check server** to confirm accessibility from Jeedom
+2. **Save** the equipment (creates the commands)
+
+#### Step 6 — Run a test
+
+Via the widget buttons or the commands tab. Test flow:
+
+1. The **global lock** is acquired (only one speed test at a time on the machine)
+2. **IPv6 detection** on both targets (if protocol = all)
+3. **Test filtering** based on configuration:
+   - Direction enabled? (client/server roles configured)
+   - Protocol supported? (IPv6: both targets have a global IPv6 address **and** the server URL is reachable in IPv6)
+4. **Execution** of each filtered test:
+   - Local client: test launched directly from Jeedom
+   - Remote client: test launched on the target via SSH
+5. **Update** of metrics (download, upload, ping, jitter) and status
+6. **Lock release**
+
+---
+
+## 📡 Network Link — Commands
+
+### 📊 Numeric info commands (16 commands)
+
+For each direction (A→B, B→A) and protocol (IPv4, IPv6) combination:
+
+| Command | Unit | Description |
+|---|---|---|
+| **A→B IPv4 Download** | Mbit/s | Download throughput |
+| **A→B IPv4 Upload** | Mbit/s | Upload throughput |
+| **A→B IPv4 Ping** | ms | Latency |
+| **A→B IPv4 Jitter** | ms | Latency variation |
+| ... | ... | Same for A→B IPv6, B→A IPv4, B→A IPv6 |
+
+### 📝 Status info commands
+
+| Command | Description |
+|---|---|
+| **Last test** | Date and time of the last test |
+| **Status** | 1 = last test successful, 0 = failed |
+| **Last error** | Last error message |
+| **Target A status** | State of target A |
+| **Target B status** | State of target B |
+
+### ⚡ Action commands
+
+| Command | Description |
+|---|---|
+| **Test A→B IPv4** | Runs a test from A to B in IPv4 |
+| **Test B→A IPv4** | Runs a test from B to A in IPv4 |
+| **Test A→B IPv6** | Runs a test from A to B in IPv6 |
+| **Test B→A IPv6** | Runs a test from B to A in IPv6 |
+| **Full test** | Runs all active tests (configured directions and protocols) |
+
+:::info
+IPv6 test commands only appear in the widget if both targets have a global IPv6 address. Additionally, the server URL must be reachable in IPv6. Direction commands only appear if the corresponding client and server are configured.
+:::
+
+---
+
+## 🎛️ Network Link — Widget
+
+The network link widget displays:
+
+- **Server A and B status** in real time (available, unreachable, not configured)
+- A **global status badge** (Not tested / OK / Error)
+- A **grid** with metrics for each direction and protocol: download, upload, ping, jitter
+- **Test buttons** for each direction/protocol
+- A **full test button** (sync icon)
+- The **last test date** at the bottom of the widget
+
+Direction/protocol blocks only appear if they are configured and available.
+
+---
+
+## 🏆 Understanding the score
+
+The overall score (speed test only) is calculated out of 10 by weighting the metrics:
+
+| Metric | Weight | Excellent | Good | Average |
+|---|---|---|---|---|
+| Download | 40% | > 100 Mbit/s | > 25 Mbit/s | > 10 Mbit/s |
+| Upload | 20% | > 50 Mbit/s | > 20 Mbit/s | > 10 Mbit/s |
+| Ping | 20% | < 10 ms | < 20 ms | < 50 ms |
+| Jitter | 10% | < 2 ms | < 5 ms | < 10 ms |
+| Packet loss | 10% | 0% | < 1% | < 3% |
+
+:::note
+If packet loss measurement is unavailable (ICMP blocked), the score is recalculated on the 4 other metrics (renormalized to 90%). The score remains representative.
+:::
+
+---
+
+## 💡 Understanding the usage rating
+
+The **Usage rating** command (speed test only) evaluates your connection for different use cases:
+
+| Usage | Excellent | Good | Insufficient |
+|---|---|---|---|
+| **Web** | DL > 5 Mbit/s + Ping < 100 ms | DL > 1 Mbit/s | DL < 1 Mbit/s |
+| **Streaming** | DL > 25 Mbit/s (4K) | DL > 10 Mbit/s (HD) | DL < 3 Mbit/s |
+| **Gaming** | DL > 10 + Ping < 20 ms | DL > 5 + Ping < 50 ms | Ping > 100 ms |
+| **Video conf.** | UL > 3 + DL > 5 + Ping < 50 ms | UL > 1 + DL > 2 | Otherwise |
+
+---
+
+## 🩺 Health page
+
+The Health page is accessible from the **Health** button on the plugin main page.
+
+### 📋 Quick diagnostics
+
+Runs automatically when the page opens. Checks:
+
+| Check | Description |
+|---|---|
+| **LibreSpeed CLI** | Binary presence and installed version |
+| **Expected version** | Match with the version expected by the plugin |
+| **Architecture** | Detected system architecture |
+| **System ping** | Availability of the `ping` command for packet loss measurement |
+| **Active network interfaces** | List of active network interfaces (excluding `lo` and `veth*`) |
+| **System IPv4** | Detected global IPv4 address |
+| **System IPv6** | Detected global IPv6 address |
+| **LibreSpeed servers** | Number of accessible public servers |
+| **Equipments** | Number of configured and active equipments |
+
+### 🚀 Speed test
+
+Allows running a full speed test from the Health page, with protocol and network interface selection.
+
+| Parameter | Description |
+|---|---|
+| **Protocol** | Automatic, IPv4 or IPv6 |
+| **Interface** | Automatic or specific interface |
+
+The result shows: server used, IP address, download, upload, ping, jitter and test duration.
+
+:::tip
+This test is independent of equipments. It is useful for diagnosing a connectivity issue or verifying plugin operation before configuring an equipment.
+:::
+
+### 📋 Copy diagnostics
+
+The **Copy diagnostics** button copies all results (quick diagnostics + speed test if run) to the clipboard, in a text format ready to post on the Community forum.
+
+---
+
+## 💡 Using in Jeedom
+
+Plugin commands can be used in:
+
+- **Scenarios**: trigger actions if throughput drops below a threshold, or if the score falls below 5/10
+- The **dashboard**: display the widget with all metrics
+- **Alerts**: notification on connection degradation
+- **History**: track performance evolution over time
+
+### 🌐 Scenario example (speed test)
+
+> If command **Score** < 3, then send a message "Internet connection degraded (score: #[Living room][LibreSpeed][Score]#/10)"
+
+### 🔗 Scenario example (network link)
+
+> If command **A→B IPv4 Ping** > 50, then send a message "High latency between A and B: #[Network][LAN Link][A→B IPv4 Ping]# ms"
+
+---
+
+## 🛠️ Troubleshooting
+
+### ❌ Dependencies won't install
+
+- Check that your Jeedom box has internet access
+- Check the `librespeed_update` log in **Analysis > Logs**
+- Check that your architecture is supported (amd64, arm64, armv7, armv6, i386)
+
+### ❌ Test fails (state = 0)
+
+- Check your internet connection
+- Check the `librespeed` log in debug mode to see error details
+- If you specified a server ID, try leaving it empty (automatic selection)
+- Use the **Health page** to diagnose the issue
+
+### ⚠️ Packet loss shows N/A
+
+- Packet loss measurement uses **ICMP ping** to the test server
+- Some servers or firewalls block the ICMP protocol
+- This does not affect other measurements (download, upload, ping, jitter)
+- The score is automatically recalculated without this metric
+
+### 🖼️ Widget not displaying correctly
+
+- Check that your Jeedom is version **4.4** minimum
+- Clear your browser cache (Ctrl+Shift+R)
+- Save the equipment to recreate the commands
+
+### 🔒 A test is already running
+
+The plugin uses a **global lock**: only one speed test can run at a time on the machine. If a test is already running (cron or equipment), the next test is skipped with a warning in the logs. Wait for the current test to finish.
+
+### 🔑 SSH connection fails (network link)
+
+- Check that the plugin's public SSH key is installed on the target (see **Plugin configuration**)
+- Check the address, port and SSH user
+- Test the connection with the **Test SSH** button
+- Check the `librespeed` log in debug mode
+
+### 🚫 Test server unreachable (network link)
+
+- Check that the server is started on the target (**Start server** button)
+- Check the server port and URL
+- Use the **Check server** button to test accessibility from Jeedom
+- Check that no firewall is blocking the port
+
+### 🌐 IPv6 test not working (network link)
+
+- Both targets must have a global IPv6 address
+- The server URL must be reachable in IPv6 (use an IPv6 address or a hostname resolvable in IPv6)
+- Check with the **Check** button that IPv6 is detected on the targets
+- The plugin automatically hides IPv6 commands if one of the targets has no IPv6
+
+---

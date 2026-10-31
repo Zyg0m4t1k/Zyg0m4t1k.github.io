@@ -64,5 +64,8 @@
   "blog.tailscale-subnet-router-routes-annoncees.description": { "message": "Understanding announced routes with Tailscale Subnet Router. Open the entire local network with /24 or target a single device with /32 — a Plex server, a NAS, a camera." },
 
   "blog.ntfybridge-chat-famille.title": { "message": "Family Chat: the private messaging built into NtfyBridge" },
-  "blog.ntfybridge-chat-famille.description": { "message": "NtfyBridge includes Family Chat, a private messaging PWA for your household. Dedicated channels, push notifications, photo and file sharing — all self-hosted." }
+  "blog.ntfybridge-chat-famille.description": { "message": "NtfyBridge includes Family Chat, a private messaging PWA for your household. Dedicated channels, push notifications, photo and file sharing — all self-hosted." },
+
+  "blog.librespeed-monitoring-reseau-jeedom.title": { "message": "LibreSpeed: much more than a speedtest in Jeedom" },
+  "blog.librespeed-monitoring-reseau-jeedom.description": { "message": "The LibreSpeed plugin goes far beyond a simple speed test. Discover how it turns Jeedom into a full network monitoring tool — internet connection, LAN links, VPN and multi-site." }
 }

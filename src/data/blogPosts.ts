@@ -12,6 +12,22 @@ export type BlogPostData = {
 
 const blogPosts: BlogPostData[] = [
   {
+    id: 'librespeed-monitoring-reseau-jeedom',
+    permalink: '/blog/librespeed-monitoring-reseau-jeedom',
+    title: 'LibreSpeed : bien plus qu\'un speedtest dans Jeedom',
+    description:
+      'Le plugin LibreSpeed va bien au-delà du simple test de débit. Découvrez comment il transforme Jeedom en véritable outil de monitoring réseau — connexion internet, liaisons LAN, VPN et multi-sites.',
+    formattedDate: '2 novembre 2026',
+    readingTime: 5,
+    tags: [
+      { label: 'librespeed', permalink: '/librespeed' },
+      { label: 'reseau', permalink: '/reseau' },
+      { label: 'monitoring', permalink: '/monitoring' },
+    ],
+    image: '/img/blog/librespeed-monitoring.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
     id: 'jeebridge-scenarios-alexa-apple-home',
     permalink: '/blog/jeebridge-scenarios-alexa-apple-home',
     title: 'JeeBridge : pilotez vos scénarios Jeedom depuis Alexa, Apple Home ou Google Home',

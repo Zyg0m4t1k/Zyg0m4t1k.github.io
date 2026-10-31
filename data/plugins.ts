@@ -57,7 +57,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/jeebridge",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4714"
     }
   },
   {
@@ -288,7 +288,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=3701"
     }
   },
    {
@@ -302,7 +302,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": ""
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4648"
     }
   },
   {
@@ -332,7 +332,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4695"
     }
   },
   {
@@ -362,7 +362,7 @@ const plugins: PluginItem[] = [
     },
     "links": {
       "github": "https://github.com/Zyg0m4t1k/",
-      "market": null
+      "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=4691"
     }
   },
   {

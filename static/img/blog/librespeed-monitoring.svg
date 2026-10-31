@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090f1e"/>
+      <stop offset="100%" stop-color="#0c1f3a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="gauge" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-soft">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid -->
+  <g opacity="0.05" stroke="#06b6d4" stroke-width="1" fill="none">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- === Decorative right: speedometer half-circle === -->
+  <!-- Outer arc track -->
+  <path d="M 780 400 A 160 160 0 0 1 1100 400" fill="none" stroke="#0e2a40" stroke-width="28"/>
+  <!-- Arc fill (≈ 70% of gauge, representing good speed) -->
+  <path d="M 780 400 A 160 160 0 0 1 1060 265" fill="none" stroke="url(#gauge)" stroke-width="28" stroke-linecap="round" opacity="0.85" filter="url(#glow-soft)"/>
+  <!-- Tick marks on the arc -->
+  <g stroke="#1e4a6a" stroke-width="2" opacity="0.6">
+    <line x1="783" y1="380" x2="800" y2="367"/>
+    <line x1="818" y1="272" x2="830" y2="258"/>
+    <line x1="940" y1="245" x2="940" y2="228"/>
+    <line x1="1062" y1="275" x2="1074" y2="261"/>
+    <line x1="1090" y1="372" x2="1107" y2="367"/>
+  </g>
+  <!-- Needle -->
+  <line x1="940" y1="400" x2="1048" y2="280" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" opacity="0.9" filter="url(#glow-soft)"/>
+  <!-- Pivot -->
+  <circle cx="940" cy="400" r="10" fill="#0f2744" stroke="#06b6d4" stroke-width="2.5" filter="url(#glow-soft)"/>
+  <!-- Speed label -->
+  <text x="940" y="460" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="26" fill="#06b6d4" font-weight="700" text-anchor="middle" opacity="0.9">847 Mbit/s</text>
+  <text x="940" y="490" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14" fill="#475569" font-weight="400" text-anchor="middle">download</text>
+
+  <!-- === Network link diagram below gauge === -->
+  <!-- Node A -->
+  <rect x="780" y="510" width="80" height="44" rx="8" fill="#0e2038" stroke="#06b6d4" stroke-width="1.5" opacity="0.8"/>
+  <text x="820" y="537" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#7dd3fc" text-anchor="middle" font-weight="600">Jeedom</text>
+
+  <!-- Dashed line with arrows both ways -->
+  <g opacity="0.6">
+    <line x1="862" y1="524" x2="938" y2="524" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <polygon points="938,519 952,524 938,529" fill="#3b82f6"/>
+    <polygon points="862,529 848,524 862,519" fill="#06b6d4"/>
+    <line x1="862" y1="536" x2="938" y2="536" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="5 3"/>
+  </g>
+
+  <!-- Node B -->
+  <rect x="1040" y="510" width="80" height="44" rx="8" fill="#0e2038" stroke="#3b82f6" stroke-width="1.5" opacity="0.8"/>
+  <text x="1080" y="537" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#93c5fd" text-anchor="middle" font-weight="600">NAS</text>
+
+  <!-- Pulse rings around gauge center -->
+  <circle cx="940" cy="400" r="90" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.06"/>
+  <circle cx="940" cy="400" r="130" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.04"/>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="80" width="4" height="470" fill="url(#accent)" rx="2" opacity="0.8"/>
+
+  <!-- Text block -->
+  <text x="120" y="170" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" fill="#22d3ee" font-weight="600" letter-spacing="3">LIBRESPEED × JEEDOM</text>
+
+  <text x="120" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="54" fill="#f0f9ff" font-weight="800">Monitoring</text>
+  <text x="120" y="320" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="54" fill="#f0f9ff" font-weight="800">réseau</text>
+
+  <text x="120" y="385" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" fill="#67e8f9" font-weight="400">Débit · Latence · Liaisons LAN &amp; VPN</text>
+
+  <!-- Metric chips -->
+  <rect x="120" y="415" width="120" height="34" rx="6" fill="#0e2038" stroke="#06b6d4" stroke-width="1" opacity="0.9"/>
+  <text x="180" y="437" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14" fill="#22d3ee" text-anchor="middle" font-weight="600">Download</text>
+
+  <rect x="252" y="415" width="110" height="34" rx="6" fill="#0e2038" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+  <text x="307" y="437" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14" fill="#93c5fd" text-anchor="middle" font-weight="600">Upload</text>
+
+  <rect x="374" y="415" width="90" height="34" rx="6" fill="#0e2038" stroke="#06b6d4" stroke-width="1" opacity="0.9"/>
+  <text x="419" y="437" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14" fill="#22d3ee" text-anchor="middle" font-weight="600">Ping</text>
+
+  <rect x="476" y="415" width="100" height="34" rx="6" fill="#0e2038" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+  <text x="526" y="437" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14" fill="#93c5fd" text-anchor="middle" font-weight="600">Jitter</text>
+
+  <!-- Score badge -->
+  <rect x="120" y="465" width="90" height="34" rx="17" fill="#06b6d4" opacity="0.15" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="165" y="487" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15" fill="#22d3ee" text-anchor="middle" font-weight="700">Score 9/10</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#040a14" opacity="0.7"/>
+  <text x="120" y="614" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" fill="#475569">zyg0m4t1k.github.io</text>
+</svg>

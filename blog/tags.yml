@@ -42,3 +42,13 @@ subnet-router:
   label: Subnet Router
   permalink: /subnet-router
   description: Partage de sous-réseaux via Tailscale
+
+librespeed:
+  label: LibreSpeed
+  permalink: /librespeed
+  description: Test de débit et monitoring réseau open source
+
+monitoring:
+  label: Monitoring
+  permalink: /monitoring
+  description: Surveillance et historisation des performances réseau
