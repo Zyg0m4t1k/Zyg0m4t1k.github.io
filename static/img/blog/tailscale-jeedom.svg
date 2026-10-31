@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1829"/>
+      <stop offset="100%" stop-color="#0d2d4a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.06" stroke="#60a5fa" stroke-width="1" fill="none">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- Network nodes and connections -->
+  <g filter="url(#glow)">
+    <!-- Connection lines -->
+    <line x1="600" y1="315" x2="420" y2="200" stroke="#3b82f6" stroke-width="2" opacity="0.5"/>
+    <line x1="600" y1="315" x2="780" y2="200" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
+    <line x1="600" y1="315" x2="420" y2="430" stroke="#3b82f6" stroke-width="2" opacity="0.5"/>
+    <line x1="600" y1="315" x2="780" y2="430" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
+    <line x1="420" y1="200" x2="780" y2="200" stroke="#60a5fa" stroke-width="1" opacity="0.25"/>
+    <line x1="420" y1="430" x2="780" y2="430" stroke="#60a5fa" stroke-width="1" opacity="0.25"/>
+
+    <!-- Satellite nodes -->
+    <circle cx="420" cy="200" r="14" fill="#1e40af" stroke="#3b82f6" stroke-width="2"/>
+    <circle cx="780" cy="200" r="14" fill="#164e63" stroke="#06b6d4" stroke-width="2"/>
+    <circle cx="420" cy="430" r="14" fill="#1e40af" stroke="#3b82f6" stroke-width="2"/>
+    <circle cx="780" cy="430" r="14" fill="#164e63" stroke="#06b6d4" stroke-width="2"/>
+
+    <!-- Center node -->
+    <circle cx="600" cy="315" r="54" fill="#1e3a5f" stroke="url(#accent)" stroke-width="3"/>
+    <circle cx="600" cy="315" r="38" fill="#0f2744" stroke="#3b82f6" stroke-width="1" opacity="0.5"/>
+  </g>
+
+  <!-- Tailscale-style icon in center -->
+  <g transform="translate(576, 291)">
+    <path d="M12 0 L24 6 L24 18 L12 24 L0 18 L0 6 Z" fill="none" stroke="#60a5fa" stroke-width="2"/>
+    <circle cx="12" cy="12" r="5" fill="#3b82f6"/>
+    <line x1="12" y1="0" x2="12" y2="7" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="12" y1="17" x2="12" y2="24" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="0" y1="6" x2="7" y2="9.5" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="17" y1="14.5" x2="24" y2="18" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="24" y1="6" x2="17" y2="9.5" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="7" y1="14.5" x2="0" y2="18" stroke="#60a5fa" stroke-width="1.5"/>
+  </g>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="80" width="4" height="470" fill="url(#accent)" rx="2" opacity="0.7"/>
+
+  <!-- Text content -->
+  <text x="120" y="170" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" fill="#60a5fa" font-weight="600" letter-spacing="3" text-anchor="start">JEEDOM × TAILSCALE</text>
+
+  <text x="120" y="250" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="52" fill="#f0f9ff" font-weight="800" text-anchor="start">Accès distant</text>
+  <text x="120" y="315" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="52" fill="#f0f9ff" font-weight="800" text-anchor="start">sécurisé</text>
+
+  <text x="120" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" fill="#93c5fd" font-weight="400" text-anchor="start">Zéro port ouvert · WireGuard · HTTPS auto</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#060f1a" opacity="0.6"/>
+  <text x="120" y="614" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" fill="#475569">zyg0m4t1k.github.io</text>
+</svg>

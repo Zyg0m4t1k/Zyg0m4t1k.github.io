@@ -1,0 +1,323 @@
+/* ===========================
+   Section wrapper
+=========================== */
+.section {
+  padding: 0 0 4rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.viewAll {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+}
+.viewAll:hover {
+  text-decoration: underline !important;
+}
+
+/* ===========================
+   Navigation arrows
+=========================== */
+.arrows {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 120ms ease, background 120ms ease, opacity 120ms ease;
+}
+
+.arrow:hover:not(:disabled) {
+  border-color: var(--ifm-color-primary);
+  background: rgba(37, 194, 160, 0.08);
+}
+
+.arrowDisabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+/* ===========================
+   Carousel track
+=========================== */
+.track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px; /* room for box-shadow */
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===========================
+   Slide: 2 visible + hint of 3rd
+=========================== */
+.slide {
+  flex: 0 0 calc(50% - 0.625rem);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* ===========================
+   Card
+=========================== */
+.card {
+  position: relative;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ifm-background-surface-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.14);
+  border-color: var(--ifm-color-primary);
+}
+
+/* ===========================
+   Cover image
+=========================== */
+.coverLink {
+  display: block;
+  text-decoration: none !important;
+}
+
+.coverWrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  max-height: none !important;
+  cursor: pointer;
+  transition: transform 300ms ease;
+}
+
+.card:hover .cover {
+  transform: scale(1.02);
+}
+
+.coverFallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-darkest) 0%,
+    var(--ifm-color-primary) 100%
+  );
+  opacity: 0.25;
+}
+
+/* ===========================
+   Body
+=========================== */
+.body {
+  padding: 1.25rem 1.4rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ===========================
+   Top row: tags + read time
+=========================== */
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+  gap: 0.5rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  transition: background 100ms ease, border-color 100ms ease;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tag:hover {
+  background: rgba(37, 194, 160, 0.1);
+  border-color: var(--ifm-color-primary);
+}
+
+.readTime {
+  font-size: 0.75rem;
+  opacity: 0.45;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   Title
+=========================== */
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 0.6rem;
+}
+
+.titleLink {
+  color: var(--ifm-font-color-base) !important;
+  text-decoration: none !important;
+}
+
+.titleLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.titleLink:hover {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* ===========================
+   Description
+=========================== */
+.description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  opacity: 0.72;
+  flex: 1;
+  margin: 0 0 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===========================
+   Footer
+=========================== */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-100);
+  gap: 0.5rem;
+}
+
+.authorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+  max-height: none !important;
+}
+
+.authorName {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dot {
+  opacity: 0.35;
+  font-size: 0.8rem;
+}
+
+.date {
+  font-size: 0.78rem;
+  opacity: 0.45;
+  white-space: nowrap;
+}
+
+.cta {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 768px) {
+  .slide {
+    flex: 0 0 calc(80% - 0.625rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .slide {
+    flex: 0 0 calc(90% - 0.625rem);
+  }
+}

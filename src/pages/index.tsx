@@ -5,12 +5,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { translate } from '@docusaurus/Translate';
 import HomepageFeatures from '../components/HomepageFeatures';
 import FeaturedPlugins from '../components/FeaturedPlugins';
+import RecentPosts from '../components/RecentPosts';
 
 export default function Home(): JSX.Element {
   return (
     <Layout
-      title={translate({ id: 'homepage.title', message: 'Accueil' })}
-      description={translate({ id: 'homepage.description', message: 'Docs & ressources pour mes plugins Jeedom' })}
+      title={translate({ id: 'homepage.title', message: 'Plugins Jeedom : Matter, Tailscale, SwitchBot, ntfy' })}
+      description={translate({ id: 'homepage.description', message: 'Découvrez les plugins Jeedom de Zyg0m4t1k : Matter, Tailscale, SwitchBot, notifications ntfy, éclairage et automatisations. Documentation complète en français.' })}
     >
       <main>
         <div style={{ padding: '3rem 0' }}>
@@ -33,6 +34,7 @@ export default function Home(): JSX.Element {
           </div>
         </div>
 
+        <RecentPosts />
         <FeaturedPlugins />
         <HomepageFeatures />
       </main>

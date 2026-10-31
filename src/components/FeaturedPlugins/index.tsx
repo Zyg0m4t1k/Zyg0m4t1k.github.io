@@ -4,10 +4,10 @@ import { translate } from '@docusaurus/Translate';
 import plugins from '@site/data/plugins';
 import styles from './styles.module.css';
 
-const featured = plugins.filter((p) => p.featured);
-const [hero, ...secondary] = featured;
-
-const STATUS_BADGES = ['stable', 'beta', 'dev', 'alpha'];
+// Ordre d'affichage fixe
+const FEATURED_IDS = ['ntfybridge', 'jeebridge', 'tailscale', 'uptimekuma', 'matter', 'telejee'];
+const pluginMap = Object.fromEntries(plugins.map((p) => [p.id, p]));
+const featured = FEATURED_IDS.map((id) => pluginMap[id]).filter(Boolean);
 
 function badgeColorClass(badge: string): string {
   const b = badge.toLowerCase();
@@ -43,85 +43,62 @@ function Ribbon({ text }: { text?: string }) {
 }
 
 export default function FeaturedPlugins(): JSX.Element | null {
-  if (!hero) return null;
+  if (!featured.length) return null;
 
   return (
     <section className={styles.section}>
       <div className="container">
-        <h2 className={styles.sectionTitle}>{translate({ id: 'featured.section.title', message: 'À la une' })}</h2>
+        <div className={styles.sectionHeader}>
+          <Link className={styles.viewAll} to="/plugins">
+            {translate({ id: 'featured.viewall', message: 'Tous les plugins →' })}
+          </Link>
+        </div>
 
-        <div className={styles.layout}>
-          {/* Hero card */}
-          <div className={styles.hero}>
-            <Ribbon text={hero.ribbon ? translate({ id: `plugin.ribbon.${hero.ribbon.toLowerCase()}`, message: hero.ribbon }) : undefined} />
-            <div className={styles.heroInner}>
-              <div className={styles.heroTop}>
-                {hero.icon && (
+        <div className={styles.grid}>
+          {featured.map((p) => (
+            <div key={p.id} className={styles.card}>
+              <Ribbon text={p.ribbon ? translate({ id: `plugin.ribbon.${p.ribbon.toLowerCase()}`, message: p.ribbon }) : undefined} />
+
+              <div className={styles.cover}>
+                {p.icon && (
                   <img
-                    className={styles.heroIcon}
-                    src={`/img/plugins/${hero.icon}`}
-                    alt={hero.name}
+                    className={styles.coverIcon}
+                    src={`/img/plugins/${p.icon}`}
+                    alt={p.name}
                     loading="lazy"
                   />
                 )}
-                <div className={styles.heroName}>{hero.name}</div>
-                {hero.links?.market && (
-                  <a
-                    className={styles.marketBadge}
-                    href={hero.links.market}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Market →
-                  </a>
-                )}
               </div>
-              <p className={styles.heroDesc}>{translate({ id: `plugin.${hero.id}.description`, message: hero.description })}</p>
-              <div className={styles.heroFooter}>
-                <Link className={`${styles.cta} ${styles.stretchedLink}`} to={hero.routes.page}>{translate({ id: 'featured.hero.cta', message: 'Voir la doc →' })}</Link>
-                <Badges badges={hero.badges} />
-              </div>
-            </div>
-          </div>
 
-          {/* Secondary cards */}
-          {secondary.length > 0 && (
-            <div className={styles.secondaryGrid}>
-              {secondary.slice(0, 2).map((p) => (
-                <div key={p.id} className={styles.secondaryCard}>
-                  <Ribbon text={p.ribbon ? translate({ id: `plugin.ribbon.${p.ribbon.toLowerCase()}`, message: p.ribbon }) : undefined} />
-                  <div className={styles.secondaryTop}>
-                    {p.icon && (
-                      <img
-                        className={styles.secondaryIcon}
-                        src={`/img/plugins/${p.icon}`}
-                        alt={p.name}
-                        loading="lazy"
-                      />
-                    )}
-                    <div className={styles.secondaryName}>{p.name}</div>
-                    {p.links?.market && (
-                      <a
-                        className={styles.marketBadge}
-                        href={p.links.market}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Market →
-                      </a>
-                    )}
-                  </div>
-                  <p className={styles.secondaryDesc}>{translate({ id: `plugin.${p.id}.description`, message: p.description })}</p>
-                  <div className={styles.secondaryFooter}>
-                    <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>{translate({ id: 'featured.card.cta', message: 'Voir →' })}</Link>
-                    <Badges badges={p.badges} />
-                  </div>
+              <div className={styles.body}>
+                <div className={styles.top}>
+                  <span className={styles.name}>{p.name}</span>
+                  {p.links?.market && (
+                    <a
+                      className={styles.marketBadge}
+                      href={p.links.market}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Market →
+                    </a>
+                  )}
                 </div>
-              ))}
+
+                <p className={styles.desc}>
+                  {translate({ id: `plugin.${p.id}.description`, message: p.description })}
+                </p>
+
+                <div className={styles.footer}>
+                  <Link className={`${styles.cta} ${styles.stretchedLink}`} to={p.routes.page}>
+                    {translate({ id: 'featured.card.cta', message: 'Voir →' })}
+                  </Link>
+                  <Badges badges={p.badges} />
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </section>

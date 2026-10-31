@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1829"/>
+      <stop offset="100%" stop-color="#0d2d4a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.06" stroke="#60a5fa" stroke-width="1" fill="none">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- Network diagram: phone → Jeedom → local devices -->
+  <g filter="url(#glow)">
+    <!-- Phone to Jeedom line (tailscale VPN) -->
+    <line x1="880" y1="315" x2="700" y2="315" stroke="#3b82f6" stroke-width="2.5" opacity="0.7" stroke-dasharray="8 4"/>
+    <!-- Jeedom to local devices lines -->
+    <line x1="640" y1="315" x2="530" y2="220" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+    <line x1="640" y1="315" x2="530" y2="315" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+    <line x1="640" y1="315" x2="530" y2="410" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+
+    <!-- Local network bubble -->
+    <rect x="460" y="170" width="140" height="280" rx="16" fill="#0f2744" stroke="#06b6d4" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Local devices -->
+    <!-- Plex (highlighted) -->
+    <circle cx="530" cy="220" r="20" fill="#1e3a5f" stroke="#f59e0b" stroke-width="2.5"/>
+    <!-- NAS -->
+    <circle cx="530" cy="315" r="16" fill="#1e3a5f" stroke="#06b6d4" stroke-width="1.5"/>
+    <!-- Camera -->
+    <circle cx="530" cy="410" r="16" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5"/>
+
+    <!-- Jeedom center node -->
+    <circle cx="670" cy="315" r="50" fill="#1e3a5f" stroke="url(#accent)" stroke-width="3"/>
+    <circle cx="670" cy="315" r="34" fill="#0f2744" stroke="#3b82f6" stroke-width="1" opacity="0.5"/>
+
+    <!-- Phone node -->
+    <rect x="856" y="283" width="48" height="64" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <rect x="870" y="291" width="20" height="32" rx="2" fill="#0f2744"/>
+    <circle cx="880" cy="330" r="3" fill="#60a5fa"/>
+  </g>
+
+  <!-- Tailscale icon in Jeedom node -->
+  <g transform="translate(646, 291)">
+    <path d="M12 0 L24 6 L24 18 L12 24 L0 18 L0 6 Z" fill="none" stroke="#60a5fa" stroke-width="2"/>
+    <circle cx="12" cy="12" r="5" fill="#3b82f6"/>
+    <line x1="12" y1="0" x2="12" y2="7" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="12" y1="17" x2="12" y2="24" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="0" y1="6" x2="7" y2="9.5" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="17" y1="14.5" x2="24" y2="18" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="24" y1="6" x2="17" y2="9.5" stroke="#60a5fa" stroke-width="1.5"/>
+    <line x1="7" y1="14.5" x2="0" y2="18" stroke="#60a5fa" stroke-width="1.5"/>
+  </g>
+
+  <!-- Plex label -->
+  <text x="556" y="225" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#f59e0b" font-weight="700">Plex</text>
+  <text x="550" y="319" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" fill="#67e8f9">NAS</text>
+  <text x="546" y="414" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" fill="#93c5fd">Cam</text>
+
+  <!-- VPN label -->
+  <text x="768" y="302" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#60a5fa" opacity="0.8">Tailscale VPN</text>
+
+  <!-- Subnet label -->
+  <text x="468" y="162" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" fill="#67e8f9" opacity="0.9">192.168.1.0/24</text>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="80" width="4" height="470" fill="url(#accent)" rx="2" opacity="0.7"/>
+
+  <!-- Text content -->
+  <text x="120" y="170" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" fill="#60a5fa" font-weight="600" letter-spacing="3" text-anchor="start">TAILSCALE · SUBNET ROUTER</text>
+
+  <text x="120" y="250" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" fill="#f0f9ff" font-weight="800" text-anchor="start">Tout le réseau</text>
+  <text x="120" y="310" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" fill="#f0f9ff" font-weight="800" text-anchor="start">ou un seul</text>
+  <text x="120" y="370" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" fill="#f59e0b" font-weight="800" text-anchor="start">appareil ?</text>
+
+  <text x="120" y="430" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" fill="#93c5fd" font-weight="400" text-anchor="start">Routes annoncées · CIDR · /24 vs /32</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#060f1a" opacity="0.6"/>
+  <text x="120" y="614" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" fill="#475569">zyg0m4t1k.github.io</text>
+</svg>

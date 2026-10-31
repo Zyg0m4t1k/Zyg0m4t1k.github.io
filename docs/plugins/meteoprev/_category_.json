@@ -1,6 +1,6 @@
 {
   "label": "Prévision Météo",
-  "position": 2,
+  "position": 13,
   "link": {
     "type": "doc",
     "id": "plugins/meteoprev/index"

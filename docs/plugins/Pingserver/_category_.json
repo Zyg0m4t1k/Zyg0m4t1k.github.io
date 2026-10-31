@@ -4,5 +4,6 @@
   "link": {
     "type": "doc",
     "id": "plugins/Pingserver/index"
-  }
+  },
+  "position": 12
 }

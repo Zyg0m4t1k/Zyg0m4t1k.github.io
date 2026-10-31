@@ -4,5 +4,6 @@
   "link": {
     "type": "doc",
     "id": "plugins/ntfybridge/index"
-  }
+  },
+  "position": 11
 }

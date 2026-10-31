@@ -4,5 +4,6 @@
   "link": {
     "type": "doc",
     "id": "plugins/whatwatt/index"
-  }
+  },
+  "position": 25
 }

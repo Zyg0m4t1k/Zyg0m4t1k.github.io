@@ -1,6 +1,6 @@
 {
   "label": "Simulation",
-  "position": 1,
+  "position": 14,
   "link": {
     "type": "doc",
     "id": "plugins/simulation/index"

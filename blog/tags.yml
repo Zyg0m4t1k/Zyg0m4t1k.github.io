@@ -1,19 +1,44 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+jeedom:
+  label: Jeedom
+  permalink: /jeedom
+  description: Articles autour de la plateforme domotique Jeedom
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+jeebridge:
+  label: JeeBridge
+  permalink: /jeebridge
+  description: Pont Matter entre Jeedom et les assistants vocaux
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+tailscale:
+  label: Tailscale
+  permalink: /tailscale
+  description: VPN mesh WireGuard pour un accès distant sécurisé
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+ntfybridge:
+  label: NtfyBridge
+  permalink: /ntfybridge
+  description: Plugin de notifications bidirectionnelles pour Jeedom
+
+domotique:
+  label: Domotique
+  permalink: /domotique
+  description: Automatisation et contrôle de la maison connectée
+
+securite:
+  label: Sécurité
+  permalink: /securite
+  description: Sécurisation des accès et des communications
+
+notifications:
+  label: Notifications
+  permalink: /notifications
+  description: Alertes et notifications sur mobile
+
+reseau:
+  label: Réseau
+  permalink: /reseau
+  description: Configuration réseau, CIDR, routage
+
+subnet-router:
+  label: Subnet Router
+  permalink: /subnet-router
+  description: Partage de sous-réseaux via Tailscale

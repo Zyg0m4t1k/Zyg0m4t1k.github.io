@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zyg0m4t1k.github.io/sitemap.xml

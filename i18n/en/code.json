@@ -1,6 +1,6 @@
 {
-  "homepage.title": { "message": "Home" },
-  "homepage.description": { "message": "Docs & resources for my Jeedom plugins" },
+  "homepage.title": { "message": "Jeedom Plugins: Matter, Tailscale, SwitchBot, ntfy" },
+  "homepage.description": { "message": "Discover Zyg0m4t1k's Jeedom plugins: Matter, Tailscale, SwitchBot, ntfy notifications, lighting and automations. Full documentation in English." },
   "homepage.hero.title": { "message": "Zyg0m4t1k — Jeedom Plugins" },
   "homepage.hero.subtitle": { "message": "Showcase, documentation and resources for my Jeedom plugins." },
   "homepage.cta.plugins": { "message": "See plugins" },
@@ -39,5 +39,30 @@
   "plugin.whatwatt.description": { "message": "This plugin integrates the WhatWatt connected energy meter into Jeedom to track consumption, production, voltage, current and electrical energy." },
   "plugin.ntfybridge.description": { "message": "Bidirectional communication between Jeedom and ntfy. Receive rich alerts and control your home automation by message from your phone." },
   "plugin.icon.description": { "message": "Add, install, uninstall and preview custom icon packs in Jeedom." },
-  "plugin.Pingserver.description": { "message": "Monitor your network devices availability with ping and receive alerts on state changes." }
+  "plugin.Pingserver.description": { "message": "Monitor your network devices availability with ping and receive alerts on state changes." },
+
+  "plugin.speedtest.description": { "message": "Measure and monitor your internet connection performance from Jeedom: download, upload, ping, jitter, packet loss and overall score." },
+  "plugin.librespeed.description": { "message": "Measure and monitor your internet connection performance from Jeedom with LibreSpeed CLI: download, upload, ping, jitter, packet loss, overall score and health page." },
+  "plugin.simulation.description": { "message": "Intelligent presence simulation: automatic learning of your habits and realistic statistical replay to protect your home." },
+  "plugin.uptimekuma.description": { "message": "Integrate Uptime Kuma into Jeedom: real-time service monitoring, instant webhooks, summary panel and alert scenarios." },
+  "plugin.tailscale.description": { "message": "Secure remote access to Jeedom via Tailscale — zero-config WireGuard mesh VPN, node supervision and full tailnet management." },
+  "plugin.jeebridge.description": { "message": "Expose your Jeedom devices to Alexa, Apple Home and Google Home via Matter and MatterBridge." },
+  "plugin.meteoprev.description": { "message": "5-day weather forecasts in Jeedom with graphical widget, hourly data and local icons via prevision-meteo.ch." },
+
+  "plugin.ribbon.nouveau": { "message": "New" },
+
+  "blog.jeebridge-scenarios-alexa-apple-home.title": { "message": "JeeBridge: trigger your Jeedom scenarios from Alexa, Apple Home or Google Home" },
+  "blog.jeebridge-scenarios-alexa-apple-home.description": { "message": "JeeBridge exposes your Jeedom devices to Alexa, Apple Home and Google Home via Matter. But its real power lies elsewhere — turning any complex scenario into a single voice command." },
+
+  "blog.tailscale-jeedom-acces-distant.title": { "message": "Jeedom from anywhere: why Tailscale changes everything" },
+  "blog.tailscale-jeedom-acces-distant.description": { "message": "No more port forwarding headaches or DynDNS hassle. Tailscale gives you simple, secure remote access to Jeedom without opening a single port on your router." },
+
+  "blog.ntfybridge-tailscale-notifications-sans-port.title": { "message": "NtfyBridge + Tailscale: Jeedom notifications without opening a single port" },
+  "blog.ntfybridge-tailscale-notifications-sans-port.description": { "message": "NtfyBridge includes a native Tailscale assistant that configures everything automatically. Your ntfy server stays private, no open ports, free HTTPS." },
+
+  "blog.tailscale-subnet-router-routes-annoncees.title": { "message": "Tailscale Subnet Router: whole local network or a single device?" },
+  "blog.tailscale-subnet-router-routes-annoncees.description": { "message": "Understanding announced routes with Tailscale Subnet Router. Open the entire local network with /24 or target a single device with /32 — a Plex server, a NAS, a camera." },
+
+  "blog.ntfybridge-chat-famille.title": { "message": "Family Chat: the private messaging built into NtfyBridge" },
+  "blog.ntfybridge-chat-famille.description": { "message": "NtfyBridge includes Family Chat, a private messaging PWA for your household. Dedicated channels, push notifications, photo and file sharing — all self-hosted." }
 }

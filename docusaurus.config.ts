@@ -16,7 +16,11 @@ const config: Config = {
   projectName: 'Zyg0m4t1k.github.io',
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   clientModules: ['./src/clientModules/imageZoom.ts'],
 
   i18n: {
@@ -28,6 +32,29 @@ const config: Config = {
     },
   },
 
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        language: ['fr', 'en'],
+        // Pages indexées
+        indexDocs: true,
+        indexBlog: true,
+        indexPages: false,       // exclut homepage, /plugins, etc.
+        docsRouteBasePath: 'docs',
+        blogRouteBasePath: 'blog',
+        // Résultats
+        searchResultLimits: 10,
+        searchResultContextMaxLength: 60,  // extrait court = moins de bruit
+        // UX
+        highlightSearchTermsOnTargetPage: true,
+        searchBarShortcutHint: true,
+        searchBarPosition: 'right',
+      },
+    ],
+  ],
+
   presets: [
     [
       'classic',
@@ -37,7 +64,20 @@ const config: Config = {
           routeBasePath: 'docs',
           editUrl: 'https://github.com/Zyg0m4t1k/Zyg0m4t1k.github.io/tree/master/',
         },
-        blog: false,
+        blog: {
+          showReadingTime: true,
+          postsPerPage: 9,
+          blogSidebarCount: 5,
+          blogSidebarTitle: 'Articles récents',
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
+          editUrl: 'https://github.com/Zyg0m4t1k/Zyg0m4t1k.github.io/tree/master/',
+          onInlineTags: 'warn',
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
+        },
 		  theme: {
 			customCss: require.resolve('./src/css/custom.css'),
 		  },
@@ -50,6 +90,16 @@ const config: Config = {
         changefreq: 'weekly',
         priority: 0.5,
         filename: 'sitemap.xml',
+        createSitemapItems: async (params) => {
+          const { defaultCreateSitemapItems, ...rest } = params;
+          const items = await defaultCreateSitemapItems(rest);
+          return items.map((item) => {
+            if (item.url.includes('/blog/') || item.url.includes('/docs/')) {
+              return { ...item, priority: 0.8 };
+            }
+            return item;
+          });
+        },
       },     
       
 		
@@ -70,8 +120,11 @@ themeConfig: {
     {
       name: 'keywords',
       content:
-        'plugin jeedom, jeedom matter, jeedom switchbot, jeedom icloud, jeedom ics, jeedom todo, domotique',
+        'plugin jeedom, jeedom matter, jeedom tailscale, jeedom ntfybridge, jeedom jeebridge, jeedom switchbot, jeedom icloud, jeedom ics, jeedom notifications, domotique, home automation, matter bridge, alexa jeedom, apple home jeedom',
     },
+    { property: 'og:site_name', content: 'Zyg0m4t1k — Jeedom Plugins' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@Zyg0m4t1k' },
   ],
 
   navbar: {
@@ -81,6 +134,7 @@ themeConfig: {
       { to: '/', label: 'Accueil', position: 'left' },
       { to: '/plugins', label: 'Plugins', position: 'left' },
       { to: '/docs/intro', label: 'Docs', position: 'left' },
+      { to: '/blog', label: 'Blog', position: 'left' },
       {
         href: 'https://github.com/Zyg0m4t1k',
         label: 'GitHub',

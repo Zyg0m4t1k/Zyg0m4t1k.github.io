@@ -1,6 +1,6 @@
 {
   "label": "Todo List",
-  "position": 10,
+  "position": 22,
   "link": {
     "type": "doc",
     "id": "plugins/todo/index"

@@ -110,6 +110,7 @@ const plugins: PluginItem[] = [
     "name": "Telejee",
     "description": "Pilotez vos téléviseurs et appareils multimédia directement depuis Jeedom via réseau local — commandes, applications, volume et scénarios.",
     "icon": "telejee_icon.png",
+    "featured": true,
     "badges": ["Jeedom 4.4+", "stable", "os 11+", "php 7.4/8.x"],
     "routes": {
       "page": "/docs/plugins/telejee/"

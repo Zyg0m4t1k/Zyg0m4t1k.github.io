@@ -18,7 +18,9 @@ type CataloguePlugin = {
   links?: { market?: string | null };
 };
 
-const catalogue = plugins as CataloguePlugin[];
+const catalogue = (plugins as CataloguePlugin[]).slice().sort((a, b) =>
+  a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' })
+);
 
 /* ================================
    Status principal (Stable/Beta)

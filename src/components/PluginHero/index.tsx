@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import plugins from '@site/data/plugins';
 
@@ -96,6 +97,22 @@ export default function PluginHero({
 }: Props) {
   const pluginData = pluginId ? plugins.find((p) => p.id === pluginId) : null;
   const resolvedMarketUrl = marketUrl ?? pluginData?.links?.market ?? null;
+
+  const schemaData = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: title,
+    applicationCategory: 'HomeAutomation',
+    operatingSystem: 'Jeedom / Linux',
+    description: description?.replace(/\*\*(.+?)\*\*/g, '$1') ?? '',
+    author: {
+      '@type': 'Person',
+      name: 'Zyg0m4t1k',
+      url: 'https://github.com/Zyg0m4t1k',
+    },
+    ...(pluginId ? { url: `https://zyg0m4t1k.github.io/docs/plugins/${pluginId}/` } : {}),
+    ...(resolvedMarketUrl ? { offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } } : {}),
+  };
   const resolvedBadges = badges.length > 0 ? badges : (pluginData?.badges ?? []);
   // On construit une liste de liens "standard" + liens libres
   const baseLinks: PluginLink[] = [
@@ -107,6 +124,10 @@ export default function PluginHero({
   const mergedLinks = uniqLinks([...baseLinks, ...links]).filter((l) => l.href);
 
   return (
+    <>
+    <Head>
+      <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
+    </Head>
     <div
       style={{
         position: 'relative',
@@ -226,5 +247,6 @@ export default function PluginHero({
         </div>
       )}
     </div>
+    </>
   );
 }

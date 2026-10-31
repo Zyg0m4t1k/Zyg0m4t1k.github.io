@@ -1,6 +1,6 @@
 {
   "label": "Uptime Kuma",
-  "position": 10,
+  "position": 24,
   "link": {
     "type": "doc",
     "id": "plugins/uptimekuma/index"
