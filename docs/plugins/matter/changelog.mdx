@@ -4,6 +4,16 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-09 — v2.3 Beta
+
+### Améliorations
+- **Suppression d'un équipement** : supprimer un appareil Jeedom le retire maintenant aussi du serveur Matter. S'il est joignable, il quitte proprement le réseau ; s'il est hors ligne, il est supprimé côté serveur uniquement. Auparavant, une synchronisation le recréait automatiquement.
+- **Disponibilité en temps réel** : l'état de connexion des appareils (disponible / indisponible) est maintenant mis à jour immédiatement sans attendre une synchronisation manuelle.
+
+### Corrections
+- Les erreurs renvoyées par le serveur Matter (ex. attestation refusée lors d'un commissionnement) sont maintenant correctement détectées et affichées. Auparavant, elles étaient silencieusement ignorées et le commissionnement semblait réussir à tort.
+- Correction d'un double déclenchement de scénarios sur les commandes de type impulsion (interrupteurs sans fil, boutons).
+
 ## 2026-11-07 — v2.2 Beta
 
 ### Améliorations
