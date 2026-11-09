@@ -30,13 +30,6 @@
 }
 
 
-@media (min-width: 996px) {
-  .plugins-layout {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding: 0 40px;
-  }
-}
 
 html, body { overflow-x: hidden; }
 
