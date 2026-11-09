@@ -7,6 +7,7 @@ sidebar_position: 99
 ## 2026-11-09 — v2.3 Beta
 
 ### Améliorations
+- **API Matter** : les informations du serveur (`get_server_info`) et du réseau Thread OTBR (`get_otbr_thread_info`) sont maintenant accessibles via la clé API Matter, sans nécessiter une connexion administrateur. Utile pour intégrer le plugin dans des automatisations externes.
 - **Suppression d'un équipement** : supprimer un appareil Jeedom le retire maintenant aussi du serveur Matter. S'il est joignable, il quitte proprement le réseau ; s'il est hors ligne, il est supprimé côté serveur uniquement. Auparavant, une synchronisation le recréait automatiquement.
 - **Disponibilité en temps réel** : l'état de connexion des appareils (disponible / indisponible) est maintenant mis à jour immédiatement sans attendre une synchronisation manuelle.
 
