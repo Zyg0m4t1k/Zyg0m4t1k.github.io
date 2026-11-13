@@ -7,6 +7,32 @@ sidebar_position: 99
 
 # Changelog
 
+## 2.3 — 2026-11-13
+
+### Widget Programme TV — nouveau design
+
+- Refonte complète du widget Programme TV (dashboard et mobile) : cartes avec vignette 16/9, logo chaîne, heure et titre
+- Navigation par onglets modernisée (Soirée / Fin de soirée / En cours / À venir)
+- Filtre par catégorie intégré dans la barre de navigation
+- L'onglet et la catégorie sélectionnés sont mémorisés entre les rechargements
+- Bouton Lecture directement sur la vignette
+- Adaptation mobile améliorée (largeur minimale réduite de 800px à 320px)
+- Support du thème clair
+
+### Genres TV — couverture étendue
+
+- Reconnaissance de nombreux nouveaux genres XMLTV : drame, comédie (et variantes), thriller, western, policier, horreur, fantastique, biopic, court-métrage, manga, sport (catch…), musique (concert, opéra, clips…), magazine, téléréalité, talk-show, one man show, théâtre, etc.
+- Correction de la priorité téléfilm / film (un téléfilm n'était plus classé comme film)
+- Le genre `autres` n'écrase plus un genre déjà identifié par l'XMLTV
+
+### Fiabilité et robustesse
+
+- Reprise automatique au démarrage de Jeedom : les programmes courants et de soirée sont recalculés immédiatement
+- Watchdog toutes les 5 minutes : détecte un cron en retard et le relance automatiquement
+- Retry automatique dans 5 minutes si le fichier XMLTV est manquant ou si aucune chaîne active n'est trouvée au démarrage
+- Les crons de traitement sont désormais garantis réactivés même après une interruption ou une erreur
+- Les crons `watchdog` et `téléchargement XMLTV` sont maintenant créés automatiquement à l'installation et à la mise à jour du plugin
+
 ## 2026-09-04
 
 - Mise à jour de la liste des genres TV
