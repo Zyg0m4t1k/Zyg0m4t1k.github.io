@@ -56,6 +56,9 @@
   "blog.subtitle": { "message": "Guides, tips and updates around Jeedom plugins." },
   "blog.readmore": { "message": "Read →" },
 
+  "blog.jeeter-installation.title": { "message": "Jeeter: install the BLE proxy Matter app on iOS and Android" },
+  "blog.jeeter-installation.description": { "message": "How to install Jeeter on iPhone (Sideloadly) and Android (APK) — Matter BLE proxy for commissioning from the Jeedom plugin, without an official store." },
+
   "blog.jeebridge-scenarios-alexa-apple-home.title": { "message": "JeeBridge: trigger your Jeedom scenarios from Alexa, Apple Home or Google Home" },
   "blog.jeebridge-scenarios-alexa-apple-home.description": { "message": "JeeBridge exposes your Jeedom devices to Alexa, Apple Home and Google Home via Matter. But its real power lies elsewhere — turning any complex scenario into a single voice command." },
 

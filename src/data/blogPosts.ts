@@ -12,6 +12,37 @@ export type BlogPostData = {
 
 const blogPosts: BlogPostData[] = [
   {
+    id: 'jeeter-installation',
+    permalink: '/blog/jeeter-installation',
+    title: 'Jeeter : installer l\'app BLE proxy Matter sur iOS et Android',
+    description:
+      'Comment installer Jeeter sur iPhone (Sideloadly) et Android (APK) — proxy BLE Matter pour le commissioning depuis le plugin Jeedom, sans store officiel.',
+    formattedDate: '14 novembre 2026',
+    readingTime: 5,
+    tags: [
+      { label: 'matter', permalink: '/matter' },
+      { label: 'jeeter', permalink: '/jeeter' },
+      { label: 'ios', permalink: '/ios' },
+      { label: 'android', permalink: '/android' },
+    ],
+    image: '/img/blog/jeeter-installation.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
+    id: 'tailscale-jeedom-acces-distant',
+    permalink: '/blog/tailscale-jeedom-acces-distant',
+    title: 'Jeedom accessible de partout : pourquoi Tailscale change tout',
+    description:
+      'Fini les galères de port forwarding et de DynDNS. Tailscale offre un accès distant à Jeedom simple, sécurisé et sans ouvrir un seul port sur votre routeur.',
+    formattedDate: '28 octobre 2026',
+    readingTime: 4,
+    tags: [
+      { label: 'tailscale', permalink: '/tailscale' },
+    ],
+    image: '/img/blog/tailscale-jeedom.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
     id: 'librespeed-monitoring-reseau-jeedom',
     permalink: '/blog/librespeed-monitoring-reseau-jeedom',
     title: 'LibreSpeed : bien plus qu\'un speedtest dans Jeedom',
@@ -39,20 +70,6 @@ const blogPosts: BlogPostData[] = [
       { label: 'jeebridge', permalink: '/jeebridge' },
     ],
     image: '/img/blog/jeebridge-scenarios.svg',
-    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
-  },
-  {
-    id: 'tailscale-jeedom-acces-distant',
-    permalink: '/blog/tailscale-jeedom-acces-distant',
-    title: 'Jeedom accessible de partout : pourquoi Tailscale change tout',
-    description:
-      'Fini les galères de port forwarding et de DynDNS. Tailscale offre un accès distant à Jeedom simple, sécurisé et sans ouvrir un seul port sur votre routeur.',
-    formattedDate: '28 octobre 2026',
-    readingTime: 4,
-    tags: [
-      { label: 'tailscale', permalink: '/tailscale' },
-    ],
-    image: '/img/blog/tailscale-jeedom.svg',
     authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
   },
   {
