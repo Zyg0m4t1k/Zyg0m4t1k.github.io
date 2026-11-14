@@ -4,6 +4,10 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-14
+
+- **Correction minuterie** : armer la minuterie alors qu'une ambiance est active désactive désormais l'ambiance au préalable (lumières ambiance éteintes, `ambiance_state` remis à 0) avant d'armer la minuterie et d'évaluer un allumage immédiat
+
 ## 2026-10-03
 
 - **Correction lux** : lorsque la luminosité naturelle dépasse le seuil configuré (ex. ouverture des volets), les lumières s'éteignent désormais automatiquement même si la présence est encore active
