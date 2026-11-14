@@ -51,6 +51,11 @@
 
   "plugin.ribbon.nouveau": { "message": "New" },
 
+  "blog.title": { "message": "Blog" },
+  "blog.description": { "message": "Articles about Jeedom plugins, home automation, Tailscale and NtfyBridge." },
+  "blog.subtitle": { "message": "Guides, tips and updates around Jeedom plugins." },
+  "blog.readmore": { "message": "Read →" },
+
   "blog.jeebridge-scenarios-alexa-apple-home.title": { "message": "JeeBridge: trigger your Jeedom scenarios from Alexa, Apple Home or Google Home" },
   "blog.jeebridge-scenarios-alexa-apple-home.description": { "message": "JeeBridge exposes your Jeedom devices to Alexa, Apple Home and Google Home via Matter. But its real power lies elsewhere — turning any complex scenario into a single voice command." },
 
