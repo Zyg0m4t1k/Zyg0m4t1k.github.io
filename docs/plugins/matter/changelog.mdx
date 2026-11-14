@@ -4,12 +4,12 @@ hide_title: true
 sidebar_position: 99
 ---
 
-## 2026-11-13 — v2.4 Beta
+## 2026-11-14 — v2.4
 
 ### Améliorations
 - **API RPC** : ajout des commandes `read_attribute` et `write_attribute` permettant de lire et écrire n'importe quel attribut Matter directement via le démon (endpoint/cluster/attribut).
 
-## 2026-11-09 — v2.3 Beta
+## 2026-11-09 — v2.3
 
 ### Améliorations
 - **API Matter** : les informations du serveur (`get_server_info`) et du réseau Thread OTBR (`get_otbr_thread_info`) sont maintenant accessibles via la clé API Matter, sans nécessiter une connexion administrateur. Utile pour intégrer le plugin dans des automatisations externes.
@@ -20,12 +20,12 @@ sidebar_position: 99
 - Les erreurs renvoyées par le serveur Matter (ex. attestation refusée lors d'un commissionnement) sont maintenant correctement détectées et affichées. Auparavant, elles étaient silencieusement ignorées et le commissionnement semblait réussir à tort.
 - Correction d'un double déclenchement de scénarios sur les commandes de type impulsion (interrupteurs sans fil, boutons).
 
-## 2026-11-07 — v2.2 Beta
+## 2026-11-07 — v2.2
 
 ### Améliorations
 - **Page Santé** : nouvelle colonne **Réseau** affichant, pour chaque appareil Thread, le nom du réseau Thread (border router) auquel il est rattaché — utile si vous avez plusieurs border routers.
 
-## 2026-10-29 — v2.2 Beta
+## 2026-10-29 — v2.2
 
 ### Corrections
 - Correction du démarrage du démon sur les installations Jeedom dans un répertoire non standard (ex : `/var/www/html/jeedom/`). Le chemin vers les modules internes est maintenant résolu dynamiquement.
