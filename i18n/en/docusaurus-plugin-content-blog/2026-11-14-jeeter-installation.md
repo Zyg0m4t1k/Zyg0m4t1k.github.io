@@ -1,0 +1,202 @@
+---
+slug: jeeter-installation
+title: "Jeeter: install the BLE proxy Matter app on iOS and Android"
+authors: zyg0m4t1k
+tags: [jeedom, matter, ios, android, bluetooth, jeeter, bricolo, betatesteur]
+description: How to install Jeeter on iPhone (Sideloadly) and Android (APK) — Matter BLE proxy for commissioning from the Jeedom plugin, without an official store.
+image: /img/blog/jeeter-installation.svg
+---
+
+**Jeeter** turns your smartphone into a BLE proxy for Matter commissioning via Jeedom. Available as `.ipa` for iOS and `.apk` for Android — no official store, manual installation required.
+
+:::warning Unofficial installation
+Jeeter is not available on the App Store or the Play Store. Installation is done manually from a `.ipa` or `.apk` file provided directly.
+
+- **iOS**: sideloading bypasses Apple's security checks — only install files from a trusted source
+- **Android**: enabling unknown sources exposes your device to malicious apps if this option remains active after installation
+- The file is distributed as-is, without an official signature — always verify the source before installing
+:::
+
+<!--truncate-->
+
+:::info Download
+[**jeeter.ipa** (iOS)](https://zyg0m4t1k.github.io/downloads/jeeter.ipa) — install via Sideloadly
+[**jeeter.apk** (Android)](https://zyg0m4t1k.github.io/downloads/jeeter.apk) — install via ADB or file manager
+:::
+
+---
+
+## iOS — Installation via Sideloadly
+
+### Requirements
+
+- iPhone running **iOS 16+**
+- PC/Mac with [Sideloadly](https://sideloadly.io/) installed
+  - On Windows: **WebiTunes** and **WebiCloud** required (downloadable from the Sideloadly website)
+- A **free Apple ID**
+- **Developer Mode** enabled on the iPhone
+
+---
+
+### Step 1 — Enable Developer Mode
+
+1. **Settings → Privacy & Security → Developer Mode**
+2. Toggle on → iPhone restarts
+3. At restart, confirm activation in the popup
+
+> Without Developer Mode, Sideloadly cannot install the app.
+
+---
+
+### Step 2 — Download the IPA file
+
+Download directly: [**jeeter.ipa**](https://zyg0m4t1k.github.io/downloads/jeeter.ipa)
+
+---
+
+### Step 3 — Install with Sideloadly
+
+1. Connect iPhone to PC/Mac via USB
+2. Open **Sideloadly**
+3. Drag `jeeter.ipa` into the window
+4. Verify that the iPhone is detected at the top
+5. Enter your **Apple ID** in the field
+6. Click **Start** → enter Apple ID password in the popup
+7. Wait (~1 min)
+
+---
+
+### Step 4 — Trust the certificate
+
+After installation, iOS blocks the app (unverified certificate):
+
+1. **Settings → General → VPN & Device Management**
+2. Under **Developer Apps**, find your Apple ID
+3. Tap **Trust "your@email.com"** → Confirm
+
+> This step is required after each reinstallation. The certificate is valid for **7 days**.
+
+---
+
+### Step 5 — Matter Bluetooth profile *(mandatory)*
+
+iOS blocks BLE writes on Matter UUIDs by default. Without this profile, **CBError code 8** appears at commissioning.
+
+#### From the iPhone (Safari only)
+
+Open this URL in Safari:
+
+```
+https://developer.apple.com/services-account/download?path=%2FiOS%2FiOS_Logs%2FEnableBluetoothCentralMatterClientDeveloperMode.mobileconfig
+```
+
+Tap **Allow** in the popup.
+
+#### Install the profile
+
+1. **Settings → General → VPN & Device Management**
+2. Tap `EnableBluetoothCentralMatterClientDeveloperMode`
+3. **Install** → PIN code → **Install** → **Done**
+
+> Only needed once — the profile survives app reinstallations.
+
+---
+
+### Certificate renewal (every 7 days)
+
+With a free Apple ID, the certificate expires after 7 days. The app won't launch if the certificate is expired.
+
+Renewal works **via USB or Wi-Fi** (same network):
+
+1. Open Sideloadly
+2. Reload `jeeter.ipa`
+3. **Start** → certificate renewed
+4. Redo the **Trust** step if prompted
+
+> The Matter Bluetooth profile does not need to be reinstalled.
+
+---
+
+## Android — Installation via APK
+
+### Requirements
+
+- Android **8.0+**
+- Allow installation from unknown sources
+
+---
+
+### Step 1 — Allow unknown sources
+
+Depending on your Android version:
+
+- **Android 8+**: Settings → Apps → go to your file manager (or browser) → **Install unknown apps** → enable
+- **Android < 8**: Settings → Security → **Unknown sources** → enable
+
+---
+
+### Step 2 — Download and install the APK
+
+**Option A — File manager:**
+
+1. Download [**jeeter.apk**](https://zyg0m4t1k.github.io/downloads/jeeter.apk) from the phone browser
+2. Open the file from the notifications or the Downloads folder
+3. Tap **Install** → **Open**
+
+**Option B — ADB (from PC):**
+
+```bash
+adb install jeeter.apk
+```
+
+> Requires USB debugging enabled: Settings → About → tap "Build number" 7× → Developer options → USB debugging.
+
+---
+
+### Step 3 — Bluetooth permissions
+
+On first launch, Android requests Bluetooth and location permissions (required for BLE scanning):
+
+- Tap **Allow** for each popup
+
+> On Android 12+, the **Nearby devices** permission replaces the location permission for BLE.
+
+---
+
+## Configuration and commissioning (iOS & Android)
+
+These steps are identical on both platforms.
+
+### Configure Jeeter
+
+1. Open **Jeeter**
+2. **Settings** tab → enter Jeedom IP and port
+3. Matter plugin API key *(optional)*: Jeedom → Matter Plugin → Configuration
+4. **Save**
+5. Matter devices appear if Jeedom is reachable (local network or via Tailscale)
+
+---
+
+### Commission a Matter device
+
+1. In **Jeedom** → Matter plugin → start **BLE proxy mode**
+2. On the phone → **Jeeter** → **BLE** tab → **Connect**
+3. Jeeter scans for nearby Matter devices
+4. In Jeedom → start **commissioning**
+5. The plugin drives the phone via Jeeter to perform BLE commissioning
+
+> The phone must remain within range of the Matter device throughout the commissioning process.
+
+---
+
+## Troubleshooting
+
+| Problem | Platform | Solution |
+|---|---|---|
+| Sideloadly doesn't detect the iPhone | iOS | Check USB cable, trust the Mac in iOS |
+| "Unable to install" | iOS | Uninstall the previous version from the iPhone first |
+| App won't open | iOS | Redo the Trust certificate step |
+| CBError code 8 | iOS | Install the Matter Bluetooth profile |
+| APK blocked at install | Android | Check that unknown sources are allowed for the app used |
+| BLE doesn't scan anything | Android | Check Bluetooth and location permissions |
+| No Jeedom connection | iOS & Android | Check IP, port, same network or Tailscale active |
