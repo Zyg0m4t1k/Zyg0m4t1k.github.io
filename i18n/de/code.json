@@ -1,8 +1,8 @@
 {
   "homepage.title": { "message": "Startseite" },
   "homepage.description": { "message": "Docs & Ressourcen für meine Jeedom-Plugins" },
-  "homepage.hero.title": { "message": "Zyg0m4t1k — Jeedom Plugins" },
-  "homepage.hero.subtitle": { "message": "Schaufenster, Dokumentation und Ressourcen für meine Jeedom-Plugins." },
+  "homepage.hero.title": { "message": "Automatisieren Sie Ihr Zuhause, auf Ihre Weise" },
+  "homepage.hero.subtitle": { "message": "Robuste, gut dokumentierte Jeedom-Plugins — Matter, Tailscale, SwitchBot, ntfy und mehr." },
   "homepage.cta.plugins": { "message": "Plugins ansehen" },
   "homepage.cta.docs": { "message": "Dokumentation öffnen" },
   "homepage.features.plugins.title": { "message": "Plugins" },

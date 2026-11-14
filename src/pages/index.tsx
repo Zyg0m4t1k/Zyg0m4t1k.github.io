@@ -14,20 +14,20 @@ export default function Home(): JSX.Element {
       description={translate({ id: 'homepage.description', message: 'Découvrez les plugins Jeedom de Zyg0m4t1k : Matter, Tailscale, SwitchBot, notifications ntfy, éclairage et automatisations. Documentation complète en français.' })}
     >
       <main>
-        <div style={{ padding: '3rem 0' }}>
+        <div style={{ padding: '4rem 0', textAlign: 'center' }}>
           <div className="container">
-            <h1 style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>
-              {translate({ id: 'homepage.hero.title', message: 'Zyg0m4t1k — Jeedom Plugins' })}
+            <h1 style={{ fontSize: '2.6rem', marginBottom: '1rem' }}>
+              {translate({ id: 'homepage.hero.title', message: 'Automatisez votre maison, à votre façon' })}
             </h1>
-            <p style={{ fontSize: '1.1rem', opacity: 0.85, maxWidth: 820 }}>
-              {translate({ id: 'homepage.hero.subtitle', message: 'Vitrine, documentation et ressources autour de mes plugins Jeedom.' })}
+            <p style={{ fontSize: '1.15rem', opacity: 0.85, maxWidth: 680, margin: '0 auto 1.75rem' }}>
+              {translate({ id: 'homepage.hero.subtitle', message: 'Des plugins Jeedom robustes et documentés — Matter, Tailscale, SwitchBot, ntfy et plus encore.' })}
             </p>
 
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
-              <Link className="button button--primary" to={useBaseUrl('/plugins')}>
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link className="button button--primary button--lg" to={useBaseUrl('/plugins')}>
                 {translate({ id: 'homepage.cta.plugins', message: 'Voir les plugins' })}
               </Link>
-              <Link className="button button--secondary" to={useBaseUrl('/docs/intro')}>
+              <Link className="button button--secondary button--lg" to={useBaseUrl('/docs/intro')}>
                 {translate({ id: 'homepage.cta.docs', message: 'Ouvrir la doc' })}
               </Link>
             </div>

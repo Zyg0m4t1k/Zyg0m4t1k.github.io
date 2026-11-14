@@ -1,8 +1,8 @@
 {
   "homepage.title": { "message": "Home" },
   "homepage.description": { "message": "Docs & risorse per i miei plugin Jeedom" },
-  "homepage.hero.title": { "message": "Zyg0m4t1k — Jeedom Plugins" },
-  "homepage.hero.subtitle": { "message": "Vetrina, documentazione e risorse per i miei plugin Jeedom." },
+  "homepage.hero.title": { "message": "Automatizza la tua casa, a modo tuo" },
+  "homepage.hero.subtitle": { "message": "Plugin Jeedom robusti e documentati — Matter, Tailscale, SwitchBot, ntfy e altro." },
   "homepage.cta.plugins": { "message": "Vedi i plugin" },
   "homepage.cta.docs": { "message": "Apri la doc" },
   "homepage.features.plugins.title": { "message": "Plugin" },

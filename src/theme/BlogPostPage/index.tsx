@@ -7,6 +7,7 @@ import {
 import BlogPostPageMetadata from '@theme/BlogPostPage/Metadata';
 import BlogPostPageStructuredData from '@theme/BlogPostPage/StructuredData';
 import BlogPostPaginator from '@theme/BlogPostPaginator';
+import BlogPostItemContent from '@theme/BlogPostItem/Content';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import { translate } from '@docusaurus/Translate';
@@ -94,7 +95,7 @@ function BlogPostPageContent({ children }: { children: ReactNode }) {
 
       <main className={styles.content}>
         <article>
-          {children}
+          <BlogPostItemContent>{children}</BlogPostItemContent>
         </article>
         {(nextItem || prevItem) && (
           <div className={styles.paginator}>

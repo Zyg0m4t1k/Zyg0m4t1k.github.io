@@ -1,8 +1,8 @@
 {
   "homepage.title": { "message": "Jeedom Plugins: Matter, Tailscale, SwitchBot, ntfy" },
   "homepage.description": { "message": "Discover Zyg0m4t1k's Jeedom plugins: Matter, Tailscale, SwitchBot, ntfy notifications, lighting and automations. Full documentation in English." },
-  "homepage.hero.title": { "message": "Zyg0m4t1k — Jeedom Plugins" },
-  "homepage.hero.subtitle": { "message": "Showcase, documentation and resources for my Jeedom plugins." },
+  "homepage.hero.title": { "message": "Automate your home, your way" },
+  "homepage.hero.subtitle": { "message": "Robust, well-documented Jeedom plugins — Matter, Tailscale, SwitchBot, ntfy and more." },
   "homepage.cta.plugins": { "message": "See plugins" },
   "homepage.cta.docs": { "message": "Open the docs" },
   "homepage.features.plugins.title": { "message": "Plugins" },
