@@ -12,6 +12,7 @@ description: Comment installer Jeeter sur iPhone sans compte Apple Developer pay
 
 :::info Téléchargement
 [**jeeter.ipa** (iOS)](https://zyg0m4t1k.github.io/downloads/jeeter.ipa) — installer via Sideloadly
+[**jeeter.apk** (Android)](https://zyg0m4t1k.github.io/downloads/jeeter.apk) — installer via ADB ou gestionnaire de fichiers
 :::
 
 ---
