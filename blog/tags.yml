@@ -52,3 +52,23 @@ monitoring:
   label: Monitoring
   permalink: /monitoring
   description: Surveillance et historisation des performances réseau
+
+matter:
+  label: Matter
+  permalink: /matter
+  description: Protocole domotique Matter — commissioning et intégration
+
+ios:
+  label: iOS
+  permalink: /ios
+  description: Applications et outils pour iPhone
+
+bluetooth:
+  label: Bluetooth
+  permalink: /bluetooth
+  description: BLE, CoreBluetooth et proxy Bluetooth
+
+jeeter:
+  label: Jeeter
+  permalink: /jeeter
+  description: App iOS BLE proxy Matter pour Jeedom
