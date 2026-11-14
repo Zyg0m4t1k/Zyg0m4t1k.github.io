@@ -16,10 +16,9 @@ const config: Config = {
   projectName: 'Zyg0m4t1k.github.io',
 
   onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
   markdown: {
-    hooks: {
-      onBrokenMarkdownLinks: 'warn',
-    },
+    format: 'mdx',
   },
   clientModules: ['./src/clientModules/imageZoom.ts'],
 

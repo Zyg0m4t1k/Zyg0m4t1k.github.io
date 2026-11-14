@@ -72,3 +72,18 @@ jeeter:
   label: Jeeter
   permalink: /jeeter
   description: App iOS BLE proxy Matter pour Jeedom
+
+android:
+  label: Android
+  permalink: /android
+  description: Applications et outils pour Android
+
+bricolo:
+  label: Bricolo
+  permalink: /bricolo
+  description: Installations manuelles, bidouilles et tutos DIY
+
+betatesteur:
+  label: Béta-testeur
+  permalink: /betatesteur
+  description: Apps et plugins en cours de développement, non publiés officiellement
