@@ -6,16 +6,33 @@ import { translate } from '@docusaurus/Translate';
 import HomepageFeatures from '../components/HomepageFeatures';
 import FeaturedPlugins from '../components/FeaturedPlugins';
 import RecentPosts from '../components/RecentPosts';
+import blogPosts from '../data/blogPosts';
+import styles from './index.module.css';
 
 export default function Home(): JSX.Element {
+  const latestPost = blogPosts[0];
+
   return (
     <Layout
       title={translate({ id: 'homepage.title', message: 'Plugins Jeedom : Matter, Tailscale, SwitchBot, ntfy' })}
       description={translate({ id: 'homepage.description', message: 'Découvrez les plugins Jeedom de Zyg0m4t1k : Matter, Tailscale, SwitchBot, notifications ntfy, éclairage et automatisations. Documentation complète en français.' })}
     >
       <main>
-        <div style={{ padding: '4rem 0', textAlign: 'center' }}>
+        <div className={styles.hero}>
           <div className="container">
+
+            {latestPost && (
+              <div>
+                <Link className={styles.newPill} to={latestPost.permalink}>
+                  <span className={styles.newBadge}>
+                    {translate({ id: 'homepage.hero.newBadge', message: 'Nouveau' })}
+                  </span>
+                  <span className={styles.newPillText}>{latestPost.title}</span>
+                  <span className={styles.newPillArrow}>→</span>
+                </Link>
+              </div>
+            )}
+
             <h1 style={{ fontSize: '2.6rem', marginBottom: '1rem' }}>
               {translate({ id: 'homepage.hero.title', message: 'Automatisez votre maison, à votre façon' })}
             </h1>
@@ -31,6 +48,7 @@ export default function Home(): JSX.Element {
                 {translate({ id: 'homepage.cta.docs', message: 'Ouvrir la doc' })}
               </Link>
             </div>
+
           </div>
         </div>
 

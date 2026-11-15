@@ -4,6 +4,13 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-14 — v2.5
+
+### Corrections
+- **OTBR** : le watchdog démarre maintenant immédiatement avec le démon, sans attendre le cron (jusqu'à 1 minute de délai auparavant). Le statut OTBR dans la configuration s'affiche en vert dès le démarrage de Jeedom.
+- **OTBR** : un arrêt manuel d'OTBR est maintenant mémorisé après un redémarrage de Jeedom — seul un clic sur « Lancer OTBR » le relance, le watchdog ne le redémarre plus automatiquement.
+- **OTBR** : le watchdog peut redémarrer un conteneur arrêté immédiatement (plus de cooldown initial de 60 secondes). Une fenêtre de stabilisation distincte de 60 secondes laisse Docker, la radio et Thread se stabiliser avant toute intervention.
+
 ## 2026-11-14 — v2.4
 
 ### Améliorations
