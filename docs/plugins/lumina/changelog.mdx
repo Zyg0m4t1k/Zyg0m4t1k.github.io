@@ -4,6 +4,11 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-15
+
+- **Correction lux** : les variations de luminosité sont désormais ignorées lorsque les lumières sont allumées, évitant une boucle ON/OFF causée par la lumière des lampes pilotées elle-même
+- **Correction minuterie** : l'armement de la minuterie délègue désormais la détection de présence à `checkActuator()` pour appliquer les mêmes contrôles lux/période qu'une vraie détection
+
 ## 2026-11-14
 
 - **Correction minuterie** : armer la minuterie alors qu'une ambiance est active désactive désormais l'ambiance au préalable (lumières ambiance éteintes, `ambiance_state` remis à 0) avant d'armer la minuterie et d'évaluer un allumage immédiat
