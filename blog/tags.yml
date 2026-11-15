@@ -87,3 +87,13 @@ betatesteur:
   label: Béta-testeur
   permalink: /betatesteur
   description: Apps et plugins en cours de développement, non publiés officiellement
+
+telejee:
+  label: Telejee
+  permalink: /telejee
+  description: Plugin Jeedom guide TV, chaînes et télécommandes virtuelles
+
+pwa:
+  label: PWA
+  permalink: /pwa
+  description: Progressive Web App — application web installable sur mobile

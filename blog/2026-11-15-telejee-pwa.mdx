@@ -1,0 +1,133 @@
+---
+slug: telejee-pwa
+title: "Telejee PWA : guide TV et télécommande sur votre smartphone"
+authors: zyg0m4t1k
+tags: [jeedom, telejee, pwa, domotique, mobile]
+description: Le plugin Telejee intègre désormais une Progressive Web App — guide TV, télécommande virtuelle et pilotage de votre installation depuis n'importe quel smartphone, sans application à installer.
+image: /img/blog/telejee-pwa.svg
+---
+
+Le plugin **Telejee** s'enrichit d'une **Progressive Web App (PWA)** : une interface mobile-first directement accessible depuis le navigateur de votre smartphone, sans passer par Jeedom. Guide TV, télécommande virtuelle et réglages en un seul endroit.
+
+<!--truncate-->
+
+---
+
+## Qu'est-ce qu'une PWA ?
+
+Une Progressive Web App est une application web qui s'installe sur l'écran d'accueil de votre téléphone comme une app native — sans store, sans compte développeur, sans APK.
+
+Côté utilisateur : vous ouvrez l'URL une fois, vous installez depuis le menu du navigateur, et l'app se lance ensuite en plein écran comme n'importe quelle application.
+
+---
+
+## Accès
+
+L'URL de la PWA Telejee est :
+
+```
+http://<adresse-jeedom>/plugins/Telejee/pwa/
+```
+
+Remplacez `<adresse-jeedom>` par l'adresse IP ou le nom de domaine de votre Jeedom.
+
+:::tip Accès depuis l'extérieur
+Pour accéder à la PWA hors de votre réseau local, utilisez un VPN comme Tailscale ou configurez un reverse proxy sur votre Jeedom.
+:::
+
+---
+
+## Authentification
+
+La PWA s'authentifie via la **clé API du plugin Telejee**.
+
+Pour la récupérer : **Réglages → Système → Configuration → API**, repérez la ligne **Telejee** et copiez la clé via le bouton dédié. Cette clé est disponible même si le plugin est désactivé.
+
+Saisissez cette clé au premier lancement — elle est mémorisée localement sur l'appareil, vous n'aurez pas à la ressaisir.
+
+<img src="/img/blog/telejee-pwa-connexion.jpg" alt="Écran de connexion Telejee PWA" style={{maxWidth: '320px', display: 'block', margin: '1.5rem auto'}} />
+
+---
+
+## Les trois sections
+
+### Guide TV
+
+<img src="/img/blog/telejee-pwa-guide.jpg" alt="Guide TV Telejee PWA" style={{maxWidth: '320px', display: 'block', margin: '1.5rem auto'}} />
+
+Le guide TV affiche les programmes regroupés par tranche horaire :
+
+- **En cours** — ce qui passe maintenant sur vos chaînes
+- **Soirée** — les programmes prime time
+- **Fin de soirée** — le late night
+- **À venir** — les prochains programmes
+
+Un filtre par catégorie permet de n'afficher que les films, séries, sports, documentaires, émissions, etc.
+
+Chaque carte affiche la vignette du programme, le logo de la chaîne, l'horaire et le titre. Un tap ouvre la fiche détail avec la description complète et un lien Allociné si disponible.
+
+---
+
+### Télécommande
+
+<img src="/img/blog/telejee-pwa-remote.jpg" alt="Télécommande Telejee PWA" style={{maxWidth: '320px', display: 'block', margin: '1.5rem auto'}} />
+
+La section télécommande reprend les équipements de type **Universelle** configurés dans le plugin.
+
+Les boutons disponibles :
+
+- navigation D-pad (haut, bas, gauche, droite, OK)
+- volume et chaînes (+ / −)
+- alimentation, menu, retour, info, sortie
+- pavé numérique dépliable (0–9)
+- commandes de lecture dépliables (play, pause, avance, retour, enregistrement, stop)
+
+Si vous avez plusieurs télécommandes Universelle configurées dans Telejee, un sélecteur permet de choisir la télécommande active depuis la section **Réglages**.
+
+Les boutons déclenchent un retour haptique sur les appareils qui le supportent.
+
+---
+
+### Réglages
+
+<img src="/img/blog/telejee-pwa-settings.jpg" alt="Réglages Telejee PWA" style={{maxWidth: '320px', display: 'block', margin: '1.5rem auto'}} />
+
+La section réglages regroupe :
+
+- le statut de connexion au serveur Jeedom
+- la mesure de latence (bouton test)
+- la version du plugin et de Jeedom
+- le nombre de chaînes et de télécommandes détectées
+- le **sélecteur de télécommande active**
+- le bouton de déconnexion
+
+---
+
+## Installation sur l'écran d'accueil
+
+### iOS (Safari)
+
+1. Ouvrir l'URL dans **Safari**
+2. Bouton **Partager** → **Sur l'écran d'accueil**
+3. Valider le nom → **Ajouter**
+
+### Android (Chrome)
+
+1. Ouvrir l'URL dans **Chrome**
+2. Menu (⋮) → **Ajouter à l'écran d'accueil**
+3. Valider → **Ajouter**
+
+Une fois installée, la PWA se lance en plein écran, sans barre de navigation du navigateur. Elle suit automatiquement le thème clair ou sombre de votre appareil.
+
+---
+
+## Prérequis
+
+- Plugin **Telejee** installé et actif
+- Jeedom accessible depuis le smartphone (réseau local ou VPN)
+- Au moins un équipement chaîne actif pour le guide TV
+- Au moins un équipement télécommande de type **Universelle** pour la section télécommande
+
+---
+
+La PWA est disponible dès maintenant sur la branche beta du plugin. Elle sera incluse dans la prochaine release stable.

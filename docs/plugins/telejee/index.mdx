@@ -15,6 +15,10 @@ import PluginHero from '@site/src/components/PluginHero';
   isNew
 />
 
+:::info 📰 Articles dédiés
+- [Telejee PWA : guide TV et télécommande sur votre smartphone](/blog/telejee-pwa)
+:::
+
 :::warning Version antérieure à 2026 — réinstallation nécessaire
 Si vous disposez d'une version du plugin Telejee **datant d'avant 2026** (version non fonctionnelle), vous devez la supprimer avant d'installer la nouvelle version.
 
@@ -343,6 +347,50 @@ Les administrateurs conservent toujours l’accès complet.
 
 Telejee propose un affichage mobile afin de retrouver les chaînes, les programmes et les télécommandes depuis l’application ou l’interface mobile Jeedom.
 
+---
+
+## 📲 Application Web Progressive (PWA)
+
+Telejee intègre une PWA accessible depuis n’importe quel smartphone, indépendamment de l’application Jeedom.
+
+### Accès
+
+L’URL d’accès est :
+
+```
+http://<adresse-jeedom>/plugins/Telejee/pwa/
+```
+
+Remplacez `<adresse-jeedom>` par l’adresse IP ou le nom de domaine de votre Jeedom.
+
+### Authentification
+
+La PWA utilise la **clé API** du plugin Telejee.
+
+Pour la récupérer : **Réglages → Système → Configuration → API**, repérez la ligne **Telejee** et copiez la clé via le bouton dédié. Cette clé est disponible même si le plugin est désactivé.
+
+Saisissez cette clé lors du premier lancement. Elle est mémorisée localement sur l’appareil.
+
+### Fonctionnalités
+
+La PWA propose trois sections accessibles par balayage horizontal :
+
+- **Guide TV** — programmes en cours, soirée et à venir, avec filtres par catégorie
+- **Télécommande** — télécommande virtuelle complète (navigation, volume, chaînes, pavé numérique, médias) basée sur les équipements de type **Universelle** du plugin
+- **Réglages** — statut de connexion, latence, informations du plugin, sélection de la télécommande active, déconnexion
+
+### Installation sur l’écran d’accueil
+
+La PWA est installable sur iOS et Android via le menu du navigateur :
+
+- **iOS (Safari)** : bouton Partager → « Sur l’écran d’accueil »
+- **Android (Chrome)** : menu → « Ajouter à l’écran d’accueil »
+
+Une fois installée, elle se lance en plein écran comme une application native.
+
+:::tip
+La PWA fonctionne en mode sombre automatiquement selon les préférences système de l’appareil.
+:::
 
 ---
 
