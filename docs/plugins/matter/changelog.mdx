@@ -4,6 +4,16 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-17 — v2.6
+
+### Nouveautés
+- **Migration Thread** : il est maintenant possible de déplacer tous les appareils Thread vers un autre réseau (par exemple celui de Home Assistant) sans perdre les pairings Matter. Les appareils basculent automatiquement après un délai configurable. Accessible depuis la page de configuration du plugin.
+
+> **Appareils sur pile** : avant de lancer la migration, commissionner les appareils sur pile en multi-admin sur l'écosystème cible (Amazon, Apple…). En cas de réveil tardif après la bascule, ils retrouvent le réseau via ce second pairing.
+
+### Améliorations
+- **Thermostat / TRV** : la température, la consigne de chauffage, le mode et l'état de la vanne remontent maintenant en temps réel dans Jeedom, sans attendre le rafraîchissement automatique toutes les 5 minutes.
+
 ## 2026-11-14 — v2.5
 
 ### Corrections
