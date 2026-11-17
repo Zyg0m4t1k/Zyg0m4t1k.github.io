@@ -1039,6 +1039,40 @@ Le changement de canal Thread depuis l'interface fonctionne maintenant que votre
 
 ---
 
+### 🔀 Migration vers un autre réseau Thread
+
+Cette fonction permet de **déplacer vos appareils Thread vers un autre réseau** (par exemple, passer du réseau Thread d’un Echo Amazon ou d’un HomePod vers celui de Home Assistant) **sans perdre les pairings Matter**.
+
+Le mécanisme repose sur le **Pending Dataset** : les appareils reçoivent les nouvelles credentials réseau à l’avance, puis basculent automatiquement après le délai configuré. Votre pairing Jeedom est conservé.
+
+#### Quand l’utiliser ?
+
+- Vous souhaitez rejoindre le réseau Thread d’un autre écosystème (HA, Apple, Amazon…)
+- Vous changez de Border Router principal
+- Vous fusionnez plusieurs réseaux Thread en un seul
+
+#### Comment procéder
+
+1. Récupérez le **dataset TLV hex** du réseau Thread cible
+   - Home Assistant : *Paramètres → Système → Thread → Copier le dataset*
+   - Apple : via l’app `Thread Network Debugger` ou depuis Home Assistant si votre HomePod y est connecté
+2. Dans Jeedom → **Configuration → Matter**, cliquez sur **Migrer vers un autre réseau Thread**
+3. Collez le dataset dans le champ prévu
+4. Choisissez le délai de transition (défaut : 5 minutes)
+5. Cliquez sur **Lancer la migration**
+
+Les appareils basculent automatiquement une fois le délai écoulé.
+
+:::warning Appareils sur pile
+Les appareils alimentés par pile (vannes, capteurs…) dorment la plupart du temps et peuvent rater la fenêtre de migration. **Avant de lancer la migration**, commissionner ces appareils en multi-admin sur l’écosystème cible. En cas de réveil tardif, ils retrouveront le réseau via ce second pairing.
+:::
+
+:::tip Délai recommandé
+Augmenter le délai à 15-30 minutes si vous avez beaucoup d’appareils sur pile. Cela leur laisse plus de temps pour recevoir le Pending Dataset pendant qu’ils sont réveillés.
+:::
+
+---
+
 ### 💡 Conseil
 
 👉 Privilégier l’utilisation d’un **dataset existant** si vous avez déjà un réseau Thread
