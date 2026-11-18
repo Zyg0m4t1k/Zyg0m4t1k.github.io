@@ -4,10 +4,18 @@ hide_title: true
 sidebar_position: 99
 ---
 
+## 2026-11-18 — v2.8 *(beta)*
+
+### Améliorations
+- **API Matter (Jeeter / proxy mobile)** : les endpoints `commission_with_code` et `sync_node` sont maintenant accessibles via clé API, sans nécessiter de session administrateur. Permet à l'application Jeeter (iOS/Android) de déclencher un commissionnement BLE et de synchroniser un nœud directement depuis le mobile.
+
+### Interface
+- Ajout d'une bannière de soutien dans la page de configuration du plugin (avis Market, don).
+
 ## 2026-11-17 — v2.7 *(beta)*
 
 ### Nouveautés
-- **Thermostat** : les commandes action « Régler consigne chauffage » et « Régler mode » fonctionnent maintenant (Tado, etc.)
+- **Tado et thermostats Matter** : prise en charge complète du contrôle des thermostats — consigne de chauffage et changement de mode (chauffe, refroidissement, off…) désormais fonctionnels. Compatible Tado X et tout appareil implémentant le cluster Thermostat Matter.
 - **Réseau Thread** : le nom du réseau Thread affiché dans la page santé est mis à jour dynamiquement à chaque état du device (plus de valeur figée au commissioning)
 
 ### Dépendances
