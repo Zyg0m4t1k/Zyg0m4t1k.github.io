@@ -1,0 +1,198 @@
+---
+slug: jeeter-utilisation
+title: "Jeeter : guide d'utilisation — commissioning Matter depuis votre smartphone"
+authors: zyg0m4t1k
+tags: [jeedom, matter, ios, android, bluetooth, jeeter, bricolo, betatesteur]
+description: Comment configurer et utiliser Jeeter — les 5 onglets de l'app, scanner un QR code Matter, lancer le commissioning BLE depuis Jeedom, surveiller ses équipements et accéder à distance via Tailscale.
+image: /img/blog/jeeter-utilisation.svg
+---
+
+**Jeeter** est installé — maintenant, comment l'utiliser ? Ce guide couvre la configuration initiale, le commissioning d'un appareil Matter, et toutes les fonctionnalités de l'app.
+
+> Pas encore installé ? Voir d'abord le **[guide d'installation Jeeter](./jeeter-installation)**.
+
+<!--truncate-->
+
+---
+
+## L'interface en un coup d'œil
+
+L'app est organisée en **5 onglets** accessibles depuis la barre du bas :
+
+| Onglet | Icône | Rôle |
+|---|---|---|
+| **Jeedom** | Maison | Liste des équipements Matter de votre Jeedom |
+| **Appareils** | Devices | Appareils détectés / commissionnés par Jeeter |
+| **BLE** | Bluetooth | Proxy BLE — scan, connexion, commissioning |
+| **Infos** | Info | État du serveur Matter, OTBR/Thread |
+| **Réglages** | Engrenage | Configuration IP, ports, clé API, notifications |
+
+La **barre du haut** affiche le nom de l'app et l'état de la connexion WebSocket au proxy BLE (pastille animée).
+
+---
+
+## Étape 1 — Configurer l'accès à Jeedom {#configuration}
+
+### Onglet Réglages → Adresse interne
+
+Renseigner les paramètres de votre Jeedom sur le réseau local :
+
+| Champ | Valeur |
+|---|---|
+| **IP locale** | IP de votre Jeedom (ex. `192.168.1.100`) |
+| **Port BLE** | Port WebSocket du proxy BLE (par défaut `5580`) |
+| **Port HTTP Jeedom** | Port de l'interface Jeedom (par défaut `80`) |
+| **Clé API plugin Matter** | Plugins → Matter → Configuration → Clé API |
+
+> La **clé API** est indispensable pour l'onglet Jeedom et le commissioning. Sans elle, les équipements n'apparaissent pas.
+
+Appuyer sur **Sauvegarder** — les paramètres sont persistés entre les sessions.
+
+<img src="/img/blog/jeeter-screen-reglages.jpg" alt="Jeeter — onglet Réglages" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+---
+
+### Accès hors réseau (optionnel) {#acces-externe}
+
+La section **Adresse externe** permet d'utiliser l'onglet Jeedom hors de votre réseau local (3G/4G, autre Wi-Fi) :
+
+- Renseigner l'IP ou le domaine externe (ex. via **Tailscale** : `100.x.x.x`)
+- Choisir le protocole `http` ou `https` et le port correspondant
+
+:::info Tailscale recommandé
+Pour un accès distant sécurisé sans exposition publique, [Tailscale](./tailscale-jeedom-acces-distant) est la solution idéale. L'adresse Tailscale de votre Jeedom va directement dans le champ "IP / domaine externe".
+:::
+
+> Le **BLE** utilise toujours l'adresse interne — le proxy WebSocket doit être sur le réseau local.
+
+---
+
+## Étape 2 — Vérifier les équipements Matter {#onglet-jeedom}
+
+L'onglet **Jeedom** affiche tous les équipements Matter actifs remontés par le plugin.
+
+Chaque carte indique :
+- Nom de l'équipement
+- Fabricant et version firmware si disponibles
+- Statut **En ligne** (bleu) ou **Hors ligne** (rouge)
+- Numéro de nœud Matter
+
+Le résumé en haut du tableau de bord indique le nombre d'équipements en ligne, hors ligne et le total.
+
+<img src="/img/blog/jeeter-screen-jeedom.jpg" alt="Jeeter — onglet Jeedom" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+Appuyer sur **Actualiser** pour rafraîchir manuellement la liste.
+
+---
+
+## Étape 3 — Commissionner un appareil Matter {#commissioning}
+
+Le commissioning se fait depuis l'onglet **BLE**.
+
+### 3.1 — Scanner le QR code de l'appareil
+
+Appuyer sur l'icône QR code dans la carte centrale :
+- L'appareil photo s'ouvre en mode scan
+- Pointer vers le **QR code Matter** imprimé sur l'appareil ou dans sa notice
+
+Une fois scanné, Jeeter affiche les informations extraites du QR code :
+- **Discriminator** — identifiant unique de l'appareil BLE
+- **Setup PIN** — code d'appairage (masqué, cliquer pour afficher ou copier)
+- **Transports** — BLE / Wi-Fi / Thread pris en charge
+- **Vendor** — fabricant de l'appareil
+
+> Pas de QR code accessible ? Saisir le code manuellement dans le champ texte prévu, puis appuyer **Entrée**.
+
+---
+
+<img src="/img/blog/jeeter-screen-ble.jpg" alt="Jeeter — onglet BLE" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+### 3.2 — Connecter le proxy BLE
+
+Appuyer sur **Connecter** (bouton bleu sous la carte QR) :
+- Jeeter établit une connexion WebSocket avec le plugin Matter de Jeedom
+- La barre du haut passe en bleu : `Connecté · vX.X`
+
+Une barre de progression apparaît en haut de l'onglet, elle suit les phases du commissioning :
+
+| Phase | Description |
+|---|---|
+| **Scan** | Recherche BLE des appareils Matter à portée |
+| **Connect** | Connexion BLE à l'appareil cible |
+| **Services** | Découverte des services GATT |
+| **BTP** | Handshake BLE Transport Protocol |
+| **Live** | Flux de données actif — commissioning en cours |
+
+---
+
+### 3.3 — Lancer le commissioning depuis Jeedom
+
+Une fois le proxy connecté et le QR code chargé, appuyer sur **Ajouter à Jeedom** :
+
+1. Jeeter envoie le code Matter au plugin via l'API
+2. Le plugin pilote le smartphone (scan BLE → connexion → handshake BTP)
+3. Le commissioning s'effectue — l'équipement rejoint le fabric Matter Jeedom
+4. Une notification de succès apparaît avec le `node_id` attribué
+5. Jeeter synchronise automatiquement le nœud et rafraîchit l'onglet Jeedom
+
+> Le téléphone doit rester **à portée BLE** de l'appareil pendant toute la durée du commissioning (~30–90 s).
+
+Le log en bas de l'onglet BLE détaille chaque étape en temps réel — utile en cas d'erreur.
+
+---
+
+## Onglet Appareils {#onglet-appareils}
+
+Cet onglet liste :
+- Les **appareils commissionnés** via Jeeter (avec la date et l'heure du commissioning, le node_id, le fabricant)
+- Les **appareils BLE détectés** lors du dernier scan mais pas encore commissionnés
+
+Les appareils commissionnés sont affichés avec une bordure bleue. Glisser vers la gauche pour les supprimer de la liste locale (cela ne supprime pas l'équipement de Jeedom).
+
+---
+
+## Onglet Infos — État du serveur Matter {#onglet-infos}
+
+L'onglet **Infos** interroge directement le plugin Matter de Jeedom et affiche :
+
+**Serveur Matter**
+- Version SDK Matter
+- Fabric ID
+- Version du schéma
+
+**Capacités**
+- BLE Proxy activé / désactivé
+- Bluetooth disponible
+- Credentials Wi-Fi et Thread configurés (et SSID Wi-Fi si renseigné)
+
+**OTBR — Thread**
+- État du Border Router (activé / désactivé)
+- Mode OTBR
+- Border Agent ID (copiable)
+- Dataset TLV Thread (copiable)
+
+---
+
+## Notifications de disponibilité {#notifications}
+
+Dans l'onglet **Réglages**, activer les **Notifications** pour être alerté en cas de changement d'état d'un équipement Matter :
+
+- Autoriser les notifications à la demande de l'app
+- Choisir l'**intervalle de polling** (1 à 60 minutes)
+
+Jeeter interroge Jeedom périodiquement et envoie une notification si un équipement passe **hors ligne** ou **revient en ligne**.
+
+---
+
+## Dépannage {#depannage}
+
+| Problème | Solution |
+|---|---|
+| Onglet Jeedom vide / erreur | Vérifier la clé API et l'IP dans Réglages — appuyer sur Actualiser |
+| Proxy non connecté | Vérifier l'IP locale et le port BLE (5580 par défaut) — le plugin Matter doit être démarré |
+| QR code non reconnu | Vérifier que c'est bien un QR code Matter (préfixe `MT:`) — essayer la saisie manuelle |
+| Commissioning bloqué en phase Scan | L'appareil Matter n'est pas en mode commissioning — le réinitialiser (appui long sur le bouton reset) |
+| CBError code 8 (iOS) | Installer le profil Matter Bluetooth — voir [guide installation](./jeeter-installation#étape-5--profil-matter-bluetooth-obligatoire) |
+| Commissioning échoué — timeout | Le téléphone était trop loin de l'appareil pendant le commissioning |
+| Node_id créé mais absent de Jeedom | Attendre quelques secondes puis rafraîchir l'onglet Jeedom — ou relancer une synchronisation depuis le plugin |
+| Notifications silencieuses | Vérifier que les notifications Jeeter sont autorisées dans les réglages système iOS/Android |

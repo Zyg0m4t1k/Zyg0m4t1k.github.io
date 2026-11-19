@@ -1,0 +1,97 @@
+---
+slug: jeemate-matter
+title: "Jeemate: control and commission your Matter devices from your smartphone"
+authors: zyg0m4t1k
+tags: [jeedom, matter, ios, android, jeemate, betatesteur]
+description: Jeemate is the iOS/Android mobile app to control Jeedom. It includes a dedicated Matter plugin section — device list, adding by code or QR code, and automatic commissioning management.
+image: /img/blog/jeemate-matter.svg
+---
+
+**Jeemate** is the go-to mobile app for controlling Jeedom from your iPhone or Android smartphone. It includes a dedicated **Matter** plugin section: view your commissioned devices, add new ones by code or QR code, and let Jeemate automatically handle the entire commissioning process.
+
+:::info Resources
+[**Jeemate on the Jeedom Market**](https://market.jeedom.com/index.php?v=d&p=market_display&id=4127) — Premium plugin (€10)
+[**Official documentation**](https://jeemate.fr/fr/documentation) — jeemate.fr
+:::
+
+<!--truncate-->
+
+---
+
+## What is Jeemate?
+
+Jeemate is a mobile app for **iOS and Android** that connects to your Jeedom to give you full control over your home automation setup from anywhere.
+
+It has two components:
+- **The mobile app** — available on the App Store and Play Store
+- **The Jeemate plugin** — installed on Jeedom via the Market, unlocks Premium features
+
+Once the plugin is installed and the app is configured with your Jeedom address, all your devices, scenarios, and dashboards are accessible on mobile.
+
+---
+
+## Prerequisites
+
+- **Matter plugin installed and active** on Jeedom
+- **Jeemate plugin installed** on Jeedom (Market → Premium → €10)
+- **Jeemate app** installed on your phone (App Store / Play Store)
+
+:::tip Remote access
+To access Jeedom outside your local network, [Tailscale](./tailscale-jeedom-acces-distant) is the simplest and most secure option — no public exposure, no port forwarding needed.
+:::
+
+---
+
+## Accessing the Matter plugin in Jeemate {#access-matter}
+
+In Jeemate, open the main menu and navigate to **Plugins → Matter**.
+
+<img src="/img/blog/jeemate-plugins-matter.jpg" alt="Jeemate — Plugins Matter section" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+The list of all your commissioned Matter devices appears — name, availability status, device type.
+
+---
+
+## Commissioning a new device {#commissioning}
+
+From the **Plugins → Matter** section, tap **Add a device**.
+
+<img src="/img/blog/jeemate-add-device.jpg" alt="Jeemate — Add a Matter device" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+Jeemate offers two methods to enter the Matter pairing code:
+
+<img src="/img/blog/jeemate-add-device-input.jpg" alt="Jeemate — Matter code input and QR button" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+- **QR code** — scan the QR code printed on the device or in its manual
+- **Manual code** — enter the Matter numeric code directly
+
+Once the code is provided, **Jeemate automatically handles the entire commissioning process**:
+- Automatic commissioning option configuration
+- Matter daemon restart if needed
+- Commissioning launched via the Jeedom plugin
+- The device joins the Matter fabric and appears in the list
+
+> The phone must stay within BLE range of the device during commissioning.
+
+---
+
+## Controlling Matter devices
+
+Commissioned Matter devices also appear in your Jeemate **dashboards** and **rooms**, just like any Jeedom device:
+
+- **Turn on/off** a Matter outlet or bulb
+- **Adjust brightness** of a dimmable light
+- **Read sensor values** — temperature, contact, motion, water leak
+- **Trigger Jeedom scenarios** involving Matter devices
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
+|---|---|
+| Matter section missing in Jeemate | Check that the Jeemate plugin is installed and active on Jeedom |
+| Device missing from list | Check it's enabled and visible in Jeedom — refresh Jeemate |
+| Commissioning failed | Check phone is within BLE range of the device |
+| Command has no effect | Check the device is **Online** in the Matter plugin |
+| App won't connect | Check Jeedom URL and API key — test from a browser first |

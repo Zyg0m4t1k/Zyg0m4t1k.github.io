@@ -56,6 +56,12 @@
   "blog.subtitle": { "message": "Guides, tips and updates around Jeedom plugins." },
   "blog.readmore": { "message": "Read →" },
 
+  "blog.jeemate-matter.title": { "message": "Jeemate: control and commission your Matter devices from your smartphone" },
+  "blog.jeemate-matter.description": { "message": "Jeemate is the iOS/Android mobile app to control Jeedom. It includes a dedicated Matter plugin section — device list, adding by code or QR code, and automatic commissioning management." },
+
+  "blog.jeeter-utilisation.title": { "message": "Jeeter: usage guide — Matter commissioning from your smartphone" },
+  "blog.jeeter-utilisation.description": { "message": "How to configure and use Jeeter — the 5 app tabs, scanning a Matter QR code, launching BLE commissioning from Jeedom, monitoring your devices, and remote access via Tailscale." },
+
   "blog.jeeter-installation.title": { "message": "Jeeter: install the BLE proxy Matter app on iOS and Android" },
   "blog.jeeter-installation.description": { "message": "How to install Jeeter on iPhone (Sideloadly) and Android (APK) — Matter BLE proxy for commissioning from the Jeedom plugin, without an official store." },
 

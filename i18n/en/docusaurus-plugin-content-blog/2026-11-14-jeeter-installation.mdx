@@ -163,40 +163,7 @@ On first launch, Android requests Bluetooth and location permissions (required f
 
 ---
 
-## Configuration and commissioning (iOS & Android)
+:::tip Next step
+App installed? Learn how to configure and use it in the **[Jeeter usage guide](./jeeter-utilisation)**.
+:::
 
-These steps are identical on both platforms.
-
-### Configure Jeeter
-
-1. Open **Jeeter**
-2. **Settings** tab → enter Jeedom IP and port
-3. Matter plugin API key *(optional)*: Jeedom → Matter Plugin → Configuration
-4. **Save**
-5. Matter devices appear if Jeedom is reachable (local network or via Tailscale)
-
----
-
-### Commission a Matter device
-
-1. In **Jeedom** → Matter plugin → start **BLE proxy mode**
-2. On the phone → **Jeeter** → **BLE** tab → **Connect**
-3. Jeeter scans for nearby Matter devices
-4. In Jeedom → start **commissioning**
-5. The plugin drives the phone via Jeeter to perform BLE commissioning
-
-> The phone must remain within range of the Matter device throughout the commissioning process.
-
----
-
-## Troubleshooting
-
-| Problem | Platform | Solution |
-|---|---|---|
-| Sideloadly doesn't detect the iPhone | iOS | Check USB cable, trust the Mac in iOS |
-| "Unable to install" | iOS | Uninstall the previous version from the iPhone first |
-| App won't open | iOS | Redo the Trust certificate step |
-| CBError code 8 | iOS | Install the Matter Bluetooth profile |
-| APK blocked at install | Android | Check that unknown sources are allowed for the app used |
-| BLE doesn't scan anything | Android | Check Bluetooth and location permissions |
-| No Jeedom connection | iOS & Android | Check IP, port, same network or Tailscale active |

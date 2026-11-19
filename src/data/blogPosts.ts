@@ -12,6 +12,40 @@ export type BlogPostData = {
 
 const blogPosts: BlogPostData[] = [
   {
+    id: 'jeemate-matter',
+    permalink: '/blog/jeemate-matter',
+    title: "Jeemate : contrôler et commissionner vos équipements Matter depuis votre smartphone",
+    description:
+      "Jeemate est l'application mobile iOS/Android pour piloter Jeedom. Elle intègre une section dédiée au plugin Matter — liste des équipements, ajout par code ou QR code, et gestion automatique du commissioning.",
+    formattedDate: '19 novembre 2026',
+    readingTime: 4,
+    tags: [
+      { label: 'matter', permalink: '/matter' },
+      { label: 'jeemate', permalink: '/jeemate' },
+      { label: 'ios', permalink: '/ios' },
+      { label: 'android', permalink: '/android' },
+    ],
+    image: '/img/blog/jeemate-matter.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
+    id: 'jeeter-utilisation',
+    permalink: '/blog/jeeter-utilisation',
+    title: "Jeeter : guide d'utilisation — commissioning Matter depuis votre smartphone",
+    description:
+      "Comment configurer et utiliser Jeeter — les 5 onglets de l'app, scanner un QR code Matter, lancer le commissioning BLE depuis Jeedom, surveiller ses équipements et accéder à distance via Tailscale.",
+    formattedDate: '19 novembre 2026',
+    readingTime: 6,
+    tags: [
+      { label: 'matter', permalink: '/matter' },
+      { label: 'jeeter', permalink: '/jeeter' },
+      { label: 'ios', permalink: '/ios' },
+      { label: 'android', permalink: '/android' },
+    ],
+    image: '/img/blog/jeeter-utilisation.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
     id: 'jeeter-installation',
     permalink: '/blog/jeeter-installation',
     title: 'Jeeter : installer l\'app BLE proxy Matter sur iOS et Android',

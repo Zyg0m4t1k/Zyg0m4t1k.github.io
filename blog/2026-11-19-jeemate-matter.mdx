@@ -1,0 +1,97 @@
+---
+slug: jeemate-matter
+title: "Jeemate : contrôler et commissionner vos équipements Matter depuis votre smartphone"
+authors: zyg0m4t1k
+tags: [jeedom, matter, ios, android, jeemate, betatesteur]
+description: Jeemate est l'application mobile iOS/Android pour piloter Jeedom. Elle intègre une section dédiée au plugin Matter — liste des équipements, ajout par code ou QR code, et gestion automatique du commissioning.
+image: /img/blog/jeemate-matter.svg
+---
+
+**Jeemate** est l'application mobile de référence pour contrôler Jeedom depuis votre iPhone ou smartphone Android. Elle intègre une section dédiée au plugin **Matter** : vous pouvez consulter vos équipements commissionnés, en ajouter de nouveaux par code ou QR code, et laisser Jeemate gérer automatiquement tout le processus de commissioning.
+
+:::info Ressources
+[**Jeemate sur le Market Jeedom**](https://market.jeedom.com/index.php?v=d&p=market_display&id=4127) — plugin Premium (10 €)
+[**Documentation officielle**](https://jeemate.fr/fr/documentation) — jeemate.fr
+:::
+
+<!--truncate-->
+
+---
+
+## C'est quoi Jeemate ?
+
+Jeemate est une application mobile **iOS et Android** qui se connecte à votre Jeedom pour vous donner le contrôle complet de votre installation domotique depuis n'importe où.
+
+Elle repose sur deux composants :
+- **L'application mobile** — disponible sur l'App Store et le Play Store
+- **Le plugin Jeemate** — installé sur Jeedom via le Market, débloque les fonctionnalités Premium
+
+Une fois le plugin installé et l'app configurée avec l'adresse de votre Jeedom, tous vos équipements, scénarios et tableaux de bord sont accessibles sur mobile.
+
+---
+
+## Prérequis
+
+- **Plugin Matter installé et actif** sur Jeedom
+- **Plugin Jeemate installé** sur Jeedom (Market → Premium → 10 €)
+- **App Jeemate** installée sur votre téléphone (App Store / Play Store)
+
+:::tip Accès distant
+Pour accéder à Jeedom hors réseau local, [Tailscale](./tailscale-jeedom-acces-distant) est la solution la plus simple et la plus sécurisée — pas d'exposition publique, pas de port à ouvrir.
+:::
+
+---
+
+## Accéder au plugin Matter dans Jeemate {#acces-matter}
+
+Dans Jeemate, ouvrir le menu principal puis naviguer vers **Plugins → Matter**.
+
+<img src="/img/blog/jeemate-plugins-matter.jpg" alt="Jeemate — section Plugins Matter" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+La liste de tous vos équipements Matter commissionnés apparaît — nom, état de disponibilité, type d'appareil.
+
+---
+
+## Commissionner un nouvel équipement {#commissioning}
+
+Depuis la section **Plugins → Matter**, appuyer sur **Ajouter un équipement**.
+
+<img src="/img/blog/jeemate-add-device.jpg" alt="Jeemate — Ajouter un équipement Matter" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+Jeemate propose deux méthodes pour saisir le code d'appairage Matter :
+
+<img src="/img/blog/jeemate-add-device-input.jpg" alt="Jeemate — saisie du code Matter et bouton QR" style={{maxWidth: "320px", display: "block", margin: "1.5rem auto"}} />
+
+- **QR code** — scanner le QR code imprimé sur l'appareil ou dans sa notice
+- **Code manuel** — saisir le code numérique Matter directement
+
+Une fois le code fourni, **Jeemate prend en charge automatiquement l'intégralité du commissioning** :
+- Configuration automatique des options de commissioning
+- Redémarrage du démon Matter si nécessaire
+- Lancement du commissioning via le plugin Jeedom
+- L'appareil rejoint le fabric Matter et apparaît dans la liste
+
+> Le téléphone doit rester à portée BLE de l'appareil pendant le commissioning.
+
+---
+
+## Contrôler les équipements Matter
+
+Les équipements Matter commissionnés apparaissent également dans vos **tableaux de bord** et **pièces** Jeemate, comme n'importe quel équipement Jeedom :
+
+- **Allumer/éteindre** une prise ou une ampoule Matter
+- **Régler la luminosité** d'un éclairage avec variateur
+- **Consulter les capteurs** — température, contact, mouvement, fuite d'eau
+- **Déclencher des scénarios** Jeedom impliquant des équipements Matter
+
+---
+
+## Dépannage
+
+| Problème | Solution |
+|---|---|
+| Section Matter absente dans Jeemate | Vérifier que le plugin Jeemate est bien installé et actif sur Jeedom |
+| Équipement absent de la liste | Vérifier qu'il est actif et visible dans Jeedom — rafraîchir Jeemate |
+| Commissioning échoué | Vérifier que le téléphone est à portée BLE de l'appareil |
+| Commande sans effet | Vérifier que l'équipement est **En ligne** dans le plugin Matter |
+| App ne se connecte pas | Vérifier l'URL et la clé API Jeedom — tester depuis un navigateur |

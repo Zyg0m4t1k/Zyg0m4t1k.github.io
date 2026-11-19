@@ -73,6 +73,11 @@ jeeter:
   permalink: /jeeter
   description: App iOS BLE proxy Matter pour Jeedom
 
+jeemate:
+  label: Jeemate
+  permalink: /jeemate
+  description: Application mobile iOS/Android pour contrôler Jeedom
+
 android:
   label: Android
   permalink: /android
