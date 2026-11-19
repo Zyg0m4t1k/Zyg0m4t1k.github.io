@@ -9,7 +9,7 @@ image: /img/blog/jeeter-utilisation.svg
 
 **Jeeter** est installé — maintenant, comment l'utiliser ? Ce guide couvre la configuration initiale, le commissioning d'un appareil Matter, et toutes les fonctionnalités de l'app.
 
-> Pas encore installé ? Voir d'abord le **[guide d'installation Jeeter](./jeeter-installation)**.
+> Pas encore installé ? Voir d'abord le **[guide d'installation Jeeter](/blog/jeeter-installation)**.
 
 <!--truncate-->
 
@@ -60,7 +60,7 @@ La section **Adresse externe** permet d'utiliser l'onglet Jeedom hors de votre r
 - Choisir le protocole `http` ou `https` et le port correspondant
 
 :::info Tailscale recommandé
-Pour un accès distant sécurisé sans exposition publique, [Tailscale](./tailscale-jeedom-acces-distant) est la solution idéale. L'adresse Tailscale de votre Jeedom va directement dans le champ "IP / domaine externe".
+Pour un accès distant sécurisé sans exposition publique, [Tailscale](/blog/tailscale-jeedom-acces-distant) est la solution idéale. L'adresse Tailscale de votre Jeedom va directement dans le champ "IP / domaine externe".
 :::
 
 > Le **BLE** utilise toujours l'adresse interne — le proxy WebSocket doit être sur le réseau local.
@@ -192,7 +192,7 @@ Jeeter interroge Jeedom périodiquement et envoie une notification si un équipe
 | Proxy non connecté | Vérifier l'IP locale et le port BLE (5580 par défaut) — le plugin Matter doit être démarré |
 | QR code non reconnu | Vérifier que c'est bien un QR code Matter (préfixe `MT:`) — essayer la saisie manuelle |
 | Commissioning bloqué en phase Scan | L'appareil Matter n'est pas en mode commissioning — le réinitialiser (appui long sur le bouton reset) |
-| CBError code 8 (iOS) | Installer le profil Matter Bluetooth — voir [guide installation](./jeeter-installation#étape-5--profil-matter-bluetooth-obligatoire) |
+| CBError code 8 (iOS) | Installer le profil Matter Bluetooth — voir [guide installation](/blog/jeeter-installation#étape-5--profil-matter-bluetooth-obligatoire) |
 | Commissioning échoué — timeout | Le téléphone était trop loin de l'appareil pendant le commissioning |
 | Node_id créé mais absent de Jeedom | Attendre quelques secondes puis rafraîchir l'onglet Jeedom — ou relancer une synchronisation depuis le plugin |
 | Notifications silencieuses | Vérifier que les notifications Jeeter sont autorisées dans les réglages système iOS/Android |

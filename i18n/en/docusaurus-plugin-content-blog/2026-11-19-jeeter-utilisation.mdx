@@ -9,7 +9,7 @@ image: /img/blog/jeeter-utilisation.svg
 
 **Jeeter** is installed — now how do you use it? This guide covers initial setup, commissioning a Matter device, and all app features.
 
-> Not installed yet? Start with the **[Jeeter installation guide](./jeeter-installation)**.
+> Not installed yet? Start with the **[Jeeter installation guide](/en/blog/jeeter-installation)**.
 
 <!--truncate-->
 
@@ -60,7 +60,7 @@ The **External address** section lets you use the Jeedom tab outside your local 
 - Choose `http` or `https` protocol and the corresponding port
 
 :::info Tailscale recommended
-For secure remote access without public exposure, [Tailscale](./tailscale-jeedom-acces-distant) is the ideal solution. Your Jeedom's Tailscale address goes directly in the "IP / external domain" field.
+For secure remote access without public exposure, [Tailscale](/en/blog/tailscale-jeedom-acces-distant) is the ideal solution. Your Jeedom's Tailscale address goes directly in the "IP / external domain" field.
 :::
 
 > **BLE** always uses the internal address — the WebSocket proxy must be on the local network.
@@ -192,7 +192,7 @@ Jeeter polls Jeedom periodically and sends a notification if a device goes **off
 | Proxy not connecting | Check local IP and BLE port (5580 default) — Matter plugin must be running |
 | QR code not recognized | Verify it's a Matter QR code (prefix `MT:`) — try manual entry |
 | Commissioning stuck in Scan phase | Device not in commissioning mode — reset it (hold the reset button) |
-| CBError code 8 (iOS) | Install the Matter Bluetooth profile — see [installation guide](./jeeter-installation#step-5--matter-bluetooth-profile-mandatory) |
+| CBError code 8 (iOS) | Install the Matter Bluetooth profile — see [installation guide](/en/blog/jeeter-installation#step-5--matter-bluetooth-profile-mandatory) |
 | Commissioning failed — timeout | Phone was too far from the device during commissioning |
 | Node_id created but missing in Jeedom | Wait a few seconds and refresh the Jeedom tab — or force sync from the plugin |
 | Silent notifications | Check Jeeter notifications are allowed in iOS/Android system settings |
