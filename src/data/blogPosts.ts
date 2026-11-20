@@ -12,6 +12,23 @@ export type BlogPostData = {
 
 const blogPosts: BlogPostData[] = [
   {
+    id: 'jeedom-securite-tailscale-php',
+    permalink: '/blog/jeedom-securite-tailscale-php',
+    title: "Sécuriser Jeedom : pourquoi j'ai abandonné les accès publics au profit de Tailscale",
+    description:
+      "Failles critiques PHP, ports ouverts, IPv6 : pourquoi limiter l'exposition de Jeedom à Internet est essentiel et comment le plugin Tailscale simplifie cette sécurisation.",
+    formattedDate: '20 novembre 2026',
+    readingTime: 7,
+    tags: [
+      { label: 'tailscale', permalink: '/tailscale' },
+      { label: 'securite', permalink: '/securite' },
+      { label: 'php', permalink: '/php' },
+      { label: 'jeedom', permalink: '/jeedom' },
+    ],
+    image: '/img/blog/jeedom-securite-tailscale-php.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
     id: 'jeemate-matter',
     permalink: '/blog/jeemate-matter',
     title: "Jeemate : contrôler et commissionner vos équipements Matter depuis votre smartphone",

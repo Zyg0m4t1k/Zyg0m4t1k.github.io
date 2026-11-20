@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1829"/>
+      <stop offset="100%" stop-color="#0d2d4a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="shield-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0f2744"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-red">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.06" stroke="#60a5fa" stroke-width="1" fill="none">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- Decorative outer circles -->
+  <circle cx="920" cy="310" r="260" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.05"/>
+  <circle cx="920" cy="310" r="195" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.07"/>
+
+  <!-- Blocked incoming connections from Internet -->
+  <g filter="url(#glow-red)" opacity="0.75">
+    <!-- Top -->
+    <line x1="1140" y1="210" x2="1028" y2="258" stroke="#ef4444" stroke-width="2" stroke-dasharray="7,4"/>
+    <circle cx="1028" cy="258" r="11" fill="#7f1d1d" stroke="#ef4444" stroke-width="2"/>
+    <line x1="1021" y1="251" x2="1035" y2="265" stroke="#ef4444" stroke-width="2.5"/>
+    <line x1="1035" y1="251" x2="1021" y2="265" stroke="#ef4444" stroke-width="2.5"/>
+    <!-- Middle -->
+    <line x1="1140" y1="310" x2="1030" y2="310" stroke="#ef4444" stroke-width="2" stroke-dasharray="7,4"/>
+    <circle cx="1030" cy="310" r="11" fill="#7f1d1d" stroke="#ef4444" stroke-width="2"/>
+    <line x1="1023" y1="303" x2="1037" y2="317" stroke="#ef4444" stroke-width="2.5"/>
+    <line x1="1037" y1="303" x2="1023" y2="317" stroke="#ef4444" stroke-width="2.5"/>
+    <!-- Bottom -->
+    <line x1="1140" y1="410" x2="1028" y2="362" stroke="#ef4444" stroke-width="2" stroke-dasharray="7,4"/>
+    <circle cx="1028" cy="362" r="11" fill="#7f1d1d" stroke="#ef4444" stroke-width="2"/>
+    <line x1="1021" y1="355" x2="1035" y2="369" stroke="#ef4444" stroke-width="2.5"/>
+    <line x1="1035" y1="355" x2="1021" y2="369" stroke="#ef4444" stroke-width="2.5"/>
+  </g>
+
+  <!-- Internet label -->
+  <text x="1140" y="195" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#ef4444" text-anchor="middle" opacity="0.9" font-weight="600">Internet</text>
+
+  <!-- Shield shape -->
+  <g filter="url(#glow)">
+    <path d="M 920,182 L 1022,218 L 1022,328 C 1022,392 920,428 920,428 C 920,428 818,392 818,328 L 818,218 Z"
+          fill="url(#shield-fill)" stroke="url(#accent)" stroke-width="3"/>
+    <path d="M 920,205 L 1000,233 L 1000,328 C 1000,377 920,406 920,406 C 920,406 840,377 840,328 L 840,233 Z"
+          fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+  </g>
+
+  <!-- Lock icon inside shield (centered at 920, 305) -->
+  <g>
+    <!-- Shackle -->
+    <path d="M 902,300 L 902,284 A 18,18 0 0 1 938,284 L 938,300"
+          fill="none" stroke="#60a5fa" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Body -->
+    <rect x="893" y="300" width="54" height="44" rx="9" fill="#1e40af" stroke="#60a5fa" stroke-width="2"/>
+    <!-- Keyhole -->
+    <circle cx="920" cy="317" r="8" fill="#0c1829" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="916" y="317" width="8" height="13" rx="3" fill="#0c1829"/>
+  </g>
+
+  <!-- Tailscale private network nodes inside shield (bottom) -->
+  <g opacity="0.8">
+    <line x1="880" y1="390" x2="920" y2="368" stroke="#06b6d4" stroke-width="1.5" opacity="0.7"/>
+    <line x1="960" y1="390" x2="920" y2="368" stroke="#3b82f6" stroke-width="1.5" opacity="0.7"/>
+    <line x1="880" y1="390" x2="960" y2="390" stroke="#60a5fa" stroke-width="1" opacity="0.3"/>
+    <circle cx="880" cy="390" r="9" fill="#164e63" stroke="#06b6d4" stroke-width="1.5"/>
+    <circle cx="960" cy="390" r="9" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="920" cy="368" r="7" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+  </g>
+
+  <!-- PHP warning badge (top-right of shield) -->
+  <g transform="translate(970, 168)">
+    <rect x="0" y="0" width="84" height="28" rx="6" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="42" y="19" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#fdba74">⚠ PHP CVE</text>
+  </g>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="80" width="4" height="470" fill="url(#accent)" rx="2" opacity="0.7"/>
+
+  <!-- Text content -->
+  <text x="120" y="170" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" fill="#60a5fa" font-weight="600" letter-spacing="3" text-anchor="start">JEEDOM · SÉCURITÉ</text>
+
+  <text x="120" y="252" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" fill="#f0f9ff" font-weight="800" text-anchor="start">Moins d'exposition,</text>
+  <text x="120" y="315" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" fill="#f0f9ff" font-weight="800" text-anchor="start">plus de sérénité</text>
+
+  <text x="120" y="378" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" fill="#93c5fd" font-weight="400" text-anchor="start">PHP · WireGuard · Zéro port ouvert</text>
+
+  <!-- Tags -->
+  <g transform="translate(120, 418)">
+    <rect x="0" y="0" width="76" height="30" rx="8" fill="#7c2d12" opacity="0.85" stroke="#f97316" stroke-width="1"/>
+    <text x="38" y="20" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" text-anchor="middle" fill="#fdba74">PHP</text>
+  </g>
+  <g transform="translate(210, 418)">
+    <rect x="0" y="0" width="118" height="30" rx="8" fill="#1e3a8a" opacity="0.85" stroke="#3b82f6" stroke-width="1"/>
+    <text x="59" y="20" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" text-anchor="middle" fill="#93c5fd">Tailscale</text>
+  </g>
+  <g transform="translate(342, 418)">
+    <rect x="0" y="0" width="104" height="30" rx="8" fill="#14532d" opacity="0.85" stroke="#22c55e" stroke-width="1"/>
+    <text x="52" y="20" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" text-anchor="middle" fill="#86efac">Sécurité</text>
+  </g>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#060f1a" opacity="0.6"/>
+  <text x="120" y="614" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" fill="#475569">zyg0m4t1k.github.io</text>
+</svg>

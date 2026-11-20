@@ -102,3 +102,8 @@ pwa:
   label: PWA
   permalink: /pwa
   description: Progressive Web App — application web installable sur mobile
+
+php:
+  label: PHP
+  permalink: /php
+  description: Langage de programmation côté serveur utilisé par Jeedom

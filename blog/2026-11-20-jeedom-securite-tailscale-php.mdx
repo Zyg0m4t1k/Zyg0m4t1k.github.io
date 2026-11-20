@@ -1,0 +1,154 @@
+---
+slug: jeedom-securite-tailscale-php
+title: "Sécuriser Jeedom : pourquoi j'ai abandonné les accès publics au profit de Tailscale"
+authors: zyg0m4t1k
+tags: [jeedom, tailscale, securite, php, domotique]
+description: "Failles critiques PHP, ports ouverts, IPv6 : pourquoi limiter l'exposition de Jeedom à Internet est essentiel et comment le plugin Tailscale simplifie cette sécurisation."
+image: /img/blog/jeedom-securite-tailscale-php.svg
+---
+
+Les nouvelles vulnérabilités PHP annoncées **dernièrement** rappellent une nouvelle fois l'importance de sécuriser nos installations Jeedom.
+
+Certaines failles sont considérées comme critiques et peuvent, selon les conditions d'exploitation, présenter des risques importants.
+
+Mais une question mérite d'être posée : **pourquoi laisser son Jeedom directement accessible depuis Internet lorsqu'il existe des solutions permettant de s'en passer ?**
+
+C'est précisément pour cette raison que j'ai fait évoluer mon installation vers un accès distant exclusivement basé sur **[Tailscale](/blog/tailscale-jeedom-acces-distant)**.
+
+<!--truncate-->
+
+---
+
+## Une faille critique ne signifie pas forcément un Jeedom exposé
+
+Jeedom repose notamment sur PHP. Les vulnérabilités affectant les versions utilisées peuvent donc concerner nos installations.
+
+Il faut toutefois distinguer deux notions essentielles :
+
+- **La vulnérabilité** : une faiblesse présente dans un logiciel.
+- **L'exposition** : la possibilité pour un attaquant d'accéder au service concerné.
+
+Un Jeedom accessible publiquement depuis Internet offre davantage de possibilités d'attaque qu'une installation limitée au réseau local.
+
+Même avec une authentification, un certificat HTTPS et des mots de passe solides, le serveur Web reste joignable depuis Internet.
+
+La meilleure protection consiste donc aussi à **réduire les services exposés**.
+
+---
+
+## Pourquoi j'ai supprimé les accès publics à Jeedom
+
+Pendant longtemps, l'accès distant à une installation domotique reposait généralement sur un nom de domaine, un reverse proxy et une redirection de ports.
+
+Cette architecture peut être sécurisée, mais elle nécessite une surveillance et une maintenance régulières.
+
+J'ai choisi une approche différente :
+
+- Plus aucun port redirigé sur mon routeur.
+- Plus aucun DNS public pour accéder à Jeedom.
+- Plus aucun reverse proxy exposant mon installation.
+- Accès direct depuis mon réseau local.
+- Accès distant exclusivement via Tailscale.
+
+**Mon Jeedom n'est donc plus directement accessible depuis Internet.**
+
+Cela ne signifie pas qu'il est invulnérable, mais sa surface d'attaque est considérablement réduite.
+
+---
+
+## Tailscale : un réseau privé pour accéder à Jeedom
+
+Tailscale repose sur WireGuard et permet de créer un réseau privé sécurisé entre plusieurs appareils.
+
+Contrairement à une exposition classique sur Internet, il n'est pas nécessaire d'ouvrir un port entrant sur le routeur pour accéder à Jeedom.
+
+Les appareils autorisés peuvent communiquer entre eux à travers ce réseau privé, avec des connexions chiffrées.
+
+Concrètement, depuis mon smartphone ou mon ordinateur, je peux accéder à mon installation Jeedom comme si j'étais à la maison, sans rendre son interface Web publique.
+
+Et c'est là que le **plugin Tailscale pour Jeedom** prend tout son intérêt.
+
+---
+
+## Le plugin Tailscale pour Jeedom
+
+:::info Ressource
+[**Plugin Tailscale sur le Market Jeedom**](https://market.jeedom.com/index.php?v=d&p=market_display&id=4681)
+:::
+
+L'objectif du plugin est de faciliter l'installation, la configuration et la surveillance de Tailscale directement depuis Jeedom.
+
+Plus besoin de multiplier les commandes Linux pour les opérations courantes.
+
+Le plugin permet notamment :
+
+- **Installation et gestion de Tailscale** depuis Jeedom.
+- **Connexion au réseau privé** et suivi de son état.
+- **Visualisation des adresses IP Tailscale** et des informations de connexion.
+- **Gestion des routes réseau** pour accéder à d'autres équipements du réseau local.
+- **Configuration des fonctions Subnet Router et Exit Node** selon les besoins.
+- **Prise en charge de MagicDNS et de Tailscale SSH**.
+- **Surveillance de la connexion**, du service et de l'état du réseau, avec des informations de diagnostic.
+
+L'intérêt ne se limite donc pas à accéder à Jeedom depuis l'extérieur.
+
+Tailscale peut également permettre, selon la configuration retenue, d'accéder à d'autres équipements de son réseau domestique sans multiplier les ouvertures de ports.
+
+Le plugin centralise ces fonctionnalités dans l'environnement Jeedom et facilite leur administration.
+
+### Un accès distant sans exposition publique
+
+Le principe est simple :
+
+1. Installer et configurer Tailscale sur Jeedom à l'aide du plugin.
+2. Installer Tailscale sur son smartphone ou son ordinateur.
+3. Autoriser les appareils dans son réseau Tailscale.
+4. Accéder à Jeedom via son adresse Tailscale ou son nom MagicDNS.
+
+Il n'est alors plus nécessaire de publier l'interface Jeedom sur Internet pour disposer d'un accès distant.
+
+:::caution Sécurité
+Les appareils autorisés, les règles d'accès Tailscale et la sécurité des comptes restent essentiels. Un réseau privé doit lui aussi être correctement administré.
+:::
+
+---
+
+## Les mises à jour restent indispensables
+
+Revenons aux vulnérabilités PHP.
+
+Même avec un Jeedom accessible uniquement depuis le réseau local et Tailscale, les correctifs restent nécessaires.
+
+Un appareil compromis, une mauvaise configuration ou une vulnérabilité dans un autre service peuvent toujours constituer un point d'entrée.
+
+La bonne stratégie repose sur plusieurs protections complémentaires :
+
+- Maintenir PHP, Jeedom et les plugins à jour.
+- Réduire au maximum les services accessibles publiquement.
+- Sécuriser les comptes et appareils autorisés sur Tailscale.
+- Vérifier les pare-feu IPv4 et IPv6.
+- Effectuer des sauvegardes régulières.
+
+L'isolation réseau ne remplace pas les mises à jour, mais elle permet de limiter les possibilités d'exploitation de nombreuses vulnérabilités accessibles par le réseau.
+
+---
+
+## Conclusion : moins d'exposition, plus de tranquillité
+
+Les annonces de failles critiques rappellent régulièrement que les logiciels ne sont jamais totalement exempts de vulnérabilités.
+
+Plutôt que de dépendre uniquement des correctifs et de la sécurisation d'un accès public, j'ai préféré supprimer cette exposition lorsqu'elle n'était pas indispensable.
+
+Avec Tailscale, je conserve un accès distant à mon installation Jeedom et à mes équipements, sans ouvrir de ports entrants sur mon routeur.
+
+Le **plugin Tailscale pour Jeedom** permet de mettre en place et de superviser cette solution directement depuis l'interface domotique.
+
+C'est une approche que je trouve particulièrement intéressante pour une installation personnelle.
+
+**La meilleure façon de protéger un service contre les attaques directes depuis Internet reste souvent de ne pas l'y exposer.**
+
+---
+
+### Pour aller plus loin
+
+- [Site officiel Tailscale](https://tailscale.com/)

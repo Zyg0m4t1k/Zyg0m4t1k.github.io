@@ -56,6 +56,9 @@
   "blog.subtitle": { "message": "Guides, tips and updates around Jeedom plugins." },
   "blog.readmore": { "message": "Read →" },
 
+  "blog.jeedom-securite-tailscale-php.title": { "message": "Securing Jeedom: why I stopped public access in favour of Tailscale" },
+  "blog.jeedom-securite-tailscale-php.description": { "message": "Critical PHP vulnerabilities, open ports, IPv6: why limiting Jeedom's exposure to the internet is essential and how the Tailscale plugin simplifies this." },
+
   "blog.jeemate-matter.title": { "message": "Jeemate: control and commission your Matter devices from your smartphone" },
   "blog.jeemate-matter.description": { "message": "Jeemate is the iOS/Android mobile app to control Jeedom. It includes a dedicated Matter plugin section — device list, adding by code or QR code, and automatic commissioning management." },
 
