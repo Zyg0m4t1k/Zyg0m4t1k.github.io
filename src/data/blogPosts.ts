@@ -12,6 +12,22 @@ export type BlogPostData = {
 
 const blogPosts: BlogPostData[] = [
   {
+    id: 'tailscale-jeedom-deux-acces',
+    permalink: '/blog/tailscale-jeedom-deux-acces',
+    title: "Tailscale et Jeedom : deux façons d'accéder à mon réseau depuis l'extérieur",
+    description:
+      "Routeur Tailscale ou plugin Jeedom : deux chemins pour accéder à Jeedom depuis l'extérieur. L'adresse 100.x.x.x reste accessible même si le routeur tombe.",
+    formattedDate: '22 novembre 2026',
+    readingTime: 4,
+    tags: [
+      { label: 'tailscale', permalink: '/tailscale' },
+      { label: 'jeedom', permalink: '/jeedom' },
+      { label: 'reseau', permalink: '/reseau' },
+    ],
+    image: '/img/blog/tailscale-jeedom-deux-acces.svg',
+    authors: [{ name: 'Zyg0m4t1k', imageURL: 'https://github.com/Zyg0m4t1k.png' }],
+  },
+  {
     id: 'jeedom-securite-tailscale-php',
     permalink: '/blog/jeedom-securite-tailscale-php',
     title: "Sécuriser Jeedom : pourquoi j'ai abandonné les accès publics au profit de Tailscale",

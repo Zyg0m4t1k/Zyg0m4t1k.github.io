@@ -1,0 +1,56 @@
+---
+slug: tailscale-jeedom-deux-acces
+title: "Tailscale and Jeedom: two ways to access my network from outside"
+authors: zyg0m4t1k
+tags: [jeedom, tailscale, reseau, domotique]
+description: "Tailscale subnet router or Jeedom node: two paths to access Jeedom remotely. The 100.x.x.x address stays reachable even if the router goes down."
+image: /img/blog/tailscale-jeedom-deux-acces.svg
+---
+
+With Tailscale, I can access my **local network through a Tailscale subnet router** or connect directly to **a machine running Tailscale itself**. Either way, I can open Jeedom from my phone. The address I use determines which path the connection takes — and what happens if an intermediary goes down.
+
+| Address used | Connection path | If the Tailscale router goes down |
+|---|---|---|
+| `192.168.1.x`, the Raspberry Pi's local IP | Phone → Tailscale subnet router VM → Raspberry Pi | **Access cut off** from outside |
+| `100.x.x.x`, the Raspberry Pi's Tailscale IP | Phone → Tailscale on the Raspberry Pi directly | **Jeedom stays reachable** |
+
+<!--truncate-->
+
+---
+
+## Accessing the local network through `192.168.1.x` addresses
+
+At home, my router, my Raspberry Pi, and my other devices communicate on the **local network**. In my setup, their addresses fall in the `192.168.1.x` range. When I'm on the home Wi-Fi, I use these addresses to reach them.
+
+From outside, my **Proxmox VM acts as a gateway**. It advertises to Tailscale that it can reach the `192.168.1.0/24` network. My phone can then use the same local addresses to access Jeedom, my router, or my cameras — even if those devices don't run Tailscale.
+
+**Limitation:** if the VM goes down, the path through it is cut and Jeedom is no longer reachable from outside, even if the Raspberry Pi is running perfectly.
+
+---
+
+## Accessing Jeedom through its Tailscale address `100.x.x.x`
+
+The **[Tailscale plugin for Jeedom](/en/blog/tailscale-jeedom-acces-distant)** lets me connect the Raspberry Pi itself to my Tailscale network. The Pi then gets its own `100.x.x.x` address. With Tailscale running on my phone, I can open Jeedom at that address directly, **without going through the subnet router**.
+
+> **Key advantage:** if my VM or the NUC hosting the Tailscale router shuts down, Jeedom remains accessible from outside as long as the Raspberry Pi is running. The connection no longer depends on an intermediary.
+
+**Bookmarking Jeedom's Tailscale address** lets me use it daily and find it easily if the router fails.
+
+---
+
+## Combining both approaches
+
+Both methods coexist without issue. In my setup:
+
+- I access **Jeedom** via its `100.x.x.x` address — direct connection, independent of the router.
+- I access **my router, cameras, and other devices** via their `192.168.1.x` addresses — these devices don't run Tailscale, so the subnet router is still useful for them.
+
+If the VM goes down, I lose remote access to my router and cameras, but **Jeedom stays reachable**. I can then act through the home automation interface.
+
+---
+
+## Further reading
+
+- [Jeedom from anywhere: why Tailscale changes everything](/en/blog/tailscale-jeedom-acces-distant)
+- [Tailscale Subnet Router: whole local network or a single device?](/en/blog/tailscale-subnet-router-routes-annoncees)
+- [Tailscale plugin on the Jeedom Market](https://market.jeedom.com/index.php?v=d&p=market_display&id=4681)
