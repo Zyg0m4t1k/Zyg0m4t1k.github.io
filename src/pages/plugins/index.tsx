@@ -7,12 +7,9 @@ export default function PluginsIndex(): JSX.Element {
   return (
     <Layout title="Plugins" description={translate({ id: 'plugins.page.description', message: 'Liste des plugins Jeedom' })}>
       <main>
-        <div style={{ padding: '2.5rem 0 1rem' }}>
+        <div className="page-hero-bg" style={{ padding: '2.5rem 0 1.5rem' }}>
           <div className="container">
             <h1 style={{ marginBottom: '0.5rem' }}>Plugins</h1>
-            <p style={{ opacity: 0.85, maxWidth: 900 }}>
-              
-            </p>
           </div>
         </div>
 

@@ -18,17 +18,23 @@ export default function BlogListPage({ metadata, items }: Props): JSX.Element {
       })}
     >
       <main className={styles.main}>
-        <div className="container">
+        {isFirstPage && (
+          <div className={`page-hero-bg ${styles.heroWrapper}`}>
+            <div className="container">
+              <h1 className={styles.heroTitle}>
+                {translate({ id: 'blog.title', message: 'Blog' })}
+              </h1>
+              <p className={styles.heroSub}>
+                {translate({
+                  id: 'blog.subtitle',
+                  message: 'Guides, astuces et nouveautés autour des plugins Jeedom.',
+                })}
+              </p>
+            </div>
+          </div>
+        )}
 
-          {isFirstPage && (
-            <p className={styles.heroSub}>
-              {translate({
-                id: 'blog.subtitle',
-                message: 'Guides, astuces et nouveautés autour des plugins Jeedom.',
-              })}
-            </p>
-          )}
-
+        <div className="container" style={{ paddingTop: '2rem' }}>
           <div className={styles.grid}>
             {items.map(({ content: BlogPostContent }) => {
               const { metadata: post } = BlogPostContent;

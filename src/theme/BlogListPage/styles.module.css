@@ -1,5 +1,9 @@
 .main {
-  padding: 2.5rem 0 4rem;
+  padding-bottom: 4rem;
+}
+
+.heroWrapper {
+  padding: 2.5rem 0 1.5rem;
 }
 
 /* ===========================

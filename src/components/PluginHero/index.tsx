@@ -129,12 +129,12 @@ export default function PluginHero({
       <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
     </Head>
     <div
+      className="page-hero-bg"
       style={{
         position: 'relative',
         border: '1px solid var(--ifm-color-emphasis-200)',
         borderRadius: 16,
         padding: '1.5rem',
-        background: 'var(--ifm-background-surface-color)',
         boxShadow: '0 6px 20px rgba(0,0,0,.06)',
         marginBottom: '1.5rem',
         overflow: 'hidden',

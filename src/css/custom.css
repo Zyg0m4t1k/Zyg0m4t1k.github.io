@@ -33,6 +33,46 @@
 
 html, body { overflow-x: hidden; }
 
+/* ── Dot-grid + spotlight (shared with homepage hero) ───────── */
+.page-hero-bg {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse 100% 80% at 50% 0%,
+    rgba(37, 99, 235, 0.22) 0%,
+    transparent 65%
+  );
+}
+.page-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.32) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-hero-bg > * { position: relative; z-index: 1; }
+
+[data-theme='dark'] .page-hero-bg {
+  background: radial-gradient(
+    ellipse 100% 80% at 50% 0%,
+    rgba(96, 165, 250, 0.18) 0%,
+    transparent 65%
+  );
+}
+[data-theme='dark'] .page-hero-bg::before {
+  background-image: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.28) 1.5px,
+    transparent 1.5px
+  );
+}
+
 /* Images docs — taille proportionnelle + zoom au clic */
 .markdown img:not(.no-zoom) {
   max-width: 100%;
